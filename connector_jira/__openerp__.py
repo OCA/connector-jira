@@ -7,12 +7,14 @@
  'license': 'AGPL-3',
  'category': 'Connector',
  'depends': ['connector',
+             'project',
              ],
  'website': 'http://www.camptocamp.com',
  'data': [
      'views/jira_menus.xml',
      'wizards/jira_backend_auth_views.xml',
      'views/jira_backend_views.xml',
+     'views/project_project_views.xml',
      ],
  'installable': True,
  }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="edit_project" model="ir.ui.view">
+    <field name="name">project.project.form</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+      <xpath expr="//notebook" position="inside">
+        <page String="Connector" name="connector">
+          <group string="Jira">
+            <field name="jira_bind_ids" nolabel="1"/>
+          </group>
+        </page>
+      </xpath>
+
+      <div name="button_box" position="inside">
+        <button name="toggle_jira_exportable" type="object"
+          class="oe_stat_button" icon="fa-refresh">
+          <span class="o_stat_text">Jira</span>
+          <field name="jira_exportable" widget="boolean_button"/>
+        </button>
+      </div>
+    </field>
+  </record>
+
+  <record id="view_jira_project_project_form" model="ir.ui.view">
+    <field name="name">jira.project.project.form</field>
+    <field name="model">jira.project.project</field>
+    <field name="arch" type="xml">
+      <form string="Jira Project">
+        <group>
+          <field name="backend_id"/>
+          <field name="external_id"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_jira_project_project_tree" model="ir.ui.view">
+    <field name="name">jira.project.project.tree</field>
+    <field name="model">jira.project.project</field>
+    <field name="arch" type="xml">
+      <tree string="Jira Project">
+        <field name="backend_id"/>
+        <field name="external_id"/>
+      </tree>
+    </field>
+  </record>
+
+</odoo>
