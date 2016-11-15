@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="edit_project" model="ir.ui.view">
+    <field name="name">project.project.form</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.edit_project"/>
+    <field name="arch" type="xml">
+      <xpath expr="//notebook" position="inside">
+        <page String="Connector" name="connector">
+          <group string="Jira">
+            <field name="jira_bind_ids" nolabel="1"/>
+          </group>
+        </page>
+      </xpath>
+
+      <field name="partner_id" position="before">
+        <field name="jira_exportable" invisible="1"/>
+        <field name="jira_key" attrs="{'required': [('jira_exportable', '=', True)]}"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="view_jira_project_project_form" model="ir.ui.view">
+    <field name="name">jira.project.project.form</field>
+    <field name="model">jira.project.project</field>
+    <field name="arch" type="xml">
+      <form string="Jira Project">
+        <group>
+          <field name="backend_id"
+            attrs="{'readonly': [('external_id', '!=', False)]}"/>
+          <field name="project_template"
+            attrs="{'readonly': [('external_id', '!=', False)]}"/>
+          <field name="project_template_shared"
+            attrs="{'readonly': [('external_id', '!=', False)],
+                    'invisible': [('project_template', '!=', 'shared')],
+                    'required': [('project_template', '=', 'shared')]}"/>
+          <div colspan="2">
+            <p class="oe_grey oe_inline">
+              The checkboxes define which types of JIRA issues will be imported
+              into Odoo. For instance, if you check 'Story', only issues of type
+              Story will be imported. Several choices possible.
+            </p>
+
+            <p class="oe_grey oe_inline">
+              There is a direct implication on the Worklogs.
+              When a worklog is done on a JIRA Sub-Task and this type is not
+              sync'ed, the worklog will be attached to the parent Task of the
+              Sub-Task. If the Task is not sync'ed, it will be attached to the
+              Epic. Finally, if there is no Epic, the worklog will not be
+              attached to any task.
+            </p>
+          </div>
+          <field name="sync_issue_type_ids" widget="many2many_checkboxes"/>
+
+          <field name="external_id"/>
+        </group>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_jira_project_project_tree" model="ir.ui.view">
+    <field name="name">jira.project.project.tree</field>
+    <field name="model">jira.project.project</field>
+    <field name="arch" type="xml">
+      <tree string="Jira Project">
+        <field name="backend_id"/>
+        <field name="external_id"/>
+        <field name="sync_issue_type_ids"/>
+      </tree>
+    </field>
+  </record>
+
+</odoo>
