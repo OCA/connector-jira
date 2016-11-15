@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Backend -->
+  <record id="view_jira_backend_form" model="ir.ui.view">
+    <field name="name">jira.backend.form</field>
+    <field name="model">jira.backend</field>
+    <field name="arch" type="xml">
+      <form string="Jira Backend">
+        <header groups="connector.group_connector_manager">
+          <!-- <button name="synchronize_metadata" -->
+          <!--   type="object" -->
+          <!--   class="oe_highlight" -->
+          <!--   string="Synchronize Metadata"/> -->
+          <button name="%(action_jira_backend_auth)d"
+            type="action"
+            string="Authentify"/>
+          <button name="check_connection"
+            type="object"
+            string="Check Connection"/>
+        </header>
+        <sheet>
+          <label for="name" class="oe_edit_only"/>
+          <h1>
+            <field name="name" class="oe_inline" />
+          </h1>
+          <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
+            <group>
+              <field name="version"/>
+              <field name="uri"
+                placeholder="e.g. https://example.com/jira"
+                />
+              <field name="verify_ssl"/>
+            </group>
+          </group>
+          <group name="main_configuration" string="Main Configuration">
+            <field name="company_id"/>
+          </group>
+          <notebook>
+            <page name="import" string="Imports">
+              <p class="oe_grey oe_inline">
+                By clicking on the buttons,
+                you will initiate the synchronizations
+                with Jira.
+                Note that the import or exports
+                won't be done directly,
+                they will create 'Jobs'
+                executed as soon as possible.
+              </p>
+              <p class="oe_grey oe_inline">
+                Once imported,
+                some types of records,
+                like the products or categories,
+                need a manual review.
+                You will find the list
+                of the new records to review
+                in the menu 'Connectors > Checkpoint'.
+              </p>
+            </page>
+            <page name="advanced_configuration" string="Advanced Configuration">
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_jira_backend_tree" model="ir.ui.view">
+    <field name="name">jira.backend.tree</field>
+    <field name="model">jira.backend</field>
+    <field name="arch" type="xml">
+      <tree string="Jira Backend">
+        <field name="name"/>
+        <field name="uri"/>
+        <field name="version"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_jira_backend" model="ir.actions.act_window">
+    <field name="name">Jira Backends</field>
+    <field name="res_model">jira.backend</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_jira_backend"
+    name="Backends"
+    parent="menu_jira_root"
+    action="action_jira_backend"/>
+
+</odoo>
