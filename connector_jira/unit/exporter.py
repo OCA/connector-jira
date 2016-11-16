@@ -6,13 +6,13 @@ import logging
 from contextlib import contextmanager
 from datetime import datetime
 import psycopg2
-from openerp import _
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from openerp import _, fields
 from openerp.addons.connector.queue.job import job, related_action
 from openerp.addons.connector.unit.synchronizer import Exporter
 from openerp.addons.connector.exception import RetryableJobError
 from .importer import import_record
 from ..related_action import unwrap_binding
+from .mapper import iso8601_to_utc_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -67,16 +67,13 @@ class JiraBaseExporter(Exporter):
         sync = self.binder.sync_date(self.binding_record)
         if not sync:
             return True
-        # TODO:
-        # sync = (self.backend_record
-        #         .get_api_client()
-        #         .issue(10100, fields='updated').raw['fields']['updated']
-        record = self.backend_adapter.read(self.external_id,
-                                           attributes=['updated_at'])
+        jira_updated = self.backend_adapter.read(
+            self.external_id,
+           fields=['updated']
+        )['fields']['updated']
 
-        fmt = DEFAULT_SERVER_DATETIME_FORMAT
-        sync_date = datetime.strptime(sync, fmt)
-        jira_date = datetime.strptime(record['updated_at'], fmt)
+        sync_date = fields.Datetime.from_string(sync)
+        jira_date = iso8601_to_utc_datetime(jira_updated)
         return sync_date < jira_date
 
     def _get_openerp_data(self):

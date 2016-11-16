@@ -4,6 +4,9 @@
 
 from openerp import api, fields, models, exceptions, _
 
+from ...unit.backend_adapter import JiraAdapter
+from ...backend import jira
+
 
 class JiraProjectTask(models.Model):
     _name = 'jira.project.task'
@@ -36,3 +39,16 @@ class ProjectTask(models.Model):
         string='Task Bindings',
         context={'active_test': False},
     )
+
+
+@jira
+class TaskAdapter(JiraAdapter):
+    _model_name = 'jira.project.task'
+
+    def read(self, id, fields=None):
+        return self.client.issue(id, fields=fields).raw
+
+    def search(self, jql, fields=None):
+        if fields is None:
+            fields = ['id']
+        return self.client.search_issues(jql, fields=fields)

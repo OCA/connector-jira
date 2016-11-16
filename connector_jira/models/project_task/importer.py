@@ -57,8 +57,3 @@ class ProjectTaskBatchImporter(DelayedBatchImporter):
 @jira
 class ProjectTaskImporter(JiraImporter):
     _model_name = 'jira.project.task'
-
-    def _get_external_data(self):
-        """ Return the raw Jira data for ``self.external_id`` """
-        client = self.backend_record.get_api_client()
-        return client.issue(self.external_id).raw

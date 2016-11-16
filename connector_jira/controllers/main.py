@@ -53,3 +53,5 @@ class JiraWebhookController(http.Controller):
             return
         session = ConnectorSession.from_env(env)
         import_record.delay(session, 'jira.project.task', backend.id, issue_id)
+        # TODO: return correct type: "returns an invalid response
+        # type for an http request"
