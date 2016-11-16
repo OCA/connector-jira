@@ -28,6 +28,7 @@
      'views/jira_backend_views.xml',
      'views/project_project_views.xml',
      'views/project_task_views.xml',
+     'security/ir.model.access.csv',
      ],
  'installable': True,
  }
