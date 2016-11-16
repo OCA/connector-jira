@@ -27,6 +27,7 @@ from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.unit.synchronizer import Importer
 from openerp.addons.connector.exception import (IDMissingInBackend,
                                                 RetryableJobError)
+from .mapper import iso8601_to_utc_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -66,24 +67,23 @@ class JiraImporter(Importer):
     def _is_uptodate(self, binding):
         """Return True if the import should be skipped because
         it is already up-to-date in OpenERP"""
-        return False
-        # assert self.external_record
-        # external_updated_at = self.external_record.get('updated_at')
-        # if not external_updated_at:
-        #     return  # no update date on Jira, always import it.
-        # external_date = iso8601_to_utc_datetime(external_updated_at)
-        # if not binding:
-        #     return  # it does not exist so it should not be skipped
-        # sync_date = self.binder.sync_date(binding)
-        # if not sync_date:
-        #     return
-        # # if the last synchronization date is greater than the last
-        # # update in jira, we skip the import.
-        # # Important: at the beginning of the exporters flows, we have to
-        # # check if the jira date is more recent than the sync_date
-        # # and if so, schedule a new import. If we don't do that, we'll
-        # # miss changes done in Jira
-        # return external_date < sync_date
+        assert self.external_record
+        external_updated_at = self.external_record['fields']['updated']
+        if not external_updated_at:
+            return False # no update date on Jira, always import it.
+        if not binding:
+            return  # it does not exist so it should not be skipped
+        external_date = iso8601_to_utc_datetime(external_updated_at)
+        sync_date = self.binder.sync_date(binding)
+        if not sync_date:
+            return
+        # if the last synchronization date is greater than the last
+        # update in jira, we skip the import.
+        # Important: at the beginning of the exporters flows, we have to
+        # check if the jira date is more recent than the sync_date
+        # and if so, schedule a new import. If we don't do that, we'll
+        # miss changes done in Jira
+        return external_date < sync_date
 
     def _import_dependency(self, external_id, binding_model,
                            importer_class=None, always=False):
@@ -398,7 +398,7 @@ def import_batch(session, model_name, backend_id, from_date=None,
                  to_date=None):
     """ Prepare a batch import of records from Jira """
     backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(session, model_name) as connector_env:
+    with backend.get_environment(model_name, session=session) as connector_env:
         importer = connector_env.get_connector_unit(BatchImporter)
         importer.run(from_date=from_date, to_date=to_date)
 
@@ -407,6 +407,6 @@ def import_batch(session, model_name, backend_id, from_date=None,
 def import_record(session, model_name, backend_id, external_id, force=False):
     """ Import a record from Jira """
     backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(session, model_name) as connector_env:
+    with backend.get_environment(model_name, session=session) as connector_env:
         importer = connector_env.get_connector_unit(JiraImporter)
         importer.run(external_id, force=force)

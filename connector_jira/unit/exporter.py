@@ -57,16 +57,20 @@ class JiraBaseExporter(Exporter):
 
     def _should_import(self):
         """ Before the export, compare the update date
-        in Jira and the last sync date in OpenERP,
+        in Jira and the last sync date in Odoo,
         if the former is more recent, schedule an import
         to not miss changes done in Jira.
         """
         assert self.binding_record
         if not self.external_id:
             return False
-        sync = self.binding_record.sync_date
+        sync = self.binder.sync_date(self.binding_record)
         if not sync:
             return True
+        # TODO:
+        # sync = (self.backend_record
+        #         .get_api_client()
+        #         .issue(10100, fields='updated').raw['fields']['updated']
         record = self.backend_adapter.read(self.external_id,
                                            attributes=['updated_at'])
 
@@ -351,6 +355,6 @@ def export_record(session, model_name, binding_id, fields=None):
     """ Export a record on Jira """
     binding = session.env[model_name].browse(binding_id)
     backend = binding.backend_id
-    with backend.get_environment(session, model_name) as connector_env:
+    with backend.get_environment(model_name, session=session) as connector_env:
         exporter = connector_env.get_connector_unit(JiraBaseExporter)
         return exporter.run(binding_id, fields=fields)

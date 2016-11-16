@@ -8,6 +8,7 @@
  'category': 'Connector',
  'depends': ['connector',
              'project',
+             'web',
              ],
  'external_dependencies': {
      'python': [

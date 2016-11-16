@@ -15,6 +15,7 @@ from jira import JIRA, JIRAError
 from openerp import models, fields, api, exceptions, _
 
 from openerp.addons.connector.connector import ConnectorEnvironment
+from openerp.addons.connector.session import ConnectorSession
 
 
 class JiraBackend(models.Model):
@@ -47,15 +48,25 @@ class JiraBackend(models.Model):
         required=True,
         default=lambda self: self._default_company(),
     )
-    private_key = fields.Text(readonly=True)
+    private_key = fields.Text(
+        readonly=True,
+        groups="connector.group_connector_manager",
+    )
     public_key = fields.Text(readonly=True)
     consumer_key = fields.Char(
         default=lambda self: self._default_consumer_key(),
         readonly=True,
+        groups="connector.group_connector_manager",
     )
 
-    access_token = fields.Char(readonly=True)
-    access_secret = fields.Char(readonly=True)
+    access_token = fields.Char(
+        readonly=True,
+        groups="connector.group_connector_manager",
+    )
+    access_secret = fields.Char(
+        readonly=True,
+        groups="connector.group_connector_manager",
+    )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
 
@@ -65,6 +76,18 @@ class JiraBackend(models.Model):
         default='Process management',
         required=True,
     )
+
+    use_webhooks = fields.Boolean(
+        string='Use Webhooks',
+        default=lambda self: self._default_use_webhooks(),
+        help="Webhooks need to be configured on the Jira instance. "
+             "When activated, synchronization from Jira is blazing fast. "
+             "It can be activated only on one Jira backend at a time. "
+    )
+
+    @api.model
+    def _default_use_webhooks(self):
+        return not bool(self.search([('use_webhooks', '=', True)], limit=1))
 
     @api.model
     def _selection_project_template(self):
@@ -81,6 +104,13 @@ class JiraBackend(models.Model):
         """
         return [('7.2.0', '7.2.0+'),
                 ]
+
+    @api.constrains('use_webhooks')
+    def _check_use_webhooks_unique(self):
+        if len(self.search([('use_webhooks', '=', True)])) > 1:
+            raise exceptions.ValidationError(
+                _('Only one backend can listen to webhooks')
+            )
 
     @api.model
     def create(self, values):
@@ -126,8 +156,10 @@ class JiraBackend(models.Model):
 
     @contextmanager
     @api.multi
-    def get_environment(self, session, model_name):
+    def get_environment(self, model_name, session=None):
         self.ensure_one()
+        if not session:
+            session = ConnectorSession.from_env(self.env)
         yield ConnectorEnvironment(self, session, model_name)
 
     @api.model

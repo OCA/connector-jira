@@ -59,6 +59,9 @@
               </p>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
+              <group>
+                <field name="use_webhooks"/>
+              </group>
             </page>
           </notebook>
         </sheet>
