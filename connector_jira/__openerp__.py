@@ -15,6 +15,7 @@
      'wizards/jira_backend_auth_views.xml',
      'views/jira_backend_views.xml',
      'views/project_project_views.xml',
+     'views/project_task_views.xml',
      ],
  'installable': True,
  }
