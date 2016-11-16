@@ -21,6 +21,10 @@
           <field name="jira_exportable" widget="boolean_button"/>
         </button>
       </div>
+
+      <field name="partner_id" position="before">
+        <field name="jira_key" attrs="{'required': [('jira_exportable', '=', True)]}"/>
+      </field>
     </field>
   </record>
 

@@ -17,6 +17,15 @@ class JiraProjectProject(models.Model):
                                  index=True,
                                  ondelete='restrict')
 
+    @api.model
+    def create(self, values):
+        record = super(JiraProjectProject, self).create(values)
+        if not record.jira_key:
+            raise exceptions.UserError(
+                _('The JIRA Key is mandatory in order to export a project')
+            )
+        return record
+
     @api.multi
     def unlink(self):
         if any(self.mapped('external_id')):
@@ -40,6 +49,10 @@ class ProjectProject(models.Model):
         string='Exportable on Jira',
         compute='_compute_jira_exportable',
     )
+    jira_key = fields.Char(
+        string='JIRA Key',
+        size=10,  # limit on JIRA
+    )
 
     @api.depends('jira_bind_ids')
     def _compute_jira_exportable(self):
@@ -60,3 +73,13 @@ class ProjectProject(models.Model):
                         'backend_id': backend.id,
                         'openerp_id': project.id,
                     })
+
+    @api.multi
+    def write(self, values):
+        result = super(ProjectProject, self).write(values)
+        for record in self:
+            if record.jira_exportable and not record.jira_key:
+                raise exceptions.UserError(
+                    _('The JIRA Key is mandatory on JIRA projects.')
+            )
+        return result

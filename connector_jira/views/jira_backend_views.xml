@@ -35,6 +35,7 @@
           </group>
           <group name="main_configuration" string="Main Configuration">
             <field name="company_id"/>
+            <field name="project_template"/>
           </group>
           <notebook>
             <page name="import" string="Imports">

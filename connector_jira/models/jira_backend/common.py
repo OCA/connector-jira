@@ -5,12 +5,16 @@
 
 from os import urandom
 
+from contextlib import contextmanager
+
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from jira import JIRA, JIRAError
 
 from openerp import models, fields, api, exceptions, _
+
+from openerp.addons.connector.connector import ConnectorEnvironment
 
 
 class JiraBackend(models.Model):
@@ -54,6 +58,20 @@ class JiraBackend(models.Model):
     access_secret = fields.Char(readonly=True)
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
+
+    project_template = fields.Selection(
+        selection='_selection_project_template',
+        string='Default Project Template',
+        default='Process management',
+        required=True,
+    )
+
+    @api.model
+    def _selection_project_template(self):
+        return [('Project management', 'Project management'),
+                ('Task management', 'Task management'),
+                ('Process management', 'Process management'),
+                ]
 
     @api.model
     def _select_versions(self):
@@ -105,6 +123,12 @@ class JiraBackend(models.Model):
         raise exceptions.UserError(
             _('Connection successful')
         )
+
+    @contextmanager
+    @api.multi
+    def get_environment(self, session, model_name):
+        self.ensure_one()
+        yield ConnectorEnvironment(self, session, model_name)
 
     @api.model
     def get_api_client(self):
