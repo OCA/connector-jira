@@ -9,6 +9,18 @@
  'depends': ['connector',
              'project',
              ],
+ 'external_dependencies': {
+     'python': [
+         'requests',
+         'jira',
+         'markdown',
+         'oauthlib',
+         'requests-oauthlib',
+         'requests-toolbelt',
+         'PyJWT',
+         'cryptography',
+      ],
+ },
  'website': 'http://www.camptocamp.com',
  'data': [
      'views/jira_menus.xml',
