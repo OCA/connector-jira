@@ -14,6 +14,7 @@ class JiraBinder(Binder):
     _model_name = [
         'jira.project.project',
         'jira.project.task',
+        'jira.res.users',
     ]
 
     def sync_date(self, binding):

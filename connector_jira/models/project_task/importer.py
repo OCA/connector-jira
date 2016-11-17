@@ -2,6 +2,8 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from openerp import _
+from openerp.addons.connector.exception import MappingError
 from openerp.addons.connector.unit.mapper import ImportMapper, mapping
 from ...unit.importer import (
     DelayedBatchImporter,
@@ -20,8 +22,22 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         ('duedate', 'date_deadline'),
     ]
 
-    # TODO:
-    # responsible
+    @mapping
+    def assignee(self, record):
+        assignee = record['fields'].get('assignee')
+        if not assignee:
+            return {'user_id': False}
+        jira_key = assignee['key']
+        binder = self.binder_for('jira.res.users')
+        user = binder.to_openerp(jira_key, unwrap=True)
+        if not user:
+            email = assignee['emailAddress']
+            raise MappingError(
+                _('No user found with login "%s" or email "%s".'
+                  'You must create a user or link it manually if the '
+                  'login/email differs.') % (jira_key, email)
+            )
+        return {'user_id': user.id}
 
     @mapping
     def description(self, record):
@@ -56,3 +72,11 @@ class ProjectTaskBatchImporter(DelayedBatchImporter):
 @jira
 class ProjectTaskImporter(JiraImporter):
     _model_name = 'jira.project.task'
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        jira_assignee = self.external_record['fields'].get('assignee') or {}
+        jira_key = jira_assignee.get('key')
+        self._import_dependency(jira_key,
+                                'jira.res.users',
+                                record=jira_assignee)

@@ -27,7 +27,7 @@ from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.unit.synchronizer import Importer
 from openerp.addons.connector.exception import (IDMissingInBackend,
                                                 RetryableJobError)
-from .mapper import iso8601_to_utc_datetime, utc_datetime_to_iso8601
+from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
@@ -69,7 +69,8 @@ class JiraImporter(Importer):
         """Return True if the import should be skipped because
         it is already up-to-date in OpenERP"""
         assert self.external_record
-        external_updated_at = self.external_record['fields']['updated']
+        ext_fields = self.external_record.get('fields', {})
+        external_updated_at = ext_fields.get('updated')
         if not external_updated_at:
             return False # no update date on Jira, always import it.
         if not binding:
@@ -87,7 +88,7 @@ class JiraImporter(Importer):
         return external_date < sync_date
 
     def _import_dependency(self, external_id, binding_model,
-                           importer_class=None, always=False):
+                           importer_class=None, record=None, always=False):
         """
         Import a dependency. The importer class is a subclass of
         ``JiraImporter``. A specific class can be defined.
@@ -101,6 +102,9 @@ class JiraImporter(Importer):
                              By default: JiraImporter
         :type importer_cls: :py:class:`openerp.addons.connector.\
                                        connector.MetaConnectorUnit`
+        :param record: if we already have the data of the dependency, we
+                       can pass it along to the dependency's importer
+        :type record: dict
         :param always: if True, the record is updated even if it already
                        exists,
                        it is still skipped if it has not been modified on Jira
@@ -113,7 +117,7 @@ class JiraImporter(Importer):
         binder = self.binder_for(binding_model)
         if always or not binder.to_openerp(external_id):
             importer = self.unit_for(importer_class, model=binding_model)
-            importer.run(external_id)
+            importer.run(external_id, record=record)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""

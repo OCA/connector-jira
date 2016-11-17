@@ -294,6 +294,11 @@ class JiraBackend(models.Model):
                                'import_project_task_from_date')
         return True
 
+    @api.multi
+    def import_res_users(self):
+        self.env['res.users'].search([]).link_with_jira(backends=self)
+        return True
+
     @contextmanager
     @api.multi
     def get_environment(self, model_name, session=None):
@@ -319,6 +324,10 @@ class JiraBackend(models.Model):
     @api.model
     def _scheduler_import_project_task(self):
         self.search([]).import_project_task()
+
+    @api.model
+    def _scheduler_import_res_users(self):
+        self.search([]).import_res_users()
 
 
 class JiraBackendTimestamp(models.Model):

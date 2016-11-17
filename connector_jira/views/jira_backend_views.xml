@@ -59,6 +59,16 @@
               </p>
               <group>
                 <div>
+                  <label string="Bind users"
+                    class="oe_inline"/>
+                </div>
+                <button name="import_res_users"
+                  type="object"
+                  class="oe_highlight"
+                  string="Run"/>
+              </group>
+              <group>
+                <div>
                   <label string="Import project tasks since"
                     class="oe_inline"/>
                   <field name="import_project_task_from_date"
