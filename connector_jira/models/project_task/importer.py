@@ -2,8 +2,6 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import markdown
-
 from openerp.addons.connector.unit.mapper import ImportMapper, mapping
 from ...unit.importer import (
     DelayedBatchImporter,
@@ -27,9 +25,9 @@ class ProjectTaskMapper(ImportMapper, FromFields):
 
     @mapping
     def description(self, record):
-        if record['fields']['description']:
-            descr = markdown.markdown(record['fields']['description'])
-            return {'description': descr}
+        # TODO: description is a variant of wiki syntax...
+        # and the Odoo field is HTML...
+        return {'description': record['fields']['description']}
 
     @mapping
     def project(self, record):

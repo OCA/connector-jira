@@ -14,7 +14,6 @@
      'python': [
          'requests',
          'jira',
-         'markdown',
          'oauthlib',
          # 'requests-oauthlib',
          # 'requests-toolbelt',
