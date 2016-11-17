@@ -48,7 +48,9 @@ class TaskAdapter(JiraAdapter):
     def read(self, id, fields=None):
         return self.client.issue(id, fields=fields).raw
 
-    def search(self, jql, fields=None):
-        if fields is None:
-            fields = ['id']
-        return self.client.search_issues(jql, fields=fields)
+    def search(self, jql):
+        # we need to have at least one field which is not 'id' or 'key'
+        # due to this bug: https://github.com/pycontribs/jira/pull/289
+        fields = 'id,updated'
+        issues = self.client.search_issues(jql, fields=fields, maxResults=None)
+        return [issue.id for issue in issues]

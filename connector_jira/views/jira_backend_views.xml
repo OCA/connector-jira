@@ -57,6 +57,19 @@
                 of the new records to review
                 in the menu 'Connectors > Checkpoint'.
               </p>
+              <group>
+                <div>
+                  <label string="Import project tasks since"
+                    class="oe_inline"/>
+                  <field name="import_project_task_from_date"
+                    class="oe_inline"
+                    nolabel="1"/>
+                </div>
+                <button name="import_project_task"
+                  type="object"
+                  class="oe_highlight"
+                  string="Import in background"/>
+              </group>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
               <group>

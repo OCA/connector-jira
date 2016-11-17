@@ -27,8 +27,9 @@ class ProjectTaskMapper(ImportMapper, FromFields):
 
     @mapping
     def description(self, record):
-        descr = markdown.markdown(record['fields']['description'])
-        return {'description': descr}
+        if record['fields']['description']:
+            descr = markdown.markdown(record['fields']['description'])
+            return {'description': descr}
 
     @mapping
     def project(self, record):

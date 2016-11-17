@@ -4,7 +4,6 @@
 
 import logging
 from contextlib import contextmanager
-from datetime import datetime
 import psycopg2
 from openerp import _, fields
 from openerp.addons.connector.queue.job import job, related_action

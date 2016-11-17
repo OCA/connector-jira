@@ -5,6 +5,8 @@
 
 from openerp.addons.connector.unit.backend_adapter import CRUDAdapter
 
+JIRA_JQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M'  # no seconds :-(
+
 
 class JiraAdapter(CRUDAdapter):
     """ External Records Adapter for Jira """

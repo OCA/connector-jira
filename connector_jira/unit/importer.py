@@ -27,7 +27,8 @@ from openerp.addons.connector.session import ConnectorSession
 from openerp.addons.connector.unit.synchronizer import Importer
 from openerp.addons.connector.exception import (IDMissingInBackend,
                                                 RetryableJobError)
-from .mapper import iso8601_to_utc_datetime
+from .mapper import iso8601_to_utc_datetime, utc_datetime_to_iso8601
+from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
 
@@ -355,8 +356,14 @@ class BatchImporter(Importer):
 
     def run(self, from_date=None, to_date=None):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search(from_date=from_date,
-                                                 to_date=to_date)
+        parts = []
+        if from_date:
+            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated >= "%s"' % from_date)
+        if to_date:
+            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated <= "%s"' % to_date)
+        record_ids = self.backend_adapter.search(' and '.join(parts))
         for record_id in record_ids:
             self._import_record(record_id)
 
