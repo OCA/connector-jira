@@ -8,6 +8,7 @@
  'category': 'Connector',
  'depends': ['connector',
              'project',
+             'project_timesheet',
              'web',
              ],
  'external_dependencies': {

@@ -59,7 +59,7 @@
               </p>
               <group>
                 <div>
-                  <label string="Bind users"
+                  <label string="Link users"
                     class="oe_inline"/>
                 </div>
                 <button name="import_res_users"
@@ -76,6 +76,19 @@
                     nolabel="1"/>
                 </div>
                 <button name="import_project_task"
+                  type="object"
+                  class="oe_highlight"
+                  string="Import in background"/>
+              </group>
+              <group>
+                <div>
+                  <label string="Import worklogs since"
+                    class="oe_inline"/>
+                  <field name="import_analytic_line_from_date"
+                    class="oe_inline"
+                    nolabel="1"/>
+                </div>
+                <button name="import_analytic_line"
                   type="object"
                   class="oe_highlight"
                   string="Import in background"/>

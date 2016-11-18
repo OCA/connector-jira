@@ -12,6 +12,7 @@ from ..backend import jira
 class JiraBinder(Binder):
 
     _model_name = [
+        'jira.account.analytic.line',
         'jira.project.project',
         'jira.project.task',
         'jira.res.users',

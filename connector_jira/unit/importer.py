@@ -241,7 +241,7 @@ class JiraImporter(Importer):
                 else:
                     cr.commit()
 
-    def run(self, external_id, force=False, record=None):
+    def run(self, external_id, force=False, record=None, **kwargs):
         """ Run the synchronization
 
         A record can be given, reducing number of calls when
@@ -328,9 +328,9 @@ class JiraImporter(Importer):
         # import the missing linked resources
         self._import_dependencies()
 
-        self._import(binding)
+        self._import(binding, **kwargs)
 
-    def _import(self, binding):
+    def _import(self, binding, **kwargs):
         """ Import the external record.
 
         Can be inherited to modify for instance the session

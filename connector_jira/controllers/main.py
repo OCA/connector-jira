@@ -10,14 +10,20 @@ Webhooks to create in Jira:
 
 1. Odoo Issues
    URL: http://odoo:8069/connector_jira/webhooks/issue/${issue.id}
-   Events: Issue{created, updated, deleted, worklog changed}
+   Events: Issue{created, updated, deleted}
    Exclude body: yes
+
+1. Odoo Worklogs
+   URL: http://odoo:8069/connector_jira/webhooks/worklog
+   Events: Issue{created, updated, deleted}
+   Exclude body: no
 
 
 JIRA could well send all the data in the webhook request's body,
 which would avoid Odoo to make another GET to get this data, but
 JIRA webhooks are potentially insecure as we don't know if it really
-comes from JIRA.
+comes from JIRA. So we don't use the data sent by the webhook and the job
+gets the data by itself (with the nice side-effect that the job is retryable).
 
 """
 
@@ -30,10 +36,13 @@ from openerp.addons.web.controllers.main import ensure_db
 
 from openerp.addons.connector.session import ConnectorSession
 
+from ..models.account_analytic_line.importer import import_worklog
 from ..unit.importer import import_record
 
 _logger = logging.getLogger(__name__)
 
+# TODO: create the hooks with the REST API:
+# https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-restRegisteringawebhookviatheJIRARESTAPI
 
 class JiraWebhookController(http.Controller):
 
@@ -55,3 +64,25 @@ class JiraWebhookController(http.Controller):
         import_record.delay(session, 'jira.project.task', backend.id, issue_id)
         # TODO: return correct type: "returns an invalid response
         # type for an http request"
+
+    @http.route('/connector_jira/webhooks/worklog',
+                type='json', auth='none', csrf=False)
+    def webhook_worklog(self, **kw):
+        ensure_db()
+        request.uid = openerp.SUPERUSER_ID
+        env = request.env
+        backend = env['jira.backend'].search(
+            [('use_webhooks', '=', True)],
+            limit=1
+        )
+        if not backend:
+            _logger.warning('Received a webhook from Jira but cannot find a '
+                            'Jira backend with webhooks activated')
+            return
+
+        worklog = request.jsonrequest['worklog']
+        issue_id = worklog['issueId']
+        worklog_id = worklog['id']
+        session = ConnectorSession.from_env(env)
+        import_worklog.delay(session, 'jira.account.analytic.line',
+                             backend.id, issue_id, worklog_id)

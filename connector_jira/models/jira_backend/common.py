@@ -100,6 +100,12 @@ class JiraBackend(models.Model):
         string='Import Project Tasks from date',
     )
 
+    import_analytic_line_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_import_analytic_line_from_date',
+        string='Import Worklogs from date',
+    )
+
     @api.model
     def _default_use_webhooks(self):
         return not bool(self.search([('use_webhooks', '=', True)], limit=1))
@@ -145,6 +151,11 @@ class JiraBackend(models.Model):
     @api.multi
     def _inverse_import_project_task_from_date(self):
         self._inverse_date_fields('import_project_task_from_date')
+
+    @api.multi
+    def _inverse_import_analytic_line_from_date(self):
+        self._inverse_date_fields('import_analytic_line_from_date')
+
 
     @api.multi
     def _lock_timestamp(self, from_date_field):
@@ -295,6 +306,12 @@ class JiraBackend(models.Model):
         return True
 
     @api.multi
+    def import_analytic_line(self):
+        self._import_from_date('jira.account.analytic.line',
+                               'import_analytic_line_from_date')
+        return True
+
+    @api.multi
     def import_res_users(self):
         self.env['res.users'].search([]).link_with_jira(backends=self)
         return True
@@ -328,6 +345,10 @@ class JiraBackend(models.Model):
     @api.model
     def _scheduler_import_res_users(self):
         self.search([]).import_res_users()
+
+    @api.model
+    def _scheduler_import_analytic_line(self):
+        self.search([]).import_analytic_line()
 
 
 class JiraBackendTimestamp(models.Model):
