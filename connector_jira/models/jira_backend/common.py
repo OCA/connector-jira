@@ -21,6 +21,7 @@ from openerp.addons.connector.connector import ConnectorEnvironment
 from openerp.addons.connector.session import ConnectorSession
 
 from ...unit.importer import import_batch
+from ..jira_issue_type.importer import import_batch_issue_type
 
 _logger = logging.getLogger(__name__)
 
@@ -104,6 +105,13 @@ class JiraBackend(models.Model):
         compute='_compute_last_import_date',
         inverse='_inverse_import_analytic_line_from_date',
         string='Import Worklogs from date',
+    )
+
+    issue_type_ids = fields.One2many(
+        comodel_name='jira.issue.type',
+        inverse_name='backend_id',
+        string='Issue Types',
+        readonly=True,
     )
 
     @api.model
@@ -314,6 +322,12 @@ class JiraBackend(models.Model):
     @api.multi
     def import_res_users(self):
         self.env['res.users'].search([]).link_with_jira(backends=self)
+        return True
+
+    @api.multi
+    def import_issue_type(self):
+        session = ConnectorSession.from_env(self.env)
+        import_batch_issue_type(session, 'jira.issue.type', self.id)
         return True
 
     @contextmanager

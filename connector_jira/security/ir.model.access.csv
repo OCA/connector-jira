@@ -12,3 +12,5 @@
 "access_jira_res_users","jira_res_users connector manager","model_jira_res_users","connector.group_connector_manager",1,1,1,1
 "access_jira_res_users_user","jira_res_users user","model_jira_res_users","base.group_user",1,0,0,0
 "access_jira_res_users_manager","jira_res_users manager","model_jira_res_users","project.group_project_manager",1,1,1,1
+"access_jira_issue_type","jira_issue_type connector manager","model_jira_issue_type","connector.group_connector_manager",1,1,1,1
+"access_jira_issue_type_user","jira_issue_type user","model_jira_issue_type","base.group_user",1,0,0,0

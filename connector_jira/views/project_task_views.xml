@@ -20,7 +20,7 @@
     <field name="name">jira.project.task.form</field>
     <field name="model">jira.project.task</field>
     <field name="arch" type="xml">
-      <form string="Jira Project">
+      <form string="Jira Issue">
         <group>
           <field name="backend_id"/>
           <field name="external_id"/>
@@ -33,7 +33,7 @@
     <field name="name">jira.project.task.tree</field>
     <field name="model">jira.project.task</field>
     <field name="arch" type="xml">
-      <tree string="Jira Project">
+      <tree string="Jira Issues">
         <field name="backend_id"/>
         <field name="external_id"/>
       </tree>

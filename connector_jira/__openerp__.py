@@ -30,6 +30,7 @@
      'views/project_project_views.xml',
      'views/project_task_views.xml',
      'views/res_users_views.xml',
+     'views/jira_issue_type_views.xml',
      'security/ir.model.access.csv',
      'data/cron.xml',
      ],

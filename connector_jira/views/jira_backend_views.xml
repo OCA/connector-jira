@@ -69,6 +69,16 @@
               </group>
               <group>
                 <div>
+                  <label string="Import Issue Types"
+                    class="oe_inline"/>
+                </div>
+                <button name="import_issue_type"
+                  type="object"
+                  class="oe_highlight"
+                  string="Run"/>
+              </group>
+              <group>
+                <div>
                   <label string="Import project tasks since"
                     class="oe_inline"/>
                   <field name="import_project_task_from_date"
@@ -98,6 +108,20 @@
               <group>
                 <field name="use_webhooks"/>
               </group>
+            </page>
+            <page name="issue_type" string="Issue Types">
+              <field name="issue_type_ids">
+                <tree string="Jira Issue Type" create="0" delete="0" edit="0">
+                  <field name="name"/>
+                  <field name="description"/>
+                </tree>
+                <form string="Jira Issue Type" create="0" delete="0" edit="0">
+                  <group>
+                    <field name="name"/>
+                    <field name="description"/>
+                  </group>
+                </form>
+              </field>
             </page>
           </notebook>
         </sheet>
