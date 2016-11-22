@@ -8,8 +8,7 @@ from openerp.addons.connector.event import (on_record_create,
 from ... import consumer
 from ...backend import jira
 from ...unit.exporter import JiraBaseExporter
-
-
+from ...unit.backend_adapter import JiraAdapter
 
 
 @on_record_create(model_names='jira.project.project')
@@ -39,20 +38,19 @@ class JiraProjectProjectExporter(JiraBaseExporter):
         }
 
     def _run(self, fields=None):
-        client = self.backend_record.get_api_client()
+        adapter = self.unit_for(JiraAdapter)
         project_values = self._project_values()
         if self.external_id:
-            project = client.project(self.external_id)
+            project = adapter.get(self.external_id)
             project.update(project_values)
         else:
             values = project_values.copy()
             key = values.pop('key')
             name = values.pop('name')
-            project = client.create_project(
+            project = adapter.create(
                 key=key,
                 name=name,
                 template_name=self.backend_record.project_template,
+                values=values,
             )
-            if values:
-                project.update(values)
             self.external_id = project['projectId']

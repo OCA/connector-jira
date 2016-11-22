@@ -4,6 +4,9 @@
 
 from openerp import api, fields, models, exceptions, _
 
+from ...unit.backend_adapter import JiraAdapter
+from ...backend import jira
+
 
 class JiraProjectProject(models.Model):
     _name = 'jira.project.project'
@@ -83,3 +86,24 @@ class ProjectProject(models.Model):
                     _('The JIRA Key is mandatory on JIRA projects.')
             )
         return result
+
+
+@jira
+class ProjectAdapter(JiraAdapter):
+    _model_name = 'jira.project.project'
+
+    def read(self, id):
+        return self.get(id).raw
+
+    def get(self, id):
+        return self.client.project(id)
+
+    def create(self, key=None, name=None, template_name=None, values=None):
+        project = self.client.create_project(
+            key=key,
+            name=name,
+            template_name=self.backend_record.project_template,
+        )
+        if values:
+            project.update(values)
+        return project

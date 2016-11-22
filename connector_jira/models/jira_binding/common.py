@@ -26,6 +26,6 @@ class JiraBinding(models.AbstractModel):
     external_id = fields.Char(string='ID on Jira', index=True)
 
     _sql_constraints = [
-        ('jira_binding_uniq', 'unique(backend_id, jira_id)',
+        ('jira_binding_uniq', 'unique(backend_id, external_id)',
          "A binding already exists for this Jira record"),
     ]
