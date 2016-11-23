@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import fields, models
+from openerp import api, fields, models
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
@@ -15,6 +15,13 @@ class JiraIssueType(models.Model):
 
     name = fields.Char(required=True, readonly=True)
     description = fields.Char(readonly=True)
+
+    @api.multi
+    def is_sync_for_project(self, project_binding):
+        self.ensure_one()
+        if not project_binding:
+            return False
+        return self in project_binding.sync_issue_type_ids
 
 
 @jira

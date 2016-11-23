@@ -83,7 +83,7 @@ class JiraBackend(models.Model):
     project_template = fields.Selection(
         selection='_selection_project_template',
         string='Default Project Template',
-        default='Process management',
+        default='Scrum software development',
         required=True,
     )
 
@@ -120,9 +120,9 @@ class JiraBackend(models.Model):
 
     @api.model
     def _selection_project_template(self):
-        return [('Project management', 'Project management'),
-                ('Task management', 'Task management'),
-                ('Process management', 'Process management'),
+        return [('Scrum software development', 'Scrum software development'),
+                ('Kanban software development', 'Kanban software development'),
+                ('Project management', 'Project management'),
                 ]
 
     @api.model
@@ -268,7 +268,7 @@ class JiraBackend(models.Model):
     @api.model
     def create(self, values):
         record = super(JiraBackend, self).create(values)
-        self.create_rsa_key_vals()
+        record.create_rsa_key_vals()
         return record
 
     @api.multi
@@ -299,6 +299,10 @@ class JiraBackend(models.Model):
         self.ensure_one()
         try:
             self.get_api_client()
+        except ValueError as err:
+            raise exceptions.UserError(
+                _('Failed to connect (%s)') % (err,)
+            )
         except JIRAError as err:
             raise exceptions.UserError(
                 _('Failed to connect (%s)') % (err.text,)

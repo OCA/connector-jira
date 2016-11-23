@@ -128,6 +128,26 @@ def follow_dict_path(field):
     return modifier
 
 
+def whenempty(field, default_value):
+    """ Set a default value when the value is evaluated to False
+
+    A modifier intended to be used on the ``direct`` mappings.
+
+    Example::
+
+        direct = [(whenempty('source', 'default value'), 'target')]
+
+    :param field: name of the source field in the record
+    :param default_value: value to set when the source value is False-ish
+    """
+    def modifier(self, record, to_attr):
+        value = record[field]
+        if not value:
+            return default_value
+        return value
+    return modifier
+
+
 class FromFields(mapper.Mapper):
 
     @mapper.mapping

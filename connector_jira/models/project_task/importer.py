@@ -50,8 +50,6 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         jira_project_id = record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
         project = binder.to_openerp(jira_project_id, unwrap=True)
-        # TODO: map to an "Unaffected" project if project is missing
-        # or import the project in _import_dependencies() of the importer
         return {'project_id': project.id}
 
     @mapping
@@ -73,6 +71,24 @@ class ProjectTaskBatchImporter(DelayedBatchImporter):
 class ProjectTaskImporter(JiraImporter):
     _model_name = 'jira.project.task'
 
+    def _is_issue_type_sync(self):
+        jira_project_id = self.external_record['fields']['project']['id']
+        binder = self.binder_for('jira.project.project')
+        project_binding = binder.to_openerp(jira_project_id)
+        task_sync_type_id = self.external_record['fields']['issuetype']['id']
+        task_sync_type_binder = self.binder_for('jira.issue.type')
+        task_sync_type_binding = task_sync_type_binder.to_openerp(
+            task_sync_type_id,
+        )
+        return task_sync_type_binding.is_sync_for_project(project_binding)
+
+    def _import(self, binding, **kwargs):
+        # called at the beginning of _import because we must be sure
+        # that dependencies are there (project and issue type)
+        if not self._is_issue_type_sync():
+            return _('Project or issue type is not synchronized.')
+        return super(ProjectTaskImporter, self)._import(binding, **kwargs)
+
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
         jira_assignee = self.external_record['fields'].get('assignee') or {}
@@ -80,3 +96,7 @@ class ProjectTaskImporter(JiraImporter):
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
+        jira_issue_type = self.external_record['fields']['issuetype']
+        jira_issue_type_id = jira_issue_type['id']
+        self._import_dependency(jira_issue_type_id, 'jira.issue.type',
+                                record=jira_issue_type)

@@ -36,6 +36,7 @@
         <group>
           <field name="backend_id"/>
           <field name="external_id"/>
+          <field name="sync_issue_type_ids" widget="many2many_checkboxes"/>
         </group>
       </form>
     </field>
@@ -48,6 +49,7 @@
       <tree string="Jira Project">
         <field name="backend_id"/>
         <field name="external_id"/>
+        <field name="sync_issue_type_ids"/>
       </tree>
     </field>
   </record>

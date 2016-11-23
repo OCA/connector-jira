@@ -14,8 +14,13 @@ from ...unit.importer import (
     DelayedBatchImporter,
     JiraImporter,
 )
-from ...unit.mapper import iso8601_local_date
+from ...unit.backend_adapter import JiraAdapter
+from ...unit.mapper import iso8601_local_date, whenempty
 from ...backend import jira
+
+# TODO: make this field configurable, it can changes from an installation
+# to another. Could maybe be automatized with GET /rest/api/2/field
+EPIC_LINK_FIELD = 'customfield_10002'
 
 
 @jira
@@ -23,7 +28,7 @@ class AnalyticLineMapper(ImportMapper):
     _model_name = 'jira.account.analytic.line'
 
     direct = [
-        ('comment', 'name'),
+        (whenempty('comment', _('missing description')), 'name'),
         (iso8601_local_date('started'), 'date'),
         ]
 
@@ -54,18 +59,22 @@ class AnalyticLineMapper(ImportMapper):
         return {'user_id': user.id}
 
     @mapping
-    def task(self, record):
-        jira_issue_id = record['issueId']
-        binder = self.binder_for('jira.project.task')
-        task = binder.to_openerp(jira_issue_id, unwrap=True)
-        if not task:
-            raise MappingError(
-                _('Issue "%s" could not be imported, so the worklog "%s"'
-                  'cannot be imported as well.') %
-                  (jira_issue_id, record['id'])
-            )
-        analytic_id = task.project_id.analytic_account_id.id
-        return {'task_id': task.id, 'account_id': analytic_id}
+    def project_and_task(self, record):
+        task_binding = self.options.task_binding
+
+        if not task_binding:
+            issue = self.options.linked_issue
+            assert issue
+            project_binder = self.binder_for('jira.project.project')
+            jira_project_id = issue['fields']['project']['id']
+            project = project_binder.to_openerp(jira_project_id, unwrap=True)
+            # we can link to any task so we create the worklog
+            # on the project without any task
+            return {'account_id': project.analytic_account_id.id}
+
+        analytic = task_binding.project_id.analytic_account_id
+        return {'task_id': task_binding.openerp_id.id,
+                'account_id': analytic.id}
 
     @mapping
     def backend_id(self, record):
@@ -89,6 +98,69 @@ class AnalyticLineImporter(JiraImporter):
     def __init__(self, environment):
         super(JiraImporter, self).__init__(environment)
         self.external_issue_id = None
+        self.task_binding = None
+
+    def _recurse_import_task(self):
+        """ Import and return the task of proper type for the worklog
+
+        As we decide which type of issues are imported for a project,
+        a worklog could be linked to an issue that we don't import.
+        In that case, we climb the parents of the issue until we find
+        a issue of a type we synchronize.
+
+        It ensures that the 'to-be-linked' issue is imported and return it.
+
+        """
+        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        project_binder = self.binder_for('jira.project.project')
+        issue_binder = self.binder_for('jira.project.task')
+        issue_type_binder = self.binder_for('jira.issue.type')
+        jira_issue_id = self.external_record['issueId']
+        while jira_issue_id:
+            issue = issue_adapter.read(
+                jira_issue_id,
+                fields=['issuetype', 'project', 'parent', EPIC_LINK_FIELD],
+            )
+            jira_project_id = issue['fields']['project']['id']
+            jira_issue_type_id = issue['fields']['issuetype']['id']
+            project_binding = project_binder.to_openerp(jira_project_id)
+            issue_type_binding = issue_type_binder.to_openerp(
+                jira_issue_type_id
+            )
+            if issue_type_binding.is_sync_for_project(project_binding):
+                break
+            if issue['fields'].get('parent'):
+                # 'parent' is used on sub-tasks relating to their parent task
+                jira_issue_id = issue['fields']['parent']['id']
+            elif issue['fields'].get(EPIC_LINK_FIELD):
+                # the epic link is set on a jira custom field
+                epic_key = issue['fields'][EPIC_LINK_FIELD]
+                # we need to have at least one field which is not 'id' or 'key'
+                # due to this bug: https://github.com/pycontribs/jira/pull/289
+                epic = issue_adapter.read(epic_key, fields='updated')
+                # we got the key of the epic issue, so we translate
+                # it to the ID with a call to the API
+                jira_issue_id = epic['id']
+            else:
+                # no parent issue of a type we are synchronizing has been
+                # found, the worklog will be assigned to no task
+                jira_issue_id = None
+
+        if jira_issue_id:
+            self._import_dependency(jira_issue_id, 'jira.project.task')
+            return issue_binder.to_openerp(jira_issue_id)
+
+    def _create_data(self, map_record, **kwargs):
+        _super = super(AnalyticLineImporter, self)
+        return _super._create_data(map_record,
+                                   task_binding=self.task_binding,
+                                   linked_issue=self.external_issue)
+
+    def _update_data(self, map_record, **kwargs):
+        _super = super(AnalyticLineImporter, self)
+        return _super._update_data(map_record,
+                                   task_binding=self.task_binding,
+                                   linked_issue=self.external_issue)
 
     def run(self, external_id, force=False, record=None, **kwargs):
         assert 'issue_id' in kwargs
@@ -99,14 +171,14 @@ class AnalyticLineImporter(JiraImporter):
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
+        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        self.external_issue = issue_adapter.read(self.external_issue_id)
         return self.backend_adapter.read(self.external_issue_id,
                                          self.external_id)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
-        self._import_dependency(self.external_issue_id,
-                                'jira.project.task')
-
+        self.task_binding = self._recurse_import_task()
         jira_assignee = self.external_record['author']
         jira_key = jira_assignee.get('key')
         self._import_dependency(jira_key,

@@ -19,6 +19,17 @@ class JiraProjectProject(models.Model):
                                  required=True,
                                  index=True,
                                  ondelete='restrict')
+    sync_issue_type_ids = fields.Many2many(
+        comodel_name='jira.issue.type',
+        string='Issue Levels to Synchronize',
+        required=True,
+        domain="[('backend_id', '=', backend_id)]",
+        help="Only issues of these levels are imported. "
+             "When a worklog is imported no a level which is "
+             "not sync'ed, it is attached to the nearest "
+             "sync'ed parent level. If no parent can be found, "
+             "it is attached to a special 'Unassigned' task.",
+    )
 
     @api.model
     def create(self, values):
