@@ -18,10 +18,6 @@ from ...unit.backend_adapter import JiraAdapter
 from ...unit.mapper import iso8601_local_date, whenempty
 from ...backend import jira
 
-# TODO: make this field configurable, it can changes from an installation
-# to another. Could maybe be automatized with GET /rest/api/2/field
-EPIC_LINK_FIELD = 'customfield_10002'
-
 
 @jira
 class AnalyticLineMapper(ImportMapper):
@@ -116,10 +112,11 @@ class AnalyticLineImporter(JiraImporter):
         issue_binder = self.binder_for('jira.project.task')
         issue_type_binder = self.binder_for('jira.issue.type')
         jira_issue_id = self.external_record['issueId']
+        epic_field_name = self.backend_record.epic_link_field_name
         while jira_issue_id:
             issue = issue_adapter.read(
                 jira_issue_id,
-                fields=['issuetype', 'project', 'parent', EPIC_LINK_FIELD],
+                fields=['issuetype', 'project', 'parent', epic_field_name],
             )
             jira_project_id = issue['fields']['project']['id']
             jira_issue_type_id = issue['fields']['issuetype']['id']
@@ -132,9 +129,9 @@ class AnalyticLineImporter(JiraImporter):
             if issue['fields'].get('parent'):
                 # 'parent' is used on sub-tasks relating to their parent task
                 jira_issue_id = issue['fields']['parent']['id']
-            elif issue['fields'].get(EPIC_LINK_FIELD):
+            elif issue['fields'].get(epic_field_name):
                 # the epic link is set on a jira custom field
-                epic_key = issue['fields'][EPIC_LINK_FIELD]
+                epic_key = issue['fields'][epic_field_name]
                 # we need to have at least one field which is not 'id' or 'key'
                 # due to this bug: https://github.com/pycontribs/jira/pull/289
                 epic = issue_adapter.read(epic_key, fields='updated')

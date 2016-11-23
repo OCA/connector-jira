@@ -8,16 +8,25 @@
     <field name="arch" type="xml">
       <form string="Jira Backend">
         <header groups="connector.group_connector_manager">
-          <!-- <button name="synchronize_metadata" -->
-          <!--   type="object" -->
-          <!--   class="oe_highlight" -->
-          <!--   string="Synchronize Metadata"/> -->
+          <button name="button_setup"
+            type="object"
+            class="oe_highlight"
+            string="Setup with JIRA"
+            states="setup"/>
           <button name="%(action_jira_backend_auth)d"
             type="action"
-            string="Authentify"/>
+            class="oe_highlight"
+            string="Authentify"
+            states="authentify"/>
           <button name="check_connection"
             type="object"
-            string="Check Connection"/>
+            string="Check Connection"
+            states="setup,running"/>
+          <button name="%(action_jira_backend_auth)d"
+            type="action"
+            string="Reset Authentication"
+            states="setup,running"/>
+          <field name="state" widget="statusbar"/>
         </header>
         <sheet>
           <label for="name" class="oe_edit_only"/>
@@ -38,7 +47,7 @@
             <field name="project_template"/>
           </group>
           <notebook>
-            <page name="import" string="Imports">
+            <page name="import" string="Imports" states="running">
               <p class="oe_grey oe_inline">
                 By clicking on the buttons,
                 you will initiate the synchronizations
@@ -107,9 +116,10 @@
             <page name="advanced_configuration" string="Advanced Configuration">
               <group>
                 <field name="use_webhooks"/>
+                <field name="epic_link_field_name"/>
               </group>
             </page>
-            <page name="issue_type" string="Issue Types">
+            <page name="issue_type" string="Issue Types" states="running">
               <field name="issue_type_ids">
                 <tree string="Jira Issue Type" create="0" delete="0" edit="0">
                   <field name="name"/>

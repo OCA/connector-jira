@@ -21,7 +21,9 @@ from openerp.addons.connector.connector import ConnectorEnvironment
 from openerp.addons.connector.session import ConnectorSession
 
 from ...unit.importer import import_batch
+from ...unit.backend_adapter import JiraAdapter
 from ..jira_issue_type.importer import import_batch_issue_type
+from ...backend import jira
 
 _logger = logging.getLogger(__name__)
 
@@ -57,6 +59,15 @@ class JiraBackend(models.Model):
         string="Company",
         required=True,
         default=lambda self: self._default_company(),
+    )
+    state = fields.Selection(
+        selection=[('authentify', 'Authentify'),
+                   ('setup', 'Setup'),
+                   ('running', 'Running'),
+                   ],
+        default='authentify',
+        required=True,
+        readonly=True,
     )
     private_key = fields.Text(
         readonly=True,
@@ -112,6 +123,12 @@ class JiraBackend(models.Model):
         inverse_name='backend_id',
         string='Issue Types',
         readonly=True,
+    )
+
+    epic_link_field_name = fields.Char(
+        string='Epic Link Field',
+        help="The 'Epic Link' field on JIRA is a custom field. "
+             "The name of the field is something like 'customfield_10002'. "
     )
 
     @api.model
@@ -295,6 +312,35 @@ class JiraBackend(models.Model):
             })
 
     @api.multi
+    def button_setup(self):
+        self.configure_epic_link()
+        self.state_running()
+
+    @api.multi
+    def configure_epic_link(self):
+        self.ensure_one()
+        with self.get_environment('jira.backend') as connector_env:
+            adapter = connector_env.get_connector_unit(JiraAdapter)
+            jira_fields = adapter.list_fields()
+            for field in jira_fields:
+                custom_ref = field.get('schema', {}).get('custom')
+                if custom_ref == u'com.pyxis.greenhopper.jira:gh-epic-link':
+                    self.epic_link_field_name = field['id']
+                    break
+
+    @api.multi
+    def state_setup(self):
+        for backend in self:
+            if backend.state == 'authentify':
+                backend.state = 'setup'
+
+    @api.multi
+    def state_running(self):
+        for backend in self:
+            if backend.state == 'setup':
+                backend.state = 'running'
+
+    @api.multi
     def check_connection(self):
         self.ensure_one()
         try:
@@ -386,3 +432,11 @@ class JiraBackendTimestamp(models.Model):
         string='Import Start Time',
         required=True,
     )
+
+
+@jira
+class BackendAdapter(JiraAdapter):
+    _model_name = 'jira.backend'
+
+    def list_fields(self):
+        return self.client._get_json('field')

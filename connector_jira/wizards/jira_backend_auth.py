@@ -141,4 +141,5 @@ class JiraBackendAuth(models.TransientModel):
             'access_secret': secret,
         })
         self.state = 'done'
+        self.backend_id.state_setup()
         return self._next_action()
