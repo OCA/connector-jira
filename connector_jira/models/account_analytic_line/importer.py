@@ -113,6 +113,7 @@ class AnalyticLineImporter(JiraImporter):
         issue_type_binder = self.binder_for('jira.issue.type')
         jira_issue_id = self.external_record['issueId']
         epic_field_name = self.backend_record.epic_link_field_name
+        current_project_id = self.external_issue['fields']['project']['id']
         while jira_issue_id:
             issue = issue_adapter.read(
                 jira_issue_id,
@@ -124,7 +125,10 @@ class AnalyticLineImporter(JiraImporter):
             issue_type_binding = issue_type_binder.to_openerp(
                 jira_issue_type_id
             )
-            if issue_type_binding.is_sync_for_project(project_binding):
+            # JIRA allows to set an EPIC of a different project.
+            # If it happens, we discard it.
+            if (jira_project_id == current_project_id and
+                    issue_type_binding.is_sync_for_project(project_binding)):
                 break
             if issue['fields'].get('parent'):
                 # 'parent' is used on sub-tasks relating to their parent task
