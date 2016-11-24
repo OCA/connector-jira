@@ -30,6 +30,20 @@ class JiraProjectProject(models.Model):
              "sync'ed parent level. If no parent can be found, "
              "it is attached to a special 'Unassigned' task.",
     )
+    project_template = fields.Selection(
+        selection='_selection_project_template',
+        string='Default Project Template',
+        default='Scrum software development',
+        required=True,
+    )
+
+    @api.model
+    def _selection_project_template(self):
+        return self.env['jira.backend']._selection_project_template()
+
+    @api.onchange('backend_id')
+    def onchange_project_backend_id(self):
+        self.project_template = self.backend_id.project_template
 
     @api.model
     def create(self, values):
@@ -39,6 +53,14 @@ class JiraProjectProject(models.Model):
                 _('The JIRA Key is mandatory in order to export a project')
             )
         return record
+
+    @api.model
+    def write(self, values):
+        if 'project_template' in values:
+            raise exceptions.UserError(
+                _('The project template cannot be modified.')
+            )
+        return super(JiraProjectProject, self).write(values)
 
     @api.multi
     def unlink(self):
@@ -113,7 +135,7 @@ class ProjectAdapter(JiraAdapter):
         project = self.client.create_project(
             key=key,
             name=name,
-            template_name=self.backend_record.project_template,
+            template_name=template_name,
         )
         if values:
             project.update(values)

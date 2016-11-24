@@ -35,6 +35,7 @@ class JiraProjectProjectExporter(JiraBaseExporter):
         return {
             'key': self.binding_record.jira_key,
             'name': self.binding_record.name[:80],
+            'project_template': self.binding_record.project_template,
         }
 
     def _run(self, fields=None):
@@ -47,10 +48,11 @@ class JiraProjectProjectExporter(JiraBaseExporter):
             values = project_values.copy()
             key = values.pop('key')
             name = values.pop('name')
+            project_template = values.pop('project_template')
             project = adapter.create(
                 key=key,
                 name=name,
-                template_name=self.backend_record.project_template,
+                template_name=project_template,
                 values=values,
             )
             self.external_id = project['projectId']

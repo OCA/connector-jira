@@ -9,7 +9,8 @@
         <group>
           <field name="name"/>
           <field name="description"/>
-          <field name="backend_id"/>
+          <field name="backend_id"
+            attrs="{'readonly': [('external_id', '!=', False)]}"/>
           <field name="external_id"/>
         </group>
       </form>
