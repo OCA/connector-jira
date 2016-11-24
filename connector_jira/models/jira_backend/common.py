@@ -164,9 +164,15 @@ class JiraBackend(models.Model):
 
     @api.model
     def _selection_project_template(self):
-        return [('Scrum software development', 'Scrum software development'),
-                ('Kanban software development', 'Kanban software development'),
-                ('Project management', 'Project management'),
+        return [('Scrum software development',
+                 'Scrum software development (Software)'),
+                ('Kanban software development',
+                 'Kanban software development (Software)'),
+                ('Basic software development',
+                 'Basic software development (Software)'),
+                ('Project management', 'Project management (Business)'),
+                ('Task management', 'Task management (Business)'),
+                ('Process management', 'Process management (Business)'),
                 ]
 
     @api.model
