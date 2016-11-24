@@ -415,6 +415,8 @@ class JiraDeleter(Deleter):
             binding.active = False
         else:
             record = binding.openerp_id
+            # emptying the external_id allows to unlink the binding
+            binding.external_id = False
             binding.unlink()
             if not only_binding:
                 record.unlink()
@@ -437,3 +439,12 @@ def import_record(session, model_name, backend_id, external_id, force=False):
     with backend.get_environment(model_name, session=session) as connector_env:
         importer = connector_env.get_connector_unit(JiraImporter)
         importer.run(external_id, force=force)
+
+
+@job(default_channel='root.connector_jira.normal')
+def delete_record(session, model_name, backend_id, external_id):
+    """ Delete a local record which has been deleted on JIRA """
+    backend = session.env['jira.backend'].browse(backend_id)
+    with backend.get_environment(model_name, session=session) as connector_env:
+        deleter = connector_env.get_connector_unit(JiraDeleter)
+        deleter.run(external_id)

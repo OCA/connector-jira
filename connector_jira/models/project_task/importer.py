@@ -8,6 +8,7 @@ from openerp.addons.connector.unit.mapper import ImportMapper, mapping
 from ...unit.importer import (
     DelayedBatchImporter,
     JiraImporter,
+    JiraDeleter,
 )
 from ...unit.mapper import FromFields
 from ...backend import jira
@@ -100,3 +101,8 @@ class ProjectTaskImporter(JiraImporter):
         jira_issue_type_id = jira_issue_type['id']
         self._import_dependency(jira_issue_type_id, 'jira.issue.type',
                                 record=jira_issue_type)
+
+
+@jira
+class ProjectTaskDeleter(JiraDeleter):
+    _model_name = 'jira.project.task'

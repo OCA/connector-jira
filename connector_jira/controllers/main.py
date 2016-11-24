@@ -40,7 +40,7 @@ from ..models.account_analytic_line.importer import (
     import_worklog,
     delete_worklog,
 )
-from ..unit.importer import import_record
+from ..unit.importer import import_record, delete_record
 
 _logger = logging.getLogger(__name__)
 
@@ -62,10 +62,18 @@ class JiraWebhookController(http.Controller):
                             'Jira backend with webhooks activated')
             return
 
+        action = request.jsonrequest['webhookEvent']
+
         worklog = request.jsonrequest['issue']
         issue_id = worklog['id']
+
         session = ConnectorSession.from_env(env)
-        import_record.delay(session, 'jira.project.task', backend.id, issue_id)
+        if action == 'jira:issue_deleted':
+            delete_record.delay(session, 'jira.project.task',
+                                backend.id, issue_id)
+        else:
+            import_record.delay(session, 'jira.project.task',
+                                backend.id, issue_id)
 
     @http.route('/connector_jira/webhooks/worklog',
                 type='json', auth='none', csrf=False)
@@ -82,9 +90,9 @@ class JiraWebhookController(http.Controller):
                             'Jira backend with webhooks activated')
             return
 
-        worklog = request.jsonrequest['worklog']
         action = request.jsonrequest['webhookEvent']
 
+        worklog = request.jsonrequest['worklog']
         issue_id = worklog['issueId']
         worklog_id = worklog['id']
 
