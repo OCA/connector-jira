@@ -17,6 +17,7 @@
       <field name="legend_done" position="after">
         <field name="jira_compound_key"/>
         <field name="jira_issue_type"/>
+        <field name="jira_epic_link_task_id"/>
       </field>
     </field>
   </record>
@@ -29,11 +30,15 @@
       <field name="stage_id" position="after">
         <field name="jira_compound_key"/>
         <field name="jira_issue_type"/>
+        <field name="jira_epic_link_task_id"/>
       </field>
       <filter name="Stage" position="after">
         <filter string="JIRA Issue Type"
-          name="jira_issue_type"
+          name="groupby_jira_issue_type"
           context="{'group_by': 'jira_issue_type'}"/>
+        <filter string="JIRA Epic"
+          name="groupby_jira_epic_link_task_id"
+          context="{'group_by': 'jira_epic_link_task_id'}"/>
       </filter>
     </field>
   </record>
@@ -70,6 +75,7 @@
           <field name="external_id"/>
           <field name="jira_key"/>
           <field name="jira_issue_type_id"/>
+          <field name="jira_epic_link_id"/>
         </group>
       </form>
     </field>
@@ -84,6 +90,7 @@
         <field name="external_id"/>
         <field name="jira_key"/>
         <field name="jira_issue_type_id"/>
+        <field name="jira_epic_link_id"/>
       </tree>
     </field>
   </record>

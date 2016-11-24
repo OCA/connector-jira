@@ -28,6 +28,11 @@ class JiraProjectTask(models.Model):
         string='Issue Type',
         readonly=True,
     )
+    jira_epic_link_id = fields.Many2one(
+        comodel_name='jira.project.task',
+        string='Epic',
+        readonly=True,
+    )
 
     @api.multi
     def unlink(self):
@@ -58,6 +63,12 @@ class ProjectTask(models.Model):
         string='JIRA Key',
         store=True,
     )
+    jira_epic_link_task_id = fields.Many2one(
+        comodel_name='project.task',
+        compute='_compute_jira_epic_link_task_id',
+        string='JIRA Epic',
+        store=True,
+    )
 
     @api.depends('jira_bind_ids.jira_issue_type_id.name')
     def _compute_jira_issue_type(self):
@@ -70,6 +81,15 @@ class ProjectTask(models.Model):
         for record in self:
             keys = record.mapped('jira_bind_ids.jira_key')
             record.jira_compound_key = ','.join([k for k in keys if k])
+
+    @api.depends('jira_bind_ids.jira_epic_link_id.openerp_id')
+    def _compute_jira_epic_link_task_id(self):
+        for record in self:
+            tasks = record.mapped(
+                'jira_bind_ids.jira_epic_link_id.openerp_id'
+            )
+            if len(tasks) == 1:
+                record.jira_epic_link_task_id = tasks
 
 
 @jira

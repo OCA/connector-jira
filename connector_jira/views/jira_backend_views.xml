@@ -153,6 +153,9 @@
                   Activate the synchronization of the Epic Link field.
                   Only on JIRA Software. The field contains the name of
                   the JIRA custom field that contains the Epic Link.
+
+                  Note that if a project does not synchronize the Epics,
+                  the field will be empty.
                 </p>
               </group>
             </page>

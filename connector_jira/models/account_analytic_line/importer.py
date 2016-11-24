@@ -97,7 +97,7 @@ class AnalyticLineImporter(JiraImporter):
     _model_name = 'jira.account.analytic.line'
 
     def __init__(self, environment):
-        super(JiraImporter, self).__init__(environment)
+        super(AnalyticLineImporter, self).__init__(environment)
         self.external_issue_id = None
         self.task_binding = None
 
@@ -141,9 +141,7 @@ class AnalyticLineImporter(JiraImporter):
             elif issue['fields'].get(epic_field_name):
                 # the epic link is set on a jira custom field
                 epic_key = issue['fields'][epic_field_name]
-                # we need to have at least one field which is not 'id' or 'key'
-                # due to this bug: https://github.com/pycontribs/jira/pull/289
-                epic = issue_adapter.read(epic_key, fields='updated')
+                epic = issue_adapter.read(epic_key, fields='id')
                 # we got the key of the epic issue, so we translate
                 # it to the ID with a call to the API
                 jira_issue_id = epic['id']
