@@ -41,13 +41,11 @@ from ..unit.importer import import_record
 
 _logger = logging.getLogger(__name__)
 
-# TODO: create the hooks with the REST API:
-# https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-restRegisteringawebhookviatheJIRARESTAPI
 
 class JiraWebhookController(http.Controller):
 
-    @http.route('/connector_jira/webhooks/issue/<int:issue_id>',
-                type='http', auth='none', csrf=False)
+    @http.route('/connector_jira/webhooks/issue',
+                type='json', auth='none', csrf=False)
     def webhook_issue(self, issue_id=None, **kw):
         ensure_db()
         request.uid = openerp.SUPERUSER_ID
@@ -60,10 +58,11 @@ class JiraWebhookController(http.Controller):
             _logger.warning('Received a webhook from Jira but cannot find a '
                             'Jira backend with webhooks activated')
             return
+
+        worklog = request.jsonrequest['issue']
+        issue_id = worklog['id']
         session = ConnectorSession.from_env(env)
         import_record.delay(session, 'jira.project.task', backend.id, issue_id)
-        # TODO: return correct type: "returns an invalid response
-        # type for an http request"
 
     @http.route('/connector_jira/webhooks/worklog',
                 type='json', auth='none', csrf=False)

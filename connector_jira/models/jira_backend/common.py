@@ -4,8 +4,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+import json
+import urlparse
 
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 from datetime import datetime, timedelta
 from os import urandom
 
@@ -14,7 +16,9 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from jira import JIRA, JIRAError
+from jira.utils import json_loads
 
+import openerp
 from openerp import models, fields, api, exceptions, _
 
 from openerp.addons.connector.connector import ConnectorEnvironment
@@ -28,6 +32,21 @@ from ...backend import jira
 _logger = logging.getLogger(__name__)
 
 IMPORT_DELTA = 70  # seconds
+
+
+@contextmanager
+def new_env(env):
+    with api.Environment.manage():
+        registry = openerp.modules.registry.RegistryManager.get(env.cr.dbname)
+        with closing(registry.cursor()) as cr:
+            new_env = api.Environment(cr, env.uid, env.context)
+            try:
+                yield new_env
+            except:
+                cr.rollback()
+                raise
+            else:
+                cr.commit()
 
 
 class JiraBackend(models.Model):
@@ -100,7 +119,7 @@ class JiraBackend(models.Model):
 
     use_webhooks = fields.Boolean(
         string='Use Webhooks',
-        default=lambda self: self._default_use_webhooks(),
+        readonly=True,
         help="Webhooks need to be configured on the Jira instance. "
              "When activated, synchronization from Jira is blazing fast. "
              "It can be activated only on one Jira backend at a time. "
@@ -131,9 +150,17 @@ class JiraBackend(models.Model):
              "The name of the field is something like 'customfield_10002'. "
     )
 
+    odoo_webhook_base_url = fields.Char(
+        string='Base Odoo URL for Webhooks',
+        default=lambda self: self._default_odoo_webhook_base_url(),
+    )
+    webhook_issue_jira_id = fields.Char()
+    webhook_worklog_jira_id = fields.Char()
+
     @api.model
-    def _default_use_webhooks(self):
-        return not bool(self.search([('use_webhooks', '=', True)], limit=1))
+    def _default_odoo_webhook_base_url(self):
+        params = self.env['ir.config_parameter']
+        return params.get_param('web.base.url', '')
 
     @api.model
     def _selection_project_template(self):
@@ -341,6 +368,95 @@ class JiraBackend(models.Model):
                 backend.state = 'running'
 
     @api.multi
+    def create_webhooks(self):
+        self.ensure_one()
+        other_using_webhook = self.search(
+            [('use_webhooks', '=', True),
+             ('id', '!=', self.id)]
+        )
+        if other_using_webhook:
+            raise exceptions.UserError(
+                _('Only one JIRA backend can use the webhook at a time. '
+                  'You must disable them on the backend "%s" before '
+                  'activating them here.') % (other_using_webhook.name,)
+            )
+
+        # open a new cursor because we'll commit after the creations
+        # to be sure to keep the webhook ids
+        with new_env(self.env) as env:
+            backend = env[self._name].browse(self.id)
+            base_url = backend.odoo_webhook_base_url
+            if not base_url:
+                raise exceptions.UserError(
+                    _('The Odoo Webhook base URL must be set.')
+                )
+            with backend.get_environment(self._name) as connector_env:
+                backend.use_webhooks = True
+
+                adapter = connector_env.get_connector_unit(JiraAdapter)
+                # TODO: we could update the JQL of the webhook
+                # each time a new project is sync'ed, so we would
+                # filter out the useless events
+                url = urlparse.urljoin(base_url,
+                                       '/connector_jira/webhooks/issue')
+                webhook = adapter.create_webhook(
+                    name='Odoo Issues',
+                    url=url,
+                    events=['jira:issue_created',
+                            'jira:issue_updated',
+                            'jira:issue_deleted',
+                            ],
+                )
+                # the only place where to find the hook id is in
+                # the 'self' url, looks like
+                # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
+                webhook_id = webhook['self'].split('/')[-1]
+                backend.webhook_issue_jira_id = webhook_id
+                env.cr.commit()
+
+                url = urlparse.urljoin(base_url,
+                                       '/connector_jira/webhooks/worklog')
+                webhook = adapter.create_webhook(
+                    name='Odoo Worklogs',
+                    url=url,
+                    events=['worklog_created',
+                            'worklog_updated',
+                            'worklog_deleted',
+                            ],
+                )
+                webhook_id = webhook['self'].split('/')[-1]
+                backend.webhook_worklog_jira_id = webhook_id
+                env.cr.commit()
+
+    @api.onchange('odoo_webhook_base_url')
+    def onchange_odoo_webhook_base_url(self):
+        if self.use_webhooks:
+            msg = _('If you change the base URL, you must delete and create '
+                    'the Webhooks again.')
+            return {'warning': {'title': _('Warning'), 'message': msg}}
+
+    @api.multi
+    def delete_webhooks(self):
+        self.ensure_one()
+        with self.get_environment('jira.backend') as connector_env:
+            adapter = connector_env.get_connector_unit(JiraAdapter)
+            if self.webhook_issue_jira_id:
+                try:
+                    adapter.delete_webhook(self.webhook_issue_jira_id)
+                except JIRAError as err:
+                    # 404 means it has been deleted in JIRA, ignore it
+                    if err.status_code != 404:
+                        raise
+            if self.webhook_worklog_jira_id:
+                try:
+                    adapter.delete_webhook(self.webhook_worklog_jira_id)
+                except JIRAError as err:
+                    # 404 means it has been deleted in JIRA, ignore it
+                    if err.status_code != 404:
+                        raise
+            self.use_webhooks = False
+
+    @api.multi
     def check_connection(self):
         self.ensure_one()
         try:
@@ -438,5 +554,25 @@ class JiraBackendTimestamp(models.Model):
 class BackendAdapter(JiraAdapter):
     _model_name = 'jira.backend'
 
+    webhook_base_path = '{server}/rest/webhooks/1.0/{path}'
+
     def list_fields(self):
         return self.client._get_json('field')
+
+    def create_webhook(self, name=None, url=None, events=None,
+                       jql='', exclude_body=False):
+        assert name and url and events
+        data = {'name': name,
+                'url': url,
+                'events': events,
+                'jqlFilter': jql,
+                'excludeIssueDetails': exclude_body,
+                }
+        url = self.client._get_url('webhook', base=self.webhook_base_path)
+        response = self.client._session.post(url, data=json.dumps(data))
+        return json_loads(response)
+
+    def delete_webhook(self, id_):
+        url = self.client._get_url('webhook/%s' % id_,
+                                   base=self.webhook_base_path)
+        return json_loads(self.client._session.delete(url))

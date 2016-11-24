@@ -115,8 +115,21 @@
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
               <group>
-                <field name="use_webhooks"/>
-                <field name="epic_link_field_name"/>
+                <group>
+                  <field name="use_webhooks" invisible="1"/>
+                  <field name="odoo_webhook_base_url"/>
+                  <field name="epic_link_field_name"/>
+                </group>
+                <group>
+                  <button name="create_webhooks"
+                    type="object"
+                    string="Install Webhooks"
+                    attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authentify')]}"/>
+                  <button name="delete_webhooks"
+                    type="object"
+                    string="Remove Webhooks"
+                    attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authentify')]}"/>
+                </group>
               </group>
             </page>
             <page name="issue_type" string="Issue Types" states="running">
