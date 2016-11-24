@@ -13,6 +13,45 @@
           </group>
         </page>
       </xpath>
+
+      <field name="legend_done" position="after">
+        <field name="jira_issue_type"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="view_task_search_form" model="ir.ui.view">
+    <field name="name">project.task.search.form</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_search_form"/>
+    <field name="arch" type="xml">
+      <field name="stage_id" position="after">
+        <field name="jira_issue_type"/>
+      </field>
+      <filter name="Stage" position="after">
+        <filter string="JIRA Issue Type"
+          name="jira_issue_type"
+          context="{'group_by': 'jira_issue_type'}"/>
+      </filter>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="view_task_kanban">
+    <field name="name">project.task.kanban</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_kanban"/>
+    <field name="arch" type="xml">
+      <field name="legend_done" position="after">
+        <field name="jira_issue_type"/>
+        <field name="jira_bind_ids"/>
+      </field>
+
+      <xpath expr="//div[@class='oe_kanban_content']/div[@class='text-muted']" position="inside">
+        <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
+          <span>JIRA: <field name="jira_issue_type"/></span>
+        </t>
+      </xpath>
+
     </field>
   </record>
 
@@ -25,6 +64,7 @@
           <field name="backend_id"
             attrs="{'readonly': [('external_id', '!=', False)]}"/>
           <field name="external_id"/>
+        <field name="jira_issue_type_id"/>
         </group>
       </form>
     </field>
@@ -37,6 +77,7 @@
       <tree string="Jira Issues">
         <field name="backend_id"/>
         <field name="external_id"/>
+        <field name="jira_issue_type_id"/>
       </tree>
     </field>
   </record>

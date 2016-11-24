@@ -24,6 +24,13 @@ class ProjectTaskMapper(ImportMapper, FromFields):
     ]
 
     @mapping
+    def issue_type(self, record):
+        binder = self.binder_for('jira.issue.type')
+        jira_type_id = record['fields']['issuetype']['id']
+        binding = binder.to_openerp(jira_type_id)
+        return {'jira_issue_type_id': binding.id}
+
+    @mapping
     def assignee(self, record):
         assignee = record['fields'].get('assignee')
         if not assignee:

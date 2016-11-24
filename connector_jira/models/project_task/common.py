@@ -19,6 +19,11 @@ class JiraProjectTask(models.Model):
                                  required=True,
                                  index=True,
                                  ondelete='restrict')
+    jira_issue_type_id = fields.Many2one(
+        comodel_name='jira.issue.type',
+        string='Issue Type',
+        readonly=True,
+    )
 
     @api.multi
     def unlink(self):
@@ -39,6 +44,17 @@ class ProjectTask(models.Model):
         string='Task Bindings',
         context={'active_test': False},
     )
+    jira_issue_type = fields.Char(
+        compute='_compute_jira_issue_type',
+        string='JIRA Issue Type',
+        store=True,
+    )
+
+    @api.depends('jira_bind_ids.jira_issue_type_id.name')
+    def _compute_jira_issue_type(self):
+        for record in self:
+            types = record.mapped('jira_bind_ids.jira_issue_type_id.name')
+            record.jira_issue_type = ','.join(types)
 
 
 @jira
