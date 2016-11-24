@@ -19,6 +19,9 @@ class JiraAccountAnalyticLine(models.Model):
                                  required=True,
                                  index=True,
                                  ondelete='restrict')
+    # The REST API needs issue id + worklog id, so we keep it along
+    # in case we'll need it for an eventual export
+    jira_issue_id = fields.Char()
 
 
 class AccountAnalyticLine(models.Model):

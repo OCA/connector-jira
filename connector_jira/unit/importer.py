@@ -24,7 +24,7 @@ from openerp import _
 from openerp.addons.connector.connector import Binder
 from openerp.addons.connector.queue.job import job
 from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.unit.synchronizer import Importer
+from openerp.addons.connector.unit.synchronizer import Importer, Deleter
 from openerp.addons.connector.exception import (IDMissingInBackend,
                                                 RetryableJobError)
 from .mapper import iso8601_to_utc_datetime
@@ -402,6 +402,22 @@ class DelayedBatchImporter(BatchImporter):
                             self.backend_record.id,
                             record_id,
                             **kwargs)
+
+
+class JiraDeleter(Deleter):
+    _model_name = None
+
+    def run(self, external_id, only_binding=False, set_inactive=False):
+        binding = self.binder.to_openerp(external_id)
+        if not binding.exists():
+            return
+        if set_inactive:
+            binding.active = False
+        else:
+            record = binding.openerp_id
+            binding.unlink()
+            if not only_binding:
+                record.unlink()
 
 
 @job(default_channel='root.connector_jira.import')

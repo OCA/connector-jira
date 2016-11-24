@@ -13,6 +13,7 @@ from openerp.addons.connector.queue.job import job
 from ...unit.importer import (
     DelayedBatchImporter,
     JiraImporter,
+    JiraDeleter,
 )
 from ...unit.backend_adapter import JiraAdapter
 from ...unit.mapper import iso8601_local_date, whenempty
@@ -32,6 +33,10 @@ class AnalyticLineMapper(ImportMapper):
     @mapping
     def default(self, record):
         return {'is_timesheet': True}
+
+    @mapping
+    def issue(self, record):
+        return {'jira_issue_id': record['issueId']}
 
     @mapping
     def duration(self, record):
@@ -187,6 +192,11 @@ class AnalyticLineImporter(JiraImporter):
                                 record=jira_assignee)
 
 
+@jira
+class AnalyticLineDeleter(JiraDeleter):
+    _model_name = 'jira.account.analytic.line'
+
+
 @job(default_channel='root.connector_jira.normal')
 def import_worklog(session, model_name, backend_id, issue_id, worklog_id,
                    force=False):
@@ -195,3 +205,12 @@ def import_worklog(session, model_name, backend_id, issue_id, worklog_id,
     with backend.get_environment(model_name, session=session) as connector_env:
         importer = connector_env.get_connector_unit(JiraImporter)
         importer.run(worklog_id, issue_id=issue_id, force=force)
+
+
+@job(default_channel='root.connector_jira.normal')
+def delete_worklog(session, model_name, backend_id, issue_id, worklog_id):
+    """ Delete a local workflow which has been deleted on JIRA """
+    backend = session.env['jira.backend'].browse(backend_id)
+    with backend.get_environment(model_name, session=session) as connector_env:
+        deleter = connector_env.get_connector_unit(JiraDeleter)
+        deleter.run(worklog_id)

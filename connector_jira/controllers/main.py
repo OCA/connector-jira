@@ -36,7 +36,10 @@ from openerp.addons.web.controllers.main import ensure_db
 
 from openerp.addons.connector.session import ConnectorSession
 
-from ..models.account_analytic_line.importer import import_worklog
+from ..models.account_analytic_line.importer import (
+    import_worklog,
+    delete_worklog,
+)
 from ..unit.importer import import_record
 
 _logger = logging.getLogger(__name__)
@@ -80,8 +83,15 @@ class JiraWebhookController(http.Controller):
             return
 
         worklog = request.jsonrequest['worklog']
+        action = request.jsonrequest['webhookEvent']
+
         issue_id = worklog['issueId']
         worklog_id = worklog['id']
+
         session = ConnectorSession.from_env(env)
-        import_worklog.delay(session, 'jira.account.analytic.line',
-                             backend.id, issue_id, worklog_id)
+        if action == 'worklog_deleted':
+            delete_worklog.delay(session, 'jira.account.analytic.line',
+                                 backend.id, issue_id, worklog_id)
+        else:
+            import_worklog.delay(session, 'jira.account.analytic.line',
+                                 backend.id, issue_id, worklog_id)
