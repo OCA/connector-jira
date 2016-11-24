@@ -11,7 +11,7 @@
           <button name="button_setup"
             type="object"
             class="oe_highlight"
-            string="Setup with JIRA"
+            string="Configuration Done"
             states="setup"/>
           <button name="%(action_jira_backend_auth)d"
             type="action"
@@ -33,6 +33,12 @@
           <h1>
             <field name="name" class="oe_inline" />
           </h1>
+          <p class="oe_grey oe_inline" states="setup">
+            Once you have checked the configuration and
+            activated the webhooks and the Epic Link (if
+            wanted), click on the "Configuration Done"
+            button.
+          </p>
           <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
             <group>
               <field name="version"/>
@@ -114,22 +120,40 @@
               </group>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
-              <group>
-                <group>
-                  <field name="use_webhooks" invisible="1"/>
-                  <field name="odoo_webhook_base_url"/>
-                  <field name="epic_link_field_name"/>
-                </group>
-                <group>
+              <field name="use_webhooks" invisible="1"/>
+              <group col="4">
+                <field name="odoo_webhook_base_url"/>
+                <div>
                   <button name="create_webhooks"
                     type="object"
                     string="Install Webhooks"
+                    class="oe_inline"
                     attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authentify')]}"/>
                   <button name="delete_webhooks"
                     type="object"
                     string="Remove Webhooks"
+                    class="oe_inline"
                     attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authentify')]}"/>
-                </group>
+                </div>
+                <p class="oe_grey oe_inline">
+                  Webhooks can be created only on one instance of JIRA.
+                  When webhooks are activated, each
+                  modification of tasks and worklogs are
+                  directly transmitted to Odoo.
+                </p>
+              </group>
+              <group col="4">
+                <field name="epic_link_field_name"/>
+                <button name="activate_epic_link"
+                  type="object"
+                  string="Configure Epic Link"
+                  class="oe_inline"
+                  attrs="{'invisible': [('state', '=', 'authentify')]}"/>
+                <p class="oe_grey oe_inline">
+                  Activate the synchronization of the Epic Link field.
+                  Only on JIRA Software. The field contains the name of
+                  the JIRA custom field that contains the Epic Link.
+                </p>
               </group>
             </page>
             <page name="issue_type" string="Issue Types" states="running">

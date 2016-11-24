@@ -346,11 +346,10 @@ class JiraBackend(models.Model):
 
     @api.multi
     def button_setup(self):
-        self.configure_epic_link()
         self.state_running()
 
     @api.multi
-    def configure_epic_link(self):
+    def activate_epic_link(self):
         self.ensure_one()
         with self.get_environment('jira.backend') as connector_env:
             adapter = connector_env.get_connector_unit(JiraAdapter)
