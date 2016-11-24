@@ -120,6 +120,16 @@ class ProjectProject(models.Model):
             )
         return result
 
+    @api.multi
+    def name_get(self):
+        names = []
+        for project in self:
+            project_id, name = super(ProjectProject, project).name_get()[0]
+            if project.jira_key:
+                name = '[%s] %s' % (project.jira_key, name)
+            names.append((project_id, name))
+        return names
+
 
 @jira
 class ProjectAdapter(JiraAdapter):

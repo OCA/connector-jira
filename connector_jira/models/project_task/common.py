@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from openerp import api, fields, models, exceptions, _
+from openerp.osv import expression
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
@@ -113,6 +114,16 @@ class ProjectTask(models.Model):
             )
             if len(tasks) == 1:
                 record.jira_parent_task_id = tasks
+
+    @api.multi
+    def name_get(self):
+        names = []
+        for task in self:
+            task_id, name = super(ProjectTask, task).name_get()[0]
+            if task.jira_compound_key:
+                name = '[%s] %s' % (task.jira_compound_key, name)
+            names.append((task_id, name))
+        return names
 
 
 @jira
