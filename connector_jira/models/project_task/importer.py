@@ -18,6 +18,10 @@ from ...backend import jira
 class ProjectTaskMapper(ImportMapper, FromFields):
     _model_name = 'jira.project.task'
 
+    direct = [
+        ('key', 'jira_key'),
+    ]
+
     from_fields = [
         ('summary', 'name'),
         ('duedate', 'date_deadline'),

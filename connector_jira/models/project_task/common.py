@@ -19,6 +19,10 @@ class JiraProjectTask(models.Model):
                                  required=True,
                                  index=True,
                                  ondelete='restrict')
+    jira_key = fields.Char(
+        string='Key',
+        readonly=True,
+    )
     jira_issue_type_id = fields.Many2one(
         comodel_name='jira.issue.type',
         string='Issue Type',
@@ -49,12 +53,23 @@ class ProjectTask(models.Model):
         string='JIRA Issue Type',
         store=True,
     )
+    jira_compound_key = fields.Char(
+        compute='_compute_jira_compound_key',
+        string='JIRA Key',
+        store=True,
+    )
 
     @api.depends('jira_bind_ids.jira_issue_type_id.name')
     def _compute_jira_issue_type(self):
         for record in self:
             types = record.mapped('jira_bind_ids.jira_issue_type_id.name')
-            record.jira_issue_type = ','.join(types)
+            record.jira_issue_type = ','.join([t for t in types if t])
+
+    @api.depends('jira_bind_ids.jira_key')
+    def _compute_jira_compound_key(self):
+        for record in self:
+            keys = record.mapped('jira_bind_ids.jira_key')
+            record.jira_compound_key = ','.join([k for k in keys if k])
 
 
 @jira

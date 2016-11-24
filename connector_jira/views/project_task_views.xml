@@ -15,6 +15,7 @@
       </xpath>
 
       <field name="legend_done" position="after">
+        <field name="jira_compound_key"/>
         <field name="jira_issue_type"/>
       </field>
     </field>
@@ -26,6 +27,7 @@
     <field name="inherit_id" ref="project.view_task_search_form"/>
     <field name="arch" type="xml">
       <field name="stage_id" position="after">
+        <field name="jira_compound_key"/>
         <field name="jira_issue_type"/>
       </field>
       <filter name="Stage" position="after">
@@ -44,11 +46,13 @@
       <field name="legend_done" position="after">
         <field name="jira_issue_type"/>
         <field name="jira_bind_ids"/>
+        <field name="jira_compound_key"/>
       </field>
 
       <xpath expr="//div[@class='oe_kanban_content']/div[@class='text-muted']" position="inside">
         <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
-          <span>JIRA: <field name="jira_issue_type"/></span>
+          <br/>
+          <span>JIRA: <field name="jira_compound_key"/> <i><field name="jira_issue_type"/></i></span>
         </t>
       </xpath>
 
@@ -64,7 +68,8 @@
           <field name="backend_id"
             attrs="{'readonly': [('external_id', '!=', False)]}"/>
           <field name="external_id"/>
-        <field name="jira_issue_type_id"/>
+          <field name="jira_key"/>
+          <field name="jira_issue_type_id"/>
         </group>
       </form>
     </field>
@@ -77,6 +82,7 @@
       <tree string="Jira Issues">
         <field name="backend_id"/>
         <field name="external_id"/>
+        <field name="jira_key"/>
         <field name="jira_issue_type_id"/>
       </tree>
     </field>
