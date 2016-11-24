@@ -43,6 +43,7 @@ class JiraProjectProjectExporter(JiraBaseExporter):
         project_values = self._project_values()
         if self.external_id:
             project = adapter.get(self.external_id)
+            project_values.pop('project_template')
             project.update(project_values)
         else:
             values = project_values.copy()

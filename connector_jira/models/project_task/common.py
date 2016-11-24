@@ -33,6 +33,14 @@ class JiraProjectTask(models.Model):
         string='Epic',
         readonly=True,
     )
+    jira_parent_id = fields.Many2one(
+        comodel_name='jira.project.task',
+        string='Parent Issue',
+        readonly=True,
+        help="Parent issue when the issue is a subtask. "
+             "Empty if the type of parent is filtered out "
+             "of the synchronizations.",
+    )
 
     @api.multi
     def unlink(self):
@@ -69,6 +77,12 @@ class ProjectTask(models.Model):
         string='JIRA Epic',
         store=True,
     )
+    jira_parent_task_id = fields.Many2one(
+        comodel_name='project.task',
+        compute='_compute_jira_parent_task_id',
+        string='JIRA Parent',
+        store=True,
+    )
 
     @api.depends('jira_bind_ids.jira_issue_type_id.name')
     def _compute_jira_issue_type(self):
@@ -90,6 +104,15 @@ class ProjectTask(models.Model):
             )
             if len(tasks) == 1:
                 record.jira_epic_link_task_id = tasks
+
+    @api.depends('jira_bind_ids.jira_parent_id.openerp_id')
+    def _compute_jira_parent_task_id(self):
+        for record in self:
+            tasks = record.mapped(
+                'jira_bind_ids.jira_parent_id.openerp_id'
+            )
+            if len(tasks) == 1:
+                record.jira_parent_task_id = tasks
 
 
 @jira

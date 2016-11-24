@@ -54,7 +54,7 @@ class JiraProjectProject(models.Model):
             )
         return record
 
-    @api.model
+    @api.multi
     def write(self, values):
         if 'project_template' in values:
             raise exceptions.UserError(

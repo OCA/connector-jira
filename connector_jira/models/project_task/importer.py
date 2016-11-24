@@ -74,6 +74,14 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         return {'jira_epic_link_id': binding.id}
 
     @mapping
+    def parent(self, record):
+        jira_parent = record['fields'].get('parent', {})
+        jira_parent_id = jira_parent['id']
+        binder = self.binder_for('jira.project.task')
+        binding = binder.to_openerp(jira_parent_id)
+        return {'jira_parent_id': binding.id}
+
+    @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
@@ -146,6 +154,11 @@ class ProjectTaskImporter(JiraImporter):
         jira_issue_type_id = jira_issue_type['id']
         self._import_dependency(jira_issue_type_id, 'jira.issue.type',
                                 record=jira_issue_type)
+
+        jira_parent = self.external_record['fields'].get('parent', {})
+        jira_parent_id = jira_parent['id']
+        self._import_dependency(jira_parent_id, 'jira.project.task',
+                                record=jira_parent)
 
         if self.jira_epic:
             self._import_dependency(self.jira_epic['id'], 'jira.project.task',
