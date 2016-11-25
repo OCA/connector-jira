@@ -188,6 +188,18 @@ class JiraBackend(models.Model):
         return [('7.2.0', '7.2.0+'),
                 ]
 
+    @api.constrains('project_template_shared')
+    def check_jira_key(self):
+        for backend in self:
+            if not backend.project_template_shared:
+                continue
+            valid = self.env['jira.project.project']._jira_key_valid
+            if not valid(backend.project_template_shared):
+                raise exceptions.ValidationError(
+                    _('%s is not a valid JIRA Key') %
+                    backend.project_template_shared
+                )
+
     @api.multi
     @api.depends()
     def _compute_last_import_date(self):

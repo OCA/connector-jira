@@ -4,6 +4,7 @@
 
 import json
 import logging
+import re
 import tempfile
 
 from jira import JIRAError
@@ -58,6 +59,21 @@ class JiraProjectProject(models.Model):
         self.project_template = self.backend_id.project_template
         self.project_template_shared = self.backend_id.project_template_shared
 
+    @staticmethod
+    def _jira_key_valid(key):
+        return bool(re.match(r'^[A-Z][A-Z0-9]{1,9}$', key))
+
+    @api.constrains('project_template_shared')
+    def check_project_template_shared(self):
+        for binding in self:
+            if not binding.project_template_shared:
+                continue
+            if not self._jira_key_valid(binding.project_template_shared):
+                raise exceptions.ValidationError(
+                    _('%s is not a valid JIRA Key') %
+                    binding.project_template_shared
+                )
+
     @api.model
     def create(self, values):
         record = super(JiraProjectProject, self).create(values)
@@ -103,8 +119,16 @@ class ProjectProject(models.Model):
         size=10,  # limit on JIRA
     )
 
-    # TODO: check key with ((?<!([A-Z]{1,10})-?)[A-Z]+-\d+)
-    # https://confluence.atlassian.com/stashkb/integrating-with-custom-jira-issue-key-313460921.html
+    @api.constrains('jira_key')
+    def check_jira_key(self):
+        for project in self:
+            if not project.jira_key:
+                continue
+            valid = self.env['jira.project.project']._jira_key_valid
+            if not valid(project.jira_key):
+                raise exceptions.ValidationError(
+                    _('%s is not a valid JIRA Key') % project.jira_key
+                )
 
     @api.depends('jira_bind_ids')
     def _compute_jira_exportable(self):
