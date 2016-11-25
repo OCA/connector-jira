@@ -38,6 +38,10 @@
             attrs="{'readonly': [('external_id', '!=', False)]}"/>
           <field name="project_template"
             attrs="{'readonly': [('external_id', '!=', False)]}"/>
+          <field name="project_template_shared"
+            attrs="{'readonly': [('external_id', '!=', False)],
+                    'invisible': [('project_template', '!=', 'shared')],
+                    'required': [('project_template', '=', 'shared')]}"/>
           <field name="sync_issue_type_ids" widget="many2many_checkboxes"/>
           <field name="external_id"/>
         </group>

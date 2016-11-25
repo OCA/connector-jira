@@ -51,6 +51,9 @@
           <group name="main_configuration" string="Main Configuration">
             <field name="company_id"/>
             <field name="project_template"/>
+            <field name="project_template_shared"
+              attrs="{'invisible': [('project_template', '!=', 'shared')],
+                      'required': [('project_template', '=', 'shared')]}"/>
           </group>
           <notebook>
             <page name="import" string="Imports" states="running">

@@ -2,10 +2,19 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import json
+import logging
+import tempfile
+
+from jira import JIRAError
+from jira.utils import json_loads
+
 from openerp import api, fields, models, exceptions, _
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
+
+_logger = logging.getLogger(__name__)
 
 
 class JiraProjectProject(models.Model):
@@ -36,6 +45,9 @@ class JiraProjectProject(models.Model):
         default='Scrum software development',
         required=True,
     )
+    project_template_shared = fields.Char(
+        string='Default Shared Template',
+    )
 
     @api.model
     def _selection_project_template(self):
@@ -44,6 +56,7 @@ class JiraProjectProject(models.Model):
     @api.onchange('backend_id')
     def onchange_project_backend_id(self):
         self.project_template = self.backend_id.project_template
+        self.project_template_shared = self.backend_id.project_template_shared
 
     @api.model
     def create(self, values):
@@ -89,6 +102,9 @@ class ProjectProject(models.Model):
         string='JIRA Key',
         size=10,  # limit on JIRA
     )
+
+    # TODO: check key with ((?<!([A-Z]{1,10})-?)[A-Z]+-\d+)
+    # https://confluence.atlassian.com/stashkb/integrating-with-custom-jira-issue-key-313460921.html
 
     @api.depends('jira_bind_ids')
     def _compute_jira_exportable(self):
@@ -141,6 +157,9 @@ class ProjectAdapter(JiraAdapter):
     def get(self, id):
         return self.client.project(id)
 
+    def write(self, id_, values):
+        self.get(id).update(values)
+
     def create(self, key=None, name=None, template_name=None, values=None):
         project = self.client.create_project(
             key=key,
@@ -150,3 +169,46 @@ class ProjectAdapter(JiraAdapter):
         if values:
             project.update(values)
         return project
+
+    def create_shared(self, key=None, name=None, shared_key=None, lead=None):
+        assert key and name and shared_key
+        # There is no public method for creating a shared project:
+        # https://jira.atlassian.com/browse/JRA-45929
+        # People found a private method for doing so, which is explained on:
+        # https://jira.atlassian.com/browse/JRA-27256?src=confmacro&_ga=1.162710906.750569280.1479368101
+
+        try:
+            project = self.read(shared_key)
+            project_id = project['id']
+        except JIRAError as err:
+            if err.status_code == 404:
+                raise exceptions.UserError(
+                    _('Project template with key "%s" not found.') % shared_key
+                )
+            else:
+                raise
+
+        url = (self.client._options['server'] +
+               '/rest/project-templates/1.0/createshared/%s' % project_id)
+        payload = {'name': name,
+                   'key': key,
+                   'lead': lead,
+                   }
+
+        r = self.client._session.post(url, data=json.dumps(payload))
+        if r.status_code == 200:
+            r_json = json_loads(r)
+            return r_json
+
+        f = tempfile.NamedTemporaryFile(
+            suffix='.html',
+            prefix='python-jira-error-create-shared-project-',
+            delete=False)
+        f.write(r.text)
+
+        if self.logging:
+            logging.error(
+                "Unexpected result while running create shared project."
+                "Server response saved in %s for further investigation "
+                "[HTTP response=%s]." % (f.name, r.status_code))
+        return False

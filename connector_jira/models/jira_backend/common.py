@@ -116,6 +116,9 @@ class JiraBackend(models.Model):
         default='Scrum software development',
         required=True,
     )
+    project_template_shared = fields.Char(
+        string='Default Shared Template Key',
+    )
 
     use_webhooks = fields.Boolean(
         string='Use Webhooks',
@@ -173,6 +176,7 @@ class JiraBackend(models.Model):
                 ('Project management', 'Project management (Business)'),
                 ('Task management', 'Task management (Business)'),
                 ('Process management', 'Process management (Business)'),
+                ('shared', 'From a shared template'),
                 ]
 
     @api.model

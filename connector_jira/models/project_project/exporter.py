@@ -31,29 +31,44 @@ def delay_export_all_bindings(session, model_name, record_id, vals):
 class JiraProjectProjectExporter(JiraBaseExporter):
     _model_name = ['jira.project.project']
 
-    def _project_values(self):
-        return {
-            'key': self.binding_record.jira_key,
-            'name': self.binding_record.name[:80],
-            'project_template': self.binding_record.project_template,
-        }
+    def _create_project(self, adapter, key, name, template, values):
+        project = adapter.create(
+            key=key,
+            name=name,
+            template_name=template,
+            values=values,
+        )
+        return project['projectId']
+
+    def _create_shared_project(self, adapter, key, name, shared_key, lead):
+        project = adapter.create_shared(
+            key=key,
+            name=name,
+            shared_key=shared_key,
+            lead=lead,
+        )
+        return project['projectId']
+
+    def _update_project(self, adapter, values):
+        adapter.write(self.external_id, values)
 
     def _run(self, fields=None):
         adapter = self.unit_for(JiraAdapter)
-        project_values = self._project_values()
+
+        key = self.binding_record.jira_key
+        name = self.binding_record.name[:80]
+        template = self.binding_record.project_template
+        # TODO: add lead
+
         if self.external_id:
-            project = adapter.get(self.external_id)
-            project_values.pop('project_template')
-            project.update(project_values)
+            self._update_project(adapter, {'name': name, 'key': key})
         else:
-            values = project_values.copy()
-            key = values.pop('key')
-            name = values.pop('name')
-            project_template = values.pop('project_template')
-            project = adapter.create(
-                key=key,
-                name=name,
-                template_name=project_template,
-                values=values,
-            )
-            self.external_id = project['projectId']
+            if template == 'shared':
+                shared_key = self.binding_record.project_template_shared
+                self.external_id = self._create_shared_project(
+                    adapter, key, name, shared_key, None
+                )
+            else:
+                self.external_id = self._create_project(
+                    adapter, key, name, template, {}
+                )
