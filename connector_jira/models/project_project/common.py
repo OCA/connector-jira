@@ -160,14 +160,14 @@ class ProjectProject(models.Model):
 class ProjectAdapter(JiraAdapter):
     _model_name = 'jira.project.project'
 
-    def read(self, id):
-        return self.get(id).raw
+    def read(self, id_):
+        return self.get(id_).raw
 
-    def get(self, id):
-        return self.client.project(id)
+    def get(self, id_):
+        return self.client.project(id_)
 
     def write(self, id_, values):
-        self.get(id).update(values)
+        self.get(id_).update(values)
 
     def create(self, key=None, name=None, template_name=None, values=None):
         project = self.client.create_project(

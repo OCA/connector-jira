@@ -28,8 +28,8 @@ class JiraIssueType(models.Model):
 class IssueTypeAdapter(JiraAdapter):
     _model_name = 'jira.issue.type'
 
-    def read(self, id):
-        return self.client.issue_type(id).raw
+    def read(self, id_):
+        return self.client.issue_type(id_).raw
 
     def search(self):
         issues = self.client.issue_types()

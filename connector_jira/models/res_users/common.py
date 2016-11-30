@@ -76,8 +76,8 @@ class ResUsers(models.Model):
 class UserAdapter(JiraAdapter):
     _model_name = 'jira.res.users'
 
-    def read(self, id):
-        return self.client.user(id).raw
+    def read(self, id_):
+        return self.client.user(id_).raw
 
     def search(self, fragment=None):
         """ Search users

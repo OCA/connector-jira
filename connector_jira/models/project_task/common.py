@@ -129,8 +129,8 @@ class ProjectTask(models.Model):
 class TaskAdapter(JiraAdapter):
     _model_name = 'jira.project.task'
 
-    def read(self, id, fields=None):
-        return self.client.issue(id, fields=fields).raw
+    def read(self, id_, fields=None):
+        return self.client.issue(id_, fields=fields).raw
 
     def search(self, jql):
         # we need to have at least one field which is not 'id' or 'key'
