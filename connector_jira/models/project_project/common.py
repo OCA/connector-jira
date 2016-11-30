@@ -136,21 +136,6 @@ class ProjectProject(models.Model):
             project.jira_exportable = bool(project.jira_bind_ids)
 
     @api.multi
-    def toggle_jira_exportable(self):
-        for project in self:
-            # TODO: possible improvement, when we have several backends,
-            # show a popup to choose the backend to enable/disable
-            if project.jira_exportable:
-                project.jira_bind_ids.unlink()
-            else:
-                backends = self.env['jira.backend'].search([])
-                for backend in backends:
-                    self.env['jira.project.project'].create({
-                        'backend_id': backend.id,
-                        'openerp_id': project.id,
-                    })
-
-    @api.multi
     def write(self, values):
         result = super(ProjectProject, self).write(values)
         for record in self:

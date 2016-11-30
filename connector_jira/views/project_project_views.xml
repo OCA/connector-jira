@@ -14,15 +14,8 @@
         </page>
       </xpath>
 
-      <div name="button_box" position="inside">
-        <button name="toggle_jira_exportable" type="object"
-          class="oe_stat_button" icon="fa-refresh">
-          <span class="o_stat_text">Jira</span>
-          <field name="jira_exportable" widget="boolean_button"/>
-        </button>
-      </div>
-
       <field name="partner_id" position="before">
+        <field name="jira_exportable" invisible="1"/>
         <field name="jira_key" attrs="{'required': [('jira_exportable', '=', True)]}"/>
       </field>
     </field>
