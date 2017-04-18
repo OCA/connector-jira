@@ -29,12 +29,12 @@ gets the data by itself (with the nice side-effect that the job is retryable).
 
 import logging
 
-import openerp
-from openerp import http
-from openerp.http import request
-from openerp.addons.web.controllers.main import ensure_db
+import odoo
+from odoo import http
+from odoo.http import request
+from odoo.addons.web.controllers.main import ensure_db
 
-from openerp.addons.connector.session import ConnectorSession
+from odoo.addons.connector.session import ConnectorSession
 
 from ..models.account_analytic_line.importer import (
     import_worklog,
@@ -51,7 +51,7 @@ class JiraWebhookController(http.Controller):
                 type='json', auth='none', csrf=False)
     def webhook_issue(self, issue_id=None, **kw):
         ensure_db()
-        request.uid = openerp.SUPERUSER_ID
+        request.uid = odoo.SUPERUSER_ID
         env = request.env
         backend = env['jira.backend'].search(
             [('use_webhooks', '=', True)],
@@ -79,7 +79,7 @@ class JiraWebhookController(http.Controller):
                 type='json', auth='none', csrf=False)
     def webhook_worklog(self, **kw):
         ensure_db()
-        request.uid = openerp.SUPERUSER_ID
+        request.uid = odoo.SUPERUSER_ID
         env = request.env
         backend = env['jira.backend'].search(
             [('use_webhooks', '=', True)],

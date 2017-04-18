@@ -4,8 +4,8 @@
 
 import logging
 
-from openerp import fields, models
-from openerp.addons.connector.connector import Binder
+from odoo import fields, models
+from odoo.addons.connector.connector import Binder
 
 from ..backend import jira
 
@@ -44,7 +44,7 @@ class JiraModelBinder(Binder):
         'jira.issue.type',
     ]
 
-    _openerp_field = 'id'
+    _odoo_field = 'id'
 
     def to_openerp(self, external_id, unwrap=False):
         if unwrap:

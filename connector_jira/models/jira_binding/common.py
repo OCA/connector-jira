@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import fields, models
+from odoo import fields, models
 
 
 class JiraBinding(models.AbstractModel):
@@ -15,8 +15,8 @@ class JiraBinding(models.AbstractModel):
     _inherit = 'external.binding'
     _description = 'Jira Binding (abstract)'
 
-    # openerp-side id must be declared in concrete model
-    # openerp_id = fields.Many2one(...)
+    # odoo-side id must be declared in concrete model
+    # odoo_id = fields.Many2one(...)
     backend_id = fields.Many2one(
         comodel_name='jira.backend',
         string='Jira Backend',

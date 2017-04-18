@@ -2,9 +2,9 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _
-from openerp.addons.connector.exception import MappingError
-from openerp.addons.connector.unit.mapper import ImportMapper, mapping
+from odoo import _
+from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector.unit.mapper import ImportMapper, mapping
 from ...unit.backend_adapter import JiraAdapter
 from ...unit.importer import (
     DelayedBatchImporter,
@@ -70,7 +70,8 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         if not self.options.jira_epic:
             return {}
         jira_epic_id = self.options.jira_epic['id']
-        binding = self.binder_for('jira.project.task').to_openerp(jira_epic_id)
+        binder = self.binder_for('jira.project.task')
+        binding = binder.to_openerp(jira_epic_id)
         return {'jira_epic_link_id': binding.id}
 
     @mapping

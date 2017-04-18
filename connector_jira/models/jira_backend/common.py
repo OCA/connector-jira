@@ -18,11 +18,11 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from jira import JIRA, JIRAError
 from jira.utils import json_loads
 
-import openerp
-from openerp import models, fields, api, exceptions, _
+import odoo
+from odoo import models, fields, api, exceptions, _
 
-from openerp.addons.connector.connector import ConnectorEnvironment
-from openerp.addons.connector.session import ConnectorSession
+from odoo.addons.connector.connector import ConnectorEnvironment
+from odoo.addons.connector.session import ConnectorSession
 
 from ...unit.importer import import_batch
 from ...unit.backend_adapter import JiraAdapter
@@ -37,7 +37,7 @@ IMPORT_DELTA = 70  # seconds
 @contextmanager
 def new_env(env):
     with api.Environment.manage():
-        registry = openerp.modules.registry.RegistryManager.get(env.cr.dbname)
+        registry = odoo.modules.registry.RegistryManager.get(env.cr.dbname)
         with closing(registry.cursor()) as cr:
             new_env = api.Environment(cr, env.uid, env.context)
             try:
@@ -229,7 +229,6 @@ class JiraBackend(models.Model):
     @api.multi
     def _inverse_import_analytic_line_from_date(self):
         self._inverse_date_fields('import_analytic_line_from_date')
-
 
     @api.multi
     def _lock_timestamp(self, from_date_field):

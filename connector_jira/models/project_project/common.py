@@ -10,7 +10,7 @@ import tempfile
 from jira import JIRAError
 from jira.utils import json_loads
 
-from openerp import api, fields, models, exceptions, _
+from odoo import api, fields, models, exceptions, _
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
@@ -21,14 +21,14 @@ _logger = logging.getLogger(__name__)
 class JiraProjectProject(models.Model):
     _name = 'jira.project.project'
     _inherit = 'jira.binding'
-    _inherits = {'project.project': 'openerp_id'}
+    _inherits = {'project.project': 'odoo_id'}
     _description = 'Jira Projects'
 
-    openerp_id = fields.Many2one(comodel_name='project.project',
-                                 string='Project',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='project.project',
+                              string='Project',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
     sync_issue_type_ids = fields.Many2many(
         comodel_name='jira.issue.type',
         string='Issue Levels to Synchronize',
@@ -105,7 +105,7 @@ class ProjectProject(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.project.project',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='Project Bindings',
         context={'active_test': False},
@@ -142,7 +142,7 @@ class ProjectProject(models.Model):
             if record.jira_exportable and not record.jira_key:
                 raise exceptions.UserError(
                     _('The JIRA Key is mandatory on JIRA projects.')
-            )
+                )
         return result
 
     @api.multi

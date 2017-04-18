@@ -2,9 +2,9 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.addons.connector.event import (on_record_create,
-                                            on_record_write,
-                                            )
+from odoo.addons.connector.event import (on_record_create,
+                                         on_record_write,
+                                         )
 from ... import consumer
 from ...backend import jira
 from ...unit.exporter import JiraBaseExporter

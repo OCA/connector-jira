@@ -5,10 +5,10 @@
 import logging
 from contextlib import contextmanager
 import psycopg2
-from openerp import _, fields
-from openerp.addons.connector.queue.job import job, related_action
-from openerp.addons.connector.unit.synchronizer import Exporter
-from openerp.addons.connector.exception import RetryableJobError
+from odoo import _, fields
+from odoo.addons.connector.queue.job import job, related_action
+from odoo.addons.connector.unit.synchronizer import Exporter
+from odoo.addons.connector.exception import RetryableJobError
 from .importer import import_record
 from ..related_action import unwrap_binding
 from .mapper import iso8601_to_utc_datetime
@@ -68,15 +68,15 @@ class JiraBaseExporter(Exporter):
             return True
         jira_updated = self.backend_adapter.read(
             self.external_id,
-           fields=['updated']
+            fields=['updated']
         )['fields']['updated']
 
         sync_date = fields.Datetime.from_string(sync)
         jira_date = iso8601_to_utc_datetime(jira_updated)
         return sync_date < jira_date
 
-    def _get_openerp_data(self):
-        """ Return the raw OpenERP data for ``self.binding_id`` """
+    def _get_odoo_data(self):
+        """ Return the raw Odoo data for ``self.binding_id`` """
         return self.model.browse(self.binding_id)
 
     def _lock(self):
@@ -121,7 +121,7 @@ class JiraBaseExporter(Exporter):
         self._lock()
 
         self.binding_id = binding_id
-        self.binding_record = self._get_openerp_data()
+        self.binding_record = self._get_odoo_data()
 
         self.external_id = self.binder.to_backend(self.binding_id)
 
@@ -163,8 +163,8 @@ class JiraExporter(JiraBaseExporter):
         record created by :meth:`_export_dependency`), resulting in:
 
             IntegrityError: duplicate key value violates unique
-            constraint "jira_project_project_openerp_uniq"
-            DETAIL:  Key (backend_id, openerp_id)=(1, 4851) already exists.
+            constraint "jira_project_project_odoo_uniq"
+            DETAIL:  Key (backend_id, odoo_id)=(1, 4851) already exists.
 
         In that case, we'll retry the import just later.
 
@@ -191,7 +191,7 @@ class JiraExporter(JiraBaseExporter):
                      dependency. The reason for that is that we pushed a record
                      on the backend and we absolutely have to keep its ID.
 
-                     So you *must* take care to not modify the OpenERP database
+                     So you *must* take care to not modify the Odoo database
                      excepted when writing back the external ID or eventual
                      external data to keep on this side.
 
@@ -201,14 +201,14 @@ class JiraExporter(JiraBaseExporter):
                      of error.
 
         :param relation: record to export if not already exported
-        :type relation: :py:class:`openerp.osv.orm.browse_record`
+        :type relation: :py:class:`odoo.models.BaseModel`
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param exporter_cls: :py:class:`openerp.addons.connector.\
+        :param exporter_cls: :py:class:`odoo.addons.connector.\
                                         connector.ConnectorUnit`
                              class or parent class to use for the export.
                              By default: JiraExporter
-        :type exporter_cls: :py:class:`openerp.addons.connector.\
+        :type exporter_cls: :py:class:`odoo.addons.connector.\
                                        connector.MetaConnectorUnit`
         """
         if not relation:
@@ -221,7 +221,7 @@ class JiraExporter(JiraBaseExporter):
         wrap = relation._model._name != binding_model
 
         if wrap and hasattr(relation, 'jira_bind_ids'):
-            domain = [('openerp_id', '=', relation.id),
+            domain = [('odoo_id', '=', relation.id),
                       ('backend_id', '=', self.backend_record.id)]
             model = self.env[binding_model].with_context(active_test=False)
             binding = model.search(domain)
@@ -234,10 +234,10 @@ class JiraExporter(JiraBaseExporter):
                 # jira.project.project, it is exported, but we need to
                 # create the binding for the template.
                 bind_values = {'backend_id': self.backend_record.id,
-                               'openerp_id': relation.id}
+                               'odoo_id': relation.id}
                 # If 2 jobs create it at the same time, retry
                 # one later. A unique constraint (backend_id,
-                # openerp_id) should exist on the binding model
+                # odoo_id) should exist on the binding model
                 with self._retry_unique_violation():
                     model_c = self.env[binding_model].sudo().with_context(
                         connector_no_export=True
@@ -262,7 +262,7 @@ class JiraExporter(JiraBaseExporter):
 
     def _map_data(self, fields=None):
         """ Returns an instance of
-        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+        :py:class:`~odoo.addons.connector.unit.mapper.MapRecord`
 
         """
         return self.mapper.map_record(self.binding_record)

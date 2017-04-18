@@ -6,8 +6,8 @@ import pytz
 from datetime import datetime
 from dateutil import parser
 
-from openerp import fields
-from openerp.addons.connector.unit import mapper
+from odoo import fields
+from odoo.addons.connector.unit import mapper
 
 
 def iso8601_to_utc_datetime(isodate):

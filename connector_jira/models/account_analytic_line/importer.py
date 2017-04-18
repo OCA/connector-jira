@@ -2,14 +2,14 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _
-from openerp.addons.connector.exception import MappingError
-from openerp.addons.connector.unit.mapper import (
+from odoo import _
+from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector.unit.mapper import (
     ImportMapper,
     mapping,
     only_create,
 )
-from openerp.addons.connector.queue.job import job
+from odoo.addons.connector.queue.job import job
 from ...unit.importer import (
     DelayedBatchImporter,
     JiraImporter,
@@ -74,7 +74,7 @@ class AnalyticLineMapper(ImportMapper):
             return {'account_id': project.analytic_account_id.id}
 
         analytic = task_binding.project_id.analytic_account_id
-        return {'task_id': task_binding.openerp_id.id,
+        return {'task_id': task_binding.odoo_id.id,
                 'account_id': analytic.id}
 
     @mapping

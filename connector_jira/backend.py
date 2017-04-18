@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp.addons.connector.backend import Backend
+from odoo.addons.connector.backend import Backend
 
 jira = Backend('jira')
 """ Generic QoQa Backend. """

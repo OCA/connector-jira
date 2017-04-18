@@ -19,14 +19,14 @@ from contextlib import closing, contextmanager
 
 from psycopg2 import IntegrityError, errorcodes
 
-import openerp
-from openerp import _
-from openerp.addons.connector.connector import Binder
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.unit.synchronizer import Importer, Deleter
-from openerp.addons.connector.exception import (IDMissingInBackend,
-                                                RetryableJobError)
+import odoo
+from odoo import _
+from odoo.addons.connector.connector import Binder
+from odoo.addons.connector.queue.job import job
+from odoo.addons.connector.session import ConnectorSession
+from odoo.addons.connector.unit.synchronizer import Importer, Deleter
+from odoo.addons.connector.exception import (IDMissingInBackend,
+                                             RetryableJobError)
 from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
 
@@ -67,12 +67,12 @@ class JiraImporter(Importer):
 
     def _is_uptodate(self, binding):
         """Return True if the import should be skipped because
-        it is already up-to-date in OpenERP"""
+        it is already up-to-date in Odoo"""
         assert self.external_record
         ext_fields = self.external_record.get('fields', {})
         external_updated_at = ext_fields.get('updated')
         if not external_updated_at:
-            return False # no update date on Jira, always import it.
+            return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
         external_date = iso8601_to_utc_datetime(external_updated_at)
@@ -96,11 +96,11 @@ class JiraImporter(Importer):
         :param external_id: id of the related binding to import
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param importer_cls: :py:class:`openerp.addons.connector.\
+        :param importer_cls: :py:class:`odoo.addons.connector.\
                                         connector.ConnectorUnit`
                              class or parent class to use for the export.
                              By default: JiraImporter
-        :type importer_cls: :py:class:`openerp.addons.connector.\
+        :type importer_cls: :py:class:`odoo.addons.connector.\
                                        connector.MetaConnectorUnit`
         :param record: if we already have the data of the dependency, we
                        can pass it along to the dependency's importer
@@ -125,7 +125,7 @@ class JiraImporter(Importer):
 
     def _map_data(self):
         """ Returns an instance of
-        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+        :py:class:`~odoo.addons.connector.unit.mapper.MapRecord`
 
         """
         return self.mapper.map_record(self.external_record)
@@ -199,7 +199,7 @@ class JiraImporter(Importer):
         return map_record.values(**kwargs)
 
     def _update(self, binding, data):
-        """ Update an OpenERP record """
+        """ Update an Odoo record """
         # special check on data before import
         self._validate_data(data)
         binding.with_context(connector_no_export=True).write(data)
@@ -219,14 +219,14 @@ class JiraImporter(Importer):
         This can be used to make a preemptive check in a new transaction,
         for instance to see if another transaction already made the work.
         """
-        with openerp.api.Environment.manage():
-            registry = openerp.modules.registry.RegistryManager.get(
+        with odoo.api.Environment.manage():
+            registry = odoo.modules.registry.RegistryManager.get(
                 self.env.cr.dbname
             )
             with closing(registry.cursor()) as cr:
                 try:
-                    new_env = openerp.api.Environment(cr, self.env.uid,
-                                                      self.env.context)
+                    new_env = odoo.api.Environment(cr, self.env.uid,
+                                                   self.env.context)
                     new_connector_session = ConnectorSession.from_env(new_env)
                     connector_env = self.connector_env.create_environment(
                         self.backend_record.with_env(new_env),
@@ -414,7 +414,7 @@ class JiraDeleter(Deleter):
         if set_inactive:
             binding.active = False
         else:
-            record = binding.openerp_id
+            record = binding.odoo_id
             # emptying the external_id allows to unlink the binding
             binding.external_id = False
             binding.unlink()

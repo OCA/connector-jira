@@ -3,8 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
-from openerp import _, api, exceptions, fields, models
-from openerp.addons.connector.connector import Binder
+from odoo import _, api, exceptions, fields, models
+from odoo.addons.connector.connector import Binder
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
@@ -13,14 +13,14 @@ from ...backend import jira
 class JiraResUsers(models.Model):
     _name = 'jira.res.users'
     _inherit = 'jira.binding'
-    _inherits = {'res.users': 'openerp_id'}
+    _inherits = {'res.users': 'odoo_id'}
     _description = 'Jira User'
 
-    openerp_id = fields.Many2one(comodel_name='res.users',
-                                 string='User',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='res.users',
+                              string='User',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
 
 
 class ResUsers(models.Model):
@@ -28,7 +28,7 @@ class ResUsers(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.res.users',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='User Bindings',
         context={'active_test': False},
@@ -67,7 +67,7 @@ class ResUsers(models.Model):
                     jira_user, = jira_user
                     binding = self.env['jira.res.users'].create({
                         'backend_id': backend.id,
-                        'openerp_id': user.id,
+                        'odoo_id': user.id,
                     })
                     binder.bind(jira_user.key, binding)
 

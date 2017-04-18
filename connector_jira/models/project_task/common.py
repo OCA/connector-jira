@@ -2,7 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import api, fields, models, exceptions, _
+from odoo import api, fields, models, exceptions, _
 
 from ...unit.backend_adapter import JiraAdapter
 from ...backend import jira
@@ -11,14 +11,14 @@ from ...backend import jira
 class JiraProjectTask(models.Model):
     _name = 'jira.project.task'
     _inherit = 'jira.binding'
-    _inherits = {'project.task': 'openerp_id'}
+    _inherits = {'project.task': 'odoo_id'}
     _description = 'Jira Tasks'
 
-    openerp_id = fields.Many2one(comodel_name='project.task',
-                                 string='Task',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='project.task',
+                              string='Task',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
     jira_key = fields.Char(
         string='Key',
         readonly=True,
@@ -56,7 +56,7 @@ class ProjectTask(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.project.task',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='Task Bindings',
         context={'active_test': False},
@@ -96,20 +96,20 @@ class ProjectTask(models.Model):
             keys = record.mapped('jira_bind_ids.jira_key')
             record.jira_compound_key = ','.join([k for k in keys if k])
 
-    @api.depends('jira_bind_ids.jira_epic_link_id.openerp_id')
+    @api.depends('jira_bind_ids.jira_epic_link_id.odoo_id')
     def _compute_jira_epic_link_task_id(self):
         for record in self:
             tasks = record.mapped(
-                'jira_bind_ids.jira_epic_link_id.openerp_id'
+                'jira_bind_ids.jira_epic_link_id.odoo_id'
             )
             if len(tasks) == 1:
                 record.jira_epic_link_task_id = tasks
 
-    @api.depends('jira_bind_ids.jira_parent_id.openerp_id')
+    @api.depends('jira_bind_ids.jira_parent_id.odoo_id')
     def _compute_jira_parent_task_id(self):
         for record in self:
             tasks = record.mapped(
-                'jira_bind_ids.jira_parent_id.openerp_id'
+                'jira_bind_ids.jira_parent_id.odoo_id'
             )
             if len(tasks) == 1:
                 record.jira_parent_task_id = tasks
