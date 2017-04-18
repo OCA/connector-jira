@@ -123,7 +123,7 @@ class JiraBaseExporter(Exporter):
         self.binding_id = binding_id
         self.binding_record = self._get_odoo_data()
 
-        self.external_id = self.binder.to_backend(self.binding_id)
+        self.external_id = self.binder.to_external(self.binding_id)
 
         result = self._run(*args, **kwargs)
 
@@ -252,7 +252,7 @@ class JiraExporter(JiraBaseExporter):
             # If wrap is True, relation is already a binding record.
             binding = relation
 
-        if not rel_binder.to_backend(binding):
+        if not rel_binder.to_external(binding):
             exporter = self.unit_for(exporter_class, binding_model)
             exporter.run(binding.id)
 

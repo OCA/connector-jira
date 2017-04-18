@@ -52,7 +52,7 @@ class ResUsers(models.Model):
                 binder = connector_env.get_connector_unit(Binder)
                 adapter = connector_env.get_connector_unit(JiraAdapter)
                 for user in self:
-                    if binder.to_backend(user, wrap=True):
+                    if binder.to_external(user, wrap=True):
                         continue
                     jira_user = adapter.search(fragment=user.email)
                     if not jira_user:

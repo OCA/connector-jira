@@ -32,7 +32,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
     def issue_type(self, record):
         binder = self.binder_for('jira.issue.type')
         jira_type_id = record['fields']['issuetype']['id']
-        binding = binder.to_openerp(jira_type_id)
+        binding = binder.to_internal(jira_type_id)
         return {'jira_issue_type_id': binding.id}
 
     @mapping
@@ -42,7 +42,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
             return {'user_id': False}
         jira_key = assignee['key']
         binder = self.binder_for('jira.res.users')
-        user = binder.to_openerp(jira_key, unwrap=True)
+        user = binder.to_internal(jira_key, unwrap=True)
         if not user:
             email = assignee['emailAddress']
             raise MappingError(
@@ -62,7 +62,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
     def project(self, record):
         jira_project_id = record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
-        project = binder.to_openerp(jira_project_id, unwrap=True)
+        project = binder.to_internal(jira_project_id, unwrap=True)
         return {'project_id': project.id}
 
     @mapping
@@ -71,7 +71,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
             return {}
         jira_epic_id = self.options.jira_epic['id']
         binder = self.binder_for('jira.project.task')
-        binding = binder.to_openerp(jira_epic_id)
+        binding = binder.to_internal(jira_epic_id)
         return {'jira_epic_link_id': binding.id}
 
     @mapping
@@ -81,7 +81,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
             return {}
         jira_parent_id = jira_parent['id']
         binder = self.binder_for('jira.project.task')
-        binding = binder.to_openerp(jira_parent_id)
+        binding = binder.to_internal(jira_parent_id)
         return {'jira_parent_id': binding.id}
 
     @mapping
@@ -122,10 +122,10 @@ class ProjectTaskImporter(JiraImporter):
     def _is_issue_type_sync(self):
         jira_project_id = self.external_record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
-        project_binding = binder.to_openerp(jira_project_id)
+        project_binding = binder.to_internal(jira_project_id)
         task_sync_type_id = self.external_record['fields']['issuetype']['id']
         task_sync_type_binder = self.binder_for('jira.issue.type')
-        task_sync_type_binding = task_sync_type_binder.to_openerp(
+        task_sync_type_binding = task_sync_type_binder.to_internal(
             task_sync_type_id,
         )
         return task_sync_type_binding.is_sync_for_project(project_binding)

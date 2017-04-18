@@ -115,7 +115,7 @@ class JiraImporter(Importer):
         if importer_class is None:
             importer_class = JiraImporter
         binder = self.binder_for(binding_model)
-        if always or not binder.to_openerp(external_id):
+        if always or not binder.to_internal(external_id):
             importer = self.unit_for(importer_class, model=binding_model)
             importer.run(external_id, record=record)
 
@@ -142,7 +142,7 @@ class JiraImporter(Importer):
 
     def _get_binding(self):
         """Return the binding id from the jira id"""
-        return self.binder.to_openerp(self.external_id)
+        return self.binder.to_internal(self.external_id)
 
     def _create_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_create` """
@@ -309,7 +309,7 @@ class JiraImporter(Importer):
                 # later (and the new T3 will be aware of the category X
                 # from the its inception).
                 binder = new_connector_env.get_connector_unit(Binder)
-                if binder.to_openerp(self.external_id):
+                if binder.to_internal(self.external_id):
                     raise RetryableJobError(
                         'Concurrent error. The job will be retried later',
                         seconds=RETRY_WHEN_CONCURRENT_DETECTED,
@@ -408,7 +408,7 @@ class JiraDeleter(Deleter):
     _model_name = None
 
     def run(self, external_id, only_binding=False, set_inactive=False):
-        binding = self.binder.to_openerp(external_id)
+        binding = self.binder.to_internal(external_id)
         if not binding.exists():
             return
         if set_inactive:

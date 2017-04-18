@@ -49,7 +49,7 @@ class AnalyticLineMapper(ImportMapper):
         jira_author = record['author']
         jira_author_key = jira_author['key']
         binder = self.binder_for('jira.res.users')
-        user = binder.to_openerp(jira_author_key, unwrap=True)
+        user = binder.to_internal(jira_author_key, unwrap=True)
         if not user:
             email = jira_author['emailAddress']
             raise MappingError(
@@ -68,7 +68,7 @@ class AnalyticLineMapper(ImportMapper):
             assert issue
             project_binder = self.binder_for('jira.project.project')
             jira_project_id = issue['fields']['project']['id']
-            project = project_binder.to_openerp(jira_project_id, unwrap=True)
+            project = project_binder.to_internal(jira_project_id, unwrap=True)
             # we can link to any task so we create the worklog
             # on the project without any task
             return {'account_id': project.analytic_account_id.id}
@@ -126,8 +126,8 @@ class AnalyticLineImporter(JiraImporter):
             )
             jira_project_id = issue['fields']['project']['id']
             jira_issue_type_id = issue['fields']['issuetype']['id']
-            project_binding = project_binder.to_openerp(jira_project_id)
-            issue_type_binding = issue_type_binder.to_openerp(
+            project_binding = project_binder.to_internal(jira_project_id)
+            issue_type_binding = issue_type_binder.to_internal(
                 jira_issue_type_id
             )
             # JIRA allows to set an EPIC of a different project.
@@ -152,7 +152,7 @@ class AnalyticLineImporter(JiraImporter):
 
         if jira_issue_id:
             self._import_dependency(jira_issue_id, 'jira.project.task')
-            return issue_binder.to_openerp(jira_issue_id)
+            return issue_binder.to_internal(jira_issue_id)
 
     def _create_data(self, map_record, **kwargs):
         _super = super(AnalyticLineImporter, self)

@@ -46,13 +46,13 @@ class JiraModelBinder(Binder):
 
     _odoo_field = 'id'
 
-    def to_openerp(self, external_id, unwrap=False):
+    def to_internal(self, external_id, unwrap=False):
         if unwrap:
             _logger.warning('unwrap has no effect when the '
                             'binding is not an inherits '
                             '(model %s)', self.model._name)
         _super = super(JiraModelBinder, self)
-        return _super.to_openerp(external_id, unwrap=False)
+        return _super.to_internal(external_id, unwrap=False)
 
     def unwrap_binding(self, binding_id, browse=False):
         if isinstance(binding_id, models.BaseModel):
