@@ -22,11 +22,8 @@ import odoo
 from odoo import models, fields, api, exceptions, _
 
 from odoo.addons.connector.connector import ConnectorEnvironment
-from odoo.addons.connector.session import ConnectorSession
 
-from ...unit.importer import import_batch
 from ...unit.backend_adapter import JiraAdapter
-from ..jira_issue_type.importer import import_batch_issue_type
 from ...backend import jira
 
 _logger = logging.getLogger(__name__)
@@ -291,7 +288,6 @@ class JiraBackend(models.Model):
         """
         self.ensure_one()
         with self.env.cr.savepoint():
-            session = ConnectorSession.from_env(self.env)
             import_start_time = datetime.now()
             try:
                 self._lock_timestamp(from_date_field)
@@ -307,10 +303,9 @@ class JiraBackend(models.Model):
                 from_date = fields.Datetime.from_string(from_date)
             else:
                 from_date = None
-            import_batch.delay(session, model, self.id,
-                               from_date=from_date,
-                               to_date=import_start_time,
-                               priority=9)
+            self.env[model].with_delay(priority=9).import_batch(
+                self, from_date=from_date, to_date=import_start_time
+            )
 
             # Reimport next records a small delta before the last import date
             # in case of small lag between servers or transaction committed
@@ -512,17 +507,14 @@ class JiraBackend(models.Model):
 
     @api.multi
     def import_issue_type(self):
-        session = ConnectorSession.from_env(self.env)
-        import_batch_issue_type(session, 'jira.issue.type', self.id)
+        self.env['jira.issue.type'].import_batch(self)
         return True
 
     @contextmanager
     @api.multi
-    def get_environment(self, model_name, session=None):
+    def get_environment(self, model_name):
         self.ensure_one()
-        if not session:
-            session = ConnectorSession.from_env(self.env)
-        yield ConnectorEnvironment(self, session, model_name)
+        yield ConnectorEnvironment(self, model_name)
 
     @api.model
     def get_api_client(self):

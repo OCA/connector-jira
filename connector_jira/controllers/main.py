@@ -34,14 +34,6 @@ from odoo import http
 from odoo.http import request
 from odoo.addons.web.controllers.main import ensure_db
 
-from odoo.addons.connector.session import ConnectorSession
-
-from ..models.account_analytic_line.importer import (
-    import_worklog,
-    delete_worklog,
-)
-from ..unit.importer import import_record, delete_record
-
 _logger = logging.getLogger(__name__)
 
 
@@ -67,13 +59,11 @@ class JiraWebhookController(http.Controller):
         worklog = request.jsonrequest['issue']
         issue_id = worklog['id']
 
-        session = ConnectorSession.from_env(env)
+        delayable_model = env['jira.project.task'].with_delay()
         if action == 'jira:issue_deleted':
-            delete_record.delay(session, 'jira.project.task',
-                                backend.id, issue_id)
+            delayable_model.delete_record(backend, issue_id)
         else:
-            import_record.delay(session, 'jira.project.task',
-                                backend.id, issue_id)
+            delayable_model.import_record(backend, issue_id)
 
     @http.route('/connector_jira/webhooks/worklog',
                 type='json', auth='none', csrf=False)
@@ -96,10 +86,8 @@ class JiraWebhookController(http.Controller):
         issue_id = worklog['issueId']
         worklog_id = worklog['id']
 
-        session = ConnectorSession.from_env(env)
+        delayable_model = env['jira.account.analytic.line'].with_delay()
         if action == 'worklog_deleted':
-            delete_worklog.delay(session, 'jira.account.analytic.line',
-                                 backend.id, issue_id, worklog_id)
+            delayable_model.delete_record(backend, issue_id, worklog_id)
         else:
-            import_worklog.delay(session, 'jira.account.analytic.line',
-                                 backend.id, issue_id, worklog_id)
+            delayable_model.import_record(backend, issue_id, worklog_id)

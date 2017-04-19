@@ -2,11 +2,8 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
-from odoo.addons.connector.queue.job import job
 from odoo.addons.connector.unit.mapper import ImportMapper, mapping
 from ...unit.importer import (
-    BatchImporter,
     DirectBatchImporter,
     JiraImporter,
 )
@@ -46,12 +43,3 @@ class IssueTypeBatchImporter(DirectBatchImporter):
 @jira
 class IssueTypeImporter(JiraImporter):
     _model_name = 'jira.issue.type'
-
-
-@job(default_channel='root.connector_jira.import')
-def import_batch_issue_type(session, model_name, backend_id):
-    """ Prepare a batch import of issue types from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(BatchImporter)
-        importer.run()

@@ -22,8 +22,6 @@ from psycopg2 import IntegrityError, errorcodes
 import odoo
 from odoo import _
 from odoo.addons.connector.connector import Binder
-from odoo.addons.connector.queue.job import job
-from odoo.addons.connector.session import ConnectorSession
 from odoo.addons.connector.unit.synchronizer import Importer, Deleter
 from odoo.addons.connector.exception import (IDMissingInBackend,
                                              RetryableJobError)
@@ -41,8 +39,8 @@ class JiraImporter(Importer):
 
     def __init__(self, environment):
         """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
+        :param environment: current environment (backend, model_name, ...)
+        :type environment: :py:class:`connector.connector.ConnectorEnvironment`
         """
         super(JiraImporter, self).__init__(environment)
         self.external_id = None
@@ -227,10 +225,8 @@ class JiraImporter(Importer):
                 try:
                     new_env = odoo.api.Environment(cr, self.env.uid,
                                                    self.env.context)
-                    new_connector_session = ConnectorSession.from_env(new_env)
                     connector_env = self.connector_env.create_environment(
                         self.backend_record.with_env(new_env),
-                        new_connector_session,
                         model_name or self.model._name,
                         connector_env=self.connector_env
                     )
@@ -333,7 +329,7 @@ class JiraImporter(Importer):
     def _import(self, binding, **kwargs):
         """ Import the external record.
 
-        Can be inherited to modify for instance the session
+        Can be inherited to modify for instance the environment
         (change current user, values in context, ...)
 
         """
@@ -385,10 +381,7 @@ class DirectBatchImporter(BatchImporter):
 
     def _import_record(self, record_id):
         """ Import the record directly """
-        import_record(self.session,
-                      self.model._name,
-                      self.backend_record.id,
-                      record_id)
+        self.model.import_record(self.backend_record, record_id)
 
 
 class DelayedBatchImporter(BatchImporter):
@@ -397,11 +390,10 @@ class DelayedBatchImporter(BatchImporter):
 
     def _import_record(self, record_id, **kwargs):
         """ Delay the import of the records"""
-        import_record.delay(self.session,
-                            self.model._name,
-                            self.backend_record.id,
-                            record_id,
-                            **kwargs)
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            record_id
+        )
 
 
 class JiraDeleter(Deleter):
@@ -420,31 +412,3 @@ class JiraDeleter(Deleter):
             binding.unlink()
             if not only_binding:
                 record.unlink()
-
-
-@job(default_channel='root.connector_jira.import')
-def import_batch(session, model_name, backend_id, from_date=None,
-                 to_date=None):
-    """ Prepare a batch import of records from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(BatchImporter)
-        importer.run(from_date=from_date, to_date=to_date)
-
-
-@job(default_channel='root.connector_jira.normal')
-def import_record(session, model_name, backend_id, external_id, force=False):
-    """ Import a record from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(JiraImporter)
-        importer.run(external_id, force=force)
-
-
-@job(default_channel='root.connector_jira.normal')
-def delete_record(session, model_name, backend_id, external_id):
-    """ Delete a local record which has been deleted on JIRA """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        deleter = connector_env.get_connector_unit(JiraDeleter)
-        deleter.run(external_id)

@@ -5,16 +5,12 @@
 import logging
 from contextlib import contextmanager
 import psycopg2
-from odoo import _, fields
-from odoo.addons.connector.queue.job import job, related_action
+from odoo import _, fields, tools
 from odoo.addons.connector.unit.synchronizer import Exporter
 from odoo.addons.connector.exception import RetryableJobError
-from .importer import import_record
-from ..related_action import unwrap_binding
 from .mapper import iso8601_to_utc_datetime
 
 _logger = logging.getLogger(__name__)
-
 
 """
 
@@ -34,11 +30,11 @@ class JiraBaseExporter(Exporter):
 
     def __init__(self, environment):
         """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
+        :param environment: current environment (backend, model_name, ...)
+        :type environment: :py:class:`connector.connector.ConnectorEnvironment`
         """
         super(JiraBaseExporter, self).__init__(environment)
-        self.binding_id = None
+        self.binding = None
         self.external_id = None
 
     def _delay_import(self):
@@ -50,9 +46,8 @@ class JiraBaseExporter(Exporter):
         # force is True because the sync_date will be more recent
         # so the import would be skipped if it was not forced
         assert self.external_id
-        import_record.delay(self.session, self.model._name,
-                            self.backend_record.id, self.external_id,
-                            force=True)
+        self.binding.import_record(self.backend_record, self.external_id,
+                                   force=True)
 
     def _should_import(self):
         """ Before the export, compare the update date
@@ -60,10 +55,10 @@ class JiraBaseExporter(Exporter):
         if the former is more recent, schedule an import
         to not miss changes done in Jira.
         """
-        assert self.binding_record
+        assert self.binding
         if not self.external_id:
             return False
-        sync = self.binder.sync_date(self.binding_record)
+        sync = self.binder.sync_date(self.binding)
         if not sync:
             return True
         jira_updated = self.backend_adapter.read(
@@ -74,10 +69,6 @@ class JiraBaseExporter(Exporter):
         sync_date = fields.Datetime.from_string(sync)
         jira_date = iso8601_to_utc_datetime(jira_updated)
         return sync_date < jira_date
-
-    def _get_odoo_data(self):
-        """ Return the raw Odoo data for ``self.binding_id`` """
-        return self.model.browse(self.binding_id)
 
     def _lock(self):
         """ Lock the binding record.
@@ -100,37 +91,38 @@ class JiraBaseExporter(Exporter):
         sql = ("SELECT id FROM %s WHERE ID = %%s FOR NO KEY UPDATE NOWAIT" %
                self.model._table)
         try:
-            self.env.cr.execute(sql, (self.binding_id,),
+            self.env.cr.execute(sql, (self.binding.id,),
                                 log_exceptions=False)
         except psycopg2.OperationalError:
             _logger.info('A concurrent job is already exporting the same '
                          'record (%s with id %s). Job delayed later.',
-                         self.model._name, self.binding_id)
+                         self.model._name, self.binding.id)
             raise RetryableJobError(
                 'A concurrent job is already exporting the same record '
                 '(%s with id %s). The job will be retried later.' %
-                (self.model._name, self.binding_id))
+                (self.model._name, self.binding.id))
 
-    def run(self, binding_id, *args, **kwargs):
+    def run(self, binding, *args, **kwargs):
         """ Run the synchronization
 
-        :param binding_id: identifier of the binding record to export
+        :param binding: binding record to export
         """
+        self.binding = binding
+
+        if not self.binding.exists():
+            return _('Record to export does no longer exist.')
+
         # prevent other jobs to export the same record
         # will be released on commit (or rollback)
         self._lock()
 
-        self.binding_id = binding_id
-        self.binding_record = self._get_odoo_data()
-
-        self.external_id = self.binder.to_external(self.binding_id)
-
+        self.external_id = self.binder.to_external(self.binding)
         result = self._run(*args, **kwargs)
-
-        self.binder.bind(self.external_id, self.binding_id)
+        self.binder.bind(self.external_id, self.binding)
         # commit so we keep the external ID if several exports
         # are called and one of them fails
-        self.session.commit()
+        if not tools.config['test_enable']:
+            self.env.cr.commit()
         return result
 
     def _run(self, *args, **kwargs):
@@ -140,14 +132,6 @@ class JiraBaseExporter(Exporter):
 
 class JiraExporter(JiraBaseExporter):
     """ A common flow for the exports to Jira """
-
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(JiraExporter, self).__init__(environment)
-        self.binding_record = None
 
     def _has_to_skip(self):
         """ Return True if the export can be skipped """
@@ -245,7 +229,8 @@ class JiraExporter(JiraBaseExporter):
                     binding = model_c.create(bind_values)
                     # Eager commit to avoid having 2 jobs
                     # exporting at the same time.
-                    self.session.commit()
+                    if not tools.config['test_enable']:
+                        self.env.cr.commit()
         else:
             # If jira_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).
@@ -265,7 +250,7 @@ class JiraExporter(JiraBaseExporter):
         :py:class:`~odoo.addons.connector.unit.mapper.MapRecord`
 
         """
-        return self.mapper.map_record(self.binding_record)
+        return self.mapper.map_record(self.binding)
 
     def _validate_data(self, data):
         """ Check if the values to import are correct
@@ -315,14 +300,10 @@ class JiraExporter(JiraBaseExporter):
         so please do not do changes in the database before the export of the
         dependencies because they won't be rollbacked.
         """
-        assert self.binding_id
-        assert self.binding_record
+        assert self.binding
 
         if not self.external_id:
             fields = None  # should be created with all the fields
-
-        if not self.binding_record.exists():
-            return _('Record to export does no longer exist.')
 
         if self._has_to_skip():
             return
@@ -343,14 +324,3 @@ class JiraExporter(JiraBaseExporter):
                 return _('Nothing to export.')
             self.external_id = self._create(record)
         return _('Record exported with ID %s on Jira.') % self.external_id
-
-
-@job(default_channel='root.connector_jira.export')
-@related_action(action=unwrap_binding)
-def export_record(session, model_name, binding_id, fields=None):
-    """ Export a record on Jira """
-    binding = session.env[model_name].browse(binding_id)
-    backend = binding.backend_id
-    with backend.get_environment(model_name, session=session) as connector_env:
-        exporter = connector_env.get_connector_unit(JiraBaseExporter)
-        return exporter.run(binding_id, fields=fields)

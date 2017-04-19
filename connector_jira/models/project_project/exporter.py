@@ -5,7 +5,7 @@
 from odoo.addons.connector.event import (on_record_create,
                                          on_record_write,
                                          )
-from ... import consumer
+from ... import common
 from ...backend import jira
 from ...unit.exporter import JiraBaseExporter
 from ...unit.backend_adapter import JiraAdapter
@@ -13,18 +13,18 @@ from ...unit.backend_adapter import JiraAdapter
 
 @on_record_create(model_names='jira.project.project')
 @on_record_write(model_names='jira.project.project')
-def delay_export(session, model_name, record_id, vals):
-    consumer.delay_export(session, model_name, record_id, vals, priority=10)
+def delay_export(env, model_name, record_id, vals):
+    common.delay_export(env, model_name, record_id, vals, priority=10)
 
 
 @on_record_write(model_names='project.project')
-def delay_export_all_bindings(session, model_name, record_id, vals):
+def delay_export_all_bindings(env, model_name, record_id, vals):
     if vals.keys() == ['jira_bind_ids']:
         # Binding edited from the project's view.
         # When only this field has been modified, an other job has
         # been delayed for the jira.product.product record.
         return
-    consumer.delay_export_all_bindings(session, model_name, record_id, vals)
+    common.delay_export_all_bindings(env, model_name, record_id, vals)
 
 
 @jira
@@ -55,16 +55,16 @@ class JiraProjectProjectExporter(JiraBaseExporter):
     def _run(self, fields=None):
         adapter = self.unit_for(JiraAdapter)
 
-        key = self.binding_record.jira_key
-        name = self.binding_record.name[:80]
-        template = self.binding_record.project_template
+        key = self.binding.jira_key
+        name = self.binding.name[:80]
+        template = self.binding.project_template
         # TODO: add lead
 
         if self.external_id:
             self._update_project(adapter, {'name': name, 'key': key})
         else:
             if template == 'shared':
-                shared_key = self.binding_record.project_template_shared
+                shared_key = self.binding.project_template_shared
                 self.external_id = self._create_shared_project(
                     adapter, key, name, shared_key, None
                 )

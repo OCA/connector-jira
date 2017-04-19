@@ -54,15 +54,12 @@ class JiraModelBinder(Binder):
         _super = super(JiraModelBinder, self)
         return _super.to_internal(external_id, unwrap=False)
 
-    def unwrap_binding(self, binding_id, browse=False):
-        if isinstance(binding_id, models.BaseModel):
-            binding = binding_id
+    def unwrap_binding(self, binding):
+        if isinstance(binding, models.BaseModel):
+            binding.ensure_one()
         else:
-            binding = self.model.browse(binding_id)
-        if browse:
-            return binding
-        else:
-            return binding.id
+            binding = self.model.browse(binding)
+        return binding
 
     def unwrap_model(self):
         return self.model

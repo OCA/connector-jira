@@ -8,7 +8,8 @@
  'category': 'Connector',
  'depends': ['connector',
              'project',
-             'project_timesheet',
+             'hr_timesheet',
+             'queue_job',
              'web',
              ],
  'external_dependencies': {
@@ -34,5 +35,5 @@
      'security/ir.model.access.csv',
      'data/cron.xml',
      ],
- 'installable': False,
+ 'installable': True,
  }

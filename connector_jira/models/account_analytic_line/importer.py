@@ -9,13 +9,12 @@ from odoo.addons.connector.unit.mapper import (
     mapping,
     only_create,
 )
-from odoo.addons.connector.queue.job import job
 from ...unit.importer import (
     DelayedBatchImporter,
     JiraImporter,
     JiraDeleter,
 )
-from ...unit.backend_adapter import JiraAdapter
+from ...unit.backend_adapter import JiraAdapter, JIRA_JQL_DATETIME_FORMAT
 from ...unit.mapper import iso8601_local_date, whenempty
 from ...backend import jira
 
@@ -90,6 +89,29 @@ class AnalyticLineBatchImporter(DelayedBatchImporter):
     Import from a date
     """
     _model_name = 'jira.account.analytic.line'
+
+    def run(self, from_date=None, to_date=None):
+        """ Run the synchronization """
+        parts = []
+        if from_date:
+            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated >= "%s"' % from_date)
+        if to_date:
+            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated <= "%s"' % to_date)
+        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_ids = issue_adapter.search(' and '.join(parts))
+        for issue_id in issue_ids:
+            for worklog_id in self.backend_adapter.search(issue_id):
+                self._import_record(worklog_id, issue_id)
+
+    def _import_record(self, worklog_id, issue_id, **kwargs):
+        """ Delay the import of the records"""
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            issue_id,
+            worklog_id,
+        )
 
 
 @jira
@@ -193,22 +215,3 @@ class AnalyticLineImporter(JiraImporter):
 @jira
 class AnalyticLineDeleter(JiraDeleter):
     _model_name = 'jira.account.analytic.line'
-
-
-@job(default_channel='root.connector_jira.normal')
-def import_worklog(session, model_name, backend_id, issue_id, worklog_id,
-                   force=False):
-    """ Import a worklog from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(JiraImporter)
-        importer.run(worklog_id, issue_id=issue_id, force=force)
-
-
-@job(default_channel='root.connector_jira.normal')
-def delete_worklog(session, model_name, backend_id, issue_id, worklog_id):
-    """ Delete a local workflow which has been deleted on JIRA """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        deleter = connector_env.get_connector_unit(JiraDeleter)
-        deleter.run(worklog_id)

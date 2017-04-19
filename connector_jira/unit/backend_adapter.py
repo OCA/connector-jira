@@ -13,8 +13,8 @@ class JiraAdapter(CRUDAdapter):
 
     def __init__(self, environment):
         """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
+        :param environment: current environment (backend, model_name, ...)
+        :type environment: :py:class:`connector.connector.ConnectorEnvironment`
         """
         super(JiraAdapter, self).__init__(environment)
         self.client = self.backend_record.get_api_client()
