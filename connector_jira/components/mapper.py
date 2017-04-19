@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import pytz
 from datetime import datetime
 from dateutil import parser
 
-from openerp import fields
-from openerp.addons.connector.unit import mapper
+from odoo import fields
+from odoo.addons.component.core import Component
 
 
 def iso8601_to_utc_datetime(isodate):
@@ -148,13 +147,15 @@ def whenempty(field, default_value):
     return modifier
 
 
-class FromFields(mapper.Mapper):
+class FromFields(Component):
+    _name = 'jira.mapper.from.attrs'
+    _inherit = ['jira.base']
+    _usage = 'map.from.attrs'
 
-    @mapper.mapping
-    def values_from_attributes(self, record):
+    def values(self, record, mapper_):
         values = {}
-        from_fields_mappings = getattr(self, 'from_fields', [])
+        from_fields_mappings = getattr(mapper_, 'from_fields', [])
         fields_values = record.get('fields', {})
         for source, target in from_fields_mappings:
-            values[target] = self._map_direct(fields_values, source, target)
+            values[target] = mapper_._map_direct(fields_values, source, target)
         return values

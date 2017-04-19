@@ -60,7 +60,7 @@
         <field name="jira_compound_key"/>
       </field>
 
-      <xpath expr="//div[@class='oe_kanban_content']/div[@class='text-muted']" position="inside">
+      <xpath expr="//small[hasclass('o_kanban_record_subtitle')]" position="inside">
         <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
           <br/>
           <span>JIRA: <field name="jira_compound_key"/> <i><field name="jira_issue_type"/></i></span>

@@ -1,24 +1,21 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import api, fields, models, exceptions, _
-
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo import api, fields, models, exceptions, _
+from odoo.addons.component.core import Component
 
 
 class JiraProjectTask(models.Model):
     _name = 'jira.project.task'
     _inherit = 'jira.binding'
-    _inherits = {'project.task': 'openerp_id'}
+    _inherits = {'project.task': 'odoo_id'}
     _description = 'Jira Tasks'
 
-    openerp_id = fields.Many2one(comodel_name='project.task',
-                                 string='Task',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='project.task',
+                              string='Task',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
     jira_key = fields.Char(
         string='Key',
         readonly=True,
@@ -48,7 +45,7 @@ class JiraProjectTask(models.Model):
             raise exceptions.UserError(
                 _('A Jira task cannot be deleted.')
             )
-        return super(JiraProjectTask, self).unlink()
+        return super().unlink()
 
 
 class ProjectTask(models.Model):
@@ -56,7 +53,7 @@ class ProjectTask(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.project.task',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='Task Bindings',
         context={'active_test': False},
@@ -96,20 +93,20 @@ class ProjectTask(models.Model):
             keys = record.mapped('jira_bind_ids.jira_key')
             record.jira_compound_key = ','.join([k for k in keys if k])
 
-    @api.depends('jira_bind_ids.jira_epic_link_id.openerp_id')
+    @api.depends('jira_bind_ids.jira_epic_link_id.odoo_id')
     def _compute_jira_epic_link_task_id(self):
         for record in self:
             tasks = record.mapped(
-                'jira_bind_ids.jira_epic_link_id.openerp_id'
+                'jira_bind_ids.jira_epic_link_id.odoo_id'
             )
             if len(tasks) == 1:
                 record.jira_epic_link_task_id = tasks
 
-    @api.depends('jira_bind_ids.jira_parent_id.openerp_id')
+    @api.depends('jira_bind_ids.jira_parent_id.odoo_id')
     def _compute_jira_parent_task_id(self):
         for record in self:
             tasks = record.mapped(
-                'jira_bind_ids.jira_parent_id.openerp_id'
+                'jira_bind_ids.jira_parent_id.odoo_id'
             )
             if len(tasks) == 1:
                 record.jira_parent_task_id = tasks
@@ -125,9 +122,10 @@ class ProjectTask(models.Model):
         return names
 
 
-@jira
-class TaskAdapter(JiraAdapter):
-    _model_name = 'jira.project.task'
+class TaskAdapter(Component):
+    _name = 'jira.project.task.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.project.task']
 
     def read(self, id_, fields=None):
         return self.client.issue(id_, fields=fields).raw

@@ -1,26 +1,21 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
-from openerp import _, api, exceptions, fields, models
-from openerp.addons.connector.connector import Binder
-
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo import _, api, exceptions, fields, models
+from odoo.addons.component.core import Component
 
 
 class JiraResUsers(models.Model):
     _name = 'jira.res.users'
     _inherit = 'jira.binding'
-    _inherits = {'res.users': 'openerp_id'}
+    _inherits = {'res.users': 'odoo_id'}
     _description = 'Jira User'
 
-    openerp_id = fields.Many2one(comodel_name='res.users',
-                                 string='User',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='res.users',
+                              string='User',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
 
 
 class ResUsers(models.Model):
@@ -28,7 +23,7 @@ class ResUsers(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.res.users',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='User Bindings',
         context={'active_test': False},
@@ -48,11 +43,11 @@ class ResUsers(models.Model):
         if backends is None:
             backends = self.env['jira.backend'].search([])
         for backend in backends:
-            with backend.get_environment('jira.res.users') as connector_env:
-                binder = connector_env.get_connector_unit(Binder)
-                adapter = connector_env.get_connector_unit(JiraAdapter)
+            with backend.work_on('jira.res.users') as work:
+                binder = work.component(usage='binder')
+                adapter = work.component(usage='backend.adapter')
                 for user in self:
-                    if binder.to_backend(user, wrap=True):
+                    if binder.to_external(user, wrap=True):
                         continue
                     jira_user = adapter.search(fragment=user.email)
                     if not jira_user:
@@ -67,14 +62,15 @@ class ResUsers(models.Model):
                     jira_user, = jira_user
                     binding = self.env['jira.res.users'].create({
                         'backend_id': backend.id,
-                        'openerp_id': user.id,
+                        'odoo_id': user.id,
                     })
                     binder.bind(jira_user.key, binding)
 
 
-@jira
-class UserAdapter(JiraAdapter):
-    _model_name = 'jira.res.users'
+class UserAdapter(Component):
+    _name = 'jira.res.users.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.res.users']
 
     def read(self, id_):
         return self.client.user(id_).raw

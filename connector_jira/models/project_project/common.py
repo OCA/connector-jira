@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -10,10 +9,9 @@ import tempfile
 from jira import JIRAError
 from jira.utils import json_loads
 
-from openerp import api, fields, models, exceptions, _
+from odoo import api, fields, models, exceptions, _
 
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
@@ -21,14 +19,14 @@ _logger = logging.getLogger(__name__)
 class JiraProjectProject(models.Model):
     _name = 'jira.project.project'
     _inherit = 'jira.binding'
-    _inherits = {'project.project': 'openerp_id'}
+    _inherits = {'project.project': 'odoo_id'}
     _description = 'Jira Projects'
 
-    openerp_id = fields.Many2one(comodel_name='project.project',
-                                 string='Project',
-                                 required=True,
-                                 index=True,
-                                 ondelete='restrict')
+    odoo_id = fields.Many2one(comodel_name='project.project',
+                              string='Project',
+                              required=True,
+                              index=True,
+                              ondelete='restrict')
     sync_issue_type_ids = fields.Many2many(
         comodel_name='jira.issue.type',
         string='Issue Levels to Synchronize',
@@ -76,7 +74,7 @@ class JiraProjectProject(models.Model):
 
     @api.model
     def create(self, values):
-        record = super(JiraProjectProject, self).create(values)
+        record = super().create(values)
         if not record.jira_key:
             raise exceptions.UserError(
                 _('The JIRA Key is mandatory in order to export a project')
@@ -89,7 +87,7 @@ class JiraProjectProject(models.Model):
             raise exceptions.UserError(
                 _('The project template cannot be modified.')
             )
-        return super(JiraProjectProject, self).write(values)
+        return super().write(values)
 
     @api.multi
     def unlink(self):
@@ -97,7 +95,7 @@ class JiraProjectProject(models.Model):
             raise exceptions.UserError(
                 _('Exported project cannot be deleted.')
             )
-        return super(JiraProjectProject, self).unlink()
+        return super().unlink()
 
 
 class ProjectProject(models.Model):
@@ -105,7 +103,7 @@ class ProjectProject(models.Model):
 
     jira_bind_ids = fields.One2many(
         comodel_name='jira.project.project',
-        inverse_name='openerp_id',
+        inverse_name='odoo_id',
         copy=False,
         string='Project Bindings',
         context={'active_test': False},
@@ -137,12 +135,12 @@ class ProjectProject(models.Model):
 
     @api.multi
     def write(self, values):
-        result = super(ProjectProject, self).write(values)
+        result = super().write(values)
         for record in self:
             if record.jira_exportable and not record.jira_key:
                 raise exceptions.UserError(
                     _('The JIRA Key is mandatory on JIRA projects.')
-            )
+                )
         return result
 
     @api.multi
@@ -156,9 +154,11 @@ class ProjectProject(models.Model):
         return names
 
 
-@jira
-class ProjectAdapter(JiraAdapter):
-    _model_name = 'jira.project.project'
+class ProjectAdapter(Component):
+
+    _name = 'jira.project.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.project.project']
 
     def read(self, id_):
         return self.get(id_).raw

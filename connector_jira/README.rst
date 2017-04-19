@@ -1,8 +1,120 @@
 JIRA Connector
 ==============
 
-Known Issues:
+Dependencies
+------------
 
+You need the following Python packages
+
+* requests
+* jira
+* oauthlib
+* requests-oauthlib
+* requests-toolbelt
+* PyJWT
+* cryptography
+
+Setup
+-----
+
+Once the addon is installed, follow these steps:
+
+Backend
+^^^^^^^
+
+1. Open the menu Connectors > Jira > Backends
+2. Create a new Jira Backend
+
+* Put the name you want
+* Set the URL of your Jira, like https://jira.example.com
+* You can also select the company where records will be created and the
+  default project template used when Odoo will create the projects in Jira
+
+3. Save and continue with the Authentication
+
+Authentication of Backend
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. On the created backend, click on the Authenticate button, a popup with keys
+   will appear, keep these open in a tab
+2. Open Jira and go to System > Applications > Application links
+3. Enter the name of the application, example: odoo, and click on "Create new link"
+4. In the popup, set the URL where JIRA can reach Odoo. Jira might complain and
+   reopen the popup, confirm it again and a new popup appears
+5. In the new popup, do not set anything in the fields and click on Continue
+6. The link should be created now, edit it with the pen on the right
+7. Open the Incoming Authentication panel, be warned that it may take some time
+   to load
+8. Copy-paste the consumer key and public key from Odoo to the Jira link's
+   Incoming Authentication. Set a consumer name (e.g. odoo) and leave the
+   consumer callback url and 2 legged auth blank.
+9. Click on save at the bottom of the form (you need to scroll)
+10. Back on Odoo, click on Continue
+11. A link is displayed, click on it - you may need to login again - and click
+    on "Allow".
+12. Back on Odoo again, click on Continue
+13. Authentication is complete!
+
+
+Configuration of the Backend
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Setup the webhooks
+""""""""""""""""""
+
+It is advised to setup the webhooks so the synchronizations are in realtime.
+
+1. On the Jira Backend, set the "Base Odoo URL for Webhooks" to URL of Odoo,
+   it must be reachable from Jira.
+2. Click on "Install Webhooks"
+
+Configure the Epic Link
+"""""""""""""""""""""""
+
+If you use Epics, you need to click on "Configure Epic Link", Odoo will search
+the name of the custom field used for the Epic Link.
+
+Configuration done
+""""""""""""""""""
+
+You can now click on the button "Configuration Done".
+
+Syncronizations
+^^^^^^^^^^^^^^^
+
+Initial synchronizations
+""""""""""""""""""""""""
+
+You can already select the "Imports" tab in the Backend and click on "Link
+users" and "Import issue types". The users will be matched either by login or by email.
+
+Create and export a project
+"""""""""""""""""""""""""""
+
+Projects are created in Odoo and exported to Jira. You can then create a
+project, set a Jira key.
+Then, open the Connectors tab, add a new link.
+You can chose the Jira to export to, and the type of project.
+You have to select the synchronized issue types, but the field is not editable
+until the record is saved. You need to save and edit it again to be able to
+select them.
+
+
+Synchronize tasks and worklogs
+""""""""""""""""""""""""""""""
+
+If the webhooks are active, as soon as they are created in Jira they should appear in Odoo.
+If they are not active, you can open the Jira Backend and run the
+synchronizations manually, or activate the Scheduled Actions to run the batch
+imports. It is important to select the issue types so don't miss this step (need improvement).
+
+
+Known Issues
+------------
+
+* The Project Jira binding must be saved first then edited again to add the issue types afterwards...
+* If an odoo user has no linked employee, worklogs will still be imported but
+  with an empty employee
 * The tasks and worklogs deleted on JIRA are deleted if
   the webhooks are active and running, but the batch
   import can't see what has been deleted on Jira...
