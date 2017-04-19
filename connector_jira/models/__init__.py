@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from . import jira_binding  # must be before the others
 
 from . import account_analytic_line

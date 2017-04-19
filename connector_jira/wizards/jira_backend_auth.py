@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright: 2015 LasLabs, Inc.
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
@@ -6,9 +5,9 @@
 import requests
 from oauthlib.oauth1 import SIGNATURE_RSA
 from requests_oauthlib import OAuth1
-from urlparse import parse_qsl
+from urllib.parse import parse_qsl
 
-from openerp import models, fields, api, exceptions, _
+from odoo import models, fields, api, exceptions, _
 
 
 class JiraBackendAuth(models.TransientModel):
@@ -19,7 +18,7 @@ class JiraBackendAuth(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        values = super(JiraBackendAuth, self).default_get(fields)
+        values = super().default_get(fields)
         context = self.env.context
         if (context.get('active_model') == 'jira.backend' and
                 context.get('active_id')):
