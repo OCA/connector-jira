@@ -5,11 +5,11 @@
 import logging
 from distutils.util import strtobool
 
-from openerp import api, fields, models
+from odoo import api, fields, models
 try:
-    from openerp.addons.server_environment import serv_config
+    from odoo.addons.server_environment import serv_config
 except ImportError:
-    logging.getLogger('openerp.module').warning(
+    logging.getLogger('odoo.module').warning(
         'server_environment not available in addons path. '
         'server_env_connector_jira will not be usable')
 
