@@ -1,28 +1,18 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _
-from openerp.addons.connector.exception import MappingError
-from openerp.addons.connector.unit.mapper import (
-    ImportMapper,
-    mapping,
-    only_create,
-)
-from openerp.addons.connector.queue.job import job
-from ...unit.importer import (
-    DelayedBatchImporter,
-    JiraImporter,
-    JiraDeleter,
-)
-from ...unit.backend_adapter import JiraAdapter
-from ...unit.mapper import iso8601_local_date, whenempty
-from ...backend import jira
+from odoo import _
+from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector.components.mapper import mapping, only_create
+from odoo.addons.component.core import Component
+from ...components.backend_adapter import JIRA_JQL_DATETIME_FORMAT
+from ...components.mapper import iso8601_local_date, whenempty
 
 
-@jira
-class AnalyticLineMapper(ImportMapper):
-    _model_name = 'jira.account.analytic.line'
+class AnalyticLineMapper(Component):
+    _name = 'jira.analytic.line.mapper'
+    _inherit = 'base.import.mapper'
+    _apply_on = ['jira.account.analytic.line']
 
     direct = [
         (whenempty('comment', _('missing description')), 'name'),
@@ -49,7 +39,7 @@ class AnalyticLineMapper(ImportMapper):
         jira_author = record['author']
         jira_author_key = jira_author['key']
         binder = self.binder_for('jira.res.users')
-        user = binder.to_openerp(jira_author_key, unwrap=True)
+        user = binder.to_internal(jira_author_key, unwrap=True)
         if not user:
             email = jira_author['emailAddress']
             raise MappingError(
@@ -68,36 +58,62 @@ class AnalyticLineMapper(ImportMapper):
             assert issue
             project_binder = self.binder_for('jira.project.project')
             jira_project_id = issue['fields']['project']['id']
-            project = project_binder.to_openerp(jira_project_id, unwrap=True)
+            project = project_binder.to_internal(jira_project_id, unwrap=True)
             # we can link to any task so we create the worklog
             # on the project without any task
             return {'account_id': project.analytic_account_id.id}
 
-        analytic = task_binding.project_id.analytic_account_id
-        return {'task_id': task_binding.openerp_id.id,
-                'account_id': analytic.id}
+        project = task_binding.project_id
+        return {'task_id': task_binding.odoo_id.id,
+                'project_id': project.id}
 
     @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
 
-@jira
-class AnalyticLineBatchImporter(DelayedBatchImporter):
+class AnalyticLineBatchImporter(Component):
     """ Import the Jira worklogs
 
     For every id in in the list, a delayed job is created.
     Import from a date
     """
-    _model_name = 'jira.account.analytic.line'
+    _name = 'jira.analytic.line.batch.importer'
+    _inherit = 'jira.delayed.batch.importer'
+    _apply_on = ['jira.account.analytic.line']
+
+    def run(self, from_date=None, to_date=None):
+        """ Run the synchronization """
+        parts = []
+        if from_date:
+            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated >= "%s"' % from_date)
+        if to_date:
+            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated <= "%s"' % to_date)
+        issue_adapter = self.component(usage='backend.adapter',
+                                       model_name='jira.project.task')
+        issue_ids = issue_adapter.search(' and '.join(parts))
+        for issue_id in issue_ids:
+            for worklog_id in self.backend_adapter.search(issue_id):
+                self._import_record(worklog_id, issue_id)
+
+    def _import_record(self, worklog_id, issue_id, **kwargs):
+        """ Delay the import of the records"""
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            issue_id,
+            worklog_id,
+        )
 
 
-@jira
-class AnalyticLineImporter(JiraImporter):
-    _model_name = 'jira.account.analytic.line'
+class AnalyticLineImporter(Component):
+    _name = 'jira.analytic.line.importer'
+    _inherit = 'jira.importer'
+    _apply_on = ['jira.account.analytic.line']
 
-    def __init__(self, environment):
-        super(AnalyticLineImporter, self).__init__(environment)
+    def __init__(self, work_context):
+        super().__init__(work_context)
         self.external_issue_id = None
         self.task_binding = None
 
@@ -112,7 +128,8 @@ class AnalyticLineImporter(JiraImporter):
         It ensures that the 'to-be-linked' issue is imported and return it.
 
         """
-        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_adapter = self.component(usage='backend.adapter',
+                                       model_name='jira.project.task')
         project_binder = self.binder_for('jira.project.project')
         issue_binder = self.binder_for('jira.project.task')
         issue_type_binder = self.binder_for('jira.issue.type')
@@ -126,8 +143,8 @@ class AnalyticLineImporter(JiraImporter):
             )
             jira_project_id = issue['fields']['project']['id']
             jira_issue_type_id = issue['fields']['issuetype']['id']
-            project_binding = project_binder.to_openerp(jira_project_id)
-            issue_type_binding = issue_type_binder.to_openerp(
+            project_binding = project_binder.to_internal(jira_project_id)
+            issue_type_binding = issue_type_binder.to_internal(
                 jira_issue_type_id
             )
             # JIRA allows to set an EPIC of a different project.
@@ -152,30 +169,31 @@ class AnalyticLineImporter(JiraImporter):
 
         if jira_issue_id:
             self._import_dependency(jira_issue_id, 'jira.project.task')
-            return issue_binder.to_openerp(jira_issue_id)
+            return issue_binder.to_internal(jira_issue_id)
 
     def _create_data(self, map_record, **kwargs):
-        _super = super(AnalyticLineImporter, self)
-        return _super._create_data(map_record,
-                                   task_binding=self.task_binding,
-                                   linked_issue=self.external_issue)
+        return super()._create_data(map_record,
+                                    task_binding=self.task_binding,
+                                    linked_issue=self.external_issue)
 
     def _update_data(self, map_record, **kwargs):
-        _super = super(AnalyticLineImporter, self)
-        return _super._update_data(map_record,
-                                   task_binding=self.task_binding,
-                                   linked_issue=self.external_issue)
+        return super()._update_data(map_record,
+                                    task_binding=self.task_binding,
+                                    linked_issue=self.external_issue)
 
     def run(self, external_id, force=False, record=None, **kwargs):
         assert 'issue_id' in kwargs
         self.external_issue_id = kwargs.pop('issue_id')
-        return super(AnalyticLineImporter, self).run(
+        return super().run(
             external_id, force=force, record=record, **kwargs
         )
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
-        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_adapter = self.component(
+            usage='backend.adapter',
+            model_name='jira.project.task'
+        )
         self.external_issue = issue_adapter.read(self.external_issue_id)
         return self.backend_adapter.read(self.external_issue_id,
                                          self.external_id)
@@ -188,27 +206,3 @@ class AnalyticLineImporter(JiraImporter):
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
-
-
-@jira
-class AnalyticLineDeleter(JiraDeleter):
-    _model_name = 'jira.account.analytic.line'
-
-
-@job(default_channel='root.connector_jira.normal')
-def import_worklog(session, model_name, backend_id, issue_id, worklog_id,
-                   force=False):
-    """ Import a worklog from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(JiraImporter)
-        importer.run(worklog_id, issue_id=issue_id, force=force)
-
-
-@job(default_channel='root.connector_jira.normal')
-def delete_worklog(session, model_name, backend_id, issue_id, worklog_id):
-    """ Delete a local workflow which has been deleted on JIRA """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        deleter = connector_env.get_connector_unit(JiraDeleter)
-        deleter.run(worklog_id)

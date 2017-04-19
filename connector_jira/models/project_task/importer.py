@@ -1,23 +1,16 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from openerp import _
-from openerp.addons.connector.exception import MappingError
-from openerp.addons.connector.unit.mapper import ImportMapper, mapping
-from ...unit.backend_adapter import JiraAdapter
-from ...unit.importer import (
-    DelayedBatchImporter,
-    JiraImporter,
-    JiraDeleter,
-)
-from ...unit.mapper import FromFields
-from ...backend import jira
+from odoo import _
+from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.component.core import Component
 
 
-@jira
-class ProjectTaskMapper(ImportMapper, FromFields):
-    _model_name = 'jira.project.task'
+class ProjectTaskMapper(Component):
+    _name = 'jira.project.task.mapper'
+    _inherit = 'base.import.mapper'
+    _apply_on = ['jira.project.task']
 
     direct = [
         ('key', 'jira_key'),
@@ -29,10 +22,16 @@ class ProjectTaskMapper(ImportMapper, FromFields):
     ]
 
     @mapping
+    def from_attributes(self, record):
+        return self.component(usage='map.from.attrs').values(
+            record, self
+        )
+
+    @mapping
     def issue_type(self, record):
         binder = self.binder_for('jira.issue.type')
         jira_type_id = record['fields']['issuetype']['id']
-        binding = binder.to_openerp(jira_type_id)
+        binding = binder.to_internal(jira_type_id)
         return {'jira_issue_type_id': binding.id}
 
     @mapping
@@ -42,7 +41,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
             return {'user_id': False}
         jira_key = assignee['key']
         binder = self.binder_for('jira.res.users')
-        user = binder.to_openerp(jira_key, unwrap=True)
+        user = binder.to_internal(jira_key, unwrap=True)
         if not user:
             email = assignee['emailAddress']
             raise MappingError(
@@ -62,7 +61,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
     def project(self, record):
         jira_project_id = record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
-        project = binder.to_openerp(jira_project_id, unwrap=True)
+        project = binder.to_internal(jira_project_id, unwrap=True)
         return {'project_id': project.id}
 
     @mapping
@@ -70,7 +69,8 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         if not self.options.jira_epic:
             return {}
         jira_epic_id = self.options.jira_epic['id']
-        binding = self.binder_for('jira.project.task').to_openerp(jira_epic_id)
+        binder = self.binder_for('jira.project.task')
+        binding = binder.to_internal(jira_epic_id)
         return {'jira_epic_link_id': binding.id}
 
     @mapping
@@ -80,7 +80,7 @@ class ProjectTaskMapper(ImportMapper, FromFields):
             return {}
         jira_parent_id = jira_parent['id']
         binder = self.binder_for('jira.project.task')
-        binding = binder.to_openerp(jira_parent_id)
+        binding = binder.to_internal(jira_parent_id)
         return {'jira_parent_id': binding.id}
 
     @mapping
@@ -88,31 +88,35 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         return {'backend_id': self.backend_record.id}
 
 
-@jira
-class ProjectTaskBatchImporter(DelayedBatchImporter):
+class ProjectTaskBatchImporter(Component):
     """ Import the Jira tasks
 
     For every id in in the list of tasks, a delayed job is created.
     Import from a date
     """
-    _model_name = 'jira.project.task'
+    _name = 'jira.project.task.batch.importer'
+    _inherit = ['jira.delayed.batch.importer']
+    _apply_on = ['jira.project.task']
 
 
-@jira
-class ProjectTaskImporter(JiraImporter):
-    _model_name = 'jira.project.task'
+class ProjectTaskImporter(Component):
+    _name = 'jira.project.task.importer'
+    _inherit = ['jira.importer']
+    _apply_on = ['jira.project.task']
 
-    def __init__(self, environment):
-        super(ProjectTaskImporter, self).__init__(environment)
+    def __init__(self, work_context):
+        super().__init__(work_context)
         self.jira_epic = None
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
-        result = super(ProjectTaskImporter, self)._get_external_data()
+        result = super()._get_external_data()
         epic_field_name = self.backend_record.epic_link_field_name
         if epic_field_name:
-            issue_adapter = self.unit_for(JiraAdapter,
-                                          model='jira.project.task')
+            issue_adapter = self.component(
+                usage='backend.adapter',
+                model_name='jira.project.task'
+            )
             epic_key = result['fields'][epic_field_name]
             if epic_key:
                 self.jira_epic = issue_adapter.read(epic_key)
@@ -121,28 +125,26 @@ class ProjectTaskImporter(JiraImporter):
     def _is_issue_type_sync(self):
         jira_project_id = self.external_record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
-        project_binding = binder.to_openerp(jira_project_id)
+        project_binding = binder.to_internal(jira_project_id)
         task_sync_type_id = self.external_record['fields']['issuetype']['id']
         task_sync_type_binder = self.binder_for('jira.issue.type')
-        task_sync_type_binding = task_sync_type_binder.to_openerp(
+        task_sync_type_binding = task_sync_type_binder.to_internal(
             task_sync_type_id,
         )
         return task_sync_type_binding.is_sync_for_project(project_binding)
 
     def _create_data(self, map_record, **kwargs):
-        _super = super(ProjectTaskImporter, self)
-        return _super._create_data(map_record, jira_epic=self.jira_epic)
+        return super()._create_data(map_record, jira_epic=self.jira_epic)
 
     def _update_data(self, map_record, **kwargs):
-        _super = super(ProjectTaskImporter, self)
-        return _super._update_data(map_record, jira_epic=self.jira_epic)
+        return super()._update_data(map_record, jira_epic=self.jira_epic)
 
     def _import(self, binding, **kwargs):
         # called at the beginning of _import because we must be sure
         # that dependencies are there (project and issue type)
         if not self._is_issue_type_sync():
             return _('Project or issue type is not synchronized.')
-        return super(ProjectTaskImporter, self)._import(binding, **kwargs)
+        return super()._import(binding, **kwargs)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -166,8 +168,3 @@ class ProjectTaskImporter(JiraImporter):
         if self.jira_epic:
             self._import_dependency(self.jira_epic['id'], 'jira.project.task',
                                     record=self.jira_epic)
-
-
-@jira
-class ProjectTaskDeleter(JiraDeleter):
-    _model_name = 'jira.project.task'
