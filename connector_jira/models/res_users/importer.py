@@ -1,20 +1,19 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from ...unit.importer import JiraImporter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 
-@jira
-class UserImporter(JiraImporter):
-    _model_name = 'jira.res.users'
+class UserImporter(Component):
+    _name = 'jira.res.users.importer'
+    _inherit = ['jira.importer']
+    _apply_on = ['jira.res.users']
 
     def _import(self, binding):
         record = self.external_record
         jira_key = self.external_id
         binder = self.binder_for('jira.res.users')
-        user = binder.to_openerp(jira_key, unwrap=True)
+        user = binder.to_internal(jira_key, unwrap=True)
         if not user:
             email = record['emailAddress']
             user = self.env['res.users'].search(
