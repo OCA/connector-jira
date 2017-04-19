@@ -10,8 +10,7 @@
  'depends': ['server_environment',  # oca/server-tools
              'connector_jira',
              ],
- 'website': 'http://www.camptocamp.com',
+ 'website': 'https://www.camptocamp.com',
  'data': [],
- 'test': [],
- 'installable': False,
+ 'installable': True,
  }
