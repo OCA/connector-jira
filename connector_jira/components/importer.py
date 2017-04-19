@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -19,14 +18,12 @@ from contextlib import closing, contextmanager
 
 from psycopg2 import IntegrityError, errorcodes
 
-import openerp
-from openerp import _
-from openerp.addons.connector.connector import Binder
-from openerp.addons.connector.queue.job import job
-from openerp.addons.connector.session import ConnectorSession
-from openerp.addons.connector.unit.synchronizer import Importer, Deleter
-from openerp.addons.connector.exception import (IDMissingInBackend,
-                                                RetryableJobError)
+import odoo
+from odoo import _
+
+from odoo.addons.component.core import AbstractComponent, Component
+from odoo.addons.queue_job.exception import RetryableJobError
+from odoo.addons.connector.exception import IDMissingInBackend
 from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
 
@@ -36,15 +33,18 @@ RETRY_ON_ADVISORY_LOCK = 1  # seconds
 RETRY_WHEN_CONCURRENT_DETECTED = 1  # seconds
 
 
-class JiraImporter(Importer):
-    """ Base importer for Jira """
+class JiraImporter(Component):
+    """Base importer for Jira
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, session, ...)
-        :type environment: :py:class:`connector.connector.Environment`
-        """
-        super(JiraImporter, self).__init__(environment)
+    If no specific importer is defined for a model, this one is used.
+    """
+
+    _name = 'jira.importer'
+    _inherit = ['base.importer', 'jira.base']
+    _usage = 'record.importer'
+
+    def __init__(self, work_context):
+        super().__init__(work_context)
         self.external_id = None
         self.external_record = None
 
@@ -67,12 +67,12 @@ class JiraImporter(Importer):
 
     def _is_uptodate(self, binding):
         """Return True if the import should be skipped because
-        it is already up-to-date in OpenERP"""
+        it is already up-to-date in Odoo"""
         assert self.external_record
         ext_fields = self.external_record.get('fields', {})
         external_updated_at = ext_fields.get('updated')
         if not external_updated_at:
-            return False # no update date on Jira, always import it.
+            return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
         external_date = iso8601_to_utc_datetime(external_updated_at)
@@ -88,20 +88,20 @@ class JiraImporter(Importer):
         return external_date < sync_date
 
     def _import_dependency(self, external_id, binding_model,
-                           importer_class=None, record=None, always=False):
+                           component=None, record=None, always=False):
         """
-        Import a dependency. The importer class is a subclass of
-        ``JiraImporter``. A specific class can be defined.
+        Import a dependency.
+
+        The component that will be used for the dependency can be injected
+        with the ``component``.
 
         :param external_id: id of the related binding to import
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param importer_cls: :py:class:`openerp.addons.connector.\
-                                        connector.ConnectorUnit`
-                             class or parent class to use for the export.
-                             By default: JiraImporter
-        :type importer_cls: :py:class:`openerp.addons.connector.\
-                                       connector.MetaConnectorUnit`
+        :param component: component to use for the importer
+                          By default: lookup component for the model with
+                          usage ``record.importer``
+        :type importer_cls: :py:class:`odoo.addons.component.core.Component`
         :param record: if we already have the data of the dependency, we
                        can pass it along to the dependency's importer
         :type record: dict
@@ -112,12 +112,12 @@ class JiraImporter(Importer):
         """
         if not external_id:
             return
-        if importer_class is None:
-            importer_class = JiraImporter
         binder = self.binder_for(binding_model)
-        if always or not binder.to_openerp(external_id):
-            importer = self.unit_for(importer_class, model=binding_model)
-            importer.run(external_id, record=record)
+        if always or not binder.to_internal(external_id):
+            if component is None:
+                component = self.component(usage='record.importer',
+                                           model_name=binding_model)
+            component.run(external_id, record=record)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -125,7 +125,7 @@ class JiraImporter(Importer):
 
     def _map_data(self):
         """ Returns an instance of
-        :py:class:`~openerp.addons.connector.unit.mapper.MapRecord`
+        :py:class:`~odoo.addons.component.core.Component`
 
         """
         return self.mapper.map_record(self.external_record)
@@ -142,7 +142,7 @@ class JiraImporter(Importer):
 
     def _get_binding(self):
         """Return the binding id from the jira id"""
-        return self.binder.to_openerp(self.external_id)
+        return self.binder.to_internal(self.external_id)
 
     def _create_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_create` """
@@ -199,7 +199,7 @@ class JiraImporter(Importer):
         return map_record.values(**kwargs)
 
     def _update(self, binding, data):
-        """ Update an OpenERP record """
+        """ Update an Odoo record """
         # special check on data before import
         self._validate_data(data)
         binding.with_context(connector_no_export=True).write(data)
@@ -211,31 +211,25 @@ class JiraImporter(Importer):
         return
 
     @contextmanager
-    def do_in_new_connector_env(self, model_name=None):
-        """ Context manager that yields a new connector environment
+    def do_in_new_work_context(self, model_name=None):
+        """ Context manager that yields a new component work context
 
         Using a new Odoo Environment thus a new PG transaction.
 
         This can be used to make a preemptive check in a new transaction,
         for instance to see if another transaction already made the work.
         """
-        with openerp.api.Environment.manage():
-            registry = openerp.modules.registry.RegistryManager.get(
-                self.env.cr.dbname
-            )
+        with odoo.api.Environment.manage():
+            registry = odoo.registry(self.env.cr.dbname)
             with closing(registry.cursor()) as cr:
                 try:
-                    new_env = openerp.api.Environment(cr, self.env.uid,
-                                                      self.env.context)
-                    new_connector_session = ConnectorSession.from_env(new_env)
-                    connector_env = self.connector_env.create_environment(
-                        self.backend_record.with_env(new_env),
-                        new_connector_session,
-                        model_name or self.model._name,
-                        connector_env=self.connector_env
-                    )
-                    yield connector_env
-                except:
+                    new_env = odoo.api.Environment(cr, self.env.uid,
+                                                   self.env.context)
+                    backend = self.backend_record.with_env(new_env)
+                    with backend.work_on(model_name
+                                         or self.model._name) as work:
+                        yield work
+                except Exception:
                     cr.rollback()
                     raise
                 else:
@@ -268,7 +262,7 @@ class JiraImporter(Importer):
                 return _('Record does no longer exist in Jira')
         binding = self._get_binding()
         if not binding:
-            with self.do_in_new_connector_env() as new_connector_env:
+            with self.do_in_new_work_context() as new_work:
                 # Even when we use an advisory lock, we may have
                 # concurrent issues.
                 # Explanation:
@@ -308,8 +302,8 @@ class JiraImporter(Importer):
                 # a Retryable error so T2 is rollbacked and retried
                 # later (and the new T3 will be aware of the category X
                 # from the its inception).
-                binder = new_connector_env.get_connector_unit(Binder)
-                if binder.to_openerp(self.external_id):
+                binder = new_work.component(usage='binder')
+                if binder.to_internal(self.external_id):
                     raise RetryableJobError(
                         'Concurrent error. The job will be retried later',
                         seconds=RETRY_WHEN_CONCURRENT_DETECTED,
@@ -333,7 +327,7 @@ class JiraImporter(Importer):
     def _import(self, binding, **kwargs):
         """ Import the external record.
 
-        Can be inherited to modify for instance the session
+        Can be inherited to modify for instance the environment
         (change current user, values in context, ...)
 
         """
@@ -352,11 +346,15 @@ class JiraImporter(Importer):
         self._after_import(binding)
 
 
-class BatchImporter(Importer):
+class BatchImporter(AbstractComponent):
     """ The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
+
+    _name = 'jira.batch.importer'
+    _inherit = ['base.importer', 'jira.base']
+    _usage = 'batch.importer'
 
     def run(self, from_date=None, to_date=None):
         """ Run the synchronization """
@@ -379,72 +377,44 @@ class BatchImporter(Importer):
         raise NotImplementedError
 
 
-class DirectBatchImporter(BatchImporter):
+class DirectBatchImporter(AbstractComponent):
     """ Import the records directly, without delaying the jobs. """
-    _model_name = None
+    _name = 'jira.direct.batch.importer'
+    _inherit = ['jira.batch.importer']
 
     def _import_record(self, record_id):
         """ Import the record directly """
-        import_record(self.session,
-                      self.model._name,
-                      self.backend_record.id,
-                      record_id)
+        self.model.import_record(self.backend_record, record_id)
 
 
-class DelayedBatchImporter(BatchImporter):
+class DelayedBatchImporter(AbstractComponent):
     """ Delay import of the records """
-    _model_name = None
+    _name = 'jira.delayed.batch.importer'
+    _inherit = ['jira.batch.importer']
 
     def _import_record(self, record_id, **kwargs):
         """ Delay the import of the records"""
-        import_record.delay(self.session,
-                            self.model._name,
-                            self.backend_record.id,
-                            record_id,
-                            **kwargs)
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            record_id
+        )
 
 
-class JiraDeleter(Deleter):
-    _model_name = None
+class JiraDeleter(Component):
+    _name = 'jira.deleter'
+    _inherit = ['base.deleter', 'jira.base']
+    _usage = 'record.deleter'
 
     def run(self, external_id, only_binding=False, set_inactive=False):
-        binding = self.binder.to_openerp(external_id)
+        binding = self.binder.to_internal(external_id)
         if not binding.exists():
             return
         if set_inactive:
             binding.active = False
         else:
-            record = binding.openerp_id
+            record = binding.odoo_id
             # emptying the external_id allows to unlink the binding
             binding.external_id = False
             binding.unlink()
             if not only_binding:
                 record.unlink()
-
-
-@job(default_channel='root.connector_jira.import')
-def import_batch(session, model_name, backend_id, from_date=None,
-                 to_date=None):
-    """ Prepare a batch import of records from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(BatchImporter)
-        importer.run(from_date=from_date, to_date=to_date)
-
-
-@job(default_channel='root.connector_jira.normal')
-def import_record(session, model_name, backend_id, external_id, force=False):
-    """ Import a record from Jira """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        importer = connector_env.get_connector_unit(JiraImporter)
-        importer.run(external_id, force=force)
-
-
-@job(default_channel='root.connector_jira.normal')
-def delete_record(session, model_name, backend_id, external_id):
-    """ Delete a local record which has been deleted on JIRA """
-    backend = session.env['jira.backend'].browse(backend_id)
-    with backend.get_environment(model_name, session=session) as connector_env:
-        deleter = connector_env.get_connector_unit(JiraDeleter)
-        deleter.run(external_id)
