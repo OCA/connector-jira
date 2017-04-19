@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -29,18 +28,10 @@ gets the data by itself (with the nice side-effect that the job is retryable).
 
 import logging
 
-import openerp
-from openerp import http
-from openerp.http import request
-from openerp.addons.web.controllers.main import ensure_db
-
-from openerp.addons.connector.session import ConnectorSession
-
-from ..models.account_analytic_line.importer import (
-    import_worklog,
-    delete_worklog,
-)
-from ..unit.importer import import_record, delete_record
+import odoo
+from odoo import http
+from odoo.http import request
+from odoo.addons.web.controllers.main import ensure_db
 
 _logger = logging.getLogger(__name__)
 
@@ -51,7 +42,7 @@ class JiraWebhookController(http.Controller):
                 type='json', auth='none', csrf=False)
     def webhook_issue(self, issue_id=None, **kw):
         ensure_db()
-        request.uid = openerp.SUPERUSER_ID
+        request.uid = odoo.SUPERUSER_ID
         env = request.env
         backend = env['jira.backend'].search(
             [('use_webhooks', '=', True)],
@@ -67,19 +58,17 @@ class JiraWebhookController(http.Controller):
         worklog = request.jsonrequest['issue']
         issue_id = worklog['id']
 
-        session = ConnectorSession.from_env(env)
+        delayable_model = env['jira.project.task'].with_delay()
         if action == 'jira:issue_deleted':
-            delete_record.delay(session, 'jira.project.task',
-                                backend.id, issue_id)
+            delayable_model.delete_record(backend, issue_id)
         else:
-            import_record.delay(session, 'jira.project.task',
-                                backend.id, issue_id)
+            delayable_model.import_record(backend, issue_id)
 
     @http.route('/connector_jira/webhooks/worklog',
                 type='json', auth='none', csrf=False)
     def webhook_worklog(self, **kw):
         ensure_db()
-        request.uid = openerp.SUPERUSER_ID
+        request.uid = odoo.SUPERUSER_ID
         env = request.env
         backend = env['jira.backend'].search(
             [('use_webhooks', '=', True)],
@@ -96,10 +85,8 @@ class JiraWebhookController(http.Controller):
         issue_id = worklog['issueId']
         worklog_id = worklog['id']
 
-        session = ConnectorSession.from_env(env)
+        delayable_model = env['jira.account.analytic.line'].with_delay()
         if action == 'worklog_deleted':
-            delete_worklog.delay(session, 'jira.account.analytic.line',
-                                 backend.id, issue_id, worklog_id)
+            delayable_model.delete_record(backend, issue_id, worklog_id)
         else:
-            import_worklog.delay(session, 'jira.account.analytic.line',
-                                 backend.id, issue_id, worklog_id)
+            delayable_model.import_record(backend, issue_id, worklog_id)
