@@ -19,7 +19,7 @@ def delay_export(env, model_name, record_id, vals):
 
 @on_record_write(model_names='project.project')
 def delay_export_all_bindings(env, model_name, record_id, vals):
-    if vals.keys() == ['jira_bind_ids']:
+    if list(vals.keys()) == ['jira_bind_ids']:
         # Binding edited from the project's view.
         # When only this field has been modified, an other job has
         # been delayed for the jira.product.product record.

@@ -15,7 +15,7 @@ def delay_export(env, model_name, record_id, vals, **job_kwargs):
     if env.context.get('connector_no_export'):
         return
     binding = env[model_name].browse(record_id)
-    fields = vals.keys()
+    fields = list(vals.keys())
     binding.with_delay(**job_kwargs).export_record(fields=fields)
 
 
@@ -31,8 +31,8 @@ def delay_export_all_bindings(env, model_name, record_id, vals,
     """
     if env.context.get('connector_no_export'):
         return
-    if (vals.keys() == ['esb_bind_ids'] or
-            vals.keys() == ['message_follower_ids']):
+    if (list(vals.keys()) == ['esb_bind_ids'] or
+            list(vals.keys()) == ['message_follower_ids']):
         # When vals is esb_bind_ids:
         # Binding edited from the record's view.  When only this
         # field has been modified, an other job has already been delayed for

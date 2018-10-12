@@ -6,7 +6,7 @@
 import requests
 from oauthlib.oauth1 import SIGNATURE_RSA
 from requests_oauthlib import OAuth1
-from urlparse import parse_qsl
+from urllib.parse import parse_qsl
 
 from odoo import models, fields, api, exceptions, _
 

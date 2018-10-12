@@ -5,7 +5,7 @@
 
 import logging
 import json
-import urlparse
+import urllib.parse
 
 from contextlib import contextmanager, closing
 from datetime import datetime, timedelta
@@ -366,7 +366,7 @@ class JiraBackend(models.Model):
             jira_fields = adapter.list_fields()
             for field in jira_fields:
                 custom_ref = field.get('schema', {}).get('custom')
-                if custom_ref == u'com.pyxis.greenhopper.jira:gh-epic-link':
+                if custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-link':
                     self.epic_link_field_name = field['id']
                     break
 
@@ -412,8 +412,8 @@ class JiraBackend(models.Model):
                 # TODO: we could update the JQL of the webhook
                 # each time a new project is sync'ed, so we would
                 # filter out the useless events
-                url = urlparse.urljoin(base_url,
-                                       '/connector_jira/webhooks/issue')
+                url = urllib.parse.urljoin(base_url,
+                                           '/connector_jira/webhooks/issue')
                 webhook = adapter.create_webhook(
                     name='Odoo Issues',
                     url=url,
@@ -429,8 +429,8 @@ class JiraBackend(models.Model):
                 backend.webhook_issue_jira_id = webhook_id
                 env.cr.commit()
 
-                url = urlparse.urljoin(base_url,
-                                       '/connector_jira/webhooks/worklog')
+                url = urllib.parse.urljoin(base_url,
+                                           '/connector_jira/webhooks/worklog')
                 webhook = adapter.create_webhook(
                     name='Odoo Worklogs',
                     url=url,
