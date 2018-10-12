@@ -14,6 +14,9 @@ class JiraIssueType(models.Model):
 
     name = fields.Char(required=True, readonly=True)
     description = fields.Char(readonly=True)
+    backend_id = fields.Many2one(
+        ondelete='cascade'
+    )
 
     @api.multi
     def is_sync_for_project(self, project_binding):
