@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models, exceptions, _
-
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 
 class JiraProjectTask(models.Model):
@@ -125,9 +122,10 @@ class ProjectTask(models.Model):
         return names
 
 
-@jira
-class TaskAdapter(JiraAdapter):
-    _model_name = 'jira.project.task'
+class TaskAdapter(Component):
+    _name = 'jira.project.task.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.project.task']
 
     def read(self, id_, fields=None):
         return self.client.issue(id_, fields=fields).raw

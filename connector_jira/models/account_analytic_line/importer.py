@@ -1,27 +1,18 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.unit.mapper import (
-    ImportMapper,
-    mapping,
-    only_create,
-)
-from ...unit.importer import (
-    DelayedBatchImporter,
-    JiraImporter,
-    JiraDeleter,
-)
-from ...unit.backend_adapter import JiraAdapter, JIRA_JQL_DATETIME_FORMAT
-from ...unit.mapper import iso8601_local_date, whenempty
-from ...backend import jira
+from odoo.addons.connector.components.mapper import mapping, only_create
+from odoo.addons.component.core import Component
+from ...components.backend_adapter import JIRA_JQL_DATETIME_FORMAT
+from ...components.mapper import iso8601_local_date, whenempty
 
 
-@jira
-class AnalyticLineMapper(ImportMapper):
-    _model_name = 'jira.account.analytic.line'
+class AnalyticLineMapper(Component):
+    _name = 'jira.analytic.line.mapper'
+    _inherit = 'base.import.mapper'
+    _apply_on = ['jira.account.analytic.line']
 
     direct = [
         (whenempty('comment', _('missing description')), 'name'),
@@ -81,14 +72,15 @@ class AnalyticLineMapper(ImportMapper):
         return {'backend_id': self.backend_record.id}
 
 
-@jira
-class AnalyticLineBatchImporter(DelayedBatchImporter):
+class AnalyticLineBatchImporter(Component):
     """ Import the Jira worklogs
 
     For every id in in the list, a delayed job is created.
     Import from a date
     """
-    _model_name = 'jira.account.analytic.line'
+    _name = 'jira.analytic.line.batch.importer'
+    _inherit = 'jira.delayed.batch.importer'
+    _apply_on = ['jira.account.analytic.line']
 
     def run(self, from_date=None, to_date=None):
         """ Run the synchronization """
@@ -99,7 +91,8 @@ class AnalyticLineBatchImporter(DelayedBatchImporter):
         if to_date:
             to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
             parts.append('updated <= "%s"' % to_date)
-        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_adapter = self.component(usage='backend.adapter',
+                                       model_name='jira.project.task')
         issue_ids = issue_adapter.search(' and '.join(parts))
         for issue_id in issue_ids:
             for worklog_id in self.backend_adapter.search(issue_id):
@@ -114,12 +107,13 @@ class AnalyticLineBatchImporter(DelayedBatchImporter):
         )
 
 
-@jira
-class AnalyticLineImporter(JiraImporter):
-    _model_name = 'jira.account.analytic.line'
+class AnalyticLineImporter(Component):
+    _name = 'jira.analytic.line.importer'
+    _inherit = 'jira.importer'
+    _apply_on = ['jira.account.analytic.line']
 
-    def __init__(self, environment):
-        super(AnalyticLineImporter, self).__init__(environment)
+    def __init__(self, work_context):
+        super(AnalyticLineImporter, self).__init__(work_context)
         self.external_issue_id = None
         self.task_binding = None
 
@@ -134,7 +128,8 @@ class AnalyticLineImporter(JiraImporter):
         It ensures that the 'to-be-linked' issue is imported and return it.
 
         """
-        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_adapter = self.component(usage='backend.adapter',
+                                       model_name='jira.project.task')
         project_binder = self.binder_for('jira.project.project')
         issue_binder = self.binder_for('jira.project.task')
         issue_type_binder = self.binder_for('jira.issue.type')
@@ -197,7 +192,10 @@ class AnalyticLineImporter(JiraImporter):
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
-        issue_adapter = self.unit_for(JiraAdapter, model='jira.project.task')
+        issue_adapter = self.component(
+            usage='backend.adapter',
+            model_name='jira.project.task'
+        )
         self.external_issue = issue_adapter.read(self.external_issue_id)
         return self.backend_adapter.read(self.external_issue_id,
                                          self.external_id)
@@ -210,8 +208,3 @@ class AnalyticLineImporter(JiraImporter):
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
-
-
-@jira
-class AnalyticLineDeleter(JiraDeleter):
-    _model_name = 'jira.account.analytic.line'

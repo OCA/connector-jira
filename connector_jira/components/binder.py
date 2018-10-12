@@ -1,26 +1,29 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
 
 from odoo import fields, models
-from odoo.addons.connector.connector import Binder
 
-from ..backend import jira
+from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
 
-@jira
-class JiraBinder(Binder):
+class JiraBinder(Component):
+    """Binder for Odoo models
 
-    _model_name = [
-        'jira.account.analytic.line',
-        'jira.project.project',
-        'jira.project.task',
-        'jira.res.users',
-    ]
+    Where we create an additional model holding the external id.
+    The advantages to have a second models are:
+    * we can link more than 1 JIRA instance to the same record
+    * we can work with, lock, edit the jira binding without touching the
+      normal record
+
+    Default binder when no specific binder is defined for a model.
+    """
+
+    _name = 'jira.binder'
+    _inherit = ['base.binder', 'jira.base']
 
     def sync_date(self, binding):
         assert self._sync_date_field
@@ -30,8 +33,7 @@ class JiraBinder(Binder):
         return fields.Datetime.from_string(sync_date)
 
 
-@jira
-class JiraModelBinder(Binder):
+class JiraModelBinder(Component):
     """ Binder for standalone models
 
     When we synchronize a model that has no equivalent
@@ -39,8 +41,10 @@ class JiraModelBinder(Binder):
     without `_inherits`.
 
     """
+    _name = 'jira.model.binder'
+    _inherit = ['base.binder', 'jira.base']
 
-    _model_name = [
+    _apply_on = [
         'jira.issue.type',
     ]
 

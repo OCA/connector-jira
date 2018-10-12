@@ -1,18 +1,15 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from odoo.addons.connector.unit.mapper import ImportMapper, mapping
-from ...unit.importer import (
-    DirectBatchImporter,
-    JiraImporter,
-)
-from ...backend import jira
+from odoo.addons.connector.components.mapper import mapping
+
+from odoo.addons.component.core import Component
 
 
-@jira
-class IssueTypeMapper(ImportMapper):
-    _model_name = 'jira.issue.type'
+class IssueTypeMapper(Component):
+    _name = 'jira.issue.type.mapper'
+    _inherit = ['base.import.mapper']
+    _apply_on = 'jira.issue.type'
 
     direct = [
         ('name', 'name'),
@@ -24,22 +21,18 @@ class IssueTypeMapper(ImportMapper):
         return {'backend_id': self.backend_record.id}
 
 
-@jira
-class IssueTypeBatchImporter(DirectBatchImporter):
+class IssueTypeBatchImporter(Component):
     """ Import the Jira Issue Types
 
-    For every id in in the list of issue types, a delayed job is created.
+    For every id in in the list of issue types, a direct import is done.
     Import from a date
     """
-    _model_name = 'jira.issue.type'
+    _name = 'jira.issue.type.batch.importer'
+    _inherit = 'jira.direct.batch.importer'
+    _apply_on = ['jira.issue.type']
 
     def run(self):
         """ Run the synchronization """
         record_ids = self.backend_adapter.search()
         for record_id in record_ids:
             self._import_record(record_id)
-
-
-@jira
-class IssueTypeImporter(JiraImporter):
-    _model_name = 'jira.issue.type'

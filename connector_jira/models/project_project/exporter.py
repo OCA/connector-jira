@@ -1,35 +1,51 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from odoo.addons.connector.event import (on_record_create,
-                                         on_record_write,
-                                         )
-from ... import common
-from ...backend import jira
-from ...unit.exporter import JiraBaseExporter
-from ...unit.backend_adapter import JiraAdapter
+from odoo.addons.component.core import Component
+from odoo.addons.component_event import skip_if
 
 
-@on_record_create(model_names='jira.project.project')
-@on_record_write(model_names='jira.project.project')
-def delay_export(env, model_name, record_id, vals):
-    common.delay_export(env, model_name, record_id, vals, priority=10)
+class JiraProjectProjectListener(Component):
+    _name = 'jira.project.project.listener'
+    _inherit = ['base.connector.listener']
+    _apply_on = ['jira.project.project']
+
+    @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
+    def on_record_create(self, record, fields=None):
+        record.with_delay(priority=10).export_record(fields=fields)
+
+    @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
+    def on_record_write(self, record, fields=None):
+        record.with_delay(priority=10).export_record(fields=fields)
 
 
-@on_record_write(model_names='project.project')
-def delay_export_all_bindings(env, model_name, record_id, vals):
-    if list(vals.keys()) == ['jira_bind_ids']:
-        # Binding edited from the project's view.
-        # When only this field has been modified, an other job has
-        # been delayed for the jira.product.product record.
-        return
-    common.delay_export_all_bindings(env, model_name, record_id, vals)
+class ProjectProjectListener(Component):
+    _name = 'jira.project.project.listener'
+    _inherit = ['base.connector.listener']
+    _apply_on = ['project.project']
+
+    @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
+    def on_record_write(self, record, fields=None):
+        if (fields == ['jira_bind_ids'] or
+                fields == ['message_follower_ids']):
+            # When vals is esb_bind_ids:
+            # Binding edited from the record's view. When only this field has
+            # been modified, an other job has already been delayed for the
+            # binding record so can exit this event early.
+
+            # When vals is message_follower_ids:
+            # MailThread.message_subscribe() has been called, this
+            # method does a write on the field message_follower_ids,
+            # we never want to export that.
+            return
+        for binding in record.jira_bind_ids:
+            binding.with_delay(priority=10).export_record(fields=fields)
 
 
-@jira
-class JiraProjectProjectExporter(JiraBaseExporter):
-    _model_name = ['jira.project.project']
+class JiraProjectProjectExporter(Component):
+    _name = 'jira.project.project.exporter'
+    _inherit = ['jira.exporter']
+    _apply_on = ['jira.project.project']
 
     def _create_project(self, adapter, key, name, template, values):
         project = adapter.create(
@@ -53,7 +69,7 @@ class JiraProjectProjectExporter(JiraBaseExporter):
         adapter.write(self.external_id, values)
 
     def _run(self, fields=None):
-        adapter = self.unit_for(JiraAdapter)
+        adapter = self.component(usage='backend.adapter')
 
         key = self.binding.jira_key
         name = self.binding.name[:80]

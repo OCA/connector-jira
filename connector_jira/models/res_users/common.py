@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
 from odoo import _, api, exceptions, fields, models
-from odoo.addons.connector.connector import Binder
-
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 
 class JiraResUsers(models.Model):
@@ -48,9 +43,9 @@ class ResUsers(models.Model):
         if backends is None:
             backends = self.env['jira.backend'].search([])
         for backend in backends:
-            with backend.get_environment('jira.res.users') as connector_env:
-                binder = connector_env.get_connector_unit(Binder)
-                adapter = connector_env.get_connector_unit(JiraAdapter)
+            with backend.work_on('jira.res.users') as work:
+                binder = work.component(usage='binder')
+                adapter = work.component(usage='backend.adapter')
                 for user in self:
                     if binder.to_external(user, wrap=True):
                         continue
@@ -72,9 +67,10 @@ class ResUsers(models.Model):
                     binder.bind(jira_user.key, binding)
 
 
-@jira
-class UserAdapter(JiraAdapter):
-    _model_name = 'jira.res.users'
+class UserAdapter(Component):
+    _name = 'jira.res.users.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.res.users']
 
     def read(self, id_):
         return self.client.user(id_).raw

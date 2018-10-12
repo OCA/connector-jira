@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models
 from odoo.addons.queue_job.job import job
 
-from ...unit.backend_adapter import JiraAdapter
-from ...unit.importer import JiraImporter, JiraDeleter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 
 class JiraAccountAnalyticLine(models.Model):
@@ -29,16 +26,16 @@ class JiraAccountAnalyticLine(models.Model):
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
         """ Import a worklog from JIRA """
-        with backend.get_environment(self._name) as connector_env:
-            importer = connector_env.get_connector_unit(JiraImporter)
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='record.importer')
             importer.run(worklog_id, issue_id=issue_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
     def delete_record(self, backend, issue_id, worklog_id):
         """ Delete a local worklog which has been deleted on JIRA """
-        with backend.get_environment(self._name) as connector_env:
-            importer = connector_env.get_connector_unit(JiraDeleter)
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='record.deleter')
             importer.run(worklog_id)
 
 
@@ -54,9 +51,10 @@ class AccountAnalyticLine(models.Model):
     )
 
 
-@jira
-class WorklogAdapter(JiraAdapter):
-    _model_name = 'jira.account.analytic.line'
+class WorklogAdapter(Component):
+    _name = 'jira.worklog.adapter'
+    _inherit = 'jira.webservice.adapter'
+    _apply_on = ['jira.account.analytic.line']
 
     def read(self, issue_id, worklog_id):
         return self.client.worklog(issue_id, worklog_id).raw

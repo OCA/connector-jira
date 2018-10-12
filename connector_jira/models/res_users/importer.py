@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from ...unit.importer import JiraImporter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 
-@jira
-class UserImporter(JiraImporter):
-    _model_name = 'jira.res.users'
+class UserImporter(Component):
+    _name = 'jira.res.users.importer'
+    _inherit = ['jira.importer']
+    _apply_on = ['jira.res.users']
 
     def _import(self, binding):
         record = self.external_record

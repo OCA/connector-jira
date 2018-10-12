@@ -1,23 +1,16 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.unit.mapper import ImportMapper, mapping
-from ...unit.backend_adapter import JiraAdapter
-from ...unit.importer import (
-    DelayedBatchImporter,
-    JiraImporter,
-    JiraDeleter,
-)
-from ...unit.mapper import FromFields
-from ...backend import jira
+from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.component.core import Component
 
 
-@jira
-class ProjectTaskMapper(ImportMapper, FromFields):
-    _model_name = 'jira.project.task'
+class ProjectTaskMapper(Component):
+    _name = 'jira.project.task.mapper'
+    _inherit = 'base.import.mapper'
+    _apply_on = ['jira.project.task']
 
     direct = [
         ('key', 'jira_key'),
@@ -27,6 +20,12 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         ('summary', 'name'),
         ('duedate', 'date_deadline'),
     ]
+
+    @mapping
+    def from_attributes(self, record):
+        return self.component(usage='map.from.attrs').values(
+            record, self
+        )
 
     @mapping
     def issue_type(self, record):
@@ -89,22 +88,24 @@ class ProjectTaskMapper(ImportMapper, FromFields):
         return {'backend_id': self.backend_record.id}
 
 
-@jira
-class ProjectTaskBatchImporter(DelayedBatchImporter):
+class ProjectTaskBatchImporter(Component):
     """ Import the Jira tasks
 
     For every id in in the list of tasks, a delayed job is created.
     Import from a date
     """
-    _model_name = 'jira.project.task'
+    _name = 'jira.project.task.batch.importer'
+    _inherit = ['jira.delayed.batch.importer']
+    _apply_on = ['jira.project.task']
 
 
-@jira
-class ProjectTaskImporter(JiraImporter):
-    _model_name = 'jira.project.task'
+class ProjectTaskImporter(Component):
+    _name = 'jira.project.task.importer'
+    _inherit = ['jira.importer']
+    _apply_on = ['jira.project.task']
 
-    def __init__(self, environment):
-        super(ProjectTaskImporter, self).__init__(environment)
+    def __init__(self, work_context):
+        super(ProjectTaskImporter, self).__init__(work_context)
         self.jira_epic = None
 
     def _get_external_data(self):
@@ -112,8 +113,10 @@ class ProjectTaskImporter(JiraImporter):
         result = super(ProjectTaskImporter, self)._get_external_data()
         epic_field_name = self.backend_record.epic_link_field_name
         if epic_field_name:
-            issue_adapter = self.unit_for(JiraAdapter,
-                                          model='jira.project.task')
+            issue_adapter = self.component(
+                usage='backend.adapter',
+                model_name='jira.project.task'
+            )
             epic_key = result['fields'][epic_field_name]
             if epic_key:
                 self.jira_epic = issue_adapter.read(epic_key)
@@ -167,8 +170,3 @@ class ProjectTaskImporter(JiraImporter):
         if self.jira_epic:
             self._import_dependency(self.jira_epic['id'], 'jira.project.task',
                                     record=self.jira_epic)
-
-
-@jira
-class ProjectTaskDeleter(JiraDeleter):
-    _model_name = 'jira.project.task'

@@ -41,7 +41,6 @@
           </p>
           <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
             <group>
-              <field name="version"/>
               <field name="uri"
                 placeholder="e.g. https://example.com/jira"
                 />
@@ -189,7 +188,6 @@
       <tree string="Jira Backend">
         <field name="name"/>
         <field name="uri"/>
-        <field name="version"/>
       </tree>
     </field>
   </record>

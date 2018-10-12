@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -12,8 +11,7 @@ from jira.utils import json_loads
 
 from odoo import api, fields, models, exceptions, _
 
-from ...unit.backend_adapter import JiraAdapter
-from ...backend import jira
+from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
@@ -156,9 +154,11 @@ class ProjectProject(models.Model):
         return names
 
 
-@jira
-class ProjectAdapter(JiraAdapter):
-    _model_name = 'jira.project.project'
+class ProjectAdapter(Component):
+
+    _name = 'jira.project.adapter'
+    _inherit = ['jira.webservice.adapter']
+    _apply_on = ['jira.project.project']
 
     def read(self, id_):
         return self.get(id_).raw

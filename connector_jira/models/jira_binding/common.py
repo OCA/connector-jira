@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models
 from odoo.addons.queue_job.job import job, related_action
-from ...unit.importer import JiraImporter, BatchImporter, JiraDeleter
-from ...unit.exporter import JiraBaseExporter
 
 
 class JiraBinding(models.AbstractModel):
@@ -37,24 +34,24 @@ class JiraBinding(models.AbstractModel):
     @api.model
     def import_batch(self, backend, from_date=None, to_date=None):
         """ Prepare import of a batch of records """
-        with backend.get_environment(self._name) as connector_env:
-            importer = connector_env.get_connector_unit(BatchImporter)
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='batch.importer')
             importer.run(from_date=from_date, to_date=to_date)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
     def import_record(self, backend, external_id, force=False):
         """ Import a record """
-        with backend.get_environment(self._name) as connector_env:
-            importer = connector_env.get_connector_unit(JiraImporter)
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='record.importer')
             importer.run(external_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
     def delete_record(self, backend, external_id):
         """ Delete a record on Odoo """
-        with backend.get_environment(self._name) as connector_env:
-            importer = connector_env.get_connector_unit(JiraDeleter)
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='record.deleter')
             importer.run(external_id)
 
     @job(default_channel='root.connector_jira.export')
@@ -62,6 +59,6 @@ class JiraBinding(models.AbstractModel):
     @api.multi
     def export_record(self, fields=None):
         self.ensure_one()
-        with self.backend_id.get_environment(self._name) as connector_env:
-            exporter = connector_env.get_connector_unit(JiraBaseExporter)
+        with self.backend_id.work_on(self._name) as work:
+            exporter = work.component(usage='record.exporter')
             exporter.run(self, fields=fields)

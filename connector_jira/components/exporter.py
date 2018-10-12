@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*-
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
 from contextlib import contextmanager
 import psycopg2
 from odoo import _, fields, tools
-from odoo.addons.connector.unit.synchronizer import Exporter
-from odoo.addons.connector.exception import RetryableJobError
+
+from odoo.addons.component.core import AbstractComponent, Component
+from odoo.addons.queue_job.exception import RetryableJobError
+
 from .mapper import iso8601_to_utc_datetime
 
 _logger = logging.getLogger(__name__)
@@ -25,15 +26,15 @@ In addition to its export job, an exporter has to:
 """
 
 
-class JiraBaseExporter(Exporter):
+class JiraBaseExporter(AbstractComponent):
     """ Base exporter for Jira """
 
-    def __init__(self, environment):
-        """
-        :param environment: current environment (backend, model_name, ...)
-        :type environment: :py:class:`connector.connector.ConnectorEnvironment`
-        """
-        super(JiraBaseExporter, self).__init__(environment)
+    _name = 'jira.base.exporter'
+    _inherit = ['base.exporter', 'jira.base']
+    _usage = 'record.exporter'
+
+    def __init__(self, work_context):
+        super(JiraBaseExporter, self).__init__(work_context)
         self.binding = None
         self.external_id = None
 
@@ -84,23 +85,8 @@ class JiraBaseExporter(Exporter):
         This behavior works also when the export becomes multilevel
         with :meth:`_export_dependencies`. Each level will set its own lock
         on the binding record it has to export.
-
-        Uses "NO KEY UPDATE", to avoid FK accesses
-        being blocked in PSQL > 9.3.
         """
-        sql = ("SELECT id FROM %s WHERE ID = %%s FOR NO KEY UPDATE NOWAIT" %
-               self.model._table)
-        try:
-            self.env.cr.execute(sql, (self.binding.id,),
-                                log_exceptions=False)
-        except psycopg2.OperationalError:
-            _logger.info('A concurrent job is already exporting the same '
-                         'record (%s with id %s). Job delayed later.',
-                         self.model._name, self.binding.id)
-            raise RetryableJobError(
-                'A concurrent job is already exporting the same record '
-                '(%s with id %s). The job will be retried later.' %
-                (self.model._name, self.binding.id))
+        self.component('record.locker').lock(self.binding)
 
     def run(self, binding, *args, **kwargs):
         """ Run the synchronization
@@ -130,8 +116,15 @@ class JiraBaseExporter(Exporter):
         raise NotImplementedError
 
 
-class JiraExporter(JiraBaseExporter):
-    """ A common flow for the exports to Jira """
+class JiraExporter(Component):
+    """Common exporter flow for Jira
+
+    If no specific exporter overrides the exporter for a model, this one is
+    used.
+    """
+    _name = 'jira.exporter'
+    _inherit = ['jira.base.exporter']
+    _usage = 'record.exporter'
 
     def _has_to_skip(self):
         """ Return True if the export can be skipped """
@@ -166,10 +159,9 @@ class JiraExporter(JiraBaseExporter):
                 raise
 
     def _export_dependency(self, relation, binding_model,
-                           exporter_class=None):
+                           component=None):
         """
-        Export a dependency. The exporter class is a subclass of
-        ``JiraExporter``. If a more precise class need to be defined
+        Export a dependency.
 
         .. warning:: a commit is done at the end of the export of each
                      dependency. The reason for that is that we pushed a record
@@ -188,17 +180,13 @@ class JiraExporter(JiraBaseExporter):
         :type relation: :py:class:`odoo.models.BaseModel`
         :param binding_model: name of the binding model for the relation
         :type binding_model: str | unicode
-        :param exporter_cls: :py:class:`odoo.addons.connector.\
-                                        connector.ConnectorUnit`
-                             class or parent class to use for the export.
-                             By default: JiraExporter
-        :type exporter_cls: :py:class:`odoo.addons.connector.\
-                                       connector.MetaConnectorUnit`
+        :param component: component to use for the export
+                          By default: lookup a component by usage
+                          'record.exporter' and model
+        :type exporter_cls: :py:class:`odoo.addons.component.core.Component`
         """
         if not relation:
             return
-        if exporter_class is None:
-            exporter_class = JiraExporter
         rel_binder = self.binder_for(binding_model)
         # wrap is typically True if the relation is a 'project.project'
         # record but the binding model is 'jira.project.project'
@@ -238,8 +226,10 @@ class JiraExporter(JiraBaseExporter):
             binding = relation
 
         if not rel_binder.to_external(binding):
-            exporter = self.unit_for(exporter_class, binding_model)
-            exporter.run(binding.id)
+            if component is None:
+                component = self.component(usage='record.exporter',
+                                           model_name=binding_model)
+            component.run(binding.id)
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
@@ -247,7 +237,7 @@ class JiraExporter(JiraBaseExporter):
 
     def _map_data(self, fields=None):
         """ Returns an instance of
-        :py:class:`~odoo.addons.connector.unit.mapper.MapRecord`
+        :py:class:`~odoo.addons.component.core.Component`
 
         """
         return self.mapper.map_record(self.binding)
