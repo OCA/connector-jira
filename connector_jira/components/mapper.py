@@ -6,7 +6,6 @@ from datetime import datetime
 from dateutil import parser
 
 from odoo import fields
-from odoo.addons.connector.components import mapper
 from odoo.addons.component.core import Component
 
 

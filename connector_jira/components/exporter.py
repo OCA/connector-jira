@@ -34,7 +34,7 @@ class JiraBaseExporter(AbstractComponent):
     _usage = 'record.exporter'
 
     def __init__(self, work_context):
-        super(JiraBaseExporter, self).__init__(work_context)
+        super().__init__(work_context)
         self.binding = None
         self.external_id = None
 

@@ -63,9 +63,9 @@ class AnalyticLineMapper(Component):
             # on the project without any task
             return {'account_id': project.analytic_account_id.id}
 
-        analytic = task_binding.project_id.analytic_account_id
+        project = task_binding.project_id
         return {'task_id': task_binding.odoo_id.id,
-                'account_id': analytic.id}
+                'project_id': project.id}
 
     @mapping
     def backend_id(self, record):
@@ -113,7 +113,7 @@ class AnalyticLineImporter(Component):
     _apply_on = ['jira.account.analytic.line']
 
     def __init__(self, work_context):
-        super(AnalyticLineImporter, self).__init__(work_context)
+        super().__init__(work_context)
         self.external_issue_id = None
         self.task_binding = None
 
@@ -172,21 +172,19 @@ class AnalyticLineImporter(Component):
             return issue_binder.to_internal(jira_issue_id)
 
     def _create_data(self, map_record, **kwargs):
-        _super = super(AnalyticLineImporter, self)
-        return _super._create_data(map_record,
-                                   task_binding=self.task_binding,
-                                   linked_issue=self.external_issue)
+        return super()._create_data(map_record,
+                                    task_binding=self.task_binding,
+                                    linked_issue=self.external_issue)
 
     def _update_data(self, map_record, **kwargs):
-        _super = super(AnalyticLineImporter, self)
-        return _super._update_data(map_record,
-                                   task_binding=self.task_binding,
-                                   linked_issue=self.external_issue)
+        return super()._update_data(map_record,
+                                    task_binding=self.task_binding,
+                                    linked_issue=self.external_issue)
 
     def run(self, external_id, force=False, record=None, **kwargs):
         assert 'issue_id' in kwargs
         self.external_issue_id = kwargs.pop('issue_id')
-        return super(AnalyticLineImporter, self).run(
+        return super().run(
             external_id, force=force, record=record, **kwargs
         )
 

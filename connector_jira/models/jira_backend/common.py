@@ -2,6 +2,7 @@
 # Copyright 2016 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import binascii
 import logging
 import json
 import urllib.parse
@@ -30,12 +31,12 @@ IMPORT_DELTA = 70  # seconds
 @contextmanager
 def new_env(env):
     with api.Environment.manage():
-        registry = odoo.modules.registry.RegistryManager.get(env.cr.dbname)
+        registry = odoo.registry(env.cr.dbname)
         with closing(registry.cursor()) as cr:
             new_env = api.Environment(cr, env.uid, env.context)
             try:
                 yield new_env
-            except:
+            except Exception:
                 cr.rollback()
                 raise
             else:
@@ -55,8 +56,8 @@ class JiraBackend(models.Model):
         return self.env['res.company']._company_default_get('jira.backend')
 
     def _default_consumer_key(self):
-        ''' Generate a rnd consumer key of length self.KEY_LEN '''
-        return urandom(self.KEY_LEN).encode('hex')[:self.KEY_LEN]
+        """Generate a rnd consumer key of length self.KEY_LEN"""
+        return binascii.hexlify(urandom(self.KEY_LEN))[:self.KEY_LEN]
 
     uri = fields.Char(string='Jira URI')
     name = fields.Char()
@@ -67,11 +68,11 @@ class JiraBackend(models.Model):
         default=lambda self: self._default_company(),
     )
     state = fields.Selection(
-        selection=[('authentify', 'Authentify'),
+        selection=[('authenticate', 'Authenticate'),
                    ('setup', 'Setup'),
                    ('running', 'Running'),
                    ],
-        default='authentify',
+        default='authenticate',
         required=True,
         readonly=True,
     )
@@ -308,7 +309,7 @@ class JiraBackend(models.Model):
 
     @api.model
     def create(self, values):
-        record = super(JiraBackend, self).create(values)
+        record = super().create(values)
         record.create_rsa_key_vals()
         return record
 
@@ -354,7 +355,7 @@ class JiraBackend(models.Model):
     @api.multi
     def state_setup(self):
         for backend in self:
-            if backend.state == 'authentify':
+            if backend.state == 'authenticate':
                 backend.state = 'setup'
 
     @api.multi

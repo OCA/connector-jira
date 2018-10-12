@@ -7,7 +7,7 @@
     <field name="inherit_id" ref="project.edit_project"/>
     <field name="arch" type="xml">
       <xpath expr="//notebook" position="inside">
-        <page String="Connector" name="connector">
+        <page string="Connector" name="connector">
           <group string="Jira">
             <field name="jira_bind_ids" nolabel="1"/>
           </group>

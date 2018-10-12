@@ -35,7 +35,7 @@ Backend
 Authentication of Backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. On the created backend, click on the Authentify button, a popup with keys
+1. On the created backend, click on the Authenticate button, a popup with keys
    will appear, keep these open in a tab
 2. Open Jira and go to System > Applications > Application links
 3. Enter the name of the application, example: odoo, and click on "Create new link"

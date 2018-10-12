@@ -18,7 +18,7 @@ class JiraBackendAuth(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        values = super(JiraBackendAuth, self).default_get(fields)
+        values = super().default_get(fields)
         context = self.env.context
         if (context.get('active_model') == 'jira.backend' and
                 context.get('active_id')):

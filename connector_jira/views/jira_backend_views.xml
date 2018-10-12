@@ -16,8 +16,8 @@
           <button name="%(action_jira_backend_auth)d"
             type="action"
             class="oe_highlight"
-            string="Authentify"
-            states="authentify"/>
+            string="Authenticate"
+            states="authenticate"/>
           <button name="check_connection"
             type="object"
             string="Check Connection"
@@ -130,12 +130,12 @@
                     type="object"
                     string="Install Webhooks"
                     class="oe_inline"
-                    attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authentify')]}"/>
+                    attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authenticate')]}"/>
                   <button name="delete_webhooks"
                     type="object"
                     string="Remove Webhooks"
                     class="oe_inline"
-                    attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authentify')]}"/>
+                    attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"/>
                 </div>
                 <p class="oe_grey oe_inline">
                   Webhooks can be created only on one instance of JIRA.
@@ -150,7 +150,7 @@
                   type="object"
                   string="Configure Epic Link"
                   class="oe_inline"
-                  attrs="{'invisible': [('state', '=', 'authentify')]}"/>
+                  attrs="{'invisible': [('state', '=', 'authenticate')]}"/>
                 <p class="oe_grey oe_inline">
                   Activate the synchronization of the Epic Link field.
                   Only on JIRA Software. The field contains the name of

@@ -74,7 +74,7 @@ class JiraProjectProject(models.Model):
 
     @api.model
     def create(self, values):
-        record = super(JiraProjectProject, self).create(values)
+        record = super().create(values)
         if not record.jira_key:
             raise exceptions.UserError(
                 _('The JIRA Key is mandatory in order to export a project')
@@ -87,7 +87,7 @@ class JiraProjectProject(models.Model):
             raise exceptions.UserError(
                 _('The project template cannot be modified.')
             )
-        return super(JiraProjectProject, self).write(values)
+        return super().write(values)
 
     @api.multi
     def unlink(self):
@@ -95,7 +95,7 @@ class JiraProjectProject(models.Model):
             raise exceptions.UserError(
                 _('Exported project cannot be deleted.')
             )
-        return super(JiraProjectProject, self).unlink()
+        return super().unlink()
 
 
 class ProjectProject(models.Model):
@@ -135,7 +135,7 @@ class ProjectProject(models.Model):
 
     @api.multi
     def write(self, values):
-        result = super(ProjectProject, self).write(values)
+        result = super().write(values)
         for record in self:
             if record.jira_exportable and not record.jira_key:
                 raise exceptions.UserError(

@@ -105,12 +105,12 @@ class ProjectTaskImporter(Component):
     _apply_on = ['jira.project.task']
 
     def __init__(self, work_context):
-        super(ProjectTaskImporter, self).__init__(work_context)
+        super().__init__(work_context)
         self.jira_epic = None
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
-        result = super(ProjectTaskImporter, self)._get_external_data()
+        result = super()._get_external_data()
         epic_field_name = self.backend_record.epic_link_field_name
         if epic_field_name:
             issue_adapter = self.component(
@@ -134,19 +134,17 @@ class ProjectTaskImporter(Component):
         return task_sync_type_binding.is_sync_for_project(project_binding)
 
     def _create_data(self, map_record, **kwargs):
-        _super = super(ProjectTaskImporter, self)
-        return _super._create_data(map_record, jira_epic=self.jira_epic)
+        return super()._create_data(map_record, jira_epic=self.jira_epic)
 
     def _update_data(self, map_record, **kwargs):
-        _super = super(ProjectTaskImporter, self)
-        return _super._update_data(map_record, jira_epic=self.jira_epic)
+        return super()._update_data(map_record, jira_epic=self.jira_epic)
 
     def _import(self, binding, **kwargs):
         # called at the beginning of _import because we must be sure
         # that dependencies are there (project and issue type)
         if not self._is_issue_type_sync():
             return _('Project or issue type is not synchronized.')
-        return super(ProjectTaskImporter, self)._import(binding, **kwargs)
+        return super()._import(binding, **kwargs)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""

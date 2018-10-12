@@ -44,7 +44,7 @@ class JiraImporter(Component):
     _usage = 'record.importer'
 
     def __init__(self, work_context):
-        super(JiraImporter, self).__init__(work_context)
+        super().__init__(work_context)
         self.external_id = None
         self.external_record = None
 
@@ -220,9 +220,7 @@ class JiraImporter(Component):
         for instance to see if another transaction already made the work.
         """
         with odoo.api.Environment.manage():
-            registry = odoo.modules.registry.RegistryManager.get(
-                self.env.cr.dbname
-            )
+            registry = odoo.registry(self.env.cr.dbname)
             with closing(registry.cursor()) as cr:
                 try:
                     new_env = odoo.api.Environment(cr, self.env.uid,
@@ -231,7 +229,7 @@ class JiraImporter(Component):
                     with backend.work_on(model_name
                                          or self.model._name) as work:
                         yield work
-                except:
+                except Exception:
                     cr.rollback()
                     raise
                 else:

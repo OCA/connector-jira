@@ -45,7 +45,7 @@ class JiraProjectTask(models.Model):
             raise exceptions.UserError(
                 _('A Jira task cannot be deleted.')
             )
-        return super(JiraProjectTask, self).unlink()
+        return super().unlink()
 
 
 class ProjectTask(models.Model):

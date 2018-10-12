@@ -1,7 +1,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 {'name': 'JIRA Connector',
- 'version': '10.0.1.0.0',
+ 'version': '11.0.1.0.0',
  'author': 'Camptocamp,Odoo Community Association (OCA)',
  'license': 'AGPL-3',
  'category': 'Connector',
@@ -16,6 +16,8 @@
          'requests',
          'jira',
          'oauthlib',
+         # these are dependencies but as they don't have the same name of
+         # package / module, we can't list them here
          # 'requests-oauthlib',
          # 'requests-toolbelt',
          # 'PyJWT',
@@ -34,5 +36,5 @@
      'security/ir.model.access.csv',
      'data/cron.xml',
      ],
- 'installable': False,
+ 'installable': True,
  }
