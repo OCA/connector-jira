@@ -49,6 +49,16 @@ class AccountAnalyticLine(models.Model):
         string='Worklog Bindings',
         context={'active_test': False},
     )
+    # fields needed to display JIRA issue link in views
+    jira_compound_key = fields.Char(
+        related='task_id.jira_compound_key',
+        readonly=True,
+        store=True,
+    )
+    jira_issue_url = fields.Char(
+        related='task_id.jira_issue_url',
+        readonly=True,
+    )
 
 
 class WorklogAdapter(Component):
