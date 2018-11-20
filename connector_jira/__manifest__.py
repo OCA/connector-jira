@@ -10,6 +10,7 @@
              'hr_timesheet',
              'queue_job',
              'web',
+             'web_widget_url_advanced',
              ],
  'external_dependencies': {
      'python': [
@@ -33,6 +34,7 @@
      'views/project_task_views.xml',
      'views/res_users_views.xml',
      'views/jira_issue_type_views.xml',
+     'views/timesheet_account_analytic_line.xml',
      'security/ir.model.access.csv',
      'data/cron.xml',
      ],
