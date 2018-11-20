@@ -99,6 +99,8 @@ You have to select the synchronized issue types, but the field is not editable
 until the record is saved. You need to save and edit it again to be able to
 select them.
 
+TODO: add a quick button to push to JIRA via default backend.
+
 
 Synchronize tasks and worklogs
 """"""""""""""""""""""""""""""

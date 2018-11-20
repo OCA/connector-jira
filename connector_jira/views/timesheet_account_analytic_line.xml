@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="hr_timesheet_line_form" model="ir.ui.view">
+    <field name="name">account.analytic.line.form</field>
+    <field name="model">account.analytic.line</field>
+    <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+    <field name="arch" type="xml">
+
+      <field name="task_id" position="after">
+        <field name="jira_compound_key" invisible="1" />
+        <field name="jira_issue_url" widget="url" text_field="jira_compound_key"
+               attrs="{'invisible': [('jira_compound_key', '=', False)]}"/>
+      </field>
+
+    </field>
+  </record>
+
+  <record id="hr_timesheet_line_tree" model="ir.ui.view">
+    <field name="name">account.analytic.line.tree</field>
+    <field name="model">account.analytic.line</field>
+    <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+    <field name="arch" type="xml">
+
+      <field name="task_id" position="after">
+        <field name="jira_compound_key" invisible="1" />
+        <field name="jira_issue_url" widget="url" text_field="jira_compound_key"
+               attrs="{'invisible': [('jira_compound_key', '=', False)]}"/>
+      </field>
+
+    </field>
+  </record>
+
+
+  <record id="hr_timesheet_line_search" model="ir.ui.view">
+      <field name="name">account.analytic.line.search</field>
+      <field name="model">account.analytic.line</field>
+      <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+      <field name="arch" type="xml">
+
+        <field name="task_id" position="after">
+          <field name="jira_compound_key" string="JIRA issue" />
+        </field>
+        <filter name="groupby_date" position="after">
+          <filter string="JIRA issue" name="groupby_jira_task" domain="[]" context="{'group_by':'jira_compound_key'}"/>
+        </filter>
+
+    </field>
+  </record>
+
+
+</odoo>
