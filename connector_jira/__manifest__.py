@@ -10,6 +10,7 @@
              'hr_timesheet',
              'queue_job',
              'web',
+             'web_widget_url_advanced',
              ],
  'external_dependencies': {
      'python': [

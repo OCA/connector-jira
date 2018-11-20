@@ -80,6 +80,10 @@ class ProjectTask(models.Model):
         string='JIRA Parent',
         store=True,
     )
+    jira_issue_url = fields.Char(
+        string='JIRA issue',
+        compute='_compute_jira_issue_url',
+    )
 
     @api.depends('jira_bind_ids.jira_issue_type_id.name')
     def _compute_jira_issue_type(self):
@@ -110,6 +114,20 @@ class ProjectTask(models.Model):
             )
             if len(tasks) == 1:
                 record.jira_parent_task_id = tasks
+
+    @api.depends('jira_bind_ids.jira_key')
+    def _compute_jira_issue_url(self):
+        """Compute the external URL to JIRA.
+
+        We assume that we have only one external record.
+        """
+        for record in self:
+            if not record.jira_bind_ids:
+                continue
+            main_binding = record.jira_bind_ids[0]
+            record.jira_issue_url = main_binding.backend_id.make_issue_url(
+                main_binding.jira_key
+            )
 
     @api.multi
     def name_get(self):
