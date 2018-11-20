@@ -20,7 +20,7 @@ class JiraProjectProjectListener(Component):
 
 
 class ProjectProjectListener(Component):
-    _name = 'jira.project.project.listener'
+    _name = 'project.project.listener'
     _inherit = ['base.connector.listener']
     _apply_on = ['project.project']
 

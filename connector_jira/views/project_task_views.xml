@@ -7,7 +7,7 @@
     <field name="inherit_id" ref="project.view_task_form2"/>
     <field name="arch" type="xml">
       <xpath expr="//notebook" position="inside">
-        <page String="Connector" name="connector">
+        <page string="Connector" name="connector">
           <group string="Jira">
             <field name="jira_bind_ids" nolabel="1"/>
           </group>
@@ -15,7 +15,8 @@
       </xpath>
 
       <field name="legend_done" position="after">
-        <field name="jira_compound_key"
+        <field name="jira_compound_key" invisible="1" />
+        <field name="jira_issue_url" widget="url" text_field="jira_compound_key"
           attrs="{'invisible': [('jira_bind_ids', '=', [])]}"/>
         <field name="jira_issue_type"
           attrs="{'invisible': [('jira_bind_ids', '=', [])]}"/>
