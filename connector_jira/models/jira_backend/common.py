@@ -59,7 +59,7 @@ class JiraBackend(models.Model):
         """Generate a rnd consumer key of length self.KEY_LEN"""
         return binascii.hexlify(urandom(self.KEY_LEN))[:self.KEY_LEN]
 
-    uri = fields.Char(string='Jira URI')
+    uri = fields.Char(string='Jira URI', required=True)
     name = fields.Char()
     company_id = fields.Many2one(
         comodel_name='res.company',
@@ -518,6 +518,11 @@ class JiraBackend(models.Model):
     @api.model
     def _scheduler_import_analytic_line(self):
         self.search([]).import_analytic_line()
+
+    @api.multi
+    def make_issue_url(self, jira_issue_id):
+        return urllib.parse.urljoin(
+            self.uri, '/browse/{}'.format(jira_issue_id))
 
 
 class JiraBackendTimestamp(models.Model):
