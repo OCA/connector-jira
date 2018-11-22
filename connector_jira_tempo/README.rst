@@ -43,38 +43,3 @@ If you spotted it first, help us smashing it by providing a detailed and welcome
 Do not contact contributors directly about support or help with technical issues.
 
 Credits
-=======
-
-Authors
-~~~~~~~
-
-* Camptocamp
-
-Contributors
-~~~~~~~~~~~~
-
-* Guewen Baconnier <guewen.baconnier@camptocamp.com>
-* Simone Orsi <simahawk@gmail.com>
-* `CorporateHub <https://corporatehub.eu/>`__
-
-  * Alexey Pelykh <alexey.pelykh@corphub.eu>
-
-* Akim Juillerat <akim.juillerat@camptocamp.com>
-* Denis Leemann <denis.leemann@camptocamp.com>
-
-Maintainers
-~~~~~~~~~~~
-
-This module is maintained by the OCA.
-
-.. image:: https://odoo-community.org/logo.png
-   :alt: Odoo Community Association
-   :target: https://odoo-community.org
-
-OCA, or the Odoo Community Association, is a nonprofit organization whose
-mission is to support the collaborative development of Odoo features and
-promote its widespread use.
-
-This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/13.0/connector_jira_tempo>`_ project on GitHub.
-
-You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
