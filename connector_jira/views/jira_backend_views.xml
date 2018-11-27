@@ -83,6 +83,10 @@
                   type="object"
                   class="oe_highlight"
                   string="Run"/>
+                <div class="alert alert-danger"
+                     attrs="{'invisible': [('report_user_sync', '=', False)]}">
+                  <field name="report_user_sync" />
+                </div>
               </group>
               <group>
                 <div>
