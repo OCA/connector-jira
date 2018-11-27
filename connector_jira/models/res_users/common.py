@@ -32,17 +32,22 @@ class ResUsers(models.Model):
     @api.multi
     def button_link_with_jira(self):
         self.ensure_one()
-        self.link_with_jira()
+        self.link_with_jira(raise_if_mismatch=True)
         if not self.jira_bind_ids:
             raise exceptions.UserError(
                 _('No JIRA user could be found')
             )
 
     @api.multi
-    def link_with_jira(self, backends=None):
+    def link_with_jira(self, backends=None, raise_if_mismatch=False):
         if backends is None:
             backends = self.env['jira.backend'].search([])
+        result = {}
         for backend in backends:
+            bknd_result = {
+                'success': [],
+                'error': [],
+            }
             with backend.work_on('jira.res.users') as work:
                 binder = work.component(usage='binder')
                 adapter = work.component(usage='backend.adapter')
@@ -55,16 +60,39 @@ class ResUsers(models.Model):
                     if not jira_user:
                         continue
                     elif len(jira_user) > 1:
-                        raise exceptions.UserError(
-                            _('Several users found for %s. '
-                              'Set it manually..') % user.login
-                        )
-                    jira_user, = jira_user
-                    binding = self.env['jira.res.users'].create({
-                        'backend_id': backend.id,
-                        'odoo_id': user.id,
-                    })
-                    binder.bind(jira_user.key, binding)
+                        if raise_if_mismatch:
+                            raise exceptions.UserError(_(
+                                'Several users found for %s. '
+                                'Set it manually.'
+                            ) % user.login)
+                        bknd_result['error'].append({
+                            'key': 'login',
+                            'value': user.login,
+                            'error': 'multiple_found',
+                            'detail': [x.key for x in jira_user]
+                        })
+                        continue
+                    jira_user = jira_user[0]
+                    try:
+                        binding = self.env['jira.res.users'].create({
+                            'backend_id': backend.id,
+                            'odoo_id': user.id,
+                        })
+                        binder.bind(jira_user.key, binding)
+                        bknd_result['success'].append({
+                            'key': 'login',
+                            'value': user.login,
+                            'detail': jira_user.key,
+                        })
+                    except Exception as err:
+                        bknd_result['error'].append({
+                            'key': 'login',
+                            'value': user.login,
+                            'error': 'binding_error',
+                            'detail': str(err)
+                        })
+            result[backend] = bknd_result
+        return result
 
 
 class UserAdapter(Component):
