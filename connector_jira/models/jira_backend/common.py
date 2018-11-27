@@ -147,6 +147,9 @@ class JiraBackend(models.Model):
     )
     webhook_issue_jira_id = fields.Char()
     webhook_worklog_jira_id = fields.Char()
+    # TODO: use something better to show this info
+    # For instance, we could use web_notify to simply show a system msg.
+    report_user_sync = fields.Html(readonly=True)
 
     @api.model
     def _default_odoo_webhook_base_url(self):
@@ -485,7 +488,14 @@ class JiraBackend(models.Model):
 
     @api.multi
     def import_res_users(self):
-        self.env['res.users'].search([]).link_with_jira(backends=self)
+        # wipe report
+        self.report_user_sync = ''
+        result = self.env['res.users'].search([]).link_with_jira(backends=self)
+        for __, bknd_result in result.items():
+            if bknd_result.get('error'):
+                self.report_user_sync = self.env.ref(
+                    'connector_jira.backend_report_user_sync'
+                ).render({'backend': self, 'result': bknd_result})
         return True
 
     @api.multi
