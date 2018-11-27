@@ -30,6 +30,7 @@
      'views/jira_menus.xml',
      'wizards/jira_backend_auth_views.xml',
      'views/jira_backend_views.xml',
+     'views/jira_backend_report_templates.xml',
      'views/project_project_views.xml',
      'views/project_task_views.xml',
      'views/res_users_views.xml',

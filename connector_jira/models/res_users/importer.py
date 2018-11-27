@@ -21,4 +21,4 @@ class UserImporter(Component):
                  ('login', '=', jira_key),
                  ('email', '=', email)],
             )
-            user.link_with_jira(backends=self.backend_record)
+            return user.link_with_jira(backends=self.backend_record)
