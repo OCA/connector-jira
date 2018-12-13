@@ -60,6 +60,24 @@ class AccountAnalyticLine(models.Model):
         readonly=True,
     )
 
+    jira_epic_compound_key = fields.Char(
+        related='task_id.jira_epic_link_task_id.jira_compound_key',
+        readonly=True,
+        store=True
+    )
+
+    jira_epic_issue_url = fields.Char(
+        string='JIRA epic URL',
+        related='task_id.jira_epic_link_task_id.jira_issue_url',
+        readonly=True
+    )
+
+    jira_issue_type = fields.Char(
+        related='task_id.jira_issue_type',
+        readonly=True,
+        store=True
+    )
+
 
 class WorklogAdapter(Component):
     _name = 'jira.worklog.adapter'
