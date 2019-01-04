@@ -75,11 +75,9 @@ class JiraProjectProject(models.Model):
     @api.model
     def create(self, values):
         record = super().create(values)
-        if not record.jira_key:
-            raise exceptions.UserError(
-                _('The JIRA Key is mandatory in order to export a project')
-            )
+        record._ensure_jira_key()
         return record
+
 
     @api.multi
     def write(self, values):
@@ -87,7 +85,19 @@ class JiraProjectProject(models.Model):
             raise exceptions.UserError(
                 _('The project template cannot be modified.')
             )
-        return super().write(values)
+        res = super().write(values)
+        self._ensure_jira_key()
+        return res
+
+    @api.multi
+    def _ensure_jira_key(self):
+        if self.env.context.get('connector_no_export'):
+            return
+        for record in self:
+            if not record.jira_key:
+                raise exceptions.UserError(
+                    _('The JIRA Key is mandatory in order to export a project')
+                )
 
     @api.multi
     def unlink(self):
