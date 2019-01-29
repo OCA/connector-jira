@@ -9,7 +9,7 @@ import tempfile
 from jira import JIRAError
 from jira.utils import json_loads
 
-from odoo import api, fields, models, exceptions, _
+from odoo import api, fields, models, exceptions, _, tools
 
 from odoo.addons.component.core import Component
 
@@ -22,7 +22,7 @@ class JiraProjectBaseFields(models.AbstractModel):
     Shared by the binding jira.project.project
     and the wizard to link/create a JIRA project
     """
-    _name = 'jira.project.base.fields'
+    _name = 'jira.project.base.mixin'
 
     sync_issue_type_ids = fields.Many2many(
         comodel_name='jira.issue.type',
@@ -63,7 +63,7 @@ class JiraProjectBaseFields(models.AbstractModel):
 
 class JiraProjectProject(models.Model):
     _name = 'jira.project.project'
-    _inherit = ['jira.binding', 'jira.project.base.fields']
+    _inherit = ['jira.binding', 'jira.project.base.mixin']
     _inherits = {'project.project': 'odoo_id'}
     _description = 'Jira Projects'
 
@@ -77,6 +77,42 @@ class JiraProjectProject(models.Model):
         ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
          "A binding already exists for this project and this backend."),
     ]
+
+    # Disable and implement the constraint jira_binding_uniq as python because
+    # we need to override the in connector_jira_service_desk and it would try
+    # to create it again at every update because of the base implementation
+    # in the binding's parent model.
+    @api.model_cr
+    def _add_sql_constraints(self):
+        # we replace the sql constraint by a python one
+        # to include the organizations
+        constraints = []
+        for (key, definition, msg) in self._sql_constraints:
+            if key == 'jira_binding_uniq':
+                conname = '%s_%s' % (self._table, key)
+                has_definition = tools.constraint_definition(
+                    self.env.cr, conname
+                )
+                if has_definition:
+                    tools.drop_constraint(self.env.cr, self._table, conname)
+            else:
+                constraints.append((key, definition, msg))
+        self._sql_constraints = constraints
+        super()._add_sql_constraints()
+
+    @api.constrains('backend_id', 'external_id')
+    def _constrains_jira_uniq(self):
+        for binding in self:
+            same_link_bindings = self.search([
+                ('id', '!=', self.id),
+                ('backend_id', '=', self.backend_id.id),
+                ('external_id', '=', self.external_id),
+            ])
+            if same_link_bindings:
+                raise exceptions.ValidationError(_(
+                    "The project %s is already linked with the same"
+                    " JIRA project."
+                ) % (same_link_bindings.display_name))
 
     @api.onchange('backend_id')
     def onchange_project_backend_id(self):
@@ -103,7 +139,6 @@ class JiraProjectProject(models.Model):
         record = super().create(values)
         record._ensure_jira_key()
         return record
-
 
     @api.multi
     def write(self, values):
