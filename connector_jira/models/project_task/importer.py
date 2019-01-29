@@ -59,9 +59,8 @@ class ProjectTaskMapper(Component):
 
     @mapping
     def project(self, record):
-        jira_project_id = record['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
-        project = binder.to_internal(jira_project_id, unwrap=True)
+        project = binder.unwrap_binding(self.options.project_binding)
         return {'project_id': project.id}
 
     @mapping
@@ -99,6 +98,17 @@ class ProjectTaskBatchImporter(Component):
     _apply_on = ['jira.project.task']
 
 
+class ProjectTaskProjectMatcher(Component):
+    _name = 'jira.task.project.matcher'
+    _inherit = ['jira.base']
+    _usage = 'jira.task.project.matcher'
+
+    def find_project_binding(self, jira_task_data, unwrap=False):
+        jira_project_id = self.external_record['fields']['project']['id']
+        binder = self.binder_for('jira.project.project')
+        return binder.to_internal(jira_project_id, unwrap=unwrap)
+
+
 class ProjectTaskImporter(Component):
     _name = 'jira.project.task.importer'
     _inherit = ['jira.importer']
@@ -107,6 +117,7 @@ class ProjectTaskImporter(Component):
     def __init__(self, work_context):
         super().__init__(work_context)
         self.jira_epic = None
+        self.project_binding = None
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
@@ -122,10 +133,14 @@ class ProjectTaskImporter(Component):
                 self.jira_epic = issue_adapter.read(epic_key)
         return result
 
+    def _find_project_binding(self):
+        matcher = self.component(usage='jira.task.project.matcher')
+        self.project_binding = matcher.find_project_binding(
+            self.external_record
+        )
+
     def _is_issue_type_sync(self):
-        jira_project_id = self.external_record['fields']['project']['id']
-        binder = self.binder_for('jira.project.project')
-        project_binding = binder.to_internal(jira_project_id)
+        project_binding = self.project_binding
         task_sync_type_id = self.external_record['fields']['issuetype']['id']
         task_sync_type_binder = self.binder_for('jira.issue.type')
         task_sync_type_binding = task_sync_type_binder.to_internal(
@@ -134,14 +149,25 @@ class ProjectTaskImporter(Component):
         return task_sync_type_binding.is_sync_for_project(project_binding)
 
     def _create_data(self, map_record, **kwargs):
-        return super()._create_data(map_record, jira_epic=self.jira_epic)
+        return super()._create_data(
+            map_record,
+            jira_epic=self.jira_epic,
+            project_binding=self.project_binding,
+            **kwargs
+        )
 
     def _update_data(self, map_record, **kwargs):
-        return super()._update_data(map_record, jira_epic=self.jira_epic)
+        return super()._update_data(
+            map_record,
+            jira_epic=self.jira_epic,
+            project_binding=self.project_binding,
+            **kwargs
+        )
 
     def _import(self, binding, **kwargs):
         # called at the beginning of _import because we must be sure
         # that dependencies are there (project and issue type)
+        self._find_project_binding()
         if not self._is_issue_type_sync():
             return _('Project or issue type is not synchronized.')
         return super()._import(binding, **kwargs)

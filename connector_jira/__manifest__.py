@@ -25,7 +25,7 @@
          'cryptography',
       ],
  },
- 'website': 'https://www.camptocamp.com',
+ 'website': 'https://github.com/camptocamp/connector-jira',
  'data': [
      'views/jira_menus.xml',
      'wizards/jira_backend_auth_views.xml',
