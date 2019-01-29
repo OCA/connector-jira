@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class ProjectLinkJira(models.TransientModel):
     _name = 'project.link.jira'
-    _inherit = 'jira.project.base.fields'
+    _inherit = 'jira.project.base.mixin'
     _description = 'Link Project with JIRA'
 
     project_id = fields.Many2one(
