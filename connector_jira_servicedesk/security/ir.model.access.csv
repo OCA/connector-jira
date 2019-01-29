@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_jira_organization,access_jira_organization,model_jira_organization,base.group_user,1,0,0,0
+access_jira_organization_manager,access_jira_organization connector manager,model_jira_organization,connector.group_connector_manager,1,1,1,1
