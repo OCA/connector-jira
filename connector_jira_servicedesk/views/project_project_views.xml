@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_jira_project_project_form" model="ir.ui.view">
+    <field name="name">jira.project.project.form</field>
+    <field name="model">jira.project.project</field>
+    <field name="inherit_id" ref="connector_jira.view_jira_project_project_form" />
+    <field name="arch" type="xml">
+      <field name="external_id" position="after">
+        <field name="organization_ids"
+               widget="many2many_tags"
+               options="{'no_create': True}" />
+      </field>
+    </field>
+  </record>
+
+  <record id="view_jira_project_project_tree" model="ir.ui.view">
+    <field name="name">jira.project.project.tree</field>
+    <field name="model">jira.project.project</field>
+    <field name="inherit_id" ref="connector_jira.view_jira_project_project_tree" />
+    <field name="arch" type="xml">
+      <field name="external_id" position="after">
+        <field name="organization_ids" />
+      </field>
+    </field>
+  </record>
+
+</odoo>
