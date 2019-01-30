@@ -39,6 +39,11 @@ class JiraProjectTask(models.Model):
              "of the synchronizations.",
     )
 
+    _sql_constraints = [
+        ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
+         "A binding already exists for this task and this backend."),
+    ]
+
     @api.multi
     def unlink(self):
         if any(self.mapped('external_id')):
