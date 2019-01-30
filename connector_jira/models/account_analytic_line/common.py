@@ -22,6 +22,11 @@ class JiraAccountAnalyticLine(models.Model):
     # in case we'll need it for an eventual export
     jira_issue_id = fields.Char()
 
+    _sql_constraints = [
+        ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
+         "A binding already exists for this line and this backend."),
+    ]
+
     @job(default_channel='root.connector_jira.import')
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
