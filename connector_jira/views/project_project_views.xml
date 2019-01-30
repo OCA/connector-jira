@@ -6,6 +6,7 @@
     <field name="model">project.project</field>
     <field name="inherit_id" ref="project.edit_project"/>
     <field name="arch" type="xml">
+
       <xpath expr="//notebook" position="inside">
         <page string="Connector" name="connector">
           <group string="Jira">
@@ -35,6 +36,7 @@
             attrs="{'readonly': [('external_id', '!=', False)],
                     'invisible': [('project_template', '!=', 'shared')],
                     'required': [('project_template', '=', 'shared')]}"/>
+          <field name="sync_action"/>
           <div colspan="2">
             <p class="oe_grey oe_inline">
               The checkboxes define which types of JIRA issues will be imported
@@ -59,15 +61,39 @@
     </field>
   </record>
 
+  <record id="project_project_view_form_simplified" model="ir.ui.view">
+    <field name="name">project.project.view.form.simplified.jira</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
+    <field name="arch" type="xml">
+      <button name="edit_dialog" position="after">
+        <button string="Create and Link with JIRA" name="create_and_link_jira" type="object" class="btn-primary"/>
+      </button>
+    </field>
+  </record>
+
   <record id="view_jira_project_project_tree" model="ir.ui.view">
     <field name="name">jira.project.project.tree</field>
     <field name="model">jira.project.project</field>
     <field name="arch" type="xml">
-      <tree string="Jira Project">
+      <tree string="Jira Project" create="0">
         <field name="backend_id"/>
         <field name="external_id"/>
         <field name="sync_issue_type_ids"/>
       </tree>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="view_project_kanban_jira">
+    <field name="name">project.project.kanban.jira</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project_kanban"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('o_kanban_manage_reports')]/div[last()]" position="after">
+        <div groups="project.group_project_manager">
+          <a name="%(connector_jira.open_project_link_jira)d" type="action">Link with JIRA</a>
+        </div>
+      </xpath>
     </field>
   </record>
 
