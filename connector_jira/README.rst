@@ -82,6 +82,9 @@ You can now click on the button "Configuration Done".
 Syncronizations
 ^^^^^^^^^^^^^^^
 
+The tasks and worklogs are always imported from JIRA to Odoo, there
+is no synchronization in the other direction.
+
 Initial synchronizations
 """"""""""""""""""""""""
 
@@ -91,16 +94,41 @@ users" and "Import issue types". The users will be matched either by login or by
 Create and export a project
 """""""""""""""""""""""""""
 
-Projects are created in Odoo and exported to Jira. You can then create a
-project, set a Jira key.
-Then, open the Connectors tab, add a new link.
-You can chose the Jira to export to, and the type of project.
-You have to select the synchronized issue types, but the field is not editable
-until the record is saved. You need to save and edit it again to be able to
-select them.
+Projects can be created in Odoo and exported to Jira. You can then create a
+project, and use the action "Link with JIRA" and use the "Export to JIRA" action.
 
-TODO: add a quick button to push to JIRA via default backend.
+When you choose to export a project to JIRA, if you change the name
+or the key of the project, the new values will be pushed to JIRA.
 
+Link a project with JIRA
+""""""""""""""""""""""""
+
+If you already have a project on JIRA or prefer to create it first on JIRA,
+you can link an Odoo project. Use the "Link with JIRA" action on the project
+and select the "Link with JIRA" action.
+
+This action establish the link, then changes of the name or the key on either
+side are not pushed.
+
+Issue Types on Projects
+"""""""""""""""""""""""
+
+When you link a project, you have to select which issue types are synchronized.
+Only tasks of the selected types will be created in Odoo.
+
+If a JIRA worklog is added to a type of issue that is not synchronized,
+will attach to the closest task following these rules:
+
+* if a subtask, find the parent task
+* if no parent task, find the epic task (only if it is on the same project)
+* if no epic, attach to the project without being linked to a task
+
+Change synchronization configuration on a project
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+If you want to change the configuration of a project, such as which
+issue types are synchronized, you can open the "Connector" tab in
+the project settings and edit the "binding" with the backend.
 
 Synchronize tasks and worklogs
 """"""""""""""""""""""""""""""
@@ -114,7 +142,6 @@ imports. It is important to select the issue types so don't miss this step (need
 Known Issues
 ------------
 
-* The Project Jira binding must be saved first then edited again to add the issue types afterwards...
 * If an odoo user has no linked employee, worklogs will still be imported but
   with an empty employee
 * The tasks and worklogs deleted on JIRA are deleted if
