@@ -505,15 +505,18 @@ class JiraBackend(models.Model):
 
     @api.model
     def get_api_client(self):
+        self.ensure_one()
+        # tokens are only readable by connector managers
+        backend = self.sudo()
         oauth = {
-            'access_token': self.access_token,
-            'access_token_secret': self.access_secret,
-            'consumer_key': self.consumer_key,
-            'key_cert': self.private_key,
+            'access_token': backend.access_token,
+            'access_token_secret': backend.access_secret,
+            'consumer_key': backend.consumer_key,
+            'key_cert': backend.private_key,
         }
         options = {
-            'server': self.uri,
-            'verify': self.verify_ssl,
+            'server': backend.uri,
+            'verify': backend.verify_ssl,
         }
         return JIRA(options=options, oauth=oauth)
 
