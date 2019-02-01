@@ -1,4 +1,4 @@
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
@@ -6,8 +6,11 @@ import logging
 import re
 import tempfile
 
-from jira import JIRAError
-from jira.utils import json_loads
+try:
+    from jira import JIRAError
+    from jira.utils import json_loads
+except ImportError:
+    pass  # already logged in components/adapter.py
 
 from odoo import api, fields, models, exceptions, _, tools
 
@@ -24,6 +27,11 @@ class JiraProjectBaseFields(models.AbstractModel):
     """
     _name = 'jira.project.base.mixin'
 
+    jira_key = fields.Char(
+        string='JIRA Key',
+        kequired=True,
+        size=10,  # limit on JIRA
+    )
     sync_issue_type_ids = fields.Many2many(
         comodel_name='jira.issue.type',
         string='Issue Levels to Synchronize',
@@ -72,11 +80,16 @@ class JiraProjectProject(models.Model):
                               required=True,
                               index=True,
                               ondelete='restrict')
+    project_type = fields.Selection(
+        selection="_selection_project_type"
+    )
 
-    _sql_constraints = [
-        ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
-         "A binding already exists for this project and this backend."),
-    ]
+    @api.model
+    def _selection_project_type(self):
+        return [
+            ('software', 'Software'),
+            ('business', 'Business'),
+        ]
 
     # Disable and implement the constraint jira_binding_uniq as python because
     # we need to override the in connector_jira_service_desk and it would try
@@ -100,19 +113,82 @@ class JiraProjectProject(models.Model):
         self._sql_constraints = constraints
         super()._add_sql_constraints()
 
+    def _other_same_type_domain(self):
+        """Return the domain to search a binding on the same project and type
+
+        It is used for the constraint allowing only one binding of each type.
+        The reason for this is:
+
+        * supporting several projects of different types is a requirements (eg.
+          1 service desk and 1 software)
+        * but if we implement new features like "if I create a task it is
+          pushed to Jira", with different projects we would not know where to
+          push them
+
+        Using this constraint, we'll be able to focus new export features by
+        project type.
+
+        """
+        self.ensure_one()
+        domain = [
+            ('odoo_id', '=', self.odoo_id.id),
+            ('backend_id', '=', self.backend_id.id),
+            ('project_type', '=', self.project_type)
+        ]
+        if self.id:
+            domain.append(
+                ('id', '!=', self.id),
+            )
+        return domain
+
+    @api.constrains('backend_id', 'odoo_id', 'project_type')
+    def _constrains_odoo_jira_uniq(self):
+        """Add a constraint on backend+odoo id
+
+        More than one binding is tolerated but only one can be a master
+        binding. The master binding will be used when we have to push data from
+        Odoo to Jira (add tasks, ...).
+        """
+        for binding in self:
+            same_link_bindings = self.with_context(active_test=False).search(
+                self._other_same_type_domain()
+            )
+            if same_link_bindings:
+                raise exceptions.ValidationError(_(
+                    "The project \"%s\" already has a binding with "
+                    "a Jira project of the same type (%s)."
+                ) % (binding.display_name, self.project_type))
+
     @api.constrains('backend_id', 'external_id')
     def _constrains_jira_uniq(self):
+        """Add a constraint on backend+jira id
+
+        Defined as a python method rather than a postgres constraint
+        in order to ease the override in connector_jira_servicedesk
+        """
         for binding in self:
-            same_link_bindings = self.search([
-                ('id', '!=', self.id),
-                ('backend_id', '=', self.backend_id.id),
-                ('external_id', '=', self.external_id),
+            if not binding.external_id:
+                continue
+            same_link_bindings = self.with_context(active_test=False).search([
+                ('id', '!=', binding.id),
+                ('backend_id', '=', binding.backend_id.id),
+                ('external_id', '=', binding.external_id),
             ])
             if same_link_bindings:
                 raise exceptions.ValidationError(_(
                     "The project %s is already linked with the same"
                     " JIRA project."
                 ) % (same_link_bindings.display_name))
+
+    @api.constrains('jira_key')
+    def check_jira_key(self):
+        for project in self:
+            if not project.jira_key:
+                continue
+            if not self._jira_key_valid(project.jira_key):
+                raise exceptions.ValidationError(
+                    _('%s is not a valid JIRA Key') % project.jira_key
+                )
 
     @api.onchange('backend_id')
     def onchange_project_backend_id(self):
@@ -157,7 +233,7 @@ class JiraProjectProject(models.Model):
         for record in self:
             if not record.jira_key:
                 raise exceptions.UserError(
-                    _('The JIRA Key is mandatory in order to export a project')
+                    _('The JIRA Key is mandatory in order to link a project')
                 )
 
     @api.multi
@@ -179,40 +255,16 @@ class ProjectProject(models.Model):
         string='Project Bindings',
         context={'active_test': False},
     )
-    jira_exportable = fields.Boolean(
-        string='Exportable on Jira',
-        compute='_compute_jira_exportable',
-    )
     jira_key = fields.Char(
         string='JIRA Key',
-        size=10,  # limit on JIRA
+        compute='_compute_jira_key',
     )
 
-    @api.constrains('jira_key')
-    def check_jira_key(self):
+    @api.depends('jira_bind_ids.jira_key')
+    def _compute_jira_key(self):
         for project in self:
-            if not project.jira_key:
-                continue
-            valid = self.env['jira.project.project']._jira_key_valid
-            if not valid(project.jira_key):
-                raise exceptions.ValidationError(
-                    _('%s is not a valid JIRA Key') % project.jira_key
-                )
-
-    @api.depends('jira_bind_ids')
-    def _compute_jira_exportable(self):
-        for project in self:
-            project.jira_exportable = bool(project.jira_bind_ids)
-
-    @api.multi
-    def write(self, values):
-        result = super().write(values)
-        for record in self:
-            if record.jira_exportable and not record.jira_key:
-                raise exceptions.UserError(
-                    _('The JIRA Key is mandatory on JIRA projects.')
-                )
-        return result
+            keys = project.mapped('jira_bind_ids.jira_key')
+            project.jira_key = ', '.join(keys)
 
     @api.multi
     def name_get(self):
@@ -243,13 +295,16 @@ class ProjectAdapter(Component):
     _apply_on = ['jira.project.project']
 
     def read(self, id_):
-        return self.get(id_).raw
+        with self.handle_404():
+            return self.get(id_).raw
 
     def get(self, id_):
-        return self.client.project(id_)
+        with self.handle_404():
+            return self.client.project(id_)
 
     def write(self, id_, values):
-        self.get(id_).update(values)
+        with self.handle_404():
+            self.get(id_).update(values)
 
     def create(self, key=None, name=None, template_name=None, values=None):
         project = self.client.create_project(

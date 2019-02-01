@@ -1,4 +1,4 @@
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models
@@ -36,15 +36,16 @@ class JiraBinding(models.AbstractModel):
         """ Prepare import of a batch of records """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='batch.importer')
-            importer.run(from_date=from_date, to_date=to_date)
+            return importer.run(from_date=from_date, to_date=to_date)
 
     @job(default_channel='root.connector_jira.import')
+    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, external_id, force=False):
         """ Import a record """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
-            importer.run(external_id, force=force)
+            return importer.run(external_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
@@ -52,7 +53,7 @@ class JiraBinding(models.AbstractModel):
         """ Delete a record on Odoo """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.deleter')
-            importer.run(external_id)
+            return importer.run(external_id)
 
     @job(default_channel='root.connector_jira.export')
     @related_action(action='related_action_unwrap_binding')
@@ -61,4 +62,4 @@ class JiraBinding(models.AbstractModel):
         self.ensure_one()
         with self.backend_id.work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
-            exporter.run(self, fields=fields)
+            return exporter.run(self, fields=fields)

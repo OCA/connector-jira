@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="task_link_jira_form" model="ir.ui.view">
+    <field name="name">task.link.jira.form</field>
+    <field name="model">task.link.jira</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="multi_step_wizard.multi_step_wizard_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//footer" position="before">
+        <h1>
+          <field name="jira_key"
+                 attrs="{'readonly': [('state', '!=', 'start')]}"
+                 class="oe_inline"
+                 placeholder="JIRA Key"/>
+        </h1>
+        <group name="start" attrs="{'invisible': [('state', '!=', 'start')]}">
+          <group>
+            <field name="linked_backend_ids" invisible="1"/>
+            <field name="backend_id"/>
+          </group>
+        </group>
+        <div name="final" attrs="{'invisible': [('state', '!=', 'final')]}">
+          <p>The task is now linked with JIRA.</p>
+        </div>
+      </xpath>
+    </field>
+  </record>
+
+  <act_window id="open_task_link_jira"
+              name="Link with JIRA"
+              res_model="task.link.jira"
+              src_model="project.task"
+              groups="project.group_project_manager"
+              view_mode="form" target="new" view_type="form" />
+</odoo>
