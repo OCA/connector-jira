@@ -8,7 +8,9 @@ from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 from ...components.backend_adapter import JIRA_JQL_DATETIME_FORMAT
-from ...components.mapper import iso8601_local_date, whenempty
+from ...components.mapper import (
+    iso8601_local_date, iso8601_to_utc_datetime, whenempty
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -30,7 +32,21 @@ class AnalyticLineMapper(Component):
 
     @mapping
     def issue(self, record):
-        return {'jira_issue_id': record['issueId']}
+        issue = self.options.linked_issue
+        assert issue
+        refs = {
+            'jira_issue_id': record['issueId'],
+            'jira_issue_key': issue['key'],
+        }
+        task_mapper = self.component(
+            usage='import.mapper',
+            model_name='jira.project.task',
+        )
+        refs.update(task_mapper.issue_type(issue))
+        epic_field_name = self.backend_record.epic_link_field_name
+        if epic_field_name:
+            refs['jira_epic_issue_key'] = issue['fields'][epic_field_name]
+        return refs
 
     @mapping
     def duration(self, record):
@@ -59,11 +75,18 @@ class AnalyticLineMapper(Component):
 
     @mapping
     def project_and_task(self, record):
-        assert self.options.task_binding or self.options.project_binding
+        assert (
+            self.options.task_binding or
+            self.options.project_binding or
+            self.options.fallback_project
+        )
         task_binding = self.options.task_binding
         if not task_binding:
             project = self.options.project_binding.odoo_id
-            return {'project_id': project.id}
+            if project:
+                return {'project_id': project.id}
+            else:
+                return {'project_id': self.options.fallback_project.id}
 
         project = task_binding.project_id
         return {'task_id': task_binding.odoo_id.id,
@@ -119,6 +142,14 @@ class AnalyticLineImporter(Component):
         self.external_issue_id = None
         self.task_binding = None
         self.project_binding = None
+        self.fallback_project = None
+
+    def _get_external_updated_at(self):
+        assert self.external_record
+        external_updated_at = self.external_record.get('updated')
+        if not external_updated_at:
+            return None
+        return iso8601_to_utc_datetime(external_updated_at)
 
     @property
     def _issue_fields_to_read(self):
@@ -184,12 +215,14 @@ class AnalyticLineImporter(Component):
         return super()._create_data(map_record,
                                     task_binding=self.task_binding,
                                     project_binding=self.project_binding,
+                                    fallback_project=self.fallback_project,
                                     linked_issue=self.external_issue)
 
     def _update_data(self, map_record, **kwargs):
         return super()._update_data(map_record,
                                     task_binding=self.task_binding,
                                     project_binding=self.project_binding,
+                                    fallback_project=self.fallback_project,
                                     linked_issue=self.external_issue)
 
     def run(self, external_id, force=False, record=None, **kwargs):
@@ -198,6 +231,19 @@ class AnalyticLineImporter(Component):
         return super().run(
             external_id, force=force, record=record, **kwargs
         )
+
+    def _handle_record_missing_on_jira(self):
+        """Hook called when we are importing a record missing on Jira
+
+        For worklogs, we drop the analytic line if we discover it doesn't exist
+        on Jira, as the latter is the master.
+        """
+        binding = self._get_binding()
+        if binding:
+            record = binding.odoo_id
+            binding.unlink()
+            record.unlink()
+        return _('Record does no longer exist in Jira')
 
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
@@ -219,9 +265,13 @@ class AnalyticLineImporter(Component):
             assert issue
             matcher = self.component(usage='jira.task.project.matcher')
             self.project_binding = matcher.find_project_binding(issue)
+            if not self.project_binding:
+                self.fallback_project = matcher.fallback_project_for_worklogs()
 
     def _import(self, binding, **kwargs):
-        if not self.task_binding and not self.project_binding:
+        if not (self.task_binding or
+                self.project_binding or
+                self.fallback_project):
             _logger.debug(
                 "No task or project synchronized for attaching worklog %s",
                 self.external_record['id']
@@ -229,10 +279,13 @@ class AnalyticLineImporter(Component):
             return
         return super()._import(binding, **kwargs)
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+    def _import_dependency_assignee(self):
         jira_assignee = self.external_record['author']
         jira_key = jira_assignee.get('key')
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        self._import_dependency_assignee()

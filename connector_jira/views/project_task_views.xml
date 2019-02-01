@@ -68,6 +68,13 @@
         </t>
       </xpath>
 
+      <xpath expr="//div[hasclass('o_dropdown_kanban')]/ul/li[last()]" position="after">
+        <li class="divider"></li>
+        <li t-if="widget.editable" groups="project.group_project_manager">
+          <a name="%(connector_jira.open_task_link_jira)d" type="action">Link with JIRA</a>
+        </li>
+      </xpath>
+
     </field>
   </record>
 

@@ -1,4 +1,4 @@
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models
@@ -42,7 +42,8 @@ class IssueTypeAdapter(Component):
     _apply_on = ['jira.issue.type']
 
     def read(self, id_):
-        return self.client.issue_type(id_).raw
+        with self.handle_404():
+            return self.client.issue_type(id_).raw
 
     def search(self):
         issues = self.client.issue_types()
