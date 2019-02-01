@@ -16,8 +16,7 @@
       </xpath>
 
       <field name="partner_id" position="before">
-        <field name="jira_exportable" invisible="1"/>
-        <field name="jira_key" attrs="{'required': [('jira_exportable', '=', True)]}"/>
+        <field name="jira_key"/>
       </field>
     </field>
   </record>
@@ -28,6 +27,7 @@
     <field name="arch" type="xml">
       <form string="Jira Project">
         <group>
+          <field name="jira_key"/>
           <field name="backend_id"
             attrs="{'readonly': [('external_id', '!=', False)]}"/>
           <field name="project_template"
@@ -37,6 +37,7 @@
                     'invisible': [('project_template', '!=', 'shared')],
                     'required': [('project_template', '=', 'shared')]}"/>
           <field name="sync_action"/>
+          <field name="project_type"/>
           <div colspan="2">
             <p class="oe_grey oe_inline">
               The checkboxes define which types of JIRA issues will be imported
@@ -78,7 +79,9 @@
     <field name="arch" type="xml">
       <tree string="Jira Project" create="0">
         <field name="backend_id"/>
+        <field name="jira_key"/>
         <field name="external_id"/>
+        <field name="project_type"/>
         <field name="sync_issue_type_ids"/>
       </tree>
     </field>
