@@ -1,4 +1,4 @@
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _
@@ -17,7 +17,6 @@ class ProjectTaskMapper(Component):
     ]
 
     from_fields = [
-        ('summary', 'name'),
         ('duedate', 'date_deadline'),
     ]
 
@@ -26,6 +25,24 @@ class ProjectTaskMapper(Component):
         return self.component(usage='map.from.attrs').values(
             record, self
         )
+
+    @mapping
+    def name(self, record):
+        # On an Epic, you have 2 fields:
+
+        #     a field like 'customfield_10003' labelled "Epic Name"
+        #     a field 'summary' labelled "Sumarry"
+
+        # The other types of tasks have only the 'summary' field, the other is
+        # empty. To simplify, we always try to read the Epic Name, which
+        # will always be empty for other types.
+        epic_name_field = self.backend_record.epic_name_field_name
+        name = False
+        if epic_name_field:
+            name = record['fields'].get(epic_name_field)
+        if not name:
+            name = record['fields']['summary']
+        return {'name': name}
 
     @mapping
     def issue_type(self, record):
@@ -86,6 +103,16 @@ class ProjectTaskMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
+    def finalize(self, map_record, values):
+        values = values.copy()
+        if values.get('odoo_id'):
+            # If a mapping binds the issue to an existing odoo
+            # task, we should not change the project.
+            # It's not only unexpected, but would fail as soon
+            # as we have invoiced timesheet lines on the task.
+            values.pop('project_id')
+        return values
+
 
 class ProjectTaskBatchImporter(Component):
     """ Import the Jira tasks
@@ -104,9 +131,12 @@ class ProjectTaskProjectMatcher(Component):
     _usage = 'jira.task.project.matcher'
 
     def find_project_binding(self, jira_task_data, unwrap=False):
-        jira_project_id = self.external_record['fields']['project']['id']
+        jira_project_id = jira_task_data['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
         return binder.to_internal(jira_project_id, unwrap=unwrap)
+
+    def fallback_project_for_worklogs(self):
+        return self.backend_record.worklog_fallback_project_id
 
 
 class ProjectTaskImporter(Component):
@@ -172,25 +202,33 @@ class ProjectTaskImporter(Component):
             return _('Project or issue type is not synchronized.')
         return super()._import(binding, **kwargs)
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+    def _import_dependency_assignee(self):
         jira_assignee = self.external_record['fields'].get('assignee') or {}
         jira_key = jira_assignee.get('key')
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
 
+    def _import_dependency_issue_type(self):
         jira_issue_type = self.external_record['fields']['issuetype']
         jira_issue_type_id = jira_issue_type['id']
         self._import_dependency(jira_issue_type_id, 'jira.issue.type',
                                 record=jira_issue_type)
 
+    def _import_dependency_parent(self):
         jira_parent = self.external_record['fields'].get('parent')
         if jira_parent:
             jira_parent_id = jira_parent['id']
-            self._import_dependency(jira_parent_id, 'jira.project.task',
-                                    record=jira_parent)
+            self._import_dependency(jira_parent_id, 'jira.project.task')
 
+    def _import_dependency_epic(self):
         if self.jira_epic:
             self._import_dependency(self.jira_epic['id'], 'jira.project.task',
                                     record=self.jira_epic)
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        self._import_dependency_assignee()
+        self._import_dependency_issue_type()
+        self._import_dependency_parent()
+        self._import_dependency_epic()

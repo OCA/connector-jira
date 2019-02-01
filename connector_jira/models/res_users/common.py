@@ -1,4 +1,4 @@
-# Copyright 2016-2018 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, exceptions, fields, models
@@ -101,7 +101,8 @@ class UserAdapter(Component):
     _apply_on = ['jira.res.users']
 
     def read(self, id_):
-        return self.client.user(id_).raw
+        with self.handle_404():
+            return self.client.user(id_).raw
 
     def search(self, fragment=None):
         """ Search users

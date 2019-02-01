@@ -1,4 +1,4 @@
-# Copyright 2016-2018 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 """
@@ -19,7 +19,7 @@ from contextlib import closing, contextmanager
 from psycopg2 import IntegrityError, errorcodes
 
 import odoo
-from odoo import _
+from odoo import _, tools
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.queue_job.exception import RetryableJobError
@@ -52,30 +52,33 @@ class JiraImporter(Component):
         """ Return the raw Jira data for ``self.external_id`` """
         return self.backend_adapter.read(self.external_id)
 
-    def must_skip(self):
-        """ Returns a reason if the import should be skipped.
+    def must_skip(self, force=False):
+        """Returns a reason as string if the import must be skipped.
 
-        Returns None to continue with the import
-
+        Returns None to continue with the import.
         """
         assert self.external_record
-        return
 
     def _before_import(self):
         """ Hook called before the import, when we have the Jira
         data"""
 
-    def _is_uptodate(self, binding):
-        """Return True if the import should be skipped because
-        it is already up-to-date in Odoo"""
+    def _get_external_updated_at(self):
         assert self.external_record
         ext_fields = self.external_record.get('fields', {})
         external_updated_at = ext_fields.get('updated')
         if not external_updated_at:
+            return None
+        return iso8601_to_utc_datetime(external_updated_at)
+
+    def _is_uptodate(self, binding):
+        """Return True if the import should be skipped because
+        it is already up-to-date in Odoo"""
+        external_date = self._get_external_updated_at()
+        if not external_date:
             return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
-        external_date = iso8601_to_utc_datetime(external_updated_at)
         sync_date = self.binder.sync_date(binding)
         if not sync_date:
             return
@@ -117,7 +120,7 @@ class JiraImporter(Component):
             if component is None:
                 component = self.component(usage='record.importer',
                                            model_name=binding_model)
-            component.run(external_id, record=record)
+            component.run(external_id, record=record, force=True)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -233,7 +236,21 @@ class JiraImporter(Component):
                     cr.rollback()
                     raise
                 else:
-                    cr.commit()
+                    if not tools.config['test_enable']:
+                        cr.commit()  # pylint: disable=invalid-commit
+
+    def _handle_record_missing_on_jira(self):
+        """Hook called when we are importing a record missing on Jira
+
+        By default it deletes the matching record or binding if it exists on
+        Odoo and returns a result to show on the job, job will be done.
+        """
+        binding = self._get_binding()
+        if binding:
+            # emptying the external_id allows to unlink the binding
+            binding.external_id = False
+            binding.unlink()
+        return _('Record does no longer exist in Jira')
 
     def run(self, external_id, force=False, record=None, **kwargs):
         """ Run the synchronization
@@ -259,7 +276,7 @@ class JiraImporter(Component):
             try:
                 self.external_record = self._get_external_data()
             except IDMissingInBackend:
-                return _('Record does no longer exist in Jira')
+                return self._handle_record_missing_on_jira()
         binding = self._get_binding()
         if not binding:
             with self.do_in_new_work_context() as new_work:
@@ -310,7 +327,7 @@ class JiraImporter(Component):
                         ignore_retry=True
                     )
 
-        reason = self.must_skip()
+        reason = self.must_skip(force=force)
         if reason:
             return reason
 

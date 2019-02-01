@@ -8,15 +8,15 @@
     <field name="arch" type="xml">
 
       <field name="task_id" position="after">
-        <field name="jira_compound_key" invisible="1" />
+        <field name="jira_issue_key" invisible="1" />
         <field name="jira_issue_url" widget="url"
-               options='{"text_field": "jira_compound_key"}'
-               attrs="{'invisible': [('jira_compound_key', '=', False)]}"/>
-        <field name="jira_epic_compound_key" invisible="1" />
+               options='{"text_field": "jira_issue_key"}'
+               attrs="{'invisible': [('jira_issue_key', '=', False)]}"/>
+        <field name="jira_epic_issue_key" invisible="1" />
         <field name="jira_epic_issue_url" widget="url"
-               options='{"text_field": "jira_epic_compound_key"}'
-               attrs="{'invisible': [('jira_epic_compound_key', '=', False)]}"/>
-        <field name="jira_issue_type" />
+               options='{"text_field": "jira_epic_issue_key"}'
+               attrs="{'invisible': [('jira_epic_issue_key', '=', False)]}"/>
+        <field name="jira_issue_type_id" />
       </field>
 
     </field>
@@ -29,13 +29,13 @@
     <field name="arch" type="xml">
 
       <field name="task_id" position="after">
-        <field name="jira_compound_key" invisible="1" />
-        <field name="jira_issue_url" widget="url" options='{"text_field": "jira_compound_key"}'
-               attrs="{'invisible': [('jira_compound_key', '=', False)]}"/>
-        <field name="jira_epic_compound_key" invisible="1" />
-        <field name="jira_epic_issue_url" widget="url" options='{"text_field":"jira_epic_compound_key"}'
-               attrs="{'invisible': [('jira_epic_compound_key', '=', False)]}"/>
-        <field name="jira_issue_type" />
+        <field name="jira_issue_key" invisible="1" />
+        <field name="jira_issue_url" widget="url" options='{"text_field": "jira_issue_key"}'
+               attrs="{'invisible': [('jira_issue_key', '=', False)]}"/>
+        <field name="jira_epic_issue_key" invisible="1" />
+        <field name="jira_epic_issue_url" widget="url" options='{"text_field":"jira_epic_issue_key"}'
+               attrs="{'invisible': [('jira_epic_issue_key', '=', False)]}"/>
+        <field name="jira_issue_type_id" />
       </field>
 
     </field>
@@ -49,18 +49,17 @@
       <field name="arch" type="xml">
 
         <field name="task_id" position="after">
-          <field name="jira_compound_key" string="JIRA issue" />
-          <field name="jira_epic_compound_key" string="JIRA Epic" />
+          <field name="jira_issue_key" string="JIRA issue" />
+          <field name="jira_epic_issue_key" string="JIRA Epic" />
 
         </field>
         <filter name="groupby_date" position="after">
-          <filter string="JIRA issue" name="groupby_jira_task" domain="[]" context="{'group_by':'jira_compound_key'}"/>
-          <filter string="JIRA epic" name="groupby_jira_epic" domain="[]" context="{'group_by':'jira_epic_compound_key'}"/>
-          <filter string="JIRA issue type" name="groupby_jira_type" domain="[]" context="{'group_by':'jira_issue_type'}"/>
+          <filter string="JIRA Original Issue" name="groupby_jira_task" domain="[]" context="{'group_by':'jira_issue_key'}"/>
+          <filter string="JIRA Original Epic" name="groupby_jira_epic" domain="[]" context="{'group_by':'jira_epic_issue_key'}"/>
+          <filter string="JIRA Original Issue Type" name="groupby_jira_type" domain="[]" context="{'group_by':'jira_issue_type_id'}"/>
         </filter>
 
     </field>
   </record>
-
 
 </odoo>

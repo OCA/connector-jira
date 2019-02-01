@@ -1,5 +1,5 @@
 # Copyright: 2015 LasLabs, Inc.
-# Copyright 2016 Camptocamp SA
+# Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import binascii
@@ -12,20 +12,30 @@ from datetime import datetime, timedelta
 from os import urandom
 
 import psycopg2
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from jira import JIRA, JIRAError
-from jira.utils import json_loads
+import requests
 
 import odoo
-from odoo import models, fields, api, exceptions, _
+from odoo import models, fields, api, exceptions, _, tools
 
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
+JIRA_TIMEOUT = 30  # seconds
 IMPORT_DELTA = 70  # seconds
+
+try:
+    from jira import JIRA, JIRAError
+    from jira.utils import json_loads
+except ImportError:
+    pass  # already logged in components/backend_adapter.py
+
+try:
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+except ImportError as err:
+    _logger.debug(err)
 
 
 @contextmanager
@@ -40,7 +50,8 @@ def new_env(env):
                 cr.rollback()
                 raise
             else:
-                cr.commit()
+                if not tools.config['test_enable']:
+                    cr.commit()   # pylint: disable=invalid-commit
 
 
 class JiraBackend(models.Model):
@@ -66,6 +77,15 @@ class JiraBackend(models.Model):
         string="Company",
         required=True,
         default=lambda self: self._default_company(),
+    )
+    worklog_fallback_project_id = fields.Many2one(
+        comodel_name="project.project",
+        string="Fallback for Worklogs",
+        help="Worklogs which could not be linked to any project "
+             "will be created in this project. Worklogs landing in "
+             "the fallback project can be reassigned to the correct "
+             "project by: 1. linking the expected project with the Jira one, "
+             "2. using 'Refresh Worklogs from Jira' on the timesheet lines."
     )
     state = fields.Selection(
         selection=[('authenticate', 'Authenticate'),
@@ -139,6 +159,11 @@ class JiraBackend(models.Model):
         string='Epic Link Field',
         help="The 'Epic Link' field on JIRA is a custom field. "
              "The name of the field is something like 'customfield_10002'. "
+    )
+    epic_name_field_name = fields.Char(
+        string='Epic Name Field',
+        help="The 'Epic Name' field on JIRA is a custom field. "
+             "The name of the field is something like 'customfield_10003'. "
     )
 
     odoo_webhook_base_url = fields.Char(
@@ -353,7 +378,8 @@ class JiraBackend(models.Model):
                 custom_ref = field.get('schema', {}).get('custom')
                 if custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-link':
                     self.epic_link_field_name = field['id']
-                    break
+                elif custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-label':
+                    self.epic_name_field_name = field['id']
 
     @api.multi
     def state_setup(self):
@@ -413,7 +439,8 @@ class JiraBackend(models.Model):
                 # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
                 webhook_id = webhook['self'].split('/')[-1]
                 backend.webhook_issue_jira_id = webhook_id
-                env.cr.commit()
+                if not tools.config['test_enable']:
+                    env.cr.commit()  # pylint: disable=invalid-commit
 
                 url = urllib.parse.urljoin(base_url,
                                            '/connector_jira/webhooks/worklog')
@@ -427,7 +454,8 @@ class JiraBackend(models.Model):
                 )
                 webhook_id = webhook['self'].split('/')[-1]
                 backend.webhook_worklog_jira_id = webhook_id
-                env.cr.commit()
+                if not tools.config['test_enable']:
+                    env.cr.commit()  # pylint: disable=invalid-commit
 
     @api.onchange('odoo_webhook_base_url')
     def onchange_odoo_webhook_base_url(self):
@@ -461,8 +489,8 @@ class JiraBackend(models.Model):
     def check_connection(self):
         self.ensure_one()
         try:
-            self.get_api_client()
-        except ValueError as err:
+            self.get_api_client().myself()
+        except (ValueError, requests.exceptions.ConnectionError) as err:
             raise exceptions.UserError(
                 _('Failed to connect (%s)') % (err,)
             )
@@ -505,17 +533,20 @@ class JiraBackend(models.Model):
 
     @api.model
     def get_api_client(self):
+        self.ensure_one()
+        # tokens are only readable by connector managers
+        backend = self.sudo()
         oauth = {
-            'access_token': self.access_token,
-            'access_token_secret': self.access_secret,
-            'consumer_key': self.consumer_key,
-            'key_cert': self.private_key,
+            'access_token': backend.access_token,
+            'access_token_secret': backend.access_secret,
+            'consumer_key': backend.consumer_key,
+            'key_cert': backend.private_key,
         }
         options = {
-            'server': self.uri,
-            'verify': self.verify_ssl,
+            'server': backend.uri,
+            'verify': backend.verify_ssl,
         }
-        return JIRA(options=options, oauth=oauth)
+        return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
 
     @api.model
     def _scheduler_import_project_task(self):
