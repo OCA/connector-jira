@@ -140,6 +140,11 @@ class JiraBackend(models.Model):
         help="The 'Epic Link' field on JIRA is a custom field. "
              "The name of the field is something like 'customfield_10002'. "
     )
+    epic_name_field_name = fields.Char(
+        string='Epic Name Field',
+        help="The 'Epic Name' field on JIRA is a custom field. "
+             "The name of the field is something like 'customfield_10003'. "
+    )
 
     odoo_webhook_base_url = fields.Char(
         string='Base Odoo URL for Webhooks',
@@ -353,7 +358,8 @@ class JiraBackend(models.Model):
                 custom_ref = field.get('schema', {}).get('custom')
                 if custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-link':
                     self.epic_link_field_name = field['id']
-                    break
+                elif custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-label':
+                    self.epic_name_field_name = field['id']
 
     @api.multi
     def state_setup(self):

@@ -148,21 +148,26 @@
                   directly transmitted to Odoo.
                 </p>
               </group>
-              <group col="4">
-                <field name="epic_link_field_name"/>
-                <button name="activate_epic_link"
-                  type="object"
-                  string="Configure Epic Link"
-                  class="oe_inline"
-                  attrs="{'invisible': [('state', '=', 'authenticate')]}"/>
-                <p class="oe_grey oe_inline">
-                  Activate the synchronization of the Epic Link field.
-                  Only on JIRA Software. The field contains the name of
-                  the JIRA custom field that contains the Epic Link.
+              <group name="epic">
+                <group name="epic_fields">
+                  <field name="epic_link_field_name"/>
+                  <field name="epic_name_field_name"/>
+                </group>
+                <group name="epic_actions">
+                  <button name="activate_epic_link"
+                    type="object"
+                    string="Configure Epic Link"
+                    class="oe_inline"
+                    attrs="{'invisible': [('state', '=', 'authenticate')]}"/>
+                  <p class="oe_grey oe_inline">
+                    Activate the synchronization of the Epic Link field.
+                    Only on JIRA Software. The field contains the name of
+                    the JIRA custom field that contains the Epic Link.
 
-                  Note that if a project does not synchronize the Epics,
-                  the field will be empty.
-                </p>
+                    Note that if a project does not synchronize the Epics,
+                    the field will be empty.
+                  </p>
+                </group>
               </group>
             </page>
             <page name="issue_type" string="Issue Types" states="running">

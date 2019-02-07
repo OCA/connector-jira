@@ -17,7 +17,6 @@ class ProjectTaskMapper(Component):
     ]
 
     from_fields = [
-        ('summary', 'name'),
         ('duedate', 'date_deadline'),
     ]
 
@@ -26,6 +25,24 @@ class ProjectTaskMapper(Component):
         return self.component(usage='map.from.attrs').values(
             record, self
         )
+
+    @mapping
+    def name(self, record):
+        # On an Epic, you have 2 fields:
+
+        #     a field like 'customfield_10003' labelled "Epic Name"
+        #     a field 'summary' labelled "Sumarry"
+
+        # The other types of tasks have only the 'summary' field, the other is
+        # empty. To simplify, we always try to read the Epic Name, which
+        # will always be empty for other types.
+        epic_name_field = self.backend_record.epic_name_field_name
+        name = False
+        if epic_name_field:
+            name = record['fields'].get(epic_name_field)
+        if not name:
+            name = record['fields']['summary']
+        return {'name': name}
 
     @mapping
     def issue_type(self, record):
