@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class ProjectLinkJira(models.TransientModel):
     _name = 'project.link.jira'
-    _inherit = 'jira.project.base.mixin'
+    _inherit = ['jira.project.base.mixin', 'multi.step.wizard.mixin']
     _description = 'Link Project with JIRA'
 
     project_id = fields.Many2one(
@@ -34,11 +34,6 @@ class ProjectLinkJira(models.TransientModel):
         required=True,
         ondelete='cascade',
         default=lambda self: self._default_backend_id(),
-    )
-    state = fields.Selection(
-        selection='_selection_state',
-        default='start',
-        required=True,
     )
     jira_project_id = fields.Many2one(
         comodel_name='jira.project.project',
@@ -90,20 +85,6 @@ class ProjectLinkJira(models.TransientModel):
             ('backend_id', '=', self.backend_id.id)
         ])
         self.sync_issue_type_ids = issue_types.ids
-
-    def open_next(self):
-        state_method = getattr(self, 'state_exit_%s' % (self.state))
-        state_method()
-        return self._reopen_self()
-
-    def _reopen_self(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-        }
 
     def state_exit_start(self):
         if self.sync_action == 'export':

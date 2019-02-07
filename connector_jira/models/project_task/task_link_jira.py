@@ -12,6 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class TaskLinkJira(models.TransientModel):
     _name = 'task.link.jira'
+    _inherit = 'multi.step.wizard.mixin'
     _description = 'Link Task with JIRA'
 
     task_id = fields.Many2one(
@@ -32,11 +33,6 @@ class TaskLinkJira(models.TransientModel):
         ondelete='cascade',
         domain="[('id', 'in', linked_backend_ids)]",
         default=lambda self: self._default_backend_id(),
-    )
-    state = fields.Selection(
-        selection='_selection_state',
-        default='start',
-        required=True,
     )
     linked_backend_ids = fields.Many2many(
         comodel_name='jira.backend',
@@ -70,20 +66,6 @@ class TaskLinkJira(models.TransientModel):
         backends = self.env['jira.backend'].search([])
         if len(backends) == 1:
             return backends.id
-
-    def open_next(self):
-        state_method = getattr(self, 'state_exit_%s' % (self.state))
-        state_method()
-        return self._reopen_self()
-
-    def _reopen_self(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-        }
 
     def state_exit_start(self):
         if not self.jira_task_id:
