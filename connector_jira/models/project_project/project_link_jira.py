@@ -19,6 +19,7 @@ class ProjectLinkJira(models.TransientModel):
         comodel_name='project.project',
         name="Project",
         required=True,
+        ondelete='cascade',
         default=lambda self: self._default_project_id(),
     )
     jira_key = fields.Char(
@@ -31,7 +32,7 @@ class ProjectLinkJira(models.TransientModel):
         comodel_name='jira.backend',
         string='Jira Backend',
         required=True,
-        ondelete='restrict',
+        ondelete='cascade',
         default=lambda self: self._default_backend_id(),
     )
     state = fields.Selection(
@@ -41,6 +42,7 @@ class ProjectLinkJira(models.TransientModel):
     )
     jira_project_id = fields.Many2one(
         comodel_name='jira.project.project',
+        ondelete='cascade',
     )
 
     @api.model
