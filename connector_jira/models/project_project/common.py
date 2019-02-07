@@ -103,10 +103,12 @@ class JiraProjectProject(models.Model):
     @api.constrains('backend_id', 'external_id')
     def _constrains_jira_uniq(self):
         for binding in self:
+            if not binding.external_id:
+                continue
             same_link_bindings = self.search([
-                ('id', '!=', self.id),
-                ('backend_id', '=', self.backend_id.id),
-                ('external_id', '=', self.external_id),
+                ('id', '!=', binding.id),
+                ('backend_id', '=', binding.backend_id.id),
+                ('external_id', '=', binding.external_id),
             ])
             if same_link_bindings:
                 raise exceptions.ValidationError(_(
