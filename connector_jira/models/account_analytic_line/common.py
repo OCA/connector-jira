@@ -22,10 +22,48 @@ class JiraAccountAnalyticLine(models.Model):
     # in case we'll need it for an eventual export
     jira_issue_id = fields.Char()
 
+    # we have to store these fields on the analytic line because
+    # they may be different than the ones on their odoo task:
+    # for instance, we do not import "Tasks" but we import "Epics",
+    # the analytic line for a "Task" will be linked to an "Epic" on
+    # Odoo, but we still want to know the original task here
+    jira_issue_key = fields.Char(
+        string='Original Task Key',
+        readonly=True,
+    )
+    jira_issue_type_id = fields.Many2one(
+        comodel_name='jira.issue.type',
+        string='Original Issue Type',
+        readonly=True,
+    )
+    jira_issue_url = fields.Char(
+        string='Original JIRA issue Link',
+        compute='_compute_jira_issue_url',
+    )
+    jira_epic_issue_key = fields.Char(
+        string='Original Epic Key',
+        readonly=True,
+    )
+    jira_epic_issue_url = fields.Char(
+        string='Original JIRA Epic Link',
+        compute='_compute_jira_issue_url',
+    )
+
     _sql_constraints = [
         ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
          "A binding already exists for this line and this backend."),
     ]
+
+    @api.depends('jira_issue_key', 'jira_epic_issue_key')
+    def _compute_jira_issue_url(self):
+        """Compute the external URL to JIRA."""
+        for record in self:
+            record.jira_issue_url = self.backend_id.make_issue_url(
+                record.jira_issue_key
+            )
+            record.jira_epic_issue_url = self.backend_id.make_issue_url(
+                record.jira_epic_issue_key
+            )
 
     @job(default_channel='root.connector_jira.import')
     @api.model
@@ -55,33 +93,56 @@ class AccountAnalyticLine(models.Model):
         context={'active_test': False},
     )
     # fields needed to display JIRA issue link in views
-    jira_compound_key = fields.Char(
-        related='task_id.jira_compound_key',
+    jira_issue_key = fields.Char(
+        string='Original JIRA Issue Key',
+        compute='_compute_jira_references',
         readonly=True,
         store=True,
     )
     jira_issue_url = fields.Char(
-        related='task_id.jira_issue_url',
+        string='Original JIRA issue Link',
+        compute='_compute_jira_references',
         readonly=True,
     )
-
-    jira_epic_compound_key = fields.Char(
-        related='task_id.jira_epic_link_task_id.jira_compound_key',
+    jira_epic_issue_key = fields.Char(
+        compute='_compute_jira_references',
+        string='Original JIRA Epic Key',
         readonly=True,
-        store=True
+        store=True,
     )
-
     jira_epic_issue_url = fields.Char(
-        string='JIRA epic URL',
-        related='task_id.jira_epic_link_task_id.jira_issue_url',
+        string='Original JIRA Epic Link',
+        compute='_compute_jira_references',
         readonly=True
     )
 
-    jira_issue_type = fields.Char(
-        related='task_id.jira_issue_type',
+    jira_issue_type_id = fields.Many2one(
+        comodel_name='jira.issue.type',
+        string='Original JIRA Issue Type',
+        compute='_compute_jira_references',
         readonly=True,
         store=True
     )
+
+    @api.depends(
+        'jira_bind_ids.jira_issue_key',
+        'jira_bind_ids.jira_issue_type_id',
+        'jira_bind_ids.jira_epic_issue_key',
+    )
+    def _compute_jira_references(self):
+        """Compute the various references to JIRA.
+
+        We assume that we have only one external record for a line
+        """
+        for record in self:
+            if not record.jira_bind_ids:
+                continue
+            main_binding = record.jira_bind_ids[0]
+            record.jira_issue_key = main_binding.jira_issue_key
+            record.jira_issue_url = main_binding.jira_issue_url
+            record.jira_issue_type_id = main_binding.jira_issue_type_id
+            record.jira_epic_issue_key = main_binding.jira_epic_issue_key
+            record.jira_epic_issue_url = main_binding.jira_epic_issue_url
 
 
 class WorklogAdapter(Component):

@@ -38,6 +38,10 @@ class JiraProjectTask(models.Model):
              "Empty if the type of parent is filtered out "
              "of the synchronizations.",
     )
+    jira_issue_url = fields.Char(
+        string='JIRA issue',
+        compute='_compute_jira_issue_url',
+    )
 
     _sql_constraints = [
         ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
@@ -51,6 +55,14 @@ class JiraProjectTask(models.Model):
                 _('A Jira task cannot be deleted.')
             )
         return super().unlink()
+
+    @api.depends('jira_key')
+    def _compute_jira_issue_url(self):
+        """Compute the external URL to JIRA."""
+        for record in self:
+            record.jira_issue_url = record.backend_id.make_issue_url(
+                record.jira_key
+            )
 
 
 class ProjectTask(models.Model):
@@ -130,9 +142,7 @@ class ProjectTask(models.Model):
             if not record.jira_bind_ids:
                 continue
             main_binding = record.jira_bind_ids[0]
-            record.jira_issue_url = main_binding.backend_id.make_issue_url(
-                main_binding.jira_key
-            )
+            record.jira_issue_url = main_binding.jira_issue_url
 
     @api.multi
     def name_get(self):

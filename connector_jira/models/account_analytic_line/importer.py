@@ -30,7 +30,21 @@ class AnalyticLineMapper(Component):
 
     @mapping
     def issue(self, record):
-        return {'jira_issue_id': record['issueId']}
+        issue = self.options.linked_issue
+        assert issue
+        refs = {
+            'jira_issue_id': record['issueId'],
+            'jira_issue_key': issue['key'],
+        }
+        task_mapper = self.component(
+            usage='import.mapper',
+            model_name='jira.project.task',
+        )
+        refs.update(task_mapper.issue_type(issue))
+        epic_field_name = self.backend_record.epic_link_field_name
+        if epic_field_name:
+            refs['jira_epic_issue_key'] = issue['fields'][epic_field_name]
+        return refs
 
     @mapping
     def duration(self, record):
