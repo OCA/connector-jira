@@ -11,6 +11,7 @@
              'queue_job',
              'web',
              'web_widget_url_advanced',
+             'multi_step_wizard',
              ],
  'external_dependencies': {
      'python': [

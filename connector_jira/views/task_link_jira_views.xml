@@ -4,9 +4,10 @@
   <record id="task_link_jira_form" model="ir.ui.view">
     <field name="name">task.link.jira.form</field>
     <field name="model">task.link.jira</field>
+    <field name="mode">primary</field>
+    <field name="inherit_id" ref="multi_step_wizard.multi_step_wizard_form"/>
     <field name="arch" type="xml">
-      <form>
-        <field name="state" invisible="1"/>
+      <xpath expr="//footer" position="before">
         <h1>
           <field name="jira_key"
                  attrs="{'readonly': [('state', '!=', 'start')]}"
@@ -22,16 +23,7 @@
         <div name="final" attrs="{'invisible': [('state', '!=', 'final')]}">
           <p>The task is now linked with JIRA.</p>
         </div>
-        <footer>
-          <div attrs="{'invisible': [('state', '=', 'final')]}">
-            <button name="open_next" string="Next" type="object" class="btn-primary"/>
-            <button string="Cancel" class="btn btn-default" special="cancel" />
-          </div>
-          <div attrs="{'invisible': [('state', '!=', 'final')]}">
-            <button string="Close" class="btn btn-primary" special="cancel" />
-          </div>
-        </footer>
-      </form>
+      </xpath>
     </field>
   </record>
 

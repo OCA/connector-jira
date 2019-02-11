@@ -1,5 +1,4 @@
 from . import jira_binding  # must be before the others
-from . import multi_step_wizard
 
 from . import account_analytic_line
 from . import jira_backend

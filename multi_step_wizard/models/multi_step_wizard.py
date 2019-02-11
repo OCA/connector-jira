@@ -8,7 +8,7 @@ from odoo import api, fields, models
 _logger = logging.getLogger(__name__)
 
 
-class MultiStepWizard(models.TransientModel):
+class MultiStepWizard(models.AbstractModel):
     """ Mixin to ease the creation of multisteps wizards
 
     _selection_state must return all possible step of
