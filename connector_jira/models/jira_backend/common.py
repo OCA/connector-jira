@@ -25,6 +25,7 @@ from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
+JIRA_TIMEOUT = 30  # seconds
 IMPORT_DELTA = 70  # seconds
 
 
@@ -524,7 +525,7 @@ class JiraBackend(models.Model):
             'server': backend.uri,
             'verify': backend.verify_ssl,
         }
-        return JIRA(options=options, oauth=oauth)
+        return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
 
     @api.model
     def _scheduler_import_project_task(self):
