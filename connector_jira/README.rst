@@ -79,8 +79,8 @@ Configuration done
 
 You can now click on the button "Configuration Done".
 
-Syncronizations
-^^^^^^^^^^^^^^^
+Synchronizations
+^^^^^^^^^^^^^^^^
 
 The tasks and worklogs are always imported from JIRA to Odoo, there
 is no synchronization in the other direction.
