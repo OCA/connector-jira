@@ -20,7 +20,6 @@ class TaskLinkJira(models.TransientModel):
         name="Task",
         required=True,
         ondelete='cascade',
-        default=lambda self: self._default_task_id(),
     )
     jira_key = fields.Char(
         string='JIRA Key',
@@ -32,23 +31,14 @@ class TaskLinkJira(models.TransientModel):
         required=True,
         ondelete='cascade',
         domain="[('id', 'in', linked_backend_ids)]",
-        default=lambda self: self._default_backend_id(),
     )
     linked_backend_ids = fields.Many2many(
         comodel_name='jira.backend',
-        compute="_compute_linked_backend_ids",
     )
     jira_task_id = fields.Many2one(
         comodel_name='jira.project.task',
         ondelete='cascade',
     )
-
-    @api.depends('task_id.project_id')
-    def _compute_linked_backend_ids(self):
-        for record in self:
-            record.linked_backend_ids = record.task_id.mapped(
-                "project_id.jira_bind_ids.backend_id"
-            )
 
     @api.model
     def _selection_state(self):
@@ -58,14 +48,22 @@ class TaskLinkJira(models.TransientModel):
         ]
 
     @api.model
-    def _default_task_id(self):
-        return self.env.context.get('active_id')
-
-    @api.model
-    def _default_backend_id(self):
-        backends = self.env['jira.backend'].search([])
-        if len(backends) == 1:
-            return backends.id
+    def default_get(self, fields):
+        values = super().default_get(fields)
+        context = self.env.context
+        if (context.get('active_model') == 'project.task' and
+                context.get('active_id')):
+            task = self.env['project.task'].browse(context['active_id'])
+            project_linked_backends = task.mapped(
+                'project_id.jira_bind_ids.backend_id'
+            )
+            values.update({
+                'task_id': task.id,
+                'linked_backend_ids': [(6, 0, project_linked_backends.ids)],
+            })
+            if len(project_linked_backends) == 1:
+                values['backend_id'] = project_linked_backends.id
+        return values
 
     def state_exit_start(self):
         if not self.jira_task_id:
