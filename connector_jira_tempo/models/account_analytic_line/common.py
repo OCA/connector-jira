@@ -44,7 +44,7 @@ class WorklogAdapter(Component):
     #     return {}
 
     def tempo_read_approval(self, worklog):
-        username = worklog['author']['key']
+        username = worklog['author']['name']
         url = self._tempo_get_url('timesheet-approval/current')
         resp = self.client._session.get(url, params={'username': username})
         return resp.json()
