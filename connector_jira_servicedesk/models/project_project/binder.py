@@ -10,12 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class JiraProjectBinder(Component):
-    _name = 'jira.project.binder'
-    _inherit = 'jira.binder'
-
-    _apply_on = [
-        'jira.project.project',
-    ]
+    _inherit = 'jira.project.binder'
 
     def to_internal(self, external_id, unwrap=False, organizations=None):
         """ Give the Odoo recordset for an external ID
