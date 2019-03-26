@@ -18,6 +18,7 @@
           <group>
             <field name="backend_id"/>
             <field name="sync_action" widget="radio"/>
+            <field name="is_master"/>
           </group>
         </group>
         <group name="issue_types" attrs="{'invisible': [('state', '!=', 'issue_types')]}">

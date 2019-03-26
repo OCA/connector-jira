@@ -20,20 +20,17 @@ class ProjectLinkJira(models.TransientModel):
         name="Project",
         required=True,
         ondelete='cascade',
-        default=lambda self: self._default_project_id(),
     )
     jira_key = fields.Char(
         string='JIRA Key',
         size=10,  # limit on JIRA
         required=True,
-        default=lambda self: self._default_jira_key(),
     )
     backend_id = fields.Many2one(
         comodel_name='jira.backend',
         string='Jira Backend',
         required=True,
         ondelete='cascade',
-        default=lambda self: self._default_backend_id(),
     )
     jira_project_id = fields.Many2one(
         comodel_name='jira.project.project',
@@ -50,26 +47,39 @@ class ProjectLinkJira(models.TransientModel):
         ]
 
     @api.model
-    def _default_project_id(self):
-        return self.env.context.get('active_id')
-
-    @api.model
-    def _default_jira_key(self):
-        project_id = self._default_project_id()
+    def default_get(self, fields):
+        values = super().default_get(fields)
+        context = self.env.context
+        project_id = context.get('active_id')
         if not project_id:
-            return
+            return values
+
         project = self.env['project.project'].browse(project_id)
         if project.jira_key:
-            return project.jira_key
-        valid = self.env['jira.project.project']._jira_key_valid
-        if valid(project.name):
-            return project.name
+            values['jira_key'] = project.jira_key
+        else:
+            valid = self.env['jira.project.project']._jira_key_valid
+            if valid(project.name):
+                values['jira_key'] = project.name
 
-    @api.model
-    def _default_backend_id(self):
+        values.update({
+            'project_id': project_id,
+        })
+
         backends = self.env['jira.backend'].search([])
         if len(backends) == 1:
-            return backends.id
+            values['backend_id'] = backends.id
+
+            jira_project_model = self.env['jira.project.project']
+            new_binding = jira_project_model.new({
+                'odoo_id': values['project_id'],
+                'backend_id': values['backend_id'],
+            })
+            domain = new_binding._other_master_domain()
+            if not jira_project_model.search(domain):
+                values['is_master'] = True
+
+        return values
 
     @api.constrains('jira_key')
     def check_jira_key(self):
@@ -106,16 +116,26 @@ class ProjectLinkJira(models.TransientModel):
             self._create_export_binding()
         self.state = 'final'
 
-    def _prepare_export_binding_values(self):
+    def _prepare_base_binding_values(self):
         values = {
             'backend_id': self.backend_id.id,
             'odoo_id': self.project_id.id,
-            'jira_key': self.jira_key,
+            'is_master': self.is_master,
+        }
+        if self.is_master:
+            values['jira_key'] = self.jira_key
+        return values
+
+    def _prepare_export_binding_values(self):
+        values = self._prepare_base_binding_values()
+        values.update({
+            'backend_id': self.backend_id.id,
+            'odoo_id': self.project_id.id,
             'sync_action': 'export',
             'sync_issue_type_ids': [(6, 0, self.sync_issue_type_ids.ids)],
             'project_template': self.project_template,
             'project_template_shared': self.project_template_shared,
-        }
+        })
         return values
 
     def _create_export_binding(self):
@@ -151,13 +171,11 @@ class ProjectLinkJira(models.TransientModel):
         self.sync_issue_type_ids = issue_types.ids
 
     def _prepare_link_binding_values(self, jira_project):
-        values = {
-            'backend_id': self.backend_id.id,
-            'odoo_id': self.project_id.id,
-            'jira_key': self.jira_key,
+        values = self._prepare_base_binding_values()
+        values.update({
             'sync_action': self.sync_action,
             'external_id': jira_project.id,
-        }
+        })
         return values
 
     def _copy_issue_types(self):

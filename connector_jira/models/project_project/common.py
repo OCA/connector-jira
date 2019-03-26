@@ -55,6 +55,10 @@ class JiraProjectBaseFields(models.AbstractModel):
              " details once the link is established."
              " Tasks are always imported from JIRA, not pushed.",
     )
+    is_master = fields.Boolean(
+        help="When more than one Jira project is linked with this project, "
+             "this project will be the one to which Odoo pushes data."
+    )
 
     @api.model
     def _selection_project_template(self):
@@ -72,11 +76,6 @@ class JiraProjectProject(models.Model):
                               required=True,
                               index=True,
                               ondelete='restrict')
-
-    _sql_constraints = [
-        ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
-         "A binding already exists for this project and this backend."),
-    ]
 
     # Disable and implement the constraint jira_binding_uniq as python because
     # we need to override the in connector_jira_service_desk and it would try
@@ -100,8 +99,50 @@ class JiraProjectProject(models.Model):
         self._sql_constraints = constraints
         super()._add_sql_constraints()
 
+    def _other_master_domain(self):
+        """Return the domain to search a master binding on the same project
+
+        The binding used for the export is:
+        * the one using the sync action "export"
+        * the one flagged "is_master" if no binding is using "export"
+        """
+        self.ensure_one()
+        domain = [
+            ('odoo_id', '=', self.odoo_id.id),
+            ('backend_id', '=', self.backend_id.id),
+            ('is_master', '=', True)
+        ]
+        if self.id:
+            domain.append(
+                ('id', '!=', self.id),
+            )
+        return domain
+
+    @api.constrains('backend_id', 'odoo_id', 'is_master')
+    def _constrains_odoo_jira_uniq(self):
+        """Add a constraint on backend+odoo id
+
+        More than one binding is tolerated but only one can be a master
+        binding. The master binding will be used when we have to push data from
+        Odoo to Jira (add tasks, ...).
+        """
+        for binding in self:
+            if not binding.is_master:
+                continue
+            same_link_bindings = self.search(self._other_master_domain())
+            if same_link_bindings:
+                raise exceptions.ValidationError(_(
+                    "The project %s already has an export/master binding with "
+                    "a Jira project."
+                ) % (binding.display_name))
+
     @api.constrains('backend_id', 'external_id')
     def _constrains_jira_uniq(self):
+        """Add a constraint on backend+jira id
+
+        Defined as a python method rather than a postgres constraint
+        in order to ease the override in connector_jira_servicedesk
+        """
         for binding in self:
             if not binding.external_id:
                 continue
@@ -138,6 +179,9 @@ class JiraProjectProject(models.Model):
 
     @api.model
     def create(self, values):
+        values = values.copy()
+        if not self.search(self.new(values)._other_master_domain()):
+            values['is_master'] = True
         record = super().create(values)
         record._ensure_jira_key()
         return record
