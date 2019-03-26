@@ -17,14 +17,12 @@ class JiraProjectBinder(Component):
         'jira.project.project',
     ]
 
-    def to_external(self, binding, wrap=False):
+    def to_external(self, binding, wrap=False, project_type=None):
         """ Give the external ID for an Odoo binding ID
 
-        More than one jira binding is tolerated on projects, but regarding the
-        exports, we flag only one of them as master for the exports. The master
-        binding is either the binding with the sync action "export", or if no
-        binding is using the export action, this is the one flagged
-        "is_master".
+        More than one jira binding is tolerated on projects, but we can have
+        only one binding for each type of project (software, service_desk,
+        business, ...).
 
         :param binding: Odoo binding for which we want the external id
         :param wrap: if True, binding is a normal record, the
@@ -32,6 +30,8 @@ class JiraProjectBinder(Component):
                      the external id of the binding
         :return: external ID of the record
         """
+        if not project_type:
+            raise ValueError('project_type argument is required')
         if isinstance(binding, models.BaseModel):
             binding.ensure_one()
         else:
@@ -40,7 +40,7 @@ class JiraProjectBinder(Component):
             binding = self.model.with_context(active_test=False).search(
                 [(self._odoo_field, '=', binding.id),
                  (self._backend_field, '=', self.backend_record.id),
-                 (self.is_master, '=', True),
+                 (self.project_type, '=', project_type),
                  ]
             )
             if not binding:

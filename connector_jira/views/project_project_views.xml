@@ -37,7 +37,7 @@
                     'invisible': [('project_template', '!=', 'shared')],
                     'required': [('project_template', '=', 'shared')]}"/>
           <field name="sync_action"/>
-          <field name="is_master"/>
+          <field name="project_type"/>
           <div colspan="2">
             <p class="oe_grey oe_inline">
               The checkboxes define which types of JIRA issues will be imported
@@ -80,7 +80,7 @@
       <tree string="Jira Project" create="0">
         <field name="backend_id"/>
         <field name="external_id"/>
-        <field name="is_master"/>
+        <field name="project_type"/>
         <field name="sync_issue_type_ids"/>
       </tree>
     </field>

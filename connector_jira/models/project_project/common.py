@@ -55,10 +55,6 @@ class JiraProjectBaseFields(models.AbstractModel):
              " details once the link is established."
              " Tasks are always imported from JIRA, not pushed.",
     )
-    is_master = fields.Boolean(
-        help="When more than one Jira project is linked with this project, "
-             "this project will be the one to which Odoo pushes data."
-    )
 
     @api.model
     def _selection_project_template(self):
@@ -76,6 +72,16 @@ class JiraProjectProject(models.Model):
                               required=True,
                               index=True,
                               ondelete='restrict')
+    project_type = fields.Selection(
+        selection="_selection_project_type"
+    )
+
+    @api.model
+    def _selection_project_type(self):
+        return [
+            ('software', 'Software'),
+            ('business', 'Business'),
+        ]
 
     # Disable and implement the constraint jira_binding_uniq as python because
     # we need to override the in connector_jira_service_desk and it would try
@@ -99,18 +105,27 @@ class JiraProjectProject(models.Model):
         self._sql_constraints = constraints
         super()._add_sql_constraints()
 
-    def _other_master_domain(self):
-        """Return the domain to search a master binding on the same project
+    def _other_same_type_domain(self):
+        """Return the domain to search a binding on the same project and type
 
-        The binding used for the export is:
-        * the one using the sync action "export"
-        * the one flagged "is_master" if no binding is using "export"
+        It is used for the constraint allowing only one binding of each type.
+        The reason for this is:
+
+        * supporting several projects of different types is a requirements (eg.
+          1 service desk and 1 software)
+        * but if we implement new features like "if I create a task it is
+          pushed to Jira", with different projects we would not know where to
+          push them
+
+        Using this constraint, we'll be able to focus new export features by
+        project type.
+
         """
         self.ensure_one()
         domain = [
             ('odoo_id', '=', self.odoo_id.id),
             ('backend_id', '=', self.backend_id.id),
-            ('is_master', '=', True)
+            ('project_type', '=', self.project_type)
         ]
         if self.id:
             domain.append(
@@ -118,7 +133,7 @@ class JiraProjectProject(models.Model):
             )
         return domain
 
-    @api.constrains('backend_id', 'odoo_id', 'is_master')
+    @api.constrains('backend_id', 'odoo_id', 'project_type')
     def _constrains_odoo_jira_uniq(self):
         """Add a constraint on backend+odoo id
 
@@ -127,14 +142,12 @@ class JiraProjectProject(models.Model):
         Odoo to Jira (add tasks, ...).
         """
         for binding in self:
-            if not binding.is_master:
-                continue
-            same_link_bindings = self.search(self._other_master_domain())
+            same_link_bindings = self.search(self._other_same_type_domain())
             if same_link_bindings:
                 raise exceptions.ValidationError(_(
-                    "The project %s already has an export/master binding with "
-                    "a Jira project."
-                ) % (binding.display_name))
+                    "The project \"%s\" already has a binding with "
+                    "a Jira project of the same type (%s)."
+                ) % (binding.display_name, self.project_type))
 
     @api.constrains('backend_id', 'external_id')
     def _constrains_jira_uniq(self):
@@ -179,9 +192,6 @@ class JiraProjectProject(models.Model):
 
     @api.model
     def create(self, values):
-        values = values.copy()
-        if not self.search(self.new(values)._other_master_domain()):
-            values['is_master'] = True
         record = super().create(values)
         record._ensure_jira_key()
         return record
@@ -229,6 +239,9 @@ class ProjectProject(models.Model):
         string='Exportable on Jira',
         compute='_compute_jira_exportable',
     )
+    # TODO we have a problem as we can have several bindings
+    # we have to store the jira key on the binding, and
+    # add maybe add a computed field
     jira_key = fields.Char(
         string='JIRA Key',
         size=10,  # limit on JIRA
