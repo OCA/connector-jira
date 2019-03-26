@@ -128,15 +128,8 @@ class ProjectLinkJira(models.TransientModel):
     def _link_binding(self):
         with self.backend_id.work_on('jira.project.project') as work:
             adapter = work.component(usage='backend.adapter')
-            try:
+            with adapter.handle_user_api_errors():
                 jira_project = adapter.get(self.jira_key)
-            except jira.exceptions.JIRAError:
-                _logger.exception('Error when linking to project %s',
-                                  self.project_id.id)
-                raise exceptions.UserError(
-                    _('Could not link %s, check that this project'
-                      ' keys exists in JIRA.') % (self.jira_key)
-                )
             self._link_with_jira_project(work, jira_project)
 
     def _link_with_jira_project(self, work, jira_project):

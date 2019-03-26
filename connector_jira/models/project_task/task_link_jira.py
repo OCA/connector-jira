@@ -73,15 +73,8 @@ class TaskLinkJira(models.TransientModel):
     def _link_binding(self):
         with self.backend_id.work_on('jira.project.task') as work:
             adapter = work.component(usage='backend.adapter')
-            try:
+            with adapter.handle_user_api_errors():
                 jira_task = adapter.get(self.jira_key)
-            except jira.exceptions.JIRAError:
-                _logger.exception('Error when linking to task %s',
-                                  self.task_id.id)
-                raise exceptions.UserError(
-                    _('Could not link %s, check that this task'
-                      ' keys exists in JIRA.') % (self.jira_key)
-                )
             self._link_with_jira_task(work, jira_task)
             self._run_import_jira_task(work, jira_task)
 
