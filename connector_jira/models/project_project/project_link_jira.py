@@ -23,9 +23,6 @@ class ProjectLinkJira(models.TransientModel):
         default=lambda self: self._default_project_id(),
     )
     jira_key = fields.Char(
-        string='JIRA Key',
-        size=10,  # limit on JIRA
-        required=True,
         default=lambda self: self._default_jira_key(),
     )
     backend_id = fields.Many2one(
@@ -50,8 +47,6 @@ class ProjectLinkJira(models.TransientModel):
         if not project_id:
             return
         project = self.env['project.project'].browse(project_id)
-        if project.jira_key:
-            return project.jira_key
         valid = self.env['jira.project.project']._jira_key_valid
         if valid(project.name):
             return project.name

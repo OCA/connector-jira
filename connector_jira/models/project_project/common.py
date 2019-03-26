@@ -24,6 +24,11 @@ class JiraProjectBaseFields(models.AbstractModel):
     """
     _name = 'jira.project.base.mixin'
 
+    jira_key = fields.Char(
+        string='JIRA Key',
+        kequired=True,
+        size=10,  # limit on JIRA
+    )
     sync_issue_type_ids = fields.Many2many(
         comodel_name='jira.issue.type',
         string='Issue Levels to Synchronize',
@@ -170,6 +175,16 @@ class JiraProjectProject(models.Model):
                     " JIRA project."
                 ) % (same_link_bindings.display_name))
 
+    @api.constrains('jira_key')
+    def check_jira_key(self):
+        for project in self:
+            if not project.jira_key:
+                continue
+            if not self._jira_key_valid(project.jira_key):
+                raise exceptions.ValidationError(
+                    _('%s is not a valid JIRA Key') % project.jira_key
+                )
+
     @api.onchange('backend_id')
     def onchange_project_backend_id(self):
         self.project_template = self.backend_id.project_template
@@ -213,7 +228,7 @@ class JiraProjectProject(models.Model):
         for record in self:
             if not record.jira_key:
                 raise exceptions.UserError(
-                    _('The JIRA Key is mandatory in order to export a project')
+                    _('The JIRA Key is mandatory in order to link a project')
                 )
 
     @api.multi
@@ -235,43 +250,16 @@ class ProjectProject(models.Model):
         string='Project Bindings',
         context={'active_test': False},
     )
-    jira_exportable = fields.Boolean(
-        string='Exportable on Jira',
-        compute='_compute_jira_exportable',
-    )
-    # TODO we have a problem as we can have several bindings
-    # we have to store the jira key on the binding, and
-    # add maybe add a computed field
     jira_key = fields.Char(
         string='JIRA Key',
-        size=10,  # limit on JIRA
+        compute='_compute_jira_key',
     )
 
-    @api.constrains('jira_key')
-    def check_jira_key(self):
+    @api.depends('jira_bind_ids.jira_key')
+    def _compute_jira_key(self):
         for project in self:
-            if not project.jira_key:
-                continue
-            valid = self.env['jira.project.project']._jira_key_valid
-            if not valid(project.jira_key):
-                raise exceptions.ValidationError(
-                    _('%s is not a valid JIRA Key') % project.jira_key
-                )
-
-    @api.depends('jira_bind_ids')
-    def _compute_jira_exportable(self):
-        for project in self:
-            project.jira_exportable = bool(project.jira_bind_ids)
-
-    @api.multi
-    def write(self, values):
-        result = super().write(values)
-        for record in self:
-            if record.jira_exportable and not record.jira_key:
-                raise exceptions.UserError(
-                    _('The JIRA Key is mandatory on JIRA projects.')
-                )
-        return result
+            keys = project.mapped('jira_bind_ids.jira_key')
+            project.jira_key = ', '.join(keys)
 
     @api.multi
     def name_get(self):
