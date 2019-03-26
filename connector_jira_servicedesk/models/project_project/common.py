@@ -25,6 +25,12 @@ class JiraProjectBaseFields(models.AbstractModel):
 class JiraProjectProject(models.Model):
     _inherit = 'jira.project.project'
 
+    @api.model
+    def _selection_project_type(self):
+        selection = super()._selection_project_type()
+        selection.append(('service_desk', 'Service Desk'))
+        return selection
+
     @api.constrains('backend_id', 'external_id', 'organization_ids')
     @api.multi
     def _constrains_jira_uniq(self):
