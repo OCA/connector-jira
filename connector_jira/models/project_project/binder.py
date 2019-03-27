@@ -40,7 +40,7 @@ class JiraProjectBinder(Component):
             binding = self.model.with_context(active_test=False).search(
                 [(self._odoo_field, '=', binding.id),
                  (self._backend_field, '=', self.backend_record.id),
-                 (self.project_type, '=', project_type),
+                 ('project_type', '=', project_type),
                  ]
             )
             if not binding:

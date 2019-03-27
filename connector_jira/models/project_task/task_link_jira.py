@@ -3,9 +3,7 @@
 
 import logging
 
-import jira
-
-from odoo import api, fields, models, exceptions, _
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
