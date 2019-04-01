@@ -39,6 +39,7 @@ class JiraBinding(models.AbstractModel):
             importer.run(from_date=from_date, to_date=to_date)
 
     @job(default_channel='root.connector_jira.import')
+    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, external_id, force=False):
         """ Import a record """

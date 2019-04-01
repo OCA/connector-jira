@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import api, fields, models
-from odoo.addons.queue_job.job import job
+from odoo.addons.queue_job.job import job, related_action
 
 from odoo.addons.component.core import Component
 
@@ -66,6 +66,7 @@ class JiraAccountAnalyticLine(models.Model):
             )
 
     @job(default_channel='root.connector_jira.import')
+    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
         """ Import a worklog from JIRA """
