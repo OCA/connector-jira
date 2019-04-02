@@ -72,7 +72,7 @@ class JiraAccountAnalyticLine(models.Model):
         """ Import a worklog from JIRA """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
-            importer.run(worklog_id, issue_id=issue_id, force=force)
+            return importer.run(worklog_id, issue_id=issue_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
@@ -80,7 +80,7 @@ class JiraAccountAnalyticLine(models.Model):
         """ Delete a local worklog which has been deleted on JIRA """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.deleter')
-            importer.run(worklog_id)
+            return importer.run(worklog_id)
 
     @api.multi
     def force_reimport(self):

@@ -8,7 +8,9 @@ from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 from ...components.backend_adapter import JIRA_JQL_DATETIME_FORMAT
-from ...components.mapper import iso8601_local_date, whenempty
+from ...components.mapper import (
+    iso8601_local_date, iso8601_to_utc_datetime, whenempty
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -135,12 +137,21 @@ class AnalyticLineImporter(Component):
     _inherit = 'jira.importer'
     _apply_on = ['jira.account.analytic.line']
 
+    _batch_import_date_field = 'import_analytic_line_from_date'
+
     def __init__(self, work_context):
         super().__init__(work_context)
         self.external_issue_id = None
         self.task_binding = None
         self.project_binding = None
         self.fallback_project = None
+
+    def _get_external_updated_at(self):
+        assert self.external_record
+        external_updated_at = self.external_record.get('updated')
+        if not external_updated_at:
+            return None
+        return iso8601_to_utc_datetime(external_updated_at)
 
     @property
     def _issue_fields_to_read(self):

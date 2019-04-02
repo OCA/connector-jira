@@ -19,7 +19,7 @@ from contextlib import closing, contextmanager
 from psycopg2 import IntegrityError, errorcodes
 
 import odoo
-from odoo import _
+from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.queue_job.exception import RetryableJobError
@@ -43,6 +43,10 @@ class JiraImporter(Component):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'record.importer'
 
+    # To set in implementing classes to activate the behavior described
+    # in the "must_skip" method
+    _batch_import_date_field = None
+
     def __init__(self, work_context):
         super().__init__(work_context)
         self.external_id = None
@@ -52,30 +56,62 @@ class JiraImporter(Component):
         """ Return the raw Jira data for ``self.external_id`` """
         return self.backend_adapter.read(self.external_id)
 
-    def must_skip(self):
-        """ Returns a reason if the import should be skipped.
+    def must_skip(self, force=False):
+        """Returns a reason as string if the import must be skipped.
 
-        Returns None to continue with the import
+        Returns None to continue with the import.
 
+        Skip the import depending of worklog's the last update date:
+
+        If it has been updated on Jira before the global "last batch import
+        date" for the worklogs, we skip it entirely. This is especially
+        useful to avoid having worklog "from the past" suddenly appearing
+        in Odoo.
+
+        In order to use this behavior, the attribute
+        ``_batch_import_date_field`` must be set on the implementing Importer.
         """
         assert self.external_record
+        if force:
+            return
+        if not self._batch_import_date_field:
+            return
+        external_date = self._get_external_updated_at()
+        last_batch_import = self.backend_record[self._batch_import_date_field]
+        if last_batch_import and external_date:
+            last_batch_date = fields.Datetime.from_string(last_batch_import)
+            if external_date < last_batch_date:
+
+                return _(
+                    "Import skipped because"
+                    " the last update date (%s UTC) is prior to the latest"
+                    " batch import's date (%s UTC)."
+                ) % (
+                    fields.Datetime.to_string(external_date),
+                    fields.Datetime.to_string(last_batch_date),
+                )
         return
 
     def _before_import(self):
         """ Hook called before the import, when we have the Jira
         data"""
 
-    def _is_uptodate(self, binding):
-        """Return True if the import should be skipped because
-        it is already up-to-date in Odoo"""
+    def _get_external_updated_at(self):
         assert self.external_record
         ext_fields = self.external_record.get('fields', {})
         external_updated_at = ext_fields.get('updated')
         if not external_updated_at:
+            return None
+        return iso8601_to_utc_datetime(external_updated_at)
+
+    def _is_uptodate(self, binding):
+        """Return True if the import should be skipped because
+        it is already up-to-date in Odoo"""
+        external_date = self._get_external_updated_at()
+        if not external_date:
             return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
-        external_date = iso8601_to_utc_datetime(external_updated_at)
         sync_date = self.binder.sync_date(binding)
         if not sync_date:
             return
@@ -117,7 +153,7 @@ class JiraImporter(Component):
             if component is None:
                 component = self.component(usage='record.importer',
                                            model_name=binding_model)
-            component.run(external_id, record=record)
+            component.run(external_id, record=record, force=True)
 
     def _import_dependencies(self):
         """ Import the dependencies for the record"""
@@ -310,7 +346,7 @@ class JiraImporter(Component):
                         ignore_retry=True
                     )
 
-        reason = self.must_skip()
+        reason = self.must_skip(force=force)
         if reason:
             return reason
 
