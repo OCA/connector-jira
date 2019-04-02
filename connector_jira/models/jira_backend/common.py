@@ -72,7 +72,10 @@ class JiraBackend(models.Model):
         comodel_name="project.project",
         string="Fallback for Worklogs",
         help="Worklogs which could not be linked to any project "
-             "will be created in this project."
+             "will be created in this project. Worklogs landing in "
+             "the fallback project can be reassigned to the correct "
+             "project by: 1. linking the expected project with the Jira one, "
+             "2. using 'Refresh Worklogs from Jira' on the timesheet lines."
     )
     state = fields.Selection(
         selection=[('authenticate', 'Authenticate'),

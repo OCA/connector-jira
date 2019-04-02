@@ -81,6 +81,16 @@ class JiraAccountAnalyticLine(models.Model):
             importer = work.component(usage='record.deleter')
             importer.run(worklog_id)
 
+    @api.multi
+    def force_reimport(self):
+        for binding in self.jira_bind_ids:
+            binding.with_delay(priority=8).import_record(
+                binding.backend_id,
+                binding.jira_issue_id,
+                binding.external_id,
+                force=True,
+            )
+
 
 class AccountAnalyticLine(models.Model):
     _inherit = 'account.analytic.line'
