@@ -73,11 +73,18 @@ class AnalyticLineMapper(Component):
 
     @mapping
     def project_and_task(self, record):
-        assert self.options.task_binding or self.options.project_binding
+        assert (
+            self.options.task_binding or
+            self.options.project_binding or
+            self.options.fallback_project
+        )
         task_binding = self.options.task_binding
         if not task_binding:
             project = self.options.project_binding.odoo_id
-            return {'project_id': project.id}
+            if project:
+                return {'project_id': project.id}
+            else:
+                return {'project_id': self.options.fallback_project.id}
 
         project = task_binding.project_id
         return {'task_id': task_binding.odoo_id.id,
@@ -133,6 +140,7 @@ class AnalyticLineImporter(Component):
         self.external_issue_id = None
         self.task_binding = None
         self.project_binding = None
+        self.fallback_project = None
 
     @property
     def _issue_fields_to_read(self):
@@ -198,12 +206,14 @@ class AnalyticLineImporter(Component):
         return super()._create_data(map_record,
                                     task_binding=self.task_binding,
                                     project_binding=self.project_binding,
+                                    fallback_project=self.fallback_project,
                                     linked_issue=self.external_issue)
 
     def _update_data(self, map_record, **kwargs):
         return super()._update_data(map_record,
                                     task_binding=self.task_binding,
                                     project_binding=self.project_binding,
+                                    fallback_project=self.fallback_project,
                                     linked_issue=self.external_issue)
 
     def run(self, external_id, force=False, record=None, **kwargs):
@@ -233,9 +243,13 @@ class AnalyticLineImporter(Component):
             assert issue
             matcher = self.component(usage='jira.task.project.matcher')
             self.project_binding = matcher.find_project_binding(issue)
+            if not self.project_binding:
+                self.fallback_project = matcher.fallback_project_for_worklogs()
 
     def _import(self, binding, **kwargs):
-        if not self.task_binding and not self.project_binding:
+        if not (self.task_binding or
+                self.project_binding or
+                self.fallback_project):
             _logger.debug(
                 "No task or project synchronized for attaching worklog %s",
                 self.external_record['id']

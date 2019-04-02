@@ -49,6 +49,7 @@
           </group>
           <group name="main_configuration" string="Main Configuration">
             <field name="company_id"/>
+            <field name="worklog_fallback_project_id"/>
             <field name="project_template"/>
             <field name="project_template_shared"
               attrs="{'invisible': [('project_template', '!=', 'shared')],

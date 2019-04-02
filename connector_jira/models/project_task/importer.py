@@ -125,6 +125,9 @@ class ProjectTaskProjectMatcher(Component):
         binder = self.binder_for('jira.project.project')
         return binder.to_internal(jira_project_id, unwrap=unwrap)
 
+    def fallback_project_for_worklogs(self):
+        return self.backend_record.worklog_fallback_project_id
+
 
 class ProjectTaskImporter(Component):
     _name = 'jira.project.task.importer'

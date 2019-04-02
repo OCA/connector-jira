@@ -68,6 +68,12 @@ class JiraBackend(models.Model):
         required=True,
         default=lambda self: self._default_company(),
     )
+    worklog_fallback_project_id = fields.Many2one(
+        comodel_name="project.project",
+        string="Fallback for Worklogs",
+        help="Worklogs which could not be linked to any project "
+             "will be created in this project."
+    )
     state = fields.Selection(
         selection=[('authenticate', 'Authenticate'),
                    ('setup', 'Setup'),
