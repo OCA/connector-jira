@@ -268,10 +268,13 @@ class AnalyticLineImporter(Component):
             return
         return super()._import(binding, **kwargs)
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+    def _import_dependency_assignee(self):
         jira_assignee = self.external_record['author']
         jira_key = jira_assignee.get('key')
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        self._import_dependency_assignee()

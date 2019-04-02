@@ -194,25 +194,34 @@ class ProjectTaskImporter(Component):
             return _('Project or issue type is not synchronized.')
         return super()._import(binding, **kwargs)
 
-    def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+    def _import_dependency_assignee(self):
         jira_assignee = self.external_record['fields'].get('assignee') or {}
         jira_key = jira_assignee.get('key')
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
 
+    def _import_dependency_issue_type(self):
         jira_issue_type = self.external_record['fields']['issuetype']
         jira_issue_type_id = jira_issue_type['id']
         self._import_dependency(jira_issue_type_id, 'jira.issue.type',
                                 record=jira_issue_type)
 
+    def _import_dependency_parent(self):
         jira_parent = self.external_record['fields'].get('parent')
         if jira_parent:
             jira_parent_id = jira_parent['id']
             self._import_dependency(jira_parent_id, 'jira.project.task',
                                     record=jira_parent)
 
+    def _import_dependency_epic(self):
         if self.jira_epic:
             self._import_dependency(self.jira_epic['id'], 'jira.project.task',
                                     record=self.jira_epic)
+
+    def _import_dependencies(self):
+        """ Import the dependencies for the record"""
+        self._import_dependency_assignee()
+        self._import_dependency_issue_type()
+        self._import_dependency_parent()
+        self._import_dependency_epic()
