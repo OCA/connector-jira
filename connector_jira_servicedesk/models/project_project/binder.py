@@ -63,6 +63,7 @@ class JiraProjectBinder(Component):
             if unwrap:
                 return self.model.browse()[self._odoo_field]
             return self.model.browse()
+
         binding.ensure_one()
         if unwrap:
             binding = binding[self._odoo_field]

@@ -46,7 +46,7 @@ class JiraProjectProject(models.Model):
         for binding in self:
             if not binding.external_id:
                 continue
-            same_link_bindings = self.search([
+            same_link_bindings = self.with_context(active_test=False).search([
                 ('id', '!=', binding.id),
                 ('backend_id', '=', binding.backend_id.id),
                 ('external_id', '=', binding.external_id),
