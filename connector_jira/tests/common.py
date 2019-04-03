@@ -1,6 +1,60 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+"""Tests for connector_jira
+
+# Running tests
+
+Tests are run normally, you can either execute them with odoo's
+``--test-enable`` option or using `pytest-odoo
+<https://github.com/camptocamp/pytest-odoo/>`_
+
+The requests to Jira are recorded and simulated using `vcrpy
+<https://vcrpy.readthedocs.io/en/latest/usage.html>`_. Which means
+the tests can be executed without having a Jira service running.
+
+However, in order to write new tests or modify the existing ones, you may need
+to have a service running to record the Webservice interactions.
+
+# Recording new tests with vcr.py
+
+First, you will need a running Jira. We use a docker image, a simple
+composition is enough::
+
+    version: '2'
+    services:
+
+    jira:
+        image: cptactionhank/atlassian-jira-software:7.12.3
+        volumes:
+        - "data-jira:/var/atlassian/jira"
+        ports:
+        - 8080:8080
+
+    volumes:
+    data-jira:
+
+When you first access to Jira, it will guide you through a procedure
+to obtain a demo license.
+
+Once connected, you will need to do the Oauth dance to obtain tokens.
+
+TODO: script to help to do the Oauth dance.
+
+Once you have tokens (access+secret), you will need to set them
+in environment variables when you run your tests:
+
+- JIRA_TEST_URL
+- JIRA_TEST_TOKEN_ACCESS
+- JIRA_TEST_TOKEN_SECRET
+
+From now on, you can write your tests using the ``recorder.use_cassette``
+decorator or context manager. If you are changing existing tests, you might
+need either to manually edit the cassette files in "tests/fixtures/cassettes"
+or to record the test again (in such case, IDs may change).
+
+"""
+
 
 from odoo.addons.component.tests.common import SavepointComponentCase
 
