@@ -147,7 +147,9 @@ class JiraProjectProject(models.Model):
         Odoo to Jira (add tasks, ...).
         """
         for binding in self:
-            same_link_bindings = self.search(self._other_same_type_domain())
+            same_link_bindings = self.with_context(active_test=False).search(
+                self._other_same_type_domain()
+            )
             if same_link_bindings:
                 raise exceptions.ValidationError(_(
                     "The project \"%s\" already has a binding with "
@@ -164,7 +166,7 @@ class JiraProjectProject(models.Model):
         for binding in self:
             if not binding.external_id:
                 continue
-            same_link_bindings = self.search([
+            same_link_bindings = self.with_context(active_test=False).search([
                 ('id', '!=', binding.id),
                 ('backend_id', '=', binding.backend_id.id),
                 ('external_id', '=', binding.external_id),
