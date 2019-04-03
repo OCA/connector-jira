@@ -27,7 +27,7 @@
     <field name="view_mode">form</field>
     <field name="view_id" ref="view_jira_aa_line_import"/>
     <field name="target">new</field>
-    <field name="binding_model_id" ref="account.model_account_analytic_line" />
+    <field name="binding_model_id" ref="analytic.model_account_analytic_line" />
   </record>
 
 </odoo>
