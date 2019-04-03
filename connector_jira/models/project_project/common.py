@@ -292,13 +292,16 @@ class ProjectAdapter(Component):
     _apply_on = ['jira.project.project']
 
     def read(self, id_):
-        return self.get(id_).raw
+        with self.handle_404():
+            return self.get(id_).raw
 
     def get(self, id_):
-        return self.client.project(id_)
+        with self.handle_404():
+            return self.client.project(id_)
 
     def write(self, id_, values):
-        self.get(id_).update(values)
+        with self.handle_404():
+            self.get(id_).update(values)
 
     def create(self, key=None, name=None, template_name=None, values=None):
         project = self.client.create_project(

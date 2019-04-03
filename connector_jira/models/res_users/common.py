@@ -101,7 +101,8 @@ class UserAdapter(Component):
     _apply_on = ['jira.res.users']
 
     def read(self, id_):
-        return self.client.user(id_).raw
+        with self.handle_404():
+            return self.client.user(id_).raw
 
     def search(self, fragment=None):
         """ Search users

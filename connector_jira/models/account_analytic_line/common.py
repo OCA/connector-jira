@@ -162,7 +162,8 @@ class WorklogAdapter(Component):
     _apply_on = ['jira.account.analytic.line']
 
     def read(self, issue_id, worklog_id):
-        return self.client.worklog(issue_id, worklog_id).raw
+        with self.handle_404():
+            return self.client.worklog(issue_id, worklog_id).raw
 
     def search(self, issue_id):
         """ Search worklogs of an issue """

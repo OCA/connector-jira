@@ -10,6 +10,7 @@ import requests
 
 from odoo import _, exceptions
 from odoo.addons.component.core import Component
+from odoo.addons.connector.exception import IDMissingInBackend
 
 _logger = logging.getLogger(__name__)
 
@@ -33,6 +34,23 @@ class JiraAdapter(Component):
         if not self._client:
             self._client = self.backend_record.get_api_client()
         return self._client
+
+    @contextmanager
+    def handle_404(self):
+        """Context manager to handle 404 errors on the API
+
+        404 (no record found) on the API are re-raised as:
+        ``odoo.addons.connector.exception.IDMissingInBackend``
+        """
+        try:
+            yield
+        except jira.exceptions.JIRAError as err:
+            if err.status_code == 404:
+                raise IDMissingInBackend("{} (url: {})".format(
+                    err.text,
+                    err.url,
+                ))
+            raise
 
     @contextmanager
     def handle_user_api_errors(self):

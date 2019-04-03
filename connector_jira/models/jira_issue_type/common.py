@@ -42,7 +42,8 @@ class IssueTypeAdapter(Component):
     _apply_on = ['jira.issue.type']
 
     def read(self, id_):
-        return self.client.issue_type(id_).raw
+        with self.handle_404():
+            return self.client.issue_type(id_).raw
 
     def search(self):
         issues = self.client.issue_types()

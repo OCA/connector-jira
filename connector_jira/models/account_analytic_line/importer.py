@@ -234,6 +234,19 @@ class AnalyticLineImporter(Component):
             external_id, force=force, record=record, **kwargs
         )
 
+    def _handle_record_missing_on_jira(self):
+        """Hook called when we are importing a record missing on Jira
+
+        For worklogs, we drop the analytic line if we discover it doesn't exist
+        on Jira, as the latter is the master.
+        """
+        binding = self._get_binding()
+        if binding:
+            record = binding.odoo_id
+            binding.unlink()
+            record.unlink()
+        return _('Record does no longer exist in Jira')
+
     def _get_external_data(self):
         """ Return the raw Jira data for ``self.external_id`` """
         issue_adapter = self.component(

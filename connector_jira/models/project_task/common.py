@@ -161,10 +161,12 @@ class TaskAdapter(Component):
     _apply_on = ['jira.project.task']
 
     def read(self, id_, fields=None):
-        return self.client.issue(id_, fields=fields).raw
+        with self.handle_404():
+            return self.client.issue(id_, fields=fields).raw
 
     def get(self, id_):
-        return self.client.issue(id_)
+        with self.handle_404():
+            return self.client.issue(id_)
 
     def search(self, jql):
         # we need to have at least one field which is not 'id' or 'key'
