@@ -31,10 +31,11 @@ class WorklogAdapter(Component):
         return self.client._get_url(path, base=self._tempo_api_path_base)
 
     def read(self, issue_id, worklog_id):
-        worklog = self.client.worklog(issue_id, worklog_id).raw
+        worklog = super().read(issue_id, worklog_id)
         if self.env.context.get('jira_worklog_no_tempo_data'):
             return worklog
-        worklog['_timesheet'] = self.tempo_read_approval(worklog)
+        with self.handle_404():
+            worklog['_timesheet'] = self.tempo_read_approval(worklog)
         return worklog
 
     # This one seems useless ATM.
@@ -46,5 +47,6 @@ class WorklogAdapter(Component):
     def tempo_read_approval(self, worklog):
         username = worklog['author']['name']
         url = self._tempo_get_url('timesheet-approval/current')
-        resp = self.client._session.get(url, params={'username': username})
+        with self.handle_404():
+            resp = self.client._session.get(url, params={'username': username})
         return resp.json()
