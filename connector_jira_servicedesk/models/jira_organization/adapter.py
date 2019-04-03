@@ -40,7 +40,8 @@ class OrganizationAdapter(Component):
             self.client._options,
             self.client._session
         )
-        organization.find(id_)
+        with self.handle_404():
+            organization.find(id_)
         return organization.raw
 
     def search(self):
