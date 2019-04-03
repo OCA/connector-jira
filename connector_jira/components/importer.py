@@ -19,7 +19,7 @@ from contextlib import closing, contextmanager
 from psycopg2 import IntegrityError, errorcodes
 
 import odoo
-from odoo import _, fields
+from odoo import _
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.queue_job.exception import RetryableJobError
@@ -43,10 +43,6 @@ class JiraImporter(Component):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'record.importer'
 
-    # To set in implementing classes to activate the behavior described
-    # in the "must_skip" method
-    _batch_import_date_field = None
-
     def __init__(self, work_context):
         super().__init__(work_context)
         self.external_id = None
@@ -60,37 +56,8 @@ class JiraImporter(Component):
         """Returns a reason as string if the import must be skipped.
 
         Returns None to continue with the import.
-
-        Skip the import depending of worklog's the last update date:
-
-        If it has been updated on Jira before the global "last batch import
-        date" for the worklogs, we skip it entirely. This is especially
-        useful to avoid having worklog "from the past" suddenly appearing
-        in Odoo.
-
-        In order to use this behavior, the attribute
-        ``_batch_import_date_field`` must be set on the implementing Importer.
         """
         assert self.external_record
-        if force:
-            return
-        if not self._batch_import_date_field:
-            return
-        external_date = self._get_external_updated_at()
-        last_batch_import = self.backend_record[self._batch_import_date_field]
-        if last_batch_import and external_date:
-            last_batch_date = fields.Datetime.from_string(last_batch_import)
-            if external_date < last_batch_date:
-
-                return _(
-                    "Import skipped because"
-                    " the last update date (%s UTC) is prior to the latest"
-                    " batch import's date (%s UTC)."
-                ) % (
-                    fields.Datetime.to_string(external_date),
-                    fields.Datetime.to_string(last_batch_date),
-                )
-        return
 
     def _before_import(self):
         """ Hook called before the import, when we have the Jira

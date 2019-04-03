@@ -134,8 +134,6 @@ class ProjectTaskImporter(Component):
     _inherit = ['jira.importer']
     _apply_on = ['jira.project.task']
 
-    _batch_import_date_field = 'import_project_task_from_date'
-
     def __init__(self, work_context):
         super().__init__(work_context)
         self.jira_epic = None

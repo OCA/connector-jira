@@ -137,8 +137,6 @@ class AnalyticLineImporter(Component):
     _inherit = 'jira.importer'
     _apply_on = ['jira.account.analytic.line']
 
-    _batch_import_date_field = 'import_analytic_line_from_date'
-
     def __init__(self, work_context):
         super().__init__(work_context)
         self.external_issue_id = None
