@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from os import urandom
 
 import psycopg2
+import requests
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -477,8 +478,8 @@ class JiraBackend(models.Model):
     def check_connection(self):
         self.ensure_one()
         try:
-            self.get_api_client()
-        except ValueError as err:
+            self.get_api_client().myself()
+        except (ValueError, requests.exceptions.ConnectionError) as err:
             raise exceptions.UserError(
                 _('Failed to connect (%s)') % (err,)
             )

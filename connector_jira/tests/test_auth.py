@@ -1,6 +1,8 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from odoo import exceptions
+
 from .common import recorder, JiraTransactionCase
 
 
@@ -49,3 +51,20 @@ class TestAuth(JiraTransactionCase):
         self.assertEqual(backend.access_secret,
                          'pwq9Qzc7iax0JtoQqZdLvPlv4ReECZGh')
         self.assertEqual(auth_wizard.state, 'done')
+
+    @recorder.use_cassette
+    def test_auth_check_connection(self):
+        with self.assertRaisesRegex(exceptions.UserError,
+                                    'Connection successful'):
+            self.backend_record.check_connection()
+
+    @recorder.use_cassette
+    def test_auth_check_connection_failure(self):
+        # reset access
+        self.backend_record.write({
+            'access_token': False,
+            'access_secret': False,
+        })
+        with self.assertRaisesRegex(exceptions.UserError,
+                                    'Failed to connect'):
+            self.backend_record.check_connection()
