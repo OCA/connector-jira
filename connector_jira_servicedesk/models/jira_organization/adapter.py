@@ -1,10 +1,16 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import jira
-from jira.utils import CaseInsensitiveDict
-
+import logging
 from odoo.addons.component.core import Component
+
+_logger = logging.getLogger(__name__)
+
+try:
+    import jira
+    from jira.utils import CaseInsensitiveDict
+except ImportError as err:
+    _logger.debug(err)
 
 
 class Organization(jira.resources.Resource):
