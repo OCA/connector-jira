@@ -84,7 +84,7 @@ class JiraAccountAnalyticLine(models.Model):
 
     @api.multi
     def force_reimport(self):
-        for binding in self.jira_bind_ids:
+        for binding in self.mapped('jira_bind_ids'):
             binding.with_delay(priority=8).import_record(
                 binding.backend_id,
                 binding.jira_issue_id,
