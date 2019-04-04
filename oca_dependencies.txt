@@ -14,5 +14,7 @@
 # To provide both the URL and a branch, use:
 # sale-workflow https://github.com/OCA/sale-workflow branchname
 
-OCA/server-tools
-OCA/web
+queue
+connector
+server-env
+web

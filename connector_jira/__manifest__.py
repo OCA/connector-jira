@@ -24,7 +24,7 @@
          # 'requests-toolbelt',
          # 'PyJWT',
          'cryptography',
-      ],
+     ],
  },
  'website': 'https://github.com/camptocamp/connector-jira',
  'data': [
@@ -42,7 +42,7 @@
      'wizards/jira_account_analytic_line_import_views.xml',
      'security/ir.model.access.csv',
      'data/cron.xml',
-    ],
+ ],
  'demo': [
      'demo/jira_backend_demo.xml',
  ],
