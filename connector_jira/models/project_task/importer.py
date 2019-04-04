@@ -131,7 +131,7 @@ class ProjectTaskProjectMatcher(Component):
     _usage = 'jira.task.project.matcher'
 
     def find_project_binding(self, jira_task_data, unwrap=False):
-        jira_project_id = self.external_record['fields']['project']['id']
+        jira_project_id = jira_task_data['fields']['project']['id']
         binder = self.binder_for('jira.project.project')
         return binder.to_internal(jira_project_id, unwrap=unwrap)
 

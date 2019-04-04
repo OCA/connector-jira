@@ -90,13 +90,51 @@ recorder = get_recorder()
 class JiraTransactionCase(SavepointComponentCase):
     """Base class for tests with Jira"""
 
-    def setUp(self):
-        super().setUp()
-        self.backend_record = self.env.ref(
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.backend_record = cls.env.ref(
             'connector_jira.jira_backend_demo'
         )
-        self.backend_record.write({
+        cls.backend_record.write({
             'uri': jira_test_url,
             'access_token': jira_test_token_access,
             'access_secret': jira_test_token_secret,
+            'epic_link_field_name': 'customfield_10101',
         })
+
+    _base_issue_types = [
+        ('Task', '10002'),
+        ('Sub-task', '10003'),
+        ('Story', '10001'),
+        ('Bug', '10004'),
+        ('Epic', '10000'),
+    ]
+
+    @classmethod
+    def _create_issue_type_bindings(cls):
+        for name, jira_id in cls._base_issue_types:
+            cls.env['jira.issue.type'].create({
+                'name': name,
+                'backend_id': cls.backend_record.id,
+                'external_id': jira_id,
+            })
+
+    def _create_project_binding(self, project, sync_action='link',
+                                issue_types=None, **extra):
+        values = {
+            'odoo_id': project.id,
+            'jira_key': 'TEST',
+            'sync_action': sync_action,
+            'backend_id': self.backend_record.id,
+            # dummy id
+            'external_id': '9999',
+        }
+        if issue_types:
+            values.update({
+                'sync_issue_type_ids': [(6, 0, issue_types.ids)],
+            })
+        values.update(**extra)
+        return self.env['jira.project.project'].with_context(
+            no_connector_export=True
+        ).create(values)
