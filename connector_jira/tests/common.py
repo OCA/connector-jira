@@ -39,7 +39,11 @@ to obtain a demo license.
 
 Once connected, you will need to do the Oauth dance to obtain tokens.
 
-TODO: script to help to do the Oauth dance.
+You can do so using the CLI command line::
+
+  odoo jiraoauthdance
+
+See details in ``connector_jira/cli/jira_oauth_dance.py``.
 
 Once you have tokens (access+secret), you will need to set them
 in environment variables when you run your tests:
