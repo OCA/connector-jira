@@ -6,8 +6,11 @@ import logging
 import re
 import tempfile
 
-from jira import JIRAError
-from jira.utils import json_loads
+try:
+    from jira import JIRAError
+    from jira.utils import json_loads
+except ImportError:
+    pass  # already logged in components/adapter.py
 
 from odoo import api, fields, models, exceptions, _, tools
 

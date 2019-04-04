@@ -25,10 +25,10 @@ Backend
 1. Open the menu Connectors > Jira > Backends
 2. Create a new Jira Backend
 
-* Put the name you want
-* Set the URL of your Jira, like https://jira.example.com
-* You can also select the company where records will be created and the
-  default project template used when Odoo will create the projects in Jira
+   * Put the name you want
+   * Set the URL of your Jira, like https://jira.example.com
+   * You can also select the company where records will be created and the
+     default project template used when Odoo will create the projects in Jira
 
 3. Save and continue with the Authentication
 

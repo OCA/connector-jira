@@ -5,7 +5,6 @@ import logging
 
 from contextlib import contextmanager
 
-import jira
 import requests
 
 from odoo import _, exceptions
@@ -13,6 +12,11 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 
 _logger = logging.getLogger(__name__)
+
+try:
+    import jira
+except ImportError as err:
+    _logger.debug(err)
 
 
 JIRA_JQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M'  # no seconds :-(

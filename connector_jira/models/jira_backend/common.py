@@ -13,14 +13,9 @@ from os import urandom
 
 import psycopg2
 import requests
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from jira import JIRA, JIRAError
-from jira.utils import json_loads
 
 import odoo
-from odoo import models, fields, api, exceptions, _
+from odoo import models, fields, api, exceptions, _, tools
 
 from odoo.addons.component.core import Component
 
@@ -28,6 +23,19 @@ _logger = logging.getLogger(__name__)
 
 JIRA_TIMEOUT = 30  # seconds
 IMPORT_DELTA = 70  # seconds
+
+try:
+    from jira import JIRA, JIRAError
+    from jira.utils import json_loads
+except ImportError:
+    pass  # already logged in components/backend_adapter.py
+
+try:
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+except ImportError as err:
+    _logger.debug(err)
 
 
 @contextmanager
@@ -42,7 +50,8 @@ def new_env(env):
                 cr.rollback()
                 raise
             else:
-                cr.commit()
+                if not tools.config['test_enable']:
+                    cr.commit()   # pylint: disable=invalid-commit
 
 
 class JiraBackend(models.Model):
@@ -430,7 +439,8 @@ class JiraBackend(models.Model):
                 # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
                 webhook_id = webhook['self'].split('/')[-1]
                 backend.webhook_issue_jira_id = webhook_id
-                env.cr.commit()
+                if not tools.config['test_enable']:
+                    env.cr.commit()  # pylint: disable=invalid-commit
 
                 url = urllib.parse.urljoin(base_url,
                                            '/connector_jira/webhooks/worklog')
@@ -444,7 +454,8 @@ class JiraBackend(models.Model):
                 )
                 webhook_id = webhook['self'].split('/')[-1]
                 backend.webhook_worklog_jira_id = webhook_id
-                env.cr.commit()
+                if not tools.config['test_enable']:
+                    env.cr.commit()  # pylint: disable=invalid-commit
 
     @api.onchange('odoo_webhook_base_url')
     def onchange_odoo_webhook_base_url(self):

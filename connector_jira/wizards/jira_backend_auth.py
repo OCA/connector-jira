@@ -2,12 +2,25 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import logging
+
 import requests
-from oauthlib.oauth1 import SIGNATURE_RSA
-from requests_oauthlib import OAuth1
+
 from urllib.parse import parse_qsl
 
 from odoo import models, fields, api, exceptions, _
+
+_logger = logging.getLogger(__name__)
+
+try:
+    from oauthlib.oauth1 import SIGNATURE_RSA
+except ImportError as err:
+    _logger.debug(err)
+
+try:
+    from requests_oauthlib import OAuth1
+except ImportError as err:
+    _logger.debug(err)
 
 
 class JiraBackendAuth(models.TransientModel):

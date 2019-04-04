@@ -19,7 +19,7 @@ from contextlib import closing, contextmanager
 from psycopg2 import IntegrityError, errorcodes
 
 import odoo
-from odoo import _
+from odoo import _, tools
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.queue_job.exception import RetryableJobError
@@ -236,7 +236,8 @@ class JiraImporter(Component):
                     cr.rollback()
                     raise
                 else:
-                    cr.commit()
+                    if not tools.config['test_enable']:
+                        cr.commit()  # pylint: disable=invalid-commit
 
     def _handle_record_missing_on_jira(self):
         """Hook called when we are importing a record missing on Jira

@@ -108,7 +108,7 @@ class JiraBaseExporter(AbstractComponent):
         # commit so we keep the external ID if several exports
         # are called and one of them fails
         if not tools.config['test_enable']:
-            self.env.cr.commit()
+            self.env.cr.commit()  # pylint: disable=invalid-commit
         return result
 
     def _run(self, *args, **kwargs):
@@ -218,7 +218,7 @@ class JiraExporter(Component):
                     # Eager commit to avoid having 2 jobs
                     # exporting at the same time.
                     if not tools.config['test_enable']:
-                        self.env.cr.commit()
+                        self.env.cr.commit()  # pylint: disable=invalid-commit
         else:
             # If jira_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).
