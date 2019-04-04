@@ -103,6 +103,16 @@ class ProjectTaskMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
+    def finalize(self, map_record, values):
+        values = values.copy()
+        if values.get('odoo_id'):
+            # If a mapping binds the issue to an existing odoo
+            # task, we should not change the project.
+            # It's not only unexpected, but would fail as soon
+            # as we have invoiced timesheet lines on the task.
+            values.pop('project_id')
+        return values
+
 
 class ProjectTaskBatchImporter(Component):
     """ Import the Jira tasks
