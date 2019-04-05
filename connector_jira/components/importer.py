@@ -15,6 +15,7 @@ are already bound, to update the last sync date.
 
 import logging
 from contextlib import closing, contextmanager
+from datetime import datetime, timedelta
 
 from psycopg2 import IntegrityError, errorcodes
 
@@ -26,11 +27,17 @@ from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.connector.exception import IDMissingInBackend
 from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
+from ..fields import MillisecondsUnixTimestamp
 
 _logger = logging.getLogger(__name__)
 
 RETRY_ON_ADVISORY_LOCK = 1  # seconds
 RETRY_WHEN_CONCURRENT_DETECTED = 1  # seconds
+# when we import using JQL, we always import tasks from
+# slightly before the last batch import, because Jira
+# does not send the results from the past minute and
+# maybe sometimes more
+IMPORT_DELTA = 300  # seconds
 
 
 class JiraImporter(Component):
@@ -373,18 +380,14 @@ class BatchImporter(AbstractComponent):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'batch.importer'
 
-    def run(self, from_date=None, to_date=None):
-        """ Run the synchronization """
-        parts = []
-        if from_date:
-            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated >= "%s"' % from_date)
-        if to_date:
-            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated <= "%s"' % to_date)
-        record_ids = self.backend_adapter.search(' and '.join(parts))
+    def run(self):
+        """Run the synchronization, search all JIRA records"""
+        record_ids = self._search()
         for record_id in record_ids:
             self._import_record(record_id)
+
+    def _search(self):
+        return self.backend_adapter.search()
 
     def _import_record(self, record_id):
         """ Import a record directly or delay the import of the record.
@@ -411,6 +414,95 @@ class DelayedBatchImporter(AbstractComponent):
 
     def _import_record(self, record_id, **kwargs):
         """ Delay the import of the records"""
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            record_id
+        )
+
+
+class TimestampBatchImporter(AbstractComponent):
+    """ Batch Importer working with a jira.backend.timestamp.record
+
+    It locks the timestamp to ensure no other job is working on it,
+    and use the latest timestamp value as reference for the search.
+
+    The role of a BatchImporter is to search for a list of
+    items to import, then it can either import them directly or delay
+    the import of each item separately.
+    """
+
+    _name = 'jira.timestamp.batch.importer'
+    _inherit = ['base.importer', 'jira.base']
+    _usage = 'timestamp.batch.importer'
+
+    # We have 2 ways to work with the Jira API:
+    # 1. using JQL queries
+    # 2. using dedicated methods such as "worklog/updated"
+    #    (https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-worklog-updated-get)  # noqa
+    # Method 1 accepts only dates at minute-precision
+    # (JIRA_JQL_DATETIME_FORMAT). Method 2 works with Unix timestamps with a
+    # milliseconds precision. We store the timestamps with the Unix precision
+    # in any case and convert from there.
+    # Per batch importer implementation, ``_using_jql`` allows to switch
+    # between the 2 behaviors.
+    # The base behavior is the JQL, the other is implemented per model
+    # basis (currently only account.analytic.line)
+
+    def run(self, timestamp):
+        """Run the synchronization using the timestamp"""
+        original_timestamp_value = timestamp.import_timestamp
+        if not timestamp._lock():
+            self._handle_lock_failed(timestamp)
+
+        next_timestamp_value, records = self._search(timestamp)
+
+        timestamp._update_timestamp(next_timestamp_value)
+
+        number = self._handle_records(records)
+
+        unix_to_dt = MillisecondsUnixTimestamp.unix_to_datetime
+        return _('Batch from {} UTC to {} UTC generated {} imports').format(
+            unix_to_dt(original_timestamp_value),
+            unix_to_dt(next_timestamp_value),
+            number
+        )
+
+    def _handle_records(self, records):
+        """Handle the records to import and return the number handled"""
+        for record_id in records:
+            self._import_record(record_id)
+        return len(records)
+
+    def _handle_lock_failed(self, timestamp):
+        _logger.warning("Failed to acquire timestamps %s",
+                        timestamp,
+                        exc_info=True)
+        raise RetryableJobError(
+            'Concurrent job / process already syncing',
+            ignore_retry=True,
+        )
+
+    def _search(self, timestamp):
+        """Return a tuple (next timestamp value, jira record ids)"""
+        until = datetime.now()
+
+        parts = []
+        if timestamp.import_timestamp:
+            since = MillisecondsUnixTimestamp.unix_to_datetime(
+                timestamp.import_timestamp
+            )
+            from_date = since.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated >= "%s"' % from_date)
+            to_date = until.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated <= "%s"' % to_date)
+
+        next_since = max(until - timedelta(seconds=IMPORT_DELTA), since)
+        next_timestamp = MillisecondsUnixTimestamp.datetime_to_unix(next_since)
+        record_ids = self.backend_adapter.search(' and '.join(parts))
+        return (next_timestamp, record_ids)
+
+    def _import_record(self, record_id, **kwargs):
+        """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
             self.backend_record,
             record_id

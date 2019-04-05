@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _
+from odoo import _, fields
 from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
-from ...components.backend_adapter import JIRA_JQL_DATETIME_FORMAT
 from ...components.mapper import (
     iso8601_local_date, iso8601_to_utc_datetime, whenempty
 )
+from ...fields import MillisecondsUnixTimestamp
 
 _logger = logging.getLogger(__name__)
 
@@ -104,31 +104,65 @@ class AnalyticLineBatchImporter(Component):
     Import from a date
     """
     _name = 'jira.analytic.line.batch.importer'
-    _inherit = 'jira.delayed.batch.importer'
+    _inherit = 'jira.timestamp.batch.importer'
     _apply_on = ['jira.account.analytic.line']
 
-    def run(self, from_date=None, to_date=None):
-        """ Run the synchronization """
-        parts = []
-        if from_date:
-            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated >= "%s"' % from_date)
-        if to_date:
-            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated <= "%s"' % to_date)
-        issue_adapter = self.component(usage='backend.adapter',
-                                       model_name='jira.project.task')
-        issue_ids = issue_adapter.search(' and '.join(parts))
-        for issue_id in issue_ids:
-            for worklog_id in self.backend_adapter.search(issue_id):
-                self._import_record(worklog_id, issue_id)
+    def _search(self, timestamp):
+        result = self.backend_adapter.updated_since(
+            since=timestamp.import_timestamp
+        )
+        worklog_ids = self._filter_update(result.updated_worklogs)
+        # We need issue_id + worklog_id for the worklog importer
+        # (the jira "read" method for worklogs asks both)
+        # TODO we might consider to optimize the import process here:
+        # yield_read reads worklogs data, then the individual
+        # import will do a request again (and 2 with the tempo module)
+        return (result.until, self.backend_adapter.yield_read(worklog_ids))
 
-    def _import_record(self, worklog_id, issue_id, **kwargs):
+    def _handle_records(self, records):
+        number = 0
+        for worklog in records:
+            number += 1
+            worklog_id = worklog['id']
+            issue_id = worklog['issueId']
+            self._import_record(issue_id, worklog_id)
+        return number
+
+    def _filter_update(self, updated_worklogs):
+        """Filter only the worklogs needing an update
+
+        The result from Jira contains the worklog id and
+        the last update on Jira. So we keep only the worklog
+        ids with an sync_date before the Jira last update.
+        """
+        self.env.cr.execute(
+            "SELECT external_id, sync_date "
+            "FROM jira_account_analytic_line "
+            "WHERE external_id IN %s ",
+            (tuple(str(r.worklog_id) for r in updated_worklogs),)
+        )
+        bindings = {int(row[0]): row[1] for row in self.env.cr.fetchall()}
+        worklog_ids = []
+        for worklog in updated_worklogs:
+            worklog_id = worklog.worklog_id
+            binding_sync_date = bindings.get(worklog_id)
+            if not binding_sync_date:
+                worklog_ids.append(worklog_id)
+                continue
+            binding_sync_date = fields.Datetime.from_string(
+                binding_sync_date
+            )
+            jira_updated = MillisecondsUnixTimestamp.unix_to_datetime(
+                worklog.updated
+            )
+            if binding_sync_date < jira_updated:
+                worklog_ids.append(worklog_id)
+        return worklog_ids
+
+    def _import_record(self, issue_id, worklog_id, **kwargs):
         """ Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record,
-            issue_id,
-            worklog_id,
+            self.backend_record, issue_id, worklog_id,
         )
 
 
@@ -212,18 +246,22 @@ class AnalyticLineImporter(Component):
             return issue_binder.to_internal(jira_issue_id)
 
     def _create_data(self, map_record, **kwargs):
-        return super()._create_data(map_record,
-                                    task_binding=self.task_binding,
-                                    project_binding=self.project_binding,
-                                    fallback_project=self.fallback_project,
-                                    linked_issue=self.external_issue)
+        return super()._create_data(
+            map_record,
+            task_binding=self.task_binding,
+            project_binding=self.project_binding,
+            fallback_project=self.fallback_project,
+            linked_issue=self.external_issue,
+        )
 
     def _update_data(self, map_record, **kwargs):
-        return super()._update_data(map_record,
-                                    task_binding=self.task_binding,
-                                    project_binding=self.project_binding,
-                                    fallback_project=self.fallback_project,
-                                    linked_issue=self.external_issue)
+        return super()._update_data(
+            map_record,
+            task_binding=self.task_binding,
+            project_binding=self.project_binding,
+            fallback_project=self.fallback_project,
+            linked_issue=self.external_issue,
+        )
 
     def run(self, external_id, force=False, record=None, **kwargs):
         assert 'issue_id' in kwargs

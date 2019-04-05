@@ -122,7 +122,7 @@ class ProjectTaskBatchImporter(Component):
     Import from a date
     """
     _name = 'jira.project.task.batch.importer'
-    _inherit = ['jira.delayed.batch.importer']
+    _inherit = ['jira.timestamp.batch.importer']
     _apply_on = ['jira.project.task']
 
 

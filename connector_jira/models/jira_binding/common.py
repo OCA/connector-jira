@@ -32,11 +32,19 @@ class JiraBinding(models.AbstractModel):
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def import_batch(self, backend, from_date=None, to_date=None):
-        """ Prepare import of a batch of records """
+    def import_batch(self, backend):
+        """Prepare import of a batch of record """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='batch.importer')
-            return importer.run(from_date=from_date, to_date=to_date)
+            return importer.run()
+
+    @job(default_channel='root.connector_jira.import')
+    @api.model
+    def import_batch_timestamp(self, backend, timestamp):
+        """Prepare import of a batch of records"""
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage='timestamp.batch.importer')
+            return importer.run(timestamp)
 
     @job(default_channel='root.connector_jira.import')
     @related_action(action="related_action_jira_link")
