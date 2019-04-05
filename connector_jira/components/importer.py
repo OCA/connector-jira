@@ -27,7 +27,7 @@ from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.connector.exception import IDMissingInBackend
 from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
-from ..fields import MillisecondsUnixTimestamp
+from ..fields import MilliDatetime
 
 _logger = logging.getLogger(__name__)
 
@@ -435,19 +435,6 @@ class TimestampBatchImporter(AbstractComponent):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'timestamp.batch.importer'
 
-    # We have 2 ways to work with the Jira API:
-    # 1. using JQL queries
-    # 2. using dedicated methods such as "worklog/updated"
-    #    (https://developer.atlassian.com/cloud/jira/platform/rest/v3/#api-rest-api-3-worklog-updated-get)  # noqa
-    # Method 1 accepts only dates at minute-precision
-    # (JIRA_JQL_DATETIME_FORMAT). Method 2 works with Unix timestamps with a
-    # milliseconds precision. We store the timestamps with the Unix precision
-    # in any case and convert from there.
-    # Per batch importer implementation, ``_using_jql`` allows to switch
-    # between the 2 behaviors.
-    # The base behavior is the JQL, the other is implemented per model
-    # basis (currently only account.analytic.line)
-
     def run(self, timestamp):
         """Run the synchronization using the timestamp"""
         original_timestamp_value = timestamp.import_timestamp
@@ -460,10 +447,9 @@ class TimestampBatchImporter(AbstractComponent):
 
         number = self._handle_records(records)
 
-        unix_to_dt = MillisecondsUnixTimestamp.unix_to_datetime
         return _('Batch from {} UTC to {} UTC generated {} imports').format(
-            unix_to_dt(original_timestamp_value),
-            unix_to_dt(next_timestamp_value),
+            original_timestamp_value,
+            next_timestamp_value,
             number
         )
 
@@ -488,16 +474,13 @@ class TimestampBatchImporter(AbstractComponent):
 
         parts = []
         if timestamp.import_timestamp:
-            since = MillisecondsUnixTimestamp.unix_to_datetime(
-                timestamp.import_timestamp
-            )
+            since = timestamp.import_timestamp
             from_date = since.strftime(JIRA_JQL_DATETIME_FORMAT)
             parts.append('updated >= "%s"' % from_date)
             to_date = until.strftime(JIRA_JQL_DATETIME_FORMAT)
             parts.append('updated <= "%s"' % to_date)
 
-        next_since = max(until - timedelta(seconds=IMPORT_DELTA), since)
-        next_timestamp = MillisecondsUnixTimestamp.datetime_to_unix(next_since)
+        next_timestamp = max(until - timedelta(seconds=IMPORT_DELTA), since)
         record_ids = self.backend_adapter.search(' and '.join(parts))
         return (next_timestamp, record_ids)
 

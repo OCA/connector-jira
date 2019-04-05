@@ -1,19 +1,26 @@
 import time
 
-from datetime import datetime
+from datetime import datetime, date
 
 from odoo import fields
-from odoo.tools import pycompat
 
 MILLI_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
+MILLI_DATETIME_LENGTH = len(MILLI_DATETIME_FORMAT)
 
 
-class MillisecondsUnixTimestamp(fields.Field):
-    """Field storing and reading timestamps as Unix format
+class MilliDatetime(fields.Field):
+    """Field storing Datetime with milliseconds precision
 
-    It keeps a precision including milliseconds.
+    There are no widgets for this field, it is only technical
+    for storing Jira timestamps.
+
+    As Jira uses Unix Timestamps on some webservices methods,
+    this field provides conversions utilities.
+
+    Beware, unlike the Datetime field (prior 12.0), the MilliDatetime
+    field works with datetime objects.
     """
-    type = 'millisecondsunixtimestamp'
+    type = 'millidatetime'
     column_type = ('timestamp', 'timestamp')
 
     @staticmethod
@@ -21,7 +28,13 @@ class MillisecondsUnixTimestamp(fields.Field):
         """Convert a string to :class:`datetime` including milliseconds"""
         if not value:
             return None
-        if len(value) == len(MILLI_DATETIME_FORMAT):
+        if isinstance(value, datetime):
+            if value.tzinfo:
+                raise ValueError(
+                    "MilliDatetime field expects a naive datetime: %s" % value
+                )
+            return value
+        if len(value) == MILLI_DATETIME_LENGTH:
             return datetime.strptime(value, MILLI_DATETIME_FORMAT)
         else:
             return fields.Datetime.from_string(value)
@@ -32,28 +45,22 @@ class MillisecondsUnixTimestamp(fields.Field):
         return value.strftime(MILLI_DATETIME_FORMAT) if value else False
 
     @staticmethod
-    def unix_to_datetime(value):
+    def from_timestamp(value):
         return datetime.fromtimestamp(value / 1000)
 
     @staticmethod
-    def datetime_to_unix(value):
+    def to_timestamp(value):
         return int(
             time.mktime(value.timetuple()) * 1000 +
             value.microsecond / 1000
         )
 
-    def convert_to_column(self, value, record, values=None):
-        """ Convert ``value`` from the ``write`` format to the SQL format. """
-        if value is None or value is False:
-            return None
-        return datetime.fromtimestamp(value / 1000)
-
     def convert_to_cache(self, value, record, validate=True):
         if not value:
             return False
-
-        if isinstance(value, pycompat.string_types):
-            value = self.from_string(value)
-        if isinstance(value, datetime):
-            value = self.datetime_to_unix(value)
-        return value
+        if isinstance(value, date) and not isinstance(value, datetime):
+            raise TypeError(
+                "%s (field %s) must be string or datetime"
+                ", not date." % (value, self)
+            )
+        return self.from_string(value)

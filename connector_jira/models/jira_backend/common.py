@@ -19,7 +19,7 @@ from odoo import models, fields, api, exceptions, _, tools
 
 from odoo.addons.component.core import Component
 
-from ...fields import MillisecondsUnixTimestamp
+from ...fields import MilliDatetime
 
 _logger = logging.getLogger(__name__)
 
@@ -233,11 +233,13 @@ class JiraBackend(models.Model):
                       "probably due to an ongoing synchronization.")
                 )
             value = getattr(rec, field_name)
-            # as the field expects a unix timestamp and the "UI" field
-            # on the backend shows a date, it will be converted,
-            # however we lose the milliseconds precision (not possible
-            # with the odoo datetime)
-            timestamp._update_timestamp_from_datetime(value)
+            # As the timestamp field is using MilliDatetime, we lose
+            # the milliseconds precision when a user writes a new
+            # date on the backend. This is not really an issue as we
+            # expect mostly to use the milliseconds precision for
+            # the dates coming from the Jira webservices (they use
+            # milliseconds unix timestamp on some -only some- methods)
+            timestamp._update_timestamp(value)
 
     @api.multi
     def _inverse_import_project_task_from_date(self):
@@ -517,7 +519,7 @@ class JiraBackendTimestamp(models.Model):
     # of field. The ORM values for this field are Unix timestamps the
     # same way Jira use them: unix timestamp as integer multiplied * 1000
     # to keep the milli precision with 3 digits (example 1554318348000).
-    import_timestamp = MillisecondsUnixTimestamp(
+    import_timestamp = MilliDatetime(
         string='Import Timestamp',
         required=True,
     )
@@ -538,7 +540,7 @@ class JiraBackendTimestamp(models.Model):
             timestamp = self.env['jira.backend.timestamp'].create({
                 'backend_id': backend.id,
                 'from_date_field': field_name,
-                'import_timestamp': 0,
+                'import_timestamp': datetime.fromtimestamp(0),
             })
         return timestamp
 
@@ -546,14 +548,6 @@ class JiraBackendTimestamp(models.Model):
     def _update_timestamp(self, timestamp):
         self.ensure_one()
         self.import_timestamp = timestamp
-
-    @api.multi
-    def _update_timestamp_from_datetime(self, dt_timestamp):
-        self.ensure_one()
-        timestamp_value = MillisecondsUnixTimestamp.datetime_to_unix(
-            fields.Datetime.from_string(dt_timestamp)
-        )
-        self.import_timestamp = timestamp_value
 
     @api.multi
     def _lock(self):

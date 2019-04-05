@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, fields
+from odoo import _
 from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 from ...components.mapper import (
     iso8601_local_date, iso8601_to_utc_datetime, whenempty
 )
-from ...fields import MillisecondsUnixTimestamp
+from ...fields import MilliDatetime
 
 _logger = logging.getLogger(__name__)
 
@@ -108,16 +108,16 @@ class AnalyticLineBatchImporter(Component):
     _apply_on = ['jira.account.analytic.line']
 
     def _search(self, timestamp):
-        result = self.backend_adapter.updated_since(
-            since=timestamp.import_timestamp
-        )
+        unix_timestamp = MilliDatetime.to_timestamp(timestamp.import_timestamp)
+        result = self.backend_adapter.updated_since(since=unix_timestamp)
         worklog_ids = self._filter_update(result.updated_worklogs)
-        # We need issue_id + worklog_id for the worklog importer
-        # (the jira "read" method for worklogs asks both)
+        # We need issue_id + worklog_id for the worklog importer (the jira
+        # "read" method for worklogs asks both), get it from yield_read.
         # TODO we might consider to optimize the import process here:
         # yield_read reads worklogs data, then the individual
         # import will do a request again (and 2 with the tempo module)
-        return (result.until, self.backend_adapter.yield_read(worklog_ids))
+        next_timestamp = MilliDatetime.from_timestamp(result.until)
+        return (next_timestamp, self.backend_adapter.yield_read(worklog_ids))
 
     def _handle_records(self, records):
         number = 0
@@ -149,10 +149,10 @@ class AnalyticLineBatchImporter(Component):
             if not binding_sync_date:
                 worklog_ids.append(worklog_id)
                 continue
-            binding_sync_date = fields.Datetime.from_string(
+            binding_sync_date = MilliDatetime.from_string(
                 binding_sync_date
             )
-            jira_updated = MillisecondsUnixTimestamp.unix_to_datetime(
+            jira_updated = MilliDatetime.from_timestamp(
                 worklog.updated
             )
             if binding_sync_date < jira_updated:

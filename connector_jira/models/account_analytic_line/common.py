@@ -196,7 +196,7 @@ class WorklogAdapter(Component):
         path = 'worklog/list'
 
         # the method returns max 1000 results
-        for chunk in self._chunks(worklog_ids, 10):
+        for chunk in self._chunks(worklog_ids, 1000):
             payload = json.dumps({"ids": chunk})
             result = self._post_get_json(path, data=payload)
             for worklog in result:
