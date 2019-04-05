@@ -8,7 +8,7 @@ from odoo.addons.component.core import Component
 
 class OrganizationMapper(Component):
     _name = 'jira.organization.mapper'
-    _inherit = ['base.import.mapper']
+    _inherit = ['jira.import.mapper']
     _apply_on = 'jira.organization'
 
     direct = [
