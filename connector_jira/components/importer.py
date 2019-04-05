@@ -27,7 +27,6 @@ from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.connector.exception import IDMissingInBackend
 from .mapper import iso8601_to_utc_datetime
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
-from ..fields import MilliDatetime
 
 _logger = logging.getLogger(__name__)
 
@@ -86,16 +85,13 @@ class JiraImporter(Component):
             return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
-        sync_date = self.binder.sync_date(binding)
-        if not sync_date:
-            return
-        # if the last synchronization date is greater than the last
-        # update in jira, we skip the import.
-        # Important: at the beginning of the exporters flows, we have to
-        # check if the jira date is more recent than the sync_date
-        # and if so, schedule a new import. If we don't do that, we'll
-        # miss changes done in Jira
-        return external_date < sync_date
+        # We store the jira "updated_at" field in the binding,
+        # so for further imports, we can check accurately if the
+        # record is already up-to-date (this field has a millisecond
+        # precision).
+        if binding.jira_updated_at:
+            return external_date < binding.jira_updated_at
+        return False
 
     def _import_dependency(self, external_id, binding_model,
                            component=None, record=None, always=False):
@@ -156,7 +152,11 @@ class JiraImporter(Component):
 
     def _create_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_create` """
-        return map_record.values(for_create=True, **kwargs)
+        return map_record.values(
+            for_create=True,
+            external_updated_at=self._get_external_updated_at(),
+            **kwargs
+        )
 
     @contextmanager
     def _retry_unique_violation(self):
@@ -206,7 +206,10 @@ class JiraImporter(Component):
 
     def _update_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_update` """
-        return map_record.values(**kwargs)
+        return map_record.values(
+            external_updated_at=self._get_external_updated_at(),
+            **kwargs
+        )
 
     def _update(self, binding, data):
         """ Update an Odoo record """

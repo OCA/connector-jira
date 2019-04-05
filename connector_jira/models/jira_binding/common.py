@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.addons.queue_job.job import job, related_action
+from ...fields import MilliDatetime
 
 
 class JiraBinding(models.AbstractModel):
@@ -23,6 +24,7 @@ class JiraBinding(models.AbstractModel):
         required=True,
         ondelete='restrict',
     )
+    jira_updated_at = MilliDatetime()
     external_id = fields.Char(string='ID on Jira', index=True)
 
     _sql_constraints = [

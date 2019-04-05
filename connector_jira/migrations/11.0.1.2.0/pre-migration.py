@@ -17,3 +17,21 @@ def migrate(cr, version):
         ALTER TABLE jira_backend_timestamp
         ALTER COLUMN import_timestamp SET NOT NULL;
     """)
+
+    cr.execute("""
+        ALTER TABLE jira_account_analytic_line
+        ADD COLUMN jira_updated_at timestamp;
+    """)
+    cr.execute("""
+        UPDATE jira_account_analytic_line
+        SET jira_updated_at = sync_date;
+    """)
+
+    cr.execute("""
+        ALTER TABLE jira_project_task
+        ADD COLUMN jira_updated_at timestamp;
+    """)
+    cr.execute("""
+        UPDATE jira_project_task
+        SET jira_updated_at = sync_date;
+    """)

@@ -9,7 +9,7 @@ from odoo.addons.component.core import Component
 
 class ProjectTaskMapper(Component):
     _name = 'jira.project.task.mapper'
-    _inherit = 'base.import.mapper'
+    _inherit = 'jira.import.mapper'
     _apply_on = ['jira.project.task']
 
     direct = [

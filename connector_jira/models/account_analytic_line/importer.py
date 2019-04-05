@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 class AnalyticLineMapper(Component):
     _name = 'jira.analytic.line.mapper'
-    _inherit = 'base.import.mapper'
+    _inherit = 'jira.import.mapper'
     _apply_on = ['jira.account.analytic.line']
 
     direct = [
@@ -136,7 +136,7 @@ class AnalyticLineBatchImporter(Component):
         ids with an sync_date before the Jira last update.
         """
         self.env.cr.execute(
-            "SELECT external_id, sync_date "
+            "SELECT external_id, jira_updated_at "
             "FROM jira_account_analytic_line "
             "WHERE external_id IN %s ",
             (tuple(str(r.worklog_id) for r in updated_worklogs),)
@@ -145,17 +145,21 @@ class AnalyticLineBatchImporter(Component):
         worklog_ids = []
         for worklog in updated_worklogs:
             worklog_id = worklog.worklog_id
-            binding_sync_date = bindings.get(worklog_id)
-            if not binding_sync_date:
+            # we store the latest "updated_at" value on the binding
+            # so we can check if we already know the latest value,
+            # for instance because we imported the record from a
+            # webhook before, we can skip the import
+            binding_updated_at = bindings.get(worklog_id)
+            if not binding_updated_at:
                 worklog_ids.append(worklog_id)
                 continue
-            binding_sync_date = MilliDatetime.from_string(
-                binding_sync_date
+            binding_updated_at = MilliDatetime.from_string(
+                binding_updated_at
             )
-            jira_updated = MilliDatetime.from_timestamp(
+            jira_updated_at = MilliDatetime.from_timestamp(
                 worklog.updated
             )
-            if binding_sync_date < jira_updated:
+            if binding_updated_at < jira_updated_at:
                 worklog_ids.append(worklog_id)
         return worklog_ids
 
