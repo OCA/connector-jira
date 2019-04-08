@@ -180,6 +180,21 @@ class JiraSavepointCase(SavepointComponentCase):
             .create(values)
         )
 
+    @classmethod
+    def _create_analytic_line_binding(cls, line, **extra):
+        values = {
+            "odoo_id": line.id,
+            "backend_id": cls.backend_record.id,
+            # dummy id
+            "external_id": "9999",
+        }
+        values.update(**extra)
+        return (
+            cls.env["jira.account.analytic.line"]
+            .with_context(no_connector_export=True)
+            .create(values)
+        )
+
     # copy of 12.0's method, with 'black' applied
     # https://github.com/odoo/odoo/blob/251021796c25676f5c341e0a3fc3ba4c9feb85bb/odoo/tests/common.py#L294
     # to remove when migrating to 12.0

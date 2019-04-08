@@ -100,7 +100,7 @@ class TestBatchTimestampImport(JiraSavepointCase):
                 self.backend_record,
                 jira_ts,
             )
-            # Jira WS returns 4 worklog ids here, we expect to have 4
+            # Jira WS returns 3 worklog ids here, we expect to have 3
             # jobs delayed
             number_of_worklogs = 3
             self.assertEqual(delayable_cls.call_count, number_of_worklogs)
