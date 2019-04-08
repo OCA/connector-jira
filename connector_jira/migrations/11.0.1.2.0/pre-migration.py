@@ -7,15 +7,15 @@ def migrate(cr, version):
         return
     cr.execute("""
         ALTER TABLE jira_backend_timestamp
-        ADD COLUMN import_timestamp timestamp;
+        ADD COLUMN last_timestamp timestamp;
     """)
     cr.execute("""
         UPDATE jira_backend_timestamp
-        SET import_timestamp = import_start_time;
+        SET last_timestamp = import_start_time;
     """)
     cr.execute("""
         ALTER TABLE jira_backend_timestamp
-        ALTER COLUMN import_timestamp SET NOT NULL;
+        ALTER COLUMN last_timestamp SET NOT NULL;
     """)
 
     cr.execute("""

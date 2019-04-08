@@ -149,6 +149,12 @@ class JiraBackend(models.Model):
         string='Import Worklogs from date',
     )
 
+    delete_analytic_line_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_delete_analytic_line_from_date',
+        string='Delete Extra Worklogs from date',
+    )
+
     issue_type_ids = fields.One2many(
         comodel_name='jira.issue.type',
         inverse_name='backend_id',
@@ -213,20 +219,22 @@ class JiraBackend(models.Model):
     def _compute_last_import_date(self):
         for backend in self:
             self.env.cr.execute("""
-                SELECT from_date_field, import_timestamp
+                SELECT from_date_field, last_timestamp
                 FROM jira_backend_timestamp
                 WHERE backend_id = %s""", (backend.id,))
             rows = self.env.cr.dictfetchall()
             for row in rows:
                 field = row['from_date_field']
                 if field in self._fields:
-                    backend[field] = row['import_timestamp']
+                    backend[field] = row['last_timestamp']
 
     @api.multi
-    def _inverse_date_fields(self, field_name):
+    def _inverse_date_fields(self, field_name, component_usage):
         for rec in self:
             ts_model = self.env['jira.backend.timestamp']
-            timestamp = ts_model._timestamp_for_field(rec, field_name)
+            timestamp = ts_model._timestamp_for_field(
+                rec, field_name, component_usage
+            )
             if not timestamp._lock():
                 raise exceptions.UserError(
                     _("The synchronization timestamp is currently locked, "
@@ -243,14 +251,28 @@ class JiraBackend(models.Model):
 
     @api.multi
     def _inverse_import_project_task_from_date(self):
-        self._inverse_date_fields('import_project_task_from_date')
+        self._inverse_date_fields(
+            'import_project_task_from_date',
+            'timestamp.batch.importer',
+        )
 
     @api.multi
     def _inverse_import_analytic_line_from_date(self):
-        self._inverse_date_fields('import_analytic_line_from_date')
+        self._inverse_date_fields(
+            'import_analytic_line_from_date',
+            'timestamp.batch.importer',
+        )
 
     @api.multi
-    def _import_from_date(self, model, from_date_field):
+    def _inverse_delete_analytic_line_from_date(self):
+        self._inverse_date_fields(
+            'delete_analytic_line_from_date',
+            'timestamp.batch.deleter',
+        )
+
+    @api.multi
+    def _run_background_from_date(self, model, from_date_field,
+                                  component_usage):
         """ Import records from a date
 
         Create jobs and update the sync timestamp in a savepoint; if a
@@ -258,9 +280,13 @@ class JiraBackend(models.Model):
         """
         self.ensure_one()
         ts_model = self.env['jira.backend.timestamp']
-        timestamp = ts_model._timestamp_for_field(self, from_date_field)
-        self.env[model].with_delay(priority=9).import_batch_timestamp(
-            self, timestamp
+        timestamp = ts_model._timestamp_for_field(
+            self,
+            from_date_field,
+            component_usage,
+        )
+        self.env[model].with_delay(priority=9).run_batch_timestamp(
+            self, timestamp, component_usage
         )
 
     @api.constrains('use_webhooks')
@@ -439,14 +465,29 @@ class JiraBackend(models.Model):
 
     @api.multi
     def import_project_task(self):
-        self._import_from_date('jira.project.task',
-                               'import_project_task_from_date')
+        self._run_background_from_date(
+            'jira.project.task',
+            'import_project_task_from_date',
+            'timestamp.batch.importer',
+        )
         return True
 
     @api.multi
     def import_analytic_line(self):
-        self._import_from_date('jira.account.analytic.line',
-                               'import_analytic_line_from_date')
+        self._run_background_from_date(
+            'jira.account.analytic.line',
+            'import_analytic_line_from_date',
+            'timestamp.batch.importer',
+        )
+        return True
+
+    @api.multi
+    def delete_analytic_line(self):
+        self._run_background_from_date(
+            'jira.account.analytic.line',
+            'delete_analytic_line_from_date',
+            'timestamp.batch.deleter',
+        )
         return True
 
     @api.multi
@@ -519,35 +560,42 @@ class JiraBackendTimestamp(models.Model):
     # of field. The ORM values for this field are Unix timestamps the
     # same way Jira use them: unix timestamp as integer multiplied * 1000
     # to keep the milli precision with 3 digits (example 1554318348000).
-    import_timestamp = MilliDatetime(
-        string='Import Timestamp',
+    last_timestamp = MilliDatetime(
+        string='Last Timestamp',
+        required=True,
+        oldname="import_timestamp",
+    )
+    component_usage = fields.Char(
         required=True,
     )
 
     _sql_constraints = [
-        ('timestamp_field_uniq', 'unique(backend_id, from_date_field)',
+        ('timestamp_field_uniq',
+         'unique(backend_id, from_date_field, component_usage)',
          "A timestamp already exists."),
     ]
 
     @api.model
-    def _timestamp_for_field(self, backend, field_name):
+    def _timestamp_for_field(self, backend, field_name, component_usage):
         """Return the timestamp for a field"""
         timestamp = self.search([
             ('backend_id', '=', backend.id),
             ('from_date_field', '=', field_name),
+            ('component_usage', '=', component_usage),
         ])
         if not timestamp:
             timestamp = self.env['jira.backend.timestamp'].create({
                 'backend_id': backend.id,
                 'from_date_field': field_name,
-                'import_timestamp': datetime.fromtimestamp(0),
+                'component_usage': component_usage,
+                'last_timestamp': datetime.fromtimestamp(0),
             })
         return timestamp
 
     @api.multi
     def _update_timestamp(self, timestamp):
         self.ensure_one()
-        self.import_timestamp = timestamp
+        self.last_timestamp = timestamp
 
     @api.multi
     def _lock(self):

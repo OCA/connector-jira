@@ -110,7 +110,7 @@
                 <button name="import_project_task"
                   type="object"
                   class="oe_highlight"
-                  string="Import in background"/>
+                  string="Run in background"/>
               </group>
               <group>
                 <div>
@@ -123,7 +123,20 @@
                 <button name="import_analytic_line"
                   type="object"
                   class="oe_highlight"
-                  string="Import in background"/>
+                  string="Run in background"/>
+              </group>
+              <group>
+                <div>
+                  <label string="Import deleted worklogs since"
+                    class="oe_inline"/>
+                  <field name="delete_analytic_line_from_date"
+                    class="oe_inline"
+                    nolabel="1"/>
+                </div>
+                <button name="delete_analytic_line"
+                  type="object"
+                  class="oe_highlight"
+                  string="Run in background"/>
               </group>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">

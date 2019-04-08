@@ -14,11 +14,20 @@ from odoo.addons.component.core import Component
 UpdatedWorklog = namedtuple(
     'UpdatedWorklog',
     'worklog_id updated'
+    # id as integer, timestamp
 )
 
 UpdatedWorklogSince = namedtuple(
     'UpdatedWorklogSince',
     'since until updated_worklogs'
+    # timestamp, timestamp, [UpdatedWorklog]
+)
+
+
+DeletedWorklogSince = namedtuple(
+    'DeletedWorklogSince',
+    'since until deleted_worklog_ids'
+    # timestamp, timestamp, [ids as integer]
 )
 
 
@@ -88,14 +97,6 @@ class JiraAccountAnalyticLine(models.Model):
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
             return importer.run(worklog_id, issue_id=issue_id, force=force)
-
-    @job(default_channel='root.connector_jira.import')
-    @api.model
-    def delete_record(self, backend, issue_id, worklog_id):
-        """ Delete a local worklog which has been deleted on JIRA """
-        with backend.work_on(self._name) as work:
-            importer = work.component(usage='record.deleter')
-            return importer.run(worklog_id)
 
     @api.multi
     def force_reimport(self):
@@ -214,8 +215,6 @@ class WorklogAdapter(Component):
             updated_worklogs += [
                 UpdatedWorklog(
                     worklog_id=row['worklogId'],
-                    # the unix timestamp provided by jira is in
-                    # microseconds
                     updated=row['updatedTime']
                 ) for row in result['values']
             ]
@@ -226,4 +225,25 @@ class WorklogAdapter(Component):
             since=start_since,
             until=until,
             updated_worklogs=updated_worklogs
+        )
+
+    def deleted_since(self, since=None):
+        path = 'worklog/deleted'
+
+        start_since = since
+        deleted_worklog_ids = []
+
+        while True:
+            result = self.client._get_json(
+                path, params={'since': since})
+            deleted_worklog_ids += [
+                row['worklogId'] for row in result['values']
+            ]
+            until = since = result['until']
+            if result['lastPage']:
+                break
+        return DeletedWorklogSince(
+            since=start_since,
+            until=until,
+            deleted_worklog_ids=deleted_worklog_ids
         )

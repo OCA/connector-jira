@@ -108,7 +108,7 @@ class AnalyticLineBatchImporter(Component):
     _apply_on = ['jira.account.analytic.line']
 
     def _search(self, timestamp):
-        unix_timestamp = MilliDatetime.to_timestamp(timestamp.import_timestamp)
+        unix_timestamp = MilliDatetime.to_timestamp(timestamp.last_timestamp)
         result = self.backend_adapter.updated_since(since=unix_timestamp)
         worklog_ids = self._filter_update(result.updated_worklogs)
         # We need issue_id + worklog_id for the worklog importer (the jira

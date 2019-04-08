@@ -42,28 +42,33 @@ class JiraBinding(models.AbstractModel):
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def import_batch_timestamp(self, backend, timestamp):
-        """Prepare import of a batch of records"""
+    def run_batch_timestamp(self, backend, timestamp, component_usage):
+        """Prepare batch of records"""
         with backend.work_on(self._name) as work:
-            importer = work.component(usage='timestamp.batch.importer')
+            importer = work.component(usage=component_usage)
             return importer.run(timestamp)
 
     @job(default_channel='root.connector_jira.import')
     @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, external_id, force=False):
-        """ Import a record """
+        """Import a record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
             return importer.run(external_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def delete_record(self, backend, external_id):
-        """ Delete a record on Odoo """
+    def delete_record(self, backend, external_id,
+                      only_binding=False, set_inactive=False):
+        """Delete a record on Odoo"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.deleter')
-            return importer.run(external_id)
+            return importer.run(
+                external_id,
+                only_binding=only_binding,
+                set_inactive=set_inactive,
+            )
 
     @job(default_channel='root.connector_jira.export')
     @related_action(action='related_action_unwrap_binding')

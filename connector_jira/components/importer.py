@@ -440,7 +440,7 @@ class TimestampBatchImporter(AbstractComponent):
 
     def run(self, timestamp):
         """Run the synchronization using the timestamp"""
-        original_timestamp_value = timestamp.import_timestamp
+        original_timestamp_value = timestamp.last_timestamp
         if not timestamp._lock():
             self._handle_lock_failed(timestamp)
 
@@ -476,8 +476,8 @@ class TimestampBatchImporter(AbstractComponent):
         until = datetime.now()
 
         parts = []
-        if timestamp.import_timestamp:
-            since = timestamp.import_timestamp
+        if timestamp.last_timestamp:
+            since = timestamp.last_timestamp
             from_date = since.strftime(JIRA_JQL_DATETIME_FORMAT)
             parts.append('updated >= "%s"' % from_date)
             to_date = until.strftime(JIRA_JQL_DATETIME_FORMAT)
@@ -503,7 +503,7 @@ class JiraDeleter(Component):
     def run(self, external_id, only_binding=False, set_inactive=False):
         binding = self.binder.to_internal(external_id)
         if not binding.exists():
-            return
+            return _('Binding not found')
         if set_inactive:
             binding.active = False
         else:
@@ -513,3 +513,4 @@ class JiraDeleter(Component):
             binding.unlink()
             if not only_binding:
                 record.unlink()
+            return _('Record deleted')
