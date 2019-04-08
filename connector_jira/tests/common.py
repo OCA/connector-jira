@@ -55,7 +55,7 @@ in environment variables when you run your tests:
 From now on, you can write your tests using the ``recorder.use_cassette``
 decorator or context manager. If you are changing existing tests, you might
 need either to manually edit the cassette files in "tests/fixtures/cassettes"
-or to record the test again (in such case, IDs may change).
+or record the tests again (in such case, IDs may change).
 
 """
 
