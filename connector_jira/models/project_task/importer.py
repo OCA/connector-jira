@@ -3,13 +3,13 @@
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 
 
 class ProjectTaskMapper(Component):
     _name = 'jira.project.task.mapper'
-    _inherit = 'base.import.mapper'
+    _inherit = 'jira.import.mapper'
     _apply_on = ['jira.project.task']
 
     direct = [
@@ -74,6 +74,7 @@ class ProjectTaskMapper(Component):
         # and the Odoo field is HTML...
         return {'description': record['fields']['description']}
 
+    @only_create
     @mapping
     def project(self, record):
         binder = self.binder_for('jira.project.project')
@@ -121,7 +122,7 @@ class ProjectTaskBatchImporter(Component):
     Import from a date
     """
     _name = 'jira.project.task.batch.importer'
-    _inherit = ['jira.delayed.batch.importer']
+    _inherit = ['jira.timestamp.batch.importer']
     _apply_on = ['jira.project.task']
 
 

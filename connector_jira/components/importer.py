@@ -15,6 +15,7 @@ are already bound, to update the last sync date.
 
 import logging
 from contextlib import closing, contextmanager
+from datetime import datetime, timedelta
 
 from psycopg2 import IntegrityError, errorcodes
 
@@ -31,6 +32,11 @@ _logger = logging.getLogger(__name__)
 
 RETRY_ON_ADVISORY_LOCK = 1  # seconds
 RETRY_WHEN_CONCURRENT_DETECTED = 1  # seconds
+# when we import using JQL, we always import tasks from
+# slightly before the last batch import, because Jira
+# does not send the results from the past minute and
+# maybe sometimes more
+IMPORT_DELTA = 300  # seconds
 
 
 class JiraImporter(Component):
@@ -79,16 +85,13 @@ class JiraImporter(Component):
             return False  # no update date on Jira, always import it.
         if not binding:
             return  # it does not exist so it should not be skipped
-        sync_date = self.binder.sync_date(binding)
-        if not sync_date:
-            return
-        # if the last synchronization date is greater than the last
-        # update in jira, we skip the import.
-        # Important: at the beginning of the exporters flows, we have to
-        # check if the jira date is more recent than the sync_date
-        # and if so, schedule a new import. If we don't do that, we'll
-        # miss changes done in Jira
-        return external_date < sync_date
+        # We store the jira "updated_at" field in the binding,
+        # so for further imports, we can check accurately if the
+        # record is already up-to-date (this field has a millisecond
+        # precision).
+        if binding.jira_updated_at:
+            return external_date < binding.jira_updated_at
+        return False
 
     def _import_dependency(self, external_id, binding_model,
                            component=None, record=None, always=False):
@@ -149,7 +152,11 @@ class JiraImporter(Component):
 
     def _create_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_create` """
-        return map_record.values(for_create=True, **kwargs)
+        return map_record.values(
+            for_create=True,
+            external_updated_at=self._get_external_updated_at(),
+            **kwargs
+        )
 
     @contextmanager
     def _retry_unique_violation(self):
@@ -199,7 +206,10 @@ class JiraImporter(Component):
 
     def _update_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_update` """
-        return map_record.values(**kwargs)
+        return map_record.values(
+            external_updated_at=self._get_external_updated_at(),
+            **kwargs
+        )
 
     def _update(self, binding, data):
         """ Update an Odoo record """
@@ -373,18 +383,14 @@ class BatchImporter(AbstractComponent):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'batch.importer'
 
-    def run(self, from_date=None, to_date=None):
-        """ Run the synchronization """
-        parts = []
-        if from_date:
-            from_date = from_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated >= "%s"' % from_date)
-        if to_date:
-            to_date = to_date.strftime(JIRA_JQL_DATETIME_FORMAT)
-            parts.append('updated <= "%s"' % to_date)
-        record_ids = self.backend_adapter.search(' and '.join(parts))
+    def run(self):
+        """Run the synchronization, search all JIRA records"""
+        record_ids = self._search()
         for record_id in record_ids:
             self._import_record(record_id)
+
+    def _search(self):
+        return self.backend_adapter.search()
 
     def _import_record(self, record_id):
         """ Import a record directly or delay the import of the record.
@@ -417,6 +423,78 @@ class DelayedBatchImporter(AbstractComponent):
         )
 
 
+class TimestampBatchImporter(AbstractComponent):
+    """ Batch Importer working with a jira.backend.timestamp.record
+
+    It locks the timestamp to ensure no other job is working on it,
+    and use the latest timestamp value as reference for the search.
+
+    The role of a BatchImporter is to search for a list of
+    items to import, then it can either import them directly or delay
+    the import of each item separately.
+    """
+
+    _name = 'jira.timestamp.batch.importer'
+    _inherit = ['base.importer', 'jira.base']
+    _usage = 'timestamp.batch.importer'
+
+    def run(self, timestamp):
+        """Run the synchronization using the timestamp"""
+        original_timestamp_value = timestamp.last_timestamp
+        if not timestamp._lock():
+            self._handle_lock_failed(timestamp)
+
+        next_timestamp_value, records = self._search(timestamp)
+
+        timestamp._update_timestamp(next_timestamp_value)
+
+        number = self._handle_records(records)
+
+        return _('Batch from {} UTC to {} UTC generated {} imports').format(
+            original_timestamp_value,
+            next_timestamp_value,
+            number
+        )
+
+    def _handle_records(self, records):
+        """Handle the records to import and return the number handled"""
+        for record_id in records:
+            self._import_record(record_id)
+        return len(records)
+
+    def _handle_lock_failed(self, timestamp):
+        _logger.warning("Failed to acquire timestamps %s",
+                        timestamp,
+                        exc_info=True)
+        raise RetryableJobError(
+            'Concurrent job / process already syncing',
+            ignore_retry=True,
+        )
+
+    def _search(self, timestamp):
+        """Return a tuple (next timestamp value, jira record ids)"""
+        until = datetime.now()
+
+        parts = []
+        if timestamp.last_timestamp:
+            since = timestamp.last_timestamp
+            from_date = since.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated >= "%s"' % from_date)
+            to_date = until.strftime(JIRA_JQL_DATETIME_FORMAT)
+            parts.append('updated <= "%s"' % to_date)
+
+        next_timestamp = max(until - timedelta(seconds=IMPORT_DELTA), since)
+        record_ids = self.backend_adapter.search(' and '.join(parts))
+        return (next_timestamp, record_ids)
+
+    def _import_record(self, record_id, **kwargs):
+        """Delay the import of the records"""
+        self.model.with_delay(**kwargs).import_record(
+            self.backend_record,
+            record_id
+        )
+
+
 class JiraDeleter(Component):
     _name = 'jira.deleter'
     _inherit = ['base.deleter', 'jira.base']
@@ -425,7 +503,7 @@ class JiraDeleter(Component):
     def run(self, external_id, only_binding=False, set_inactive=False):
         binding = self.binder.to_internal(external_id)
         if not binding.exists():
-            return
+            return _('Binding not found')
         if set_inactive:
             binding.active = False
         else:
@@ -435,3 +513,4 @@ class JiraDeleter(Component):
             binding.unlink()
             if not only_binding:
                 record.unlink()
+            return _('Record deleted')

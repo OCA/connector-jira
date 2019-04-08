@@ -6,7 +6,20 @@ from datetime import datetime
 from dateutil import parser
 
 from odoo import fields
-from odoo.addons.component.core import Component
+from odoo.addons.component.core import AbstractComponent, Component
+from odoo.addons.connector.components.mapper import mapping
+
+
+class JiraImportMapper(AbstractComponent):
+    """Base Import Mapper for Jira """
+
+    _name = 'jira.import.mapper'
+    _inherit = ['base.import.mapper', 'jira.base']
+
+    @mapping
+    def jira_updated_at(self, record):
+        if self.options.external_updated_at:
+            return {'jira_updated_at': self.options.external_updated_at}
 
 
 def iso8601_to_utc_datetime(isodate):
