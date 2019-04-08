@@ -1,10 +1,10 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from .common import recorder, JiraTransactionCase
+from .common import recorder, JiraSavepointCase
 
 
-class TestImportIssueType(JiraTransactionCase):
+class TestImportIssueType(JiraSavepointCase):
 
     @recorder.use_cassette
     def test_import_issue_type_batch(self):

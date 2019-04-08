@@ -8,7 +8,7 @@ import json
 import urllib.parse
 
 from contextlib import contextmanager, closing
-from datetime import datetime, timedelta
+from datetime import datetime
 from os import urandom
 
 import psycopg2
@@ -19,10 +19,11 @@ from odoo import models, fields, api, exceptions, _, tools
 
 from odoo.addons.component.core import Component
 
+from ...fields import MilliDatetime
+
 _logger = logging.getLogger(__name__)
 
 JIRA_TIMEOUT = 30  # seconds
-IMPORT_DELTA = 70  # seconds
 
 try:
     from jira import JIRA, JIRAError
@@ -148,6 +149,12 @@ class JiraBackend(models.Model):
         string='Import Worklogs from date',
     )
 
+    delete_analytic_line_from_date = fields.Datetime(
+        compute='_compute_last_import_date',
+        inverse='_inverse_delete_analytic_line_from_date',
+        string='Delete Extra Worklogs from date',
+    )
+
     issue_type_ids = fields.One2many(
         comodel_name='jira.issue.type',
         inverse_name='backend_id',
@@ -212,121 +219,75 @@ class JiraBackend(models.Model):
     def _compute_last_import_date(self):
         for backend in self:
             self.env.cr.execute("""
-                SELECT from_date_field, import_start_time
+                SELECT from_date_field, last_timestamp
                 FROM jira_backend_timestamp
                 WHERE backend_id = %s""", (backend.id,))
             rows = self.env.cr.dictfetchall()
             for row in rows:
                 field = row['from_date_field']
-                timestamp = row['import_start_time']
                 if field in self._fields:
-                    backend[field] = timestamp
+                    backend[field] = row['last_timestamp']
 
     @api.multi
-    def _inverse_date_fields(self, field_name):
+    def _inverse_date_fields(self, field_name, component_usage):
         for rec in self:
-            timestamp_id = self._lock_timestamp(field_name)
-            self._update_timestamp(timestamp_id, field_name,
-                                   getattr(rec, field_name))
+            ts_model = self.env['jira.backend.timestamp']
+            timestamp = ts_model._timestamp_for_field(
+                rec, field_name, component_usage
+            )
+            if not timestamp._lock():
+                raise exceptions.UserError(
+                    _("The synchronization timestamp is currently locked, "
+                      "probably due to an ongoing synchronization.")
+                )
+            value = getattr(rec, field_name)
+            # As the timestamp field is using MilliDatetime, we lose
+            # the milliseconds precision when a user writes a new
+            # date on the backend. This is not really an issue as we
+            # expect mostly to use the milliseconds precision for
+            # the dates coming from the Jira webservices (they use
+            # milliseconds unix timestamp on some -only some- methods)
+            timestamp._update_timestamp(value)
 
     @api.multi
     def _inverse_import_project_task_from_date(self):
-        self._inverse_date_fields('import_project_task_from_date')
+        self._inverse_date_fields(
+            'import_project_task_from_date',
+            'timestamp.batch.importer',
+        )
 
     @api.multi
     def _inverse_import_analytic_line_from_date(self):
-        self._inverse_date_fields('import_analytic_line_from_date')
+        self._inverse_date_fields(
+            'import_analytic_line_from_date',
+            'timestamp.batch.importer',
+        )
 
     @api.multi
-    def _lock_timestamp(self, from_date_field):
-        """ Update the timestamp for a synchro
-
-        thus, we prevent 2 synchros to be launched at the same time.
-        The lock is released at the commit of the transaction.
-
-        Return the id of the timestamp if the lock could be acquired.
-        """
-        assert from_date_field
-        self.ensure_one()
-        query = """
-               SELECT id FROM jira_backend_timestamp
-               WHERE backend_id = %s
-               AND from_date_field = %s
-               FOR UPDATE NOWAIT
-            """
-        try:
-            self.env.cr.execute(
-                query, (self.id, from_date_field)
-            )
-        except psycopg2.OperationalError:
-            raise exceptions.UserError(
-                _("The synchronization timestamp %s is currently locked, "
-                  "probably due to an ongoing synchronization." %
-                  from_date_field)
-            )
-        row = self.env.cr.fetchone()
-        return row[0] if row else None
+    def _inverse_delete_analytic_line_from_date(self):
+        self._inverse_date_fields(
+            'delete_analytic_line_from_date',
+            'timestamp.batch.deleter',
+        )
 
     @api.multi
-    def _update_timestamp(self, timestamp_id,
-                          from_date_field, import_start_time):
-        """ Update import timestamp for a synchro
-
-        This method is called to update or create one import timestamp
-        for a jira.backend. A concurrency error can arise, but it's
-        handled in _import_from_date.
-        """
-        self.ensure_one()
-        if not import_start_time:
-            return
-        if timestamp_id:
-            timestamp = self.env['jira.backend.timestamp'].browse(timestamp_id)
-            timestamp.import_start_time = import_start_time
-        else:
-            self.env['jira.backend.timestamp'].create({
-                'backend_id': self.id,
-                'from_date_field': from_date_field,
-                'import_start_time': import_start_time,
-            })
-
-    @api.multi
-    def _import_from_date(self, model, from_date_field):
+    def _run_background_from_date(self, model, from_date_field,
+                                  component_usage):
         """ Import records from a date
 
         Create jobs and update the sync timestamp in a savepoint; if a
         concurrency issue arises, it will be logged and rollbacked silently.
         """
         self.ensure_one()
-        with self.env.cr.savepoint():
-            import_start_time = datetime.now()
-            try:
-                self._lock_timestamp(from_date_field)
-            except exceptions.UserError:
-                # lock could not be acquired, it is already running and
-                # locked by another transaction
-                _logger.warning("Failed to update timestamps "
-                                "for backend: %s and field: %s",
-                                self, from_date_field, exc_info=True)
-                return
-            from_date = self[from_date_field]
-            if from_date:
-                from_date = fields.Datetime.from_string(from_date)
-            else:
-                from_date = None
-            self.env[model].with_delay(priority=9).import_batch(
-                self, from_date=from_date, to_date=import_start_time
-            )
-
-            # Reimport next records a small delta before the last import date
-            # in case of small lag between servers or transaction committed
-            # after the last import but with a date before the last import
-            # BTW, the JQL search of JIRA does not allow
-            # second precision, only minute precision, so
-            # we really have to take more than one minute
-            # margin
-            next_time = import_start_time - timedelta(seconds=IMPORT_DELTA)
-            next_time = fields.Datetime.to_string(next_time)
-            setattr(self, from_date_field, next_time)
+        ts_model = self.env['jira.backend.timestamp']
+        timestamp = ts_model._timestamp_for_field(
+            self,
+            from_date_field,
+            component_usage,
+        )
+        self.env[model].with_delay(priority=9).run_batch_timestamp(
+            self, timestamp
+        )
 
     @api.constrains('use_webhooks')
     def _check_use_webhooks_unique(self):
@@ -504,14 +465,29 @@ class JiraBackend(models.Model):
 
     @api.multi
     def import_project_task(self):
-        self._import_from_date('jira.project.task',
-                               'import_project_task_from_date')
+        self._run_background_from_date(
+            'jira.project.task',
+            'import_project_task_from_date',
+            'timestamp.batch.importer',
+        )
         return True
 
     @api.multi
     def import_analytic_line(self):
-        self._import_from_date('jira.account.analytic.line',
-                               'import_analytic_line_from_date')
+        self._run_background_from_date(
+            'jira.account.analytic.line',
+            'import_analytic_line_from_date',
+            'timestamp.batch.importer',
+        )
+        return True
+
+    @api.multi
+    def delete_analytic_line(self):
+        self._run_background_from_date(
+            'jira.account.analytic.line',
+            'delete_analytic_line_from_date',
+            'timestamp.batch.deleter',
+        )
         return True
 
     @api.multi
@@ -579,10 +555,69 @@ class JiraBackendTimestamp(models.Model):
         string='From Date Field',
         required=True,
     )
-    import_start_time = fields.Datetime(
-        string='Import Start Time',
+    # For worklogs, jira allows to work with milliseconds
+    # unix timestamps, we keep this precision by using a new type
+    # of field. The ORM values for this field are Unix timestamps the
+    # same way Jira use them: unix timestamp as integer multiplied * 1000
+    # to keep the milli precision with 3 digits (example 1554318348000).
+    last_timestamp = MilliDatetime(
+        string='Last Timestamp',
+        required=True,
+        oldname="import_timestamp",
+    )
+    component_usage = fields.Char(
         required=True,
     )
+
+    _sql_constraints = [
+        ('timestamp_field_uniq',
+         'unique(backend_id, from_date_field, component_usage)',
+         "A timestamp already exists."),
+    ]
+
+    @api.model
+    def _timestamp_for_field(self, backend, field_name, component_usage):
+        """Return the timestamp for a field"""
+        timestamp = self.search([
+            ('backend_id', '=', backend.id),
+            ('from_date_field', '=', field_name),
+            ('component_usage', '=', component_usage),
+        ])
+        if not timestamp:
+            timestamp = self.env['jira.backend.timestamp'].create({
+                'backend_id': backend.id,
+                'from_date_field': field_name,
+                'component_usage': component_usage,
+                'last_timestamp': datetime.fromtimestamp(0),
+            })
+        return timestamp
+
+    @api.multi
+    def _update_timestamp(self, timestamp):
+        self.ensure_one()
+        self.last_timestamp = timestamp
+
+    @api.multi
+    def _lock(self):
+        """Update the timestamp for a synchro
+
+        thus, we prevent 2 synchros to be launched at the same time.
+        The lock is released at the commit of the transaction.
+
+        Return True if the lock could be acquired.
+        """
+        self.ensure_one()
+        query = """
+               SELECT id FROM jira_backend_timestamp
+               WHERE id = %s
+               FOR UPDATE NOWAIT
+            """
+        try:
+            self.env.cr.execute(query, (self.id,))
+        except psycopg2.OperationalError:
+            return False
+        row = self.env.cr.fetchone()
+        return bool(row)
 
 
 class BackendAdapter(Component):

@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.addons.queue_job.job import job, related_action
+from ...fields import MilliDatetime
 
 
 class JiraBinding(models.AbstractModel):
@@ -23,6 +24,7 @@ class JiraBinding(models.AbstractModel):
         required=True,
         ondelete='restrict',
     )
+    jira_updated_at = MilliDatetime()
     external_id = fields.Char(string='ID on Jira', index=True)
 
     _sql_constraints = [
@@ -32,28 +34,41 @@ class JiraBinding(models.AbstractModel):
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def import_batch(self, backend, from_date=None, to_date=None):
-        """ Prepare import of a batch of records """
+    def import_batch(self, backend):
+        """Prepare import of a batch of record """
         with backend.work_on(self._name) as work:
             importer = work.component(usage='batch.importer')
-            return importer.run(from_date=from_date, to_date=to_date)
+            return importer.run()
+
+    @job(default_channel='root.connector_jira.import')
+    @api.model
+    def run_batch_timestamp(self, backend, timestamp):
+        """Prepare batch of records"""
+        with backend.work_on(self._name) as work:
+            importer = work.component(usage=timestamp.component_usage)
+            return importer.run(timestamp)
 
     @job(default_channel='root.connector_jira.import')
     @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, external_id, force=False):
-        """ Import a record """
+        """Import a record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
             return importer.run(external_id, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def delete_record(self, backend, external_id):
-        """ Delete a record on Odoo """
+    def delete_record(self, backend, external_id,
+                      only_binding=False, set_inactive=False):
+        """Delete a record on Odoo"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.deleter')
-            return importer.run(external_id)
+            return importer.run(
+                external_id,
+                only_binding=only_binding,
+                set_inactive=set_inactive,
+            )
 
     @job(default_channel='root.connector_jira.export')
     @related_action(action='related_action_unwrap_binding')
