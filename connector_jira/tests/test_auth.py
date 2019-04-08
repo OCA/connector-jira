@@ -1,6 +1,8 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import unittest
+
 from odoo import exceptions
 
 from .common import recorder, JiraSavepointCase
@@ -58,6 +60,8 @@ class TestAuth(JiraSavepointCase):
                                     'Connection successful'):
             self.backend_record.check_connection()
 
+    @unittest.skip('This test is slow because the jira lib retries '
+                   '401 errors with an exponential backoff.')
     @recorder.use_cassette
     def test_auth_check_connection_failure(self):
         # reset access
