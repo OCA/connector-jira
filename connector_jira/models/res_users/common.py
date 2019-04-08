@@ -73,6 +73,21 @@ class ResUsers(models.Model):
                         })
                         continue
                     jira_user = jira_user[0]
+                    existing = self.env['jira.res.users'].with_context(
+                        active_test=False,
+                    ).search([
+                        ('backend_id', '=', backend.id),
+                        ('external_id', '=', jira_user.key),
+                        ('odoo_id', '!=', user.id),
+                    ])
+                    if existing:
+                        bknd_result['error'].append({
+                            'key': 'login',
+                            'value': user.login,
+                            'error': 'other_user_bound',
+                            'detail': 'linked with %s' % (existing.login,)
+                        })
+                        continue
                     try:
                         binding = self.env['jira.res.users'].create({
                             'backend_id': backend.id,

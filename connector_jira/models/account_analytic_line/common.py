@@ -1,10 +1,34 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import json
+
+from collections import namedtuple
+
 from odoo import api, fields, models
 from odoo.addons.queue_job.job import job, related_action
 
 from odoo.addons.component.core import Component
+
+
+UpdatedWorklog = namedtuple(
+    'UpdatedWorklog',
+    'worklog_id updated'
+    # id as integer, timestamp
+)
+
+UpdatedWorklogSince = namedtuple(
+    'UpdatedWorklogSince',
+    'since until updated_worklogs'
+    # timestamp, timestamp, [UpdatedWorklog]
+)
+
+
+DeletedWorklogSince = namedtuple(
+    'DeletedWorklogSince',
+    'since until deleted_worklog_ids'
+    # timestamp, timestamp, [ids as integer]
+)
 
 
 class JiraAccountAnalyticLine(models.Model):
@@ -74,17 +98,9 @@ class JiraAccountAnalyticLine(models.Model):
             importer = work.component(usage='record.importer')
             return importer.run(worklog_id, issue_id=issue_id, force=force)
 
-    @job(default_channel='root.connector_jira.import')
-    @api.model
-    def delete_record(self, backend, issue_id, worklog_id):
-        """ Delete a local worklog which has been deleted on JIRA """
-        with backend.work_on(self._name) as work:
-            importer = work.component(usage='record.deleter')
-            return importer.run(worklog_id)
-
     @api.multi
     def force_reimport(self):
-        for binding in self.mapped('jira_bind_ids'):
+        for binding in self.sudo().mapped('jira_bind_ids'):
             binding.with_delay(priority=8).import_record(
                 binding.backend_id,
                 binding.jira_issue_id,
@@ -169,3 +185,65 @@ class WorklogAdapter(Component):
         """ Search worklogs of an issue """
         worklogs = self.client.worklogs(issue_id)
         return [worklog.id for worklog in worklogs]
+
+    @staticmethod
+    def _chunks(whole, size):
+        """Yield successive n-sized chunks from l."""
+        for i in range(0, len(whole), size):
+            yield whole[i:i + size]
+
+    def yield_read(self, worklog_ids):
+        """Generator returning worklog ids data"""
+        path = 'worklog/list'
+
+        # the method returns max 1000 results
+        for chunk in self._chunks(worklog_ids, 1000):
+            payload = json.dumps({"ids": chunk})
+            result = self._post_get_json(path, data=payload)
+            for worklog in result:
+                yield worklog
+
+    def updated_since(self, since=None):
+        path = 'worklog/updated'
+
+        start_since = since
+        updated_worklogs = []
+
+        while True:
+            result = self.client._get_json(
+                path, params={'since': since})
+            updated_worklogs += [
+                UpdatedWorklog(
+                    worklog_id=row['worklogId'],
+                    updated=row['updatedTime']
+                ) for row in result['values']
+            ]
+            until = since = result['until']
+            if result['lastPage']:
+                break
+        return UpdatedWorklogSince(
+            since=start_since,
+            until=until,
+            updated_worklogs=updated_worklogs
+        )
+
+    def deleted_since(self, since=None):
+        path = 'worklog/deleted'
+
+        start_since = since
+        deleted_worklog_ids = []
+
+        while True:
+            result = self.client._get_json(
+                path, params={'since': since})
+            deleted_worklog_ids += [
+                row['worklogId'] for row in result['values']
+            ]
+            until = since = result['until']
+            if result['lastPage']:
+                break
+        return DeletedWorklogSince(
+            since=start_since,
+            until=until,
+            deleted_worklog_ids=deleted_worklog_ids
+        )
