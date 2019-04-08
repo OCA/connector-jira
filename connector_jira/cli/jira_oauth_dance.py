@@ -10,7 +10,7 @@ can be started from the command line, you can use it with the command::
 
 By default, it will configure the authentication for the Demo Backend
 (as it is used in tests). If the demo backend doesn't exist, it will use
-on the first Jira backend it can find. You can specify a backend ID with::
+the first Jira backend it can find. You can specify a backend ID with::
 
   odoo jiraoauthdance --backend-id=2
 
