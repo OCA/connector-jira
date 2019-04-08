@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import fields, models, tools
+from odoo import fields, models
 
 from odoo.addons.component.core import Component
 
