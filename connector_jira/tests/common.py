@@ -61,8 +61,10 @@ or record the tests again (in such case, IDs may change).
 
 import os
 import logging
+import mock
 import pprint
 
+from contextlib import contextmanager
 from os.path import dirname, join
 
 from odoo.addons.component.tests.common import SavepointComponentCase
@@ -92,7 +94,7 @@ def get_recorder(**kw):
 recorder = get_recorder()
 
 
-class JiraTransactionCase(SavepointComponentCase):
+class JiraSavepointCase(SavepointComponentCase):
     """Base class for tests with Jira"""
 
     @classmethod
@@ -174,6 +176,21 @@ class JiraTransactionCase(SavepointComponentCase):
         values.update(**extra)
         return (
             cls.env["jira.project.task"]
+            .with_context(no_connector_export=True)
+            .create(values)
+        )
+
+    @classmethod
+    def _create_analytic_line_binding(cls, line, **extra):
+        values = {
+            "odoo_id": line.id,
+            "backend_id": cls.backend_record.id,
+            # dummy id
+            "external_id": "9999",
+        }
+        values.update(**extra)
+        return (
+            cls.env["jira.account.analytic.line"]
             .with_context(no_connector_export=True)
             .create(values)
         )
@@ -270,3 +287,15 @@ class JiraTransactionCase(SavepointComponentCase):
                     % index
                 )
                 self.fail(msg + _format_message(records, expected_values))
+
+    @contextmanager
+    def mock_with_delay(self):
+        with mock.patch(
+            'odoo.addons.queue_job.models.base.DelayableRecordset',
+            name='DelayableRecordset',
+            spec=True,
+        ) as delayable_cls:
+            # prepare the mocks
+            delayable = mock.MagicMock(name='DelayableBinding')
+            delayable_cls.return_value = delayable
+            yield delayable_cls, delayable
