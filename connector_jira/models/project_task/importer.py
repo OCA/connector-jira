@@ -70,9 +70,7 @@ class ProjectTaskMapper(Component):
 
     @mapping
     def description(self, record):
-        # TODO: description is a variant of wiki syntax...
-        # and the Odoo field is HTML...
-        return {'description': record['fields']['description']}
+        return {'description': record['renderedFields']['description']}
 
     @only_create
     @mapping
