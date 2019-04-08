@@ -29,7 +29,7 @@ gets the data by itself (with the nice side-effect that the job is retryable).
 import logging
 
 import odoo
-from odoo import http
+from odoo import _, http
 from odoo.http import request
 from odoo.addons.web.controllers.main import ensure_db
 
@@ -85,8 +85,16 @@ class JiraWebhookController(http.Controller):
         issue_id = worklog['issueId']
         worklog_id = worklog['id']
 
-        delayable_model = env['jira.account.analytic.line'].with_delay()
         if action == 'worklog_deleted':
-            delayable_model.delete_record(backend, issue_id, worklog_id)
+            env['jira.account.analytic.line'].with_delay(
+                description=_(
+                    "Delete a local worklog which has "
+                    "been deleted on JIRA"
+                )
+            ).delete_record(backend, worklog_id)
         else:
-            delayable_model.import_record(backend, issue_id, worklog_id)
+            env['jira.account.analytic.line'].with_delay(
+                description=_(
+                    "Import a worklog from JIRA"
+                )
+            ).import_record(backend, issue_id, worklog_id)
