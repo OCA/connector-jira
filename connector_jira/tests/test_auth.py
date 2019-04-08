@@ -3,10 +3,10 @@
 
 from odoo import exceptions
 
-from .common import recorder, JiraTransactionCase
+from .common import recorder, JiraSavepointCase
 
 
-class TestAuth(JiraTransactionCase):
+class TestAuth(JiraSavepointCase):
 
     @recorder.use_cassette
     def test_auth_oauth(self):

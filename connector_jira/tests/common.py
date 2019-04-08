@@ -94,7 +94,7 @@ def get_recorder(**kw):
 recorder = get_recorder()
 
 
-class JiraTransactionCase(SavepointComponentCase):
+class JiraSavepointCase(SavepointComponentCase):
     """Base class for tests with Jira"""
 
     @classmethod
