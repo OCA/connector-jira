@@ -286,7 +286,7 @@ class JiraBackend(models.Model):
             component_usage,
         )
         self.env[model].with_delay(priority=9).run_batch_timestamp(
-            self, timestamp, component_usage
+            self, timestamp
         )
 
     @api.constrains('use_webhooks')
