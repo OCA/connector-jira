@@ -34,7 +34,7 @@ class MilliDatetime(fields.Field):
                     "MilliDatetime field expects a naive datetime: %s" % value
                 )
             return value
-        if len(value) == MILLI_DATETIME_LENGTH:
+        if len(value) > fields.DATETIME_LENGTH:
             return datetime.strptime(value, MILLI_DATETIME_FORMAT)
         else:
             return fields.Datetime.from_string(value)
@@ -50,6 +50,7 @@ class MilliDatetime(fields.Field):
 
     @staticmethod
     def to_timestamp(value):
+        assert not value.tzinfo
         return int(
             time.mktime(value.timetuple()) * 1000 +
             value.microsecond / 1000
