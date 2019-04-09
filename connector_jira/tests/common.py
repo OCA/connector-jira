@@ -78,10 +78,11 @@ jira_test_token_access = os.environ.get("JIRA_TEST_TOKEN_ACCESS", "")
 jira_test_token_secret = os.environ.get("JIRA_TEST_TOKEN_SECRET", "")
 
 
-def get_recorder(**kw):
+def get_recorder(base_path=None, **kw):
+    base_path = base_path or dirname(__file__)
     defaults = dict(
         record_mode="once",
-        cassette_library_dir=join(dirname(__file__), "fixtures/cassettes"),
+        cassette_library_dir=join(base_path, "fixtures/cassettes"),
         path_transformer=VCR.ensure_suffix(".yaml"),
         match_on=["method", "path", "query"],
         filter_headers=["Authorization"],
