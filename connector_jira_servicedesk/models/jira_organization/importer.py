@@ -31,6 +31,6 @@ class OrganizationBatchImporter(Component):
 
     def run(self):
         """ Run the synchronization """
-        record_ids = self.backend_adapter.search()
-        for record_id in record_ids:
-            self._import_record(record_id)
+        records = self.backend_adapter.search()
+        for record in records:
+            self._import_record(record['id'], record=record)
