@@ -1,0 +1,387 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Cache-Control:
+      - !!binary |
+        bm8tY2FjaGU=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbg==
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+      X-Atlassian-Token:
+      - !!binary |
+        bm8tY2hlY2s=
+    method: GET
+    uri: http://jira:8080/rest/api/2/serverInfo
+  response:
+    body: {string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-09T07:25:35.143+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}'}
+    headers:
+      Cache-Control: ['no-cache, no-store, no-transform']
+      Content-Security-Policy: [frame-ancestors 'self']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Tue, 09 Apr 2019 07:25:35 GMT']
+      Set-Cookie: [JSESSIONID=E70FE92161655AB0AB0CCFA4FFB1A494; Path=/; HttpOnly,
+        atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_d962a47ccf42cb8fae37c2165e943864fdd7a3f4_lin;
+          Path=/]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      X-AREQUESTID: [445x2278x1]
+      X-ASEN: [SEN-L13384799]
+      X-ASESSIONID: [1xm845a]
+      X-AUSERNAME: [gbaconnier]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Seraph-LoginReason: [OK]
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['288']
+    status: {code: 200, message: ''}
+- request:
+    body: null
+    headers:
+      Accept:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Cache-Control:
+      - !!binary |
+        bm8tY2FjaGU=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbg==
+      Cookie:
+      - !!binary |
+        YXRsYXNzaWFuLnhzcmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kOTYyYTQ3Y2NmNDJjYjhm
+        YWUzN2MyMTY1ZTk0Mzg2NGZkZDdhM2Y0X2xpbjsgSlNFU1NJT05JRD1FNzBGRTkyMTYxNjU1QUIw
+        QUIwQ0NGQTRGRkIxQTQ5NA==
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+      X-Atlassian-Token:
+      - !!binary |
+        bm8tY2hlY2s=
+    method: GET
+    uri: http://jira:8080/rest/api/2/field
+  response:
+    body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue Type\",\"custom\":false,\"\
+        orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+        }},{\"id\":\"timespent\",\"name\":\"Time Spent\",\"custom\":false,\"orderable\"\
+        :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"timespent\"\
+        ],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"}},{\"id\":\"project\"\
+        ,\"name\":\"Project\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+        searchable\":true,\"clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\"\
+        ,\"system\":\"project\"}},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\"\
+        ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"\
+        version\",\"system\":\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\"\
+        :\"\u03A3 Time Spent\",\"custom\":false,\"orderable\":false,\"navigable\"\
+        :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+        ,\"system\":\"aggregatetimespent\"}},{\"id\":\"resolution\",\"name\":\"Resolution\"\
+        ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"resolution\"],\"schema\":{\"type\":\"resolution\",\"system\"\
+        :\"resolution\"}},{\"id\":\"customfield_10104\",\"name\":\"Epic Color\",\"\
+        custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"schema\":{\"type\":\"string\"\
+        ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\",\"customId\":10104}},{\"\
+        id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\":true,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10105]\"\
+        ,\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+        ,\"customId\":10105}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10106]\",\"Story Points\"],\"schema\":{\"type\":\"number\"\
+        ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+        customId\":10106}},{\"id\":\"resolutiondate\",\"name\":\"Resolved\",\"custom\"\
+        :false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+        :[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\":\"datetime\",\"system\"\
+        :\"resolutiondate\"}},{\"id\":\"workratio\",\"name\":\"Work Ratio\",\"custom\"\
+        :false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+        :[\"workratio\"],\"schema\":{\"type\":\"number\",\"system\":\"workratio\"\
+        }},{\"id\":\"lastViewed\",\"name\":\"Last Viewed\",\"custom\":false,\"orderable\"\
+        :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"lastViewed\"\
+        ],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"}},{\"id\":\"\
+        watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\":false,\"navigable\"\
+        :true,\"searchable\":false,\"clauseNames\":[\"watchers\"],\"schema\":{\"type\"\
+        :\"watches\",\"system\":\"watches\"}},{\"id\":\"thumbnail\",\"name\":\"Images\"\
+        ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+        clauseNames\":[]},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"\
+        orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        created\",\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"\
+        created\"}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\":false,\"\
+        orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"}},{\"\
+        id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+        ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+        :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+        customfield_10101\",\"name\":\"Epic Link\",\"custom\":true,\"orderable\":true,\"\
+        navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+        \ Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+        ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic Status\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10102]\",\"Epic Status\"],\"schema\":{\"type\":\"option\"\
+        ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+        id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+        navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+        :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+        :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+        ,\"Epic Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+        ,\"customId\":10103}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+        ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+        clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+        :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+        ,\"name\":\"\u03A3 Original Estimate\",\"custom\":false,\"orderable\":false,\"\
+        navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+        :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+        ,\"name\":\"Affects Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+        :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+        :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+        :\"issuelinks\",\"name\":\"Linked Issues\",\"custom\":false,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+        :{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"\
+        id\":\"assignee\",\"name\":\"Assignee\",\"custom\":false,\"orderable\":true,\"\
+        navigable\":true,\"searchable\":true,\"clauseNames\":[\"assignee\"],\"schema\"\
+        :{\"type\":\"user\",\"system\":\"assignee\"}},{\"id\":\"updated\",\"name\"\
+        :\"Updated\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+        :true,\"clauseNames\":[\"updated\",\"updatedDate\"],\"schema\":{\"type\":\"\
+        datetime\",\"system\":\"updated\"}},{\"id\":\"status\",\"name\":\"Status\"\
+        ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"status\"],\"schema\":{\"type\":\"status\",\"system\":\"status\"\
+        }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+        ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+        }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+        navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+        issuekey\",\"key\"]},{\"id\":\"timeoriginalestimate\",\"name\":\"Original\
+        \ Estimate\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+        :false,\"clauseNames\":[\"originalEstimate\",\"timeoriginalestimate\"],\"\
+        schema\":{\"type\":\"number\",\"system\":\"timeoriginalestimate\"}},{\"id\"\
+        :\"description\",\"name\":\"Description\",\"custom\":false,\"orderable\":true,\"\
+        navigable\":true,\"searchable\":true,\"clauseNames\":[\"description\"],\"\
+        schema\":{\"type\":\"string\",\"system\":\"description\"}},{\"id\":\"timetracking\"\
+        ,\"name\":\"Time Tracking\",\"custom\":false,\"orderable\":true,\"navigable\"\
+        :false,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"timetracking\"\
+        ,\"system\":\"timetracking\"}},{\"id\":\"customfield_10203\",\"name\":\"Organizations\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10203]\",\"Organizations\"],\"schema\":{\"type\":\"array\"\
+        ,\"items\":\"sd-customerorganization\",\"custom\":\"com.atlassian.servicedesk:sd-customer-organizations\"\
+        ,\"customId\":10203}},{\"id\":\"customfield_10204\",\"name\":\"Satisfaction\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10204]\",\"Satisfaction\"],\"schema\":{\"type\":\"any\"\
+        ,\"custom\":\"com.atlassian.servicedesk:sd-request-feedback\",\"customId\"\
+        :10204}},{\"id\":\"security\",\"name\":\"Security Level\",\"custom\":false,\"\
+        orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        level\"],\"schema\":{\"type\":\"securitylevel\",\"system\":\"security\"}},{\"\
+        id\":\"customfield_10205\",\"name\":\"Satisfaction date\",\"custom\":true,\"\
+        orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        cf[10205]\",\"Satisfaction date\"],\"schema\":{\"type\":\"datetime\",\"custom\"\
+        :\"com.atlassian.servicedesk:sd-request-feedback-date\",\"customId\":10205}},{\"\
+        id\":\"customfield_10206\",\"name\":\"Approvers\",\"custom\":true,\"orderable\"\
+        :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"Approvers\"\
+        ,\"cf[10206]\"],\"schema\":{\"type\":\"array\",\"items\":\"user\",\"custom\"\
+        :\"com.atlassian.jira.plugin.system.customfieldtypes:multiuserpicker\",\"\
+        customId\":10206}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+        :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+        :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+        ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+        \u03A3 Remaining Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+        :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+        ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"customfield_10207\",\"name\"\
+        :\"Time to resolution\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+        searchable\":true,\"clauseNames\":[\"cf[10207]\",\"Time to resolution\"],\"\
+        schema\":{\"type\":\"sd-servicelevelagreement\",\"custom\":\"com.atlassian.servicedesk:sd-sla-field\"\
+        ,\"customId\":10207}},{\"id\":\"customfield_10208\",\"name\":\"Time to first\
+        \ response\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\"\
+        :true,\"clauseNames\":[\"cf[10208]\",\"Time to first response\"],\"schema\"\
+        :{\"type\":\"sd-servicelevelagreement\",\"custom\":\"com.atlassian.servicedesk:sd-sla-field\"\
+        ,\"customId\":10208}},{\"id\":\"summary\",\"name\":\"Summary\",\"custom\"\
+        :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+        :[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"summary\"}},{\"\
+        id\":\"creator\",\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"\
+        navigable\":true,\"searchable\":true,\"clauseNames\":[\"creator\"],\"schema\"\
+        :{\"type\":\"user\",\"system\":\"creator\"}},{\"id\":\"subtasks\",\"name\"\
+        :\"Sub-Tasks\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+        searchable\":false,\"clauseNames\":[\"subtasks\"],\"schema\":{\"type\":\"\
+        array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"}},{\"id\":\"reporter\"\
+        ,\"name\":\"Reporter\",\"custom\":false,\"orderable\":true,\"navigable\":true,\"\
+        searchable\":true,\"clauseNames\":[\"reporter\"],\"schema\":{\"type\":\"user\"\
+        ,\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\",\"name\":\"\u03A3\
+        \ Progress\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+        :false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\",\"system\":\"\
+        aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\":\"Development\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\":{\"type\":\"any\"\
+        ,\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+        ,\"customId\":10000}},{\"id\":\"customfield_10200\",\"name\":\"Approvals\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"Approvals\",\"cf[10200]\"],\"schema\":{\"type\":\"sd-approvals\"\
+        ,\"custom\":\"com.atlassian.servicedesk.approvals-plugin:sd-approvals\",\"\
+        customId\":10200}},{\"id\":\"customfield_10201\",\"name\":\"Request participants\"\
+        ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"cf[10201]\",\"Request participants\"],\"schema\":{\"type\"\
+        :\"array\",\"items\":\"user\",\"custom\":\"com.atlassian.servicedesk:sd-request-participants\"\
+        ,\"customId\":10201}},{\"id\":\"customfield_10202\",\"name\":\"Customer Request\
+        \ Type\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\"\
+        :true,\"clauseNames\":[\"cf[10202]\",\"Customer Request Type\"],\"schema\"\
+        :{\"type\":\"sd-customerrequesttype\",\"custom\":\"com.atlassian.servicedesk:vp-origin\"\
+        ,\"customId\":10202}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+        custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+        clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+        :\"environment\"}},{\"id\":\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"\
+        orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+        due\",\"duedate\"],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"\
+        id\":\"progress\",\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"\
+        navigable\":true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\"\
+        :{\"type\":\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\"\
+        :\"Comment\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\"\
+        :true,\"clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\"\
+        ,\"system\":\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\"\
+        :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+        :[\"votes\"],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\"\
+        :\"worklog\",\"name\":\"Log Work\",\"custom\":false,\"orderable\":true,\"\
+        navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\"\
+        :\"array\",\"items\":\"worklog\",\"system\":\"worklog\"}}]"}
+    headers:
+      Cache-Control: ['no-cache, no-store, no-transform']
+      Content-Security-Policy: [frame-ancestors 'self']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Tue, 09 Apr 2019 07:25:35 GMT']
+      Set-Cookie: [JSESSIONID=695F7FF23DB85CFCEC23F2A0D87D7D6B; Path=/; HttpOnly]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      X-AREQUESTID: [445x2279x1]
+      X-ASEN: [SEN-L13384799]
+      X-ASESSIONID: [1fb1pfe]
+      X-AUSERNAME: [gbaconnier]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Seraph-LoginReason: [OK]
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['12093']
+    status: {code: 200, message: ''}
+- request:
+    body: null
+    headers:
+      Accept:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Cache-Control:
+      - !!binary |
+        bm8tY2FjaGU=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbg==
+      Cookie:
+      - !!binary |
+        YXRsYXNzaWFuLnhzcmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kOTYyYTQ3Y2NmNDJjYjhm
+        YWUzN2MyMTY1ZTk0Mzg2NGZkZDdhM2Y0X2xpbjsgSlNFU1NJT05JRD02OTVGN0ZGMjNEQjg1Q0ZD
+        RUMyM0YyQTBEODdEN0Q2Qg==
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+      X-Atlassian-Token:
+      - !!binary |
+        bm8tY2hlY2s=
+      x-experimentalapi:
+      - !!binary |
+        b3B0LWlu
+    method: GET
+    uri: http://jira:8080/rest/servicedeskapi/organization?start=0&limit=50
+  response:
+    body: {string: '{"size":50,"start":0,"limit":50,"isLastPage":false,"_links":{"base":"http://jira:8080","context":"","next":"http://jira:8080/rest/servicedeskapi/organization?limit=50&start=50","self":"http://jira:8080/rest/servicedeskapi/organization?start=0&limit=50"},"values":[{"id":"1","name":"org1","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/1"}},{"id":"2","name":"org2","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/2"}},{"id":"3","name":"org3","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/3"}},{"id":"4","name":"org30","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/4"}},{"id":"5","name":"org32","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/5"}},{"id":"6","name":"org31","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/6"}},{"id":"7","name":"org34","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/7"}},{"id":"8","name":"org33","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/8"}},{"id":"9","name":"org36","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/9"}},{"id":"10","name":"org35","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/10"}},{"id":"11","name":"org38","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/11"}},{"id":"12","name":"org37","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/12"}},{"id":"13","name":"org39","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/13"}},{"id":"14","name":"org50","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/14"}},{"id":"15","name":"org41","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/15"}},{"id":"16","name":"org40","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/16"}},{"id":"17","name":"org43","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/17"}},{"id":"18","name":"org42","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/18"}},{"id":"19","name":"org45","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/19"}},{"id":"20","name":"org44","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/20"}},{"id":"21","name":"org47","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/21"}},{"id":"22","name":"org46","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/22"}},{"id":"23","name":"org49","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/23"}},{"id":"24","name":"org48","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/24"}},{"id":"25","name":"org60","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/25"}},{"id":"26","name":"org52","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/26"}},{"id":"27","name":"org51","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/27"}},{"id":"28","name":"org54","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/28"}},{"id":"29","name":"org10","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/29"}},{"id":"30","name":"org53","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/30"}},{"id":"31","name":"org56","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/31"}},{"id":"32","name":"org12","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/32"}},{"id":"33","name":"org55","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/33"}},{"id":"34","name":"org11","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/34"}},{"id":"35","name":"org58","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/35"}},{"id":"36","name":"org14","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/36"}},{"id":"37","name":"org57","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/37"}},{"id":"38","name":"org13","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/38"}},{"id":"39","name":"org16","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/39"}},{"id":"40","name":"org59","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/40"}},{"id":"41","name":"org15","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/41"}},{"id":"42","name":"org18","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/42"}},{"id":"43","name":"org17","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/43"}},{"id":"44","name":"org19","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/44"}},{"id":"45","name":"org8","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/45"}},{"id":"46","name":"org9","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/46"}},{"id":"47","name":"org4","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/47"}},{"id":"48","name":"org5","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/48"}},{"id":"49","name":"org6","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/49"}},{"id":"50","name":"org7","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/50"}}]}'}
+    headers:
+      Cache-Control: ['no-cache, no-store, no-transform']
+      Content-Security-Policy: [frame-ancestors 'self']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Tue, 09 Apr 2019 07:25:35 GMT']
+      Set-Cookie: [JSESSIONID=05198C071AE09FF29405F7911341C627; Path=/; HttpOnly]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      X-AREQUESTID: [445x2280x1]
+      X-ASEN: [SEN-L13384799]
+      X-ASESSIONID: [1xlna5j]
+      X-AUSERNAME: [gbaconnier]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Seraph-LoginReason: [OK]
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['5238']
+    status: {code: 200, message: ''}
+- request:
+    body: null
+    headers:
+      Accept:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Cache-Control:
+      - !!binary |
+        bm8tY2FjaGU=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbg==
+      Cookie:
+      - !!binary |
+        YXRsYXNzaWFuLnhzcmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kOTYyYTQ3Y2NmNDJjYjhm
+        YWUzN2MyMTY1ZTk0Mzg2NGZkZDdhM2Y0X2xpbjsgSlNFU1NJT05JRD0wNTE5OEMwNzFBRTA5RkYy
+        OTQwNUY3OTExMzQxQzYyNw==
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+      X-Atlassian-Token:
+      - !!binary |
+        bm8tY2hlY2s=
+      x-experimentalapi:
+      - !!binary |
+        b3B0LWlu
+    method: GET
+    uri: http://jira:8080/rest/servicedeskapi/organization?start=50&limit=100
+  response:
+    body: {string: '{"size":10,"start":50,"limit":50,"isLastPage":true,"_links":{"base":"http://jira:8080","context":"","prev":"http://jira:8080/rest/servicedeskapi/organization?limit=50&start=0","self":"http://jira:8080/rest/servicedeskapi/organization?start=50&limit=100"},"values":[{"id":"51","name":"org21","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/51"}},{"id":"52","name":"org20","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/52"}},{"id":"53","name":"org23","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/53"}},{"id":"54","name":"org22","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/54"}},{"id":"55","name":"org25","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/55"}},{"id":"56","name":"org24","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/56"}},{"id":"57","name":"org27","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/57"}},{"id":"58","name":"org26","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/58"}},{"id":"59","name":"org29","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/59"}},{"id":"60","name":"org28","_links":{"self":"http://jira:8080/rest/servicedeskapi/organization/60"}}]}'}
+    headers:
+      Cache-Control: ['no-cache, no-store, no-transform']
+      Content-Security-Policy: [frame-ancestors 'self']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Tue, 09 Apr 2019 07:25:35 GMT']
+      Set-Cookie: [JSESSIONID=895A29A492A56350C6C51AD7ABEEDE24; Path=/; HttpOnly]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      X-AREQUESTID: [445x2281x1]
+      X-ASEN: [SEN-L13384799]
+      X-ASESSIONID: [1g3mv90]
+      X-AUSERNAME: [gbaconnier]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Seraph-LoginReason: [OK]
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1266']
+    status: {code: 200, message: ''}
+version: 1

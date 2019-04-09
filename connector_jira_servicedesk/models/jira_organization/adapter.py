@@ -36,6 +36,7 @@ class OrganizationAdapter(Component):
     # is not used. The API may change so they want an agreement for
     # the client about this.
     _desk_headers = CaseInsensitiveDict({'X-ExperimentalApi': 'opt-in'})
+    _desk_api_path_base = '{server}/rest/servicedeskapi/{path}'
 
     def __init__(self, work_context):
         super().__init__(work_context)
@@ -51,18 +52,23 @@ class OrganizationAdapter(Component):
         return organization.raw
 
     def search(self):
-        base = (self.client._options['server'] +
-                '/rest/servicedeskapi/organization')
-        # By default, a GET on the REST API returns only one page with the
-        # first 50 rows. Here, client is an instance of the jira library's JIRA
-        # class, which provides a _fetch_pages method to fetch pages.
-        # maxResults=False means it will try to get all pages.
-        orgs = self.client._fetch_pages(
-            Organization,
-            'values',
-            'organization',
-            # limit to False will get them in batch
-            maxResults=False,
-            base=base
-        )
-        return [org.id for org in orgs]
+        # A GET on the REST API returns only one page with the
+        # first 50 rows. Fetch all pages.
+        orgs = []
+        start = 0
+        while True:
+            result = self.client._get_json(
+                'organization',
+                params={
+                    'start': start,
+                    # 50 items per page is the maximum allowed by Jira
+                    'limit': start + 50,
+                },
+                base=self._desk_api_path_base,
+            )
+            start += 50
+            orgs += result['values']
+            if result['isLastPage']:
+                break
+
+        return orgs

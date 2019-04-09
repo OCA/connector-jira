@@ -1,0 +1,161 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* connector_jira_servicedesk
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: connector_jira_servicedesk
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Activate the synchronization of the Organization field.\n"
+"            Only on JIRA ServiceDesk. The field contains the name of\n"
+"            the JIRA custom field that contains the Organization."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Configure Organization"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_id
+msgid "ID"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,help:connector_jira_servicedesk.field_jira_project_base_mixin_organization_ids
+#: model:ir.model.fields,help:connector_jira_servicedesk.field_jira_project_project_organization_ids
+#: model:ir.model.fields,help:connector_jira_servicedesk.field_project_link_jira_organization_ids
+msgid "If organizations are set, a task will be added to the project only if the project AND the organization match with the selection."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Import Organizations"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_jira_backend
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_backend_id
+msgid "Jira Backend"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_jira_organization
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Jira Organization"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_jira_project_project
+msgid "Jira Projects"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_project_link_jira
+msgid "Link Project with JIRA"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_name
+msgid "Name"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_backend_organization_field_name
+msgid "Organization Field"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_project_base_mixin_organization_ids
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_project_project_organization_ids
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_project_link_jira_organization_ids
+msgid "Organization(s) on Jira"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_backend_organization_ids
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Organizations"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_project_ids
+msgid "Project"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
+msgid "Run"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,help:connector_jira_servicedesk.field_jira_backend_organization_field_name
+msgid "The 'Organization' field on JIRA is a custom field. The name of the field is something like 'customfield_10002'. "
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.ui.view,arch_db:connector_jira_servicedesk.project_link_jira_form
+msgid "The organizations you choose will define how the tasks and worklogs are attached to the project.\n"
+"              If a task is assigned to an organization, it will be assigned\n"
+"              to an Odoo project linked to the JIRA project only if the\n"
+"              organization match. If no project with an organization exists,\n"
+"              the task will be assigned to a linked project without organization.\n"
+"              If no such project exists in Odoo, the task is ignored."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: code:addons/connector_jira_servicedesk/models/project_project/common.py:58
+#, python-format
+msgid "The project %s is already linked with the same JIRA project without organization."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: code:addons/connector_jira_servicedesk/models/project_project/common.py:63
+#, python-format
+msgid "The project %s is already linked with this JIRA project and similar organizations."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_jira_project_base_mixin
+msgid "jira.project.base.mixin"
+msgstr ""
+
