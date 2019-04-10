@@ -563,7 +563,7 @@ class JiraBackendTimestamp(models.Model):
     last_timestamp = MilliDatetime(
         string='Last Timestamp',
         required=True,
-        oldname="import_timestamp",
+        oldname="import_start_time",
     )
     component_usage = fields.Char(
         required=True,
