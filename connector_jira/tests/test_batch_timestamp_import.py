@@ -61,10 +61,14 @@ class TestBatchTimestampImport(JiraSavepointCase):
                              number_of_tasks)
             delay_args = delayable.import_record.call_args_list
             expected = [
-                ((self.backend_record, '10103'), {}),
-                ((self.backend_record, '10102'), {}),
-                ((self.backend_record, '10101'), {}),
-                ((self.backend_record, '10100'), {}),
+                ((self.backend_record, '10103'),
+                 {'force': False, 'record': None}),
+                ((self.backend_record, '10102'),
+                 {'force': False, 'record': None}),
+                ((self.backend_record, '10101'),
+                 {'force': False, 'record': None}),
+                ((self.backend_record, '10100'),
+                 {'force': False, 'record': None}),
             ]
             self.assertEqual(
                 sorted([(args, kwargs) for args, kwargs in delay_args]),
