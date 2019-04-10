@@ -15,7 +15,7 @@ class AnalyticLineBatchDeleter(Component):
     """Batch Deleter working with a jira.backend.timestamp.record
 
     It locks the timestamp to ensure no other job is working on it,
-    and use the latest timestamp value as reference for the search.
+    and uses the latest timestamp value as reference for the search.
 
     The role of a BatchDeleter is to search for a list of
     items to delete and schedule jobs for the deletions.
