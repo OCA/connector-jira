@@ -120,13 +120,13 @@ class AnalyticLineBatchImporter(Component):
         return (next_timestamp, self.backend_adapter.yield_read(worklog_ids))
 
     def _handle_records(self, records):
-        number = 0
+        count = 0
         for worklog in records:
-            number += 1
+            count += 1
             worklog_id = worklog['id']
             issue_id = worklog['issueId']
             self._import_record(issue_id, worklog_id)
-        return number
+        return count
 
     def _filter_update(self, updated_worklogs):
         """Filter only the worklogs needing an update
