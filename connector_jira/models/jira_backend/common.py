@@ -536,6 +536,10 @@ class JiraBackend(models.Model):
     def _scheduler_import_analytic_line(self):
         self.search([]).import_analytic_line()
 
+    @api.model
+    def _scheduler_delete_analytic_line(self):
+        self.search([]).delete_analytic_line()
+
     @api.multi
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(
@@ -563,10 +567,15 @@ class JiraBackendTimestamp(models.Model):
     last_timestamp = MilliDatetime(
         string='Last Timestamp',
         required=True,
-        oldname="import_timestamp",
+        oldname="import_start_time",
     )
+    # The content of this field must match to the "usage" of a component.
+    # The method JiraBinding.run_batch_timestamp() will find the matching
+    # component for the model and call "run()" on it.
     component_usage = fields.Char(
         required=True,
+        help="Used by the connector to find which component "
+             "execute the batch import (technical).",
     )
 
     _sql_constraints = [

@@ -392,7 +392,7 @@ class BatchImporter(AbstractComponent):
     def _search(self):
         return self.backend_adapter.search()
 
-    def _import_record(self, record_id):
+    def _import_record(self, record_id, **kwargs):
         """ Import a record directly or delay the import of the record.
 
         Method to implement in sub-classes.
@@ -405,9 +405,12 @@ class DirectBatchImporter(AbstractComponent):
     _name = 'jira.direct.batch.importer'
     _inherit = ['jira.batch.importer']
 
-    def _import_record(self, record_id):
+    def _import_record(self, record_id, force=False, record=None):
         """ Import the record directly """
-        self.model.import_record(self.backend_record, record_id)
+        self.model.import_record(
+            self.backend_record, record_id,
+            force=force, record=record
+        )
 
 
 class DelayedBatchImporter(AbstractComponent):
@@ -415,11 +418,13 @@ class DelayedBatchImporter(AbstractComponent):
     _name = 'jira.delayed.batch.importer'
     _inherit = ['jira.batch.importer']
 
-    def _import_record(self, record_id, **kwargs):
+    def _import_record(self, record_id, force=False, record=None, **kwargs):
         """ Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
             self.backend_record,
-            record_id
+            record_id,
+            force=force,
+            record=record
         )
 
 
@@ -487,11 +492,14 @@ class TimestampBatchImporter(AbstractComponent):
         record_ids = self.backend_adapter.search(' and '.join(parts))
         return (next_timestamp, record_ids)
 
-    def _import_record(self, record_id, **kwargs):
+    def _import_record(self, record_id, force=False,
+                       record=None, **kwargs):
         """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
             self.backend_record,
-            record_id
+            record_id,
+            force=force,
+            record=record,
         )
 
 

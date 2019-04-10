@@ -51,11 +51,12 @@ class JiraBinding(models.AbstractModel):
     @job(default_channel='root.connector_jira.import')
     @related_action(action="related_action_jira_link")
     @api.model
-    def import_record(self, backend, external_id, force=False):
+    def import_record(self, backend, external_id,
+                      force=False, record=None):
         """Import a record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage='record.importer')
-            return importer.run(external_id, force=force)
+            return importer.run(external_id, force=force, record=record)
 
     @job(default_channel='root.connector_jira.import')
     @api.model
