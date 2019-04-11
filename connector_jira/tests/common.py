@@ -100,6 +100,11 @@ class JiraSavepointCase(SavepointComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+        context = cls.env.context.copy()
+        context['tracking_disable'] = True
+        cls.env = cls.env(context=context)
+
         cls.backend_record = cls.env.ref("connector_jira.jira_backend_demo")
         cls.backend_record.write(
             {

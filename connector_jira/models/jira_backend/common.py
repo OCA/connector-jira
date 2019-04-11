@@ -565,8 +565,13 @@ class JiraBackendTimestamp(models.Model):
         required=True,
         oldname="import_start_time",
     )
+    # The content of this field must match to the "usage" of a component.
+    # The method JiraBinding.run_batch_timestamp() will find the matching
+    # component for the model and call "run()" on it.
     component_usage = fields.Char(
         required=True,
+        help="Used by the connector to find which component "
+             "execute the batch import (technical).",
     )
 
     _sql_constraints = [
