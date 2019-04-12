@@ -3,7 +3,7 @@
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 
 
@@ -74,6 +74,7 @@ class ProjectTaskMapper(Component):
         # and the Odoo field is HTML...
         return {'description': record['fields']['description']}
 
+    @only_create
     @mapping
     def project(self, record):
         binder = self.binder_for('jira.project.project')
