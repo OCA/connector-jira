@@ -536,6 +536,10 @@ class JiraBackend(models.Model):
     def _scheduler_import_analytic_line(self):
         self.search([]).import_analytic_line()
 
+    @api.model
+    def _scheduler_delete_analytic_line(self):
+        self.search([]).delete_analytic_line()
+
     @api.multi
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(
