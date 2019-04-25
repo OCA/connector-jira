@@ -135,6 +135,8 @@ class AnalyticLineBatchImporter(Component):
         the last update on Jira. So we keep only the worklog
         ids with an sync_date before the Jira last update.
         """
+        if not updated_worklogs:
+            return []
         self.env.cr.execute(
             "SELECT external_id, jira_updated_at "
             "FROM jira_account_analytic_line "
