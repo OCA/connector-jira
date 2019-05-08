@@ -28,14 +28,12 @@ class TestImportWorklogBase(JiraSavepointCase):
         # Warning: if you add new tests or change the cassettes
         # you might need to change the username
         cls._link_user(cls.env.user, 'gbaconnier')
-
         cls.fallback_project = cls.env['project.project'].create({
             'name': 'Test Fallback Project',
         })
-        cls.backend_record.write(
-            {
-                'worklog_fallback_project_id': cls.fallback_project.id,
-            })
+        cls.backend_record.write({
+            'worklog_fallback_project_id': cls.fallback_project.id,
+        })
 
     def _setup_import_worklog(self, task, jira_issue_id, jira_worklog_id=None):
         self._create_task_binding(
