@@ -1,4 +1,4 @@
-# Copyright 2016 Camptocamp SA
+# Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models
@@ -49,4 +49,14 @@ class WorklogAdapter(Component):
         url = self._tempo_get_url('timesheet-approval/current')
         with self.handle_404():
             resp = self.client._session.get(url, params={'username': username})
+        return resp.json()
+
+    def tempo_read_status_by_team(self, team_id, period_start):
+        url = self._tempo_get_url('timesheet-approval')
+        params = {
+            'teamId': team_id,
+            'periodStartDate': period_start
+        }
+        with self.handle_404():
+            resp = self.client._session.get(url, params=params)
         return resp.json()
