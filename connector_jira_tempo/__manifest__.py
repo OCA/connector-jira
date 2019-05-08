@@ -12,6 +12,8 @@
     ],
     'website': 'https://www.camptocamp.com',
     'data': [
+        'data/cron.xml',
+        'views/jira_backend_view.xml',
         'views/timesheet_account_analytic_line.xml',
     ],
     'installable': True,
