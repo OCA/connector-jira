@@ -44,7 +44,7 @@ class AnalyticLineMapper(Component):
         )
         refs.update(task_mapper.issue_type(issue))
         epic_field_name = self.backend_record.epic_link_field_name
-        if epic_field_name:
+        if epic_field_name and epic_field_name in issue['fields']:
             refs['jira_epic_issue_key'] = issue['fields'][epic_field_name]
         return refs
 

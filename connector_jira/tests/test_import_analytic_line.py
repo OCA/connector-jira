@@ -4,7 +4,7 @@
 from .common import recorder, JiraSavepointCase
 
 
-class TestImportAccountAnalyticLine(JiraSavepointCase):
+class TestImportWorklogBase(JiraSavepointCase):
 
     @classmethod
     def setUpClass(cls):
@@ -25,15 +25,33 @@ class TestImportAccountAnalyticLine(JiraSavepointCase):
             'name': 'My task',
             'project_id': cls.project.id,
         })
+        # Warning: if you add new tests or change the cassettes
+        # you might need to change the username
         cls._link_user(cls.env.user, 'gbaconnier')
-
         cls.fallback_project = cls.env['project.project'].create({
             'name': 'Test Fallback Project',
         })
-        cls.backend_record.write(
-            {
-                'worklog_fallback_project_id': cls.fallback_project.id,
-            })
+        cls.backend_record.write({
+            'worklog_fallback_project_id': cls.fallback_project.id,
+        })
+
+    def _setup_import_worklog(self, task, jira_issue_id, jira_worklog_id=None):
+        self._create_task_binding(
+            task, external_id=jira_issue_id
+        )
+        jira_worklog_id = jira_worklog_id or jira_issue_id
+        self.env['jira.account.analytic.line'].import_record(
+            self.backend_record, jira_issue_id, jira_worklog_id
+        )
+        binding = self.env['jira.account.analytic.line'].search([
+            ('backend_id', '=', self.backend_record.id),
+            ('external_id', '=', jira_worklog_id)
+        ])
+        self.assertEqual(len(binding), 1)
+        return binding
+
+
+class TestImportAccountAnalyticLine(TestImportWorklogBase):
 
     @recorder.use_cassette
     def test_import_worklog(self):
@@ -60,20 +78,9 @@ class TestImportAccountAnalyticLine(JiraSavepointCase):
                                   expected_task=False)
 
     def _test_import_worklog(self, expected_project, expected_task):
-        self._create_task_binding(
-            self.task, external_id='10000'
-        )
-        jira_issue_id = '10000'
-        jira_worklog_id = '10000'
-        self.env['jira.account.analytic.line'].import_record(
-            self.backend_record, jira_issue_id, jira_worklog_id
-        )
-        binding = self.env['jira.account.analytic.line'].search([
-            ('backend_id', '=', self.backend_record.id),
-            ('external_id', '=', jira_worklog_id)
-        ])
-        self.assertEqual(len(binding), 1)
-
+        jira_worklog_id = jira_issue_id = '10000'
+        binding = self._setup_import_worklog(
+            self.task, jira_issue_id, jira_worklog_id)
         self.assertRecordValues(
             binding,
             [{
