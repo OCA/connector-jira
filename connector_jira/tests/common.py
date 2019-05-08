@@ -116,6 +116,9 @@ class JiraSavepointCase(SavepointComponentCase):
             }
         )
 
+    # Warning: if you add new tests or change the cassettes
+    # you might need to change these values
+    # to make issue types match
     _base_issue_types = [
         ("Task", "10002"),
         ("Sub-task", "10003"),
