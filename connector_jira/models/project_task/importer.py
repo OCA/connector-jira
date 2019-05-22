@@ -77,7 +77,10 @@ class ProjectTaskMapper(Component):
     def project(self, record):
         binder = self.binder_for('jira.project.project')
         project = binder.unwrap_binding(self.options.project_binding)
-        return {'project_id': project.id}
+        values = {'project_id': project.id}
+        if not project.active:
+            values['active'] = False
+        return values
 
     @mapping
     def epic(self, record):
