@@ -27,9 +27,39 @@ class TestImportAccountAnalyticLine(JiraSavepointCase):
         })
         cls._link_user(cls.env.user, 'gbaconnier')
 
+        cls.fallback_project = cls.env['project.project'].create({
+            'name': 'Test Fallback Project',
+        })
+        cls.backend_record.write(
+            {
+                'worklog_fallback_project_id': cls.fallback_project.id,
+            })
+
     @recorder.use_cassette
     def test_import_worklog(self):
-        """Import a worklog on a task existing in Odoo"""
+        """Import a worklog on a task existing in Odoo on activated project"""
+        self._test_import_worklog(expected_project=self.project,
+                                  expected_task=self.task)
+
+    @recorder.use_cassette('test_import_worklog.yaml')
+    def test_import_worklog_deactivated_project(self):
+        """
+        Import a worklog on a task existing in Odoo on deactivated project
+        """
+        self.project.write({'active': False})
+        self._test_import_worklog(expected_project=self.fallback_project,
+                                  expected_task=False)
+
+    @recorder.use_cassette('test_import_worklog.yaml')
+    def test_import_worklog_deactivated_task(self):
+        """
+        Import a worklog on a task existing in Odoo on deactivated task
+        """
+        self.task.write({'active': False})
+        self._test_import_worklog(expected_project=self.project,
+                                  expected_task=False)
+
+    def _test_import_worklog(self, expected_project, expected_task):
         self._create_task_binding(
             self.task, external_id='10000'
         )
@@ -47,7 +77,7 @@ class TestImportAccountAnalyticLine(JiraSavepointCase):
         self.assertRecordValues(
             binding,
             [{
-                'account_id': self.project.analytic_account_id.id,
+                'account_id': expected_project.analytic_account_id.id,
                 'backend_id': self.backend_record.id,
                 'date': '2019-04-04',
                 'employee_id': self.env.user.employee_ids[0].id,
@@ -57,9 +87,9 @@ class TestImportAccountAnalyticLine(JiraSavepointCase):
                 'jira_issue_key': 'TEST-1',
                 'jira_issue_type_id': self.epic_issue_type.id,
                 'name': 'write tests',
-                'project_id': self.project.id,
+                'project_id': expected_project.id,
                 'tag_ids': [],
-                'task_id': self.task.id,
+                'task_id': expected_task.id if expected_task else False,
                 'unit_amount': 1.0,
                 'user_id': self.env.user.id,
             }]

@@ -82,11 +82,11 @@ class AnalyticLineMapper(Component):
         )
         task_binding = self.options.task_binding
         if not task_binding:
+            if self.options.fallback_project:
+                return {'project_id': self.options.fallback_project.id}
             project = self.options.project_binding.odoo_id
             if project:
                 return {'project_id': project.id}
-            else:
-                return {'project_id': self.options.fallback_project.id}
 
         project = task_binding.project_id
         return {'task_id': task_binding.odoo_id.id,
@@ -300,7 +300,9 @@ class AnalyticLineImporter(Component):
                                          self.external_id)
 
     def _before_import(self):
-        self.task_binding = self._recurse_import_task()
+        task_binding = self._recurse_import_task()
+        if task_binding and task_binding.active:
+            self.task_binding = task_binding
         if not self.task_binding:
             # when no task exists in Odoo (because we don't synchronize
             # the issue type for instance), we link the line directly
@@ -308,8 +310,10 @@ class AnalyticLineImporter(Component):
             issue = self.external_issue
             assert issue
             matcher = self.component(usage='jira.task.project.matcher')
-            self.project_binding = matcher.find_project_binding(issue)
-            if not self.project_binding:
+            project_binding = matcher.find_project_binding(issue)
+            if project_binding and project_binding.active:
+                self.project_binding = project_binding
+            else:
                 self.fallback_project = matcher.fallback_project_for_worklogs()
 
     def _import(self, binding, **kwargs):
