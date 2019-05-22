@@ -25,7 +25,20 @@ class TestImportTask(JiraSavepointCase):
 
     @recorder.use_cassette
     def test_import_task_epic(self):
-        """Import Epic task where we sync this type issue"""
+        """
+        Import Epic task where we sync this type issue on activated project
+        """
+        self._test_import_task_epic(expected_active=True)
+
+    @recorder.use_cassette('test_import_task_epic.yaml')
+    def test_import_task_epic_deactivated_project(self):
+        """
+        Import Epic task where we sync this type issue on deactivated project
+        """
+        self.project.write({'active': False})
+        self._test_import_task_epic(expected_active=False)
+
+    def _test_import_task_epic(self, expected_active):
         self._create_project_binding(
             self.project, issue_types=self.epic_issue_type,
             external_id='10000'
@@ -34,7 +47,9 @@ class TestImportTask(JiraSavepointCase):
         self.env['jira.project.task'].import_record(
             self.backend_record, jira_issue_id
         )
-        binding = self.env['jira.project.task'].search([
+        binding = self.env['jira.project.task'].with_context(
+            active_test=False
+        ).search([
             ('backend_id', '=', self.backend_record.id),
             ('external_id', '=', jira_issue_id)
         ])
@@ -44,6 +59,8 @@ class TestImportTask(JiraSavepointCase):
         self.assertEqual(binding.jira_issue_type_id, self.epic_issue_type)
         self.assertFalse(binding.jira_epic_link_id)
         self.assertFalse(binding.jira_parent_id)
+
+        self.assertEqual(binding.odoo_id.active, expected_active)
 
     @recorder.use_cassette
     def test_import_task_type_not_synced(self):
