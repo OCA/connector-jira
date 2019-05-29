@@ -30,6 +30,10 @@ class JiraBackend(models.Model):
         help="This field contains the ID of a company wide group on JIRA. "
              "Its main usage is to fetch tempo statuses for ALL employees."
     )
+    validate_approved_ts = fields.Boolean(
+        help="If this flag is ON, once the status is sync'ed from Jira, "
+             "all approved timesheets will be validated on Odoo as well."
+    )
 
     @api.multi
     def _scheduler_sync_jira_tempo_status(self, period_start=None):
@@ -82,6 +86,7 @@ class JiraBackend(models.Model):
         lines.mapped('jira_bind_ids').write({
             'jira_tempo_status': state,
         })
+        self._validate_ts(date_from, date_to, state, user_ids)
 
     def _get_ts_lines(self, date_from, date_to, user_ids):
         ts_line_model = self.env['account.analytic.line']
@@ -92,3 +97,8 @@ class JiraBackend(models.Model):
             ('date', '<=', date_to),
             ('user_id', 'in', user_ids)
         ])
+
+    def _validate_ts(self, date_from, date_to, state, user_ids):
+        # hook here and do what you want depending on the state
+        # eg: if self.validate_approved_ts and state == 'approved'
+        pass
