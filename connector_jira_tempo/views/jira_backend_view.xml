@@ -7,7 +7,8 @@
     <field name="inherit_id" ref="connector_jira.view_jira_backend_form" />
     <field name="arch" type="xml">
       <group name="main_configuration" position="inside">
-        <field name="jira_company_team_id"/>
+        <field name="jira_company_team_id" />
+        <field name="validate_approved_ts" />
       </group>
     </field>
   </record>
