@@ -17,12 +17,21 @@ class JiraProjectBinder(Component):
         'jira.project.project',
     ]
 
-    def to_external(self, binding, wrap=False, project_type=None):
+    def _domain_to_external(self, binding):
+        return [
+            (self._odoo_field, '=', binding.id),
+            (self._backend_field, '=', self.backend_record.id),
+            ('sync_action', '=', 'export'),
+        ]
+
+    def to_external(self, binding, wrap=False):
         """ Give the external ID for an Odoo binding ID
 
-        More than one jira binding is tolerated on projects, but we can have
-        only one binding for each type of project (software, service_desk,
-        business, ...).
+        More than one jira binding is possible on projects, but we still
+        have to know to which one we have to export. Currently, we'll only
+        pick the binding with Sync. Action "export". However, if later we
+        add, for instance, a push of tasks, we may consider adding other
+        means to get the external id.
 
         :param binding: Odoo binding for which we want the external id
         :param wrap: if True, binding is a normal record, the
@@ -30,18 +39,13 @@ class JiraProjectBinder(Component):
                      the external id of the binding
         :return: external ID of the record
         """
-        if not project_type:
-            raise ValueError('project_type argument is required')
         if isinstance(binding, models.BaseModel):
             binding.ensure_one()
         else:
             binding = self.model.browse(binding)
         if wrap:
             binding = self.model.with_context(active_test=False).search(
-                [(self._odoo_field, '=', binding.id),
-                 (self._backend_field, '=', self.backend_record.id),
-                 ('project_type', '=', project_type),
-                 ]
+                self._domain_to_external()
             )
             if not binding:
                 return None

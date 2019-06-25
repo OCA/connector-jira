@@ -77,7 +77,10 @@ class ProjectTaskMapper(Component):
     def project(self, record):
         binder = self.binder_for('jira.project.project')
         project = binder.unwrap_binding(self.options.project_binding)
-        values = {'project_id': project.id}
+        values = {
+            'project_id': project.id,
+            'jira_project_bind_id': self.options.project_binding.id,
+        }
         if not project.active:
             values['active'] = False
         return values

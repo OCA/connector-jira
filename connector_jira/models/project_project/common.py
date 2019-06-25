@@ -113,51 +113,34 @@ class JiraProjectProject(models.Model):
         self._sql_constraints = constraints
         super()._add_sql_constraints()
 
-    def _other_same_type_domain(self):
-        """Return the domain to search a binding on the same project and type
-
-        It is used for the constraint allowing only one binding of each type.
-        The reason for this is:
-
-        * supporting several projects of different types is a requirements (eg.
-          1 service desk and 1 software)
-        * but if we implement new features like "if I create a task it is
-          pushed to Jira", with different projects we would not know where to
-          push them
-
-        Using this constraint, we'll be able to focus new export features by
-        project type.
-
-        """
+    def _export_binding_domain(self):
+        """Return the domain for the constraints on export bindings"""
         self.ensure_one()
         domain = [
             ('odoo_id', '=', self.odoo_id.id),
             ('backend_id', '=', self.backend_id.id),
-            ('project_type', '=', self.project_type)
+            ('sync_action', '=', 'export')
         ]
-        if self.id:
-            domain.append(
-                ('id', '!=', self.id),
-            )
         return domain
 
-    @api.constrains('backend_id', 'odoo_id', 'project_type')
-    def _constrains_odoo_jira_uniq(self):
-        """Add a constraint on backend+odoo id
+    @api.constrains('backend_id', 'odoo_id', 'sync_action')
+    def _constrains_odoo_jira_sync_action_export_uniq(self):
+        """Add a constraint on backend+odoo id for export action
 
-        More than one binding is tolerated but only one can be a master
-        binding. The master binding will be used when we have to push data from
-        Odoo to Jira (add tasks, ...).
+        Only one binding can have the sync_action "export", as it pushes the
+        name and key to Jira, we cannot export the same values to several
+        projects.
         """
         for binding in self:
-            same_link_bindings = self.with_context(active_test=False).search(
-                self._other_same_type_domain()
+            export_bindings = self.with_context(active_test=False).search(
+                self._export_binding_domain()
             )
-            if same_link_bindings:
+            if len(export_bindings) > 1:
                 raise exceptions.ValidationError(_(
-                    "The project \"%s\" already has a binding with "
-                    "a Jira project of the same type (%s)."
-                ) % (binding.display_name, self.project_type))
+                    "Only one Jira binding can be configured with the Sync."
+                    " Action \"Export\" for a project.  \"%s\" already"
+                    " has one."
+                ) % (binding.display_name,))
 
     @api.constrains('backend_id', 'external_id')
     def _constrains_jira_uniq(self):
