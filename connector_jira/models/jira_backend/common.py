@@ -247,6 +247,8 @@ class JiraBackend(models.Model):
             # expect mostly to use the milliseconds precision for
             # the dates coming from the Jira webservices (they use
             # milliseconds unix timestamp on some -only some- methods)
+            if not value:
+                value = datetime.fromtimestamp(0)
             timestamp._update_timestamp(value)
 
     @api.multi
