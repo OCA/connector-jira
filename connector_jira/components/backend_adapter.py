@@ -98,3 +98,7 @@ class JiraAdapter(Component):
             _logger.exception('Jira JIRAError')
             message = _('Jira Error: %s') % (err,)
             raise exceptions.UserError(message)
+        except IDMissingInBackend as err:
+            _logger.exception('Jira 404 for an ID')
+            message = _('Record does not exist in Jira: %s') % (err,)
+            raise exceptions.UserError(message)
