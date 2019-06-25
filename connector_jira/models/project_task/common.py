@@ -16,6 +16,12 @@ class JiraProjectTask(models.Model):
                               required=True,
                               index=True,
                               ondelete='restrict')
+    # As we can have more than one jira binding on a project.project, we store
+    # to which one a task binding is related.
+    jira_project_bind_id = fields.Many2one(
+        comodel_name='jira.project.project',
+        ondelete='restrict',
+    )
     jira_key = fields.Char(
         string='Key',
         readonly=True,
