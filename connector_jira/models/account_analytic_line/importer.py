@@ -1,5 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
 
@@ -23,7 +23,7 @@ class AnalyticLineMapper(Component):
     direct = [
         (whenempty('comment', _('missing description')), 'name'),
         (iso8601_local_date('started'), 'date'),
-        ]
+    ]
 
     @only_create
     @mapping
@@ -323,7 +323,7 @@ class AnalyticLineImporter(Component):
             _logger.debug(
                 "No task or project synchronized for attaching worklog %s",
                 self.external_record['id']
-                )
+            )
             return
         return super()._import(binding, **kwargs)
 
