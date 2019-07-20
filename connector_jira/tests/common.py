@@ -1,5 +1,5 @@
 # Copyright 2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 """Tests for connector_jira
 
@@ -62,7 +62,6 @@ or record the tests again (in such case, IDs may change).
 import os
 import logging
 import mock
-import pprint
 
 from contextlib import contextmanager
 from os.path import dirname, join
@@ -203,99 +202,6 @@ class JiraSavepointCase(SavepointComponentCase):
             .with_context(no_connector_export=True)
             .create(values)
         )
-
-    # copy of 12.0's method, with 'black' applied
-    # https://github.com/odoo/odoo/blob/251021796c25676f5c341e0a3fc3ba4c9feb85bb/odoo/tests/common.py#L294
-    # to remove when migrating to 12.0
-    def assertRecordValues(self, records, expected_values):
-        """ Compare a recordset with a list of dictionaries representing the
-        expected results.
-        This method performs a comparison element by element based on their
-        index. Then, the order of the expected values is extremely important.
-        Note that:
-          - Comparison between falsy values is supported: False match with
-            None.
-          - Comparison between monetary field is also treated according the
-            currency's rounding.
-          - Comparison between x2many field is done by ids. Then, empty
-            expected ids must be [].
-          - Comparison between many2one field id done by id. Empty comparison
-            can be done using any falsy value.
-        :param records:               The records to compare.
-        :param expected_values: List of dicts expected to be exactly matched in
-        records
-        """
-
-        def _compare_candidate(record, candidate):
-            """ Return True if the candidate matches the given record """
-            for field_name in candidate.keys():
-                record_value = record[field_name]
-                candidate_value = candidate[field_name]
-                field_type = record._fields[field_name].type
-                if field_type == "monetary":
-                    # Compare monetary field.
-                    currency_field_name = record._fields[
-                        field_name
-                    ].currency_field
-                    record_currency = record[currency_field_name]
-                    if (
-                        record_currency.compare_amounts(
-                            candidate_value, record_value
-                        )
-                        if record_currency
-                        else candidate_value != record_value
-                    ):
-                        return False
-                elif field_type in ("one2many", "many2many"):
-                    # Compare x2many relational fields.
-                    # Empty comparison must be an empty list to be True.
-                    if set(record_value.ids) != set(candidate_value):
-                        return False
-                elif field_type == "many2one":
-                    # Compare many2one relational fields.
-                    # Every falsy value is allowed to compare with an empty
-                    # record.
-                    if (
-                        record_value or candidate_value
-                    ) and record_value.id != candidate_value:
-                        return False
-                elif (
-                    candidate_value or record_value
-                ) and record_value != candidate_value:
-                    # Compare others fields if not both interpreted as falsy
-                    # values.
-                    return False
-            return True
-
-        def _format_message(records, expected_values):
-            """ Return a formatted representation of records/expected_values.
-            """
-            all_records_values = records.read(
-                list(expected_values[0].keys()), load=False
-            )
-            msg1 = "\n".join(pprint.pformat(dic) for dic in all_records_values)
-            msg2 = "\n".join(pprint.pformat(dic) for dic in expected_values)
-            return "Current values:\n\n%s\n\nExpected values:\n\n%s" % (
-                msg1,
-                msg2,
-            )
-
-        # if the length or both things to compare is different, we can already
-        # tell they're not equal
-        if len(records) != len(expected_values):
-            msg = "Wrong number of records to compare: %d != %d.\n\n" % (
-                len(records),
-                len(expected_values),
-            )
-            self.fail(msg + _format_message(records, expected_values))
-
-        for index, record in enumerate(records):
-            if not _compare_candidate(record, expected_values[index]):
-                msg = (
-                    "Record doesn't match expected values at index %d.\n\n"
-                    % index
-                )
-                self.fail(msg + _format_message(records, expected_values))
 
     @contextmanager
     def mock_with_delay(self):
