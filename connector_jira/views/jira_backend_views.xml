@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
   <!-- Backend -->
@@ -39,21 +44,25 @@
             wanted), click on the "Configuration Done"
             button.
           </p>
-          <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
-            <group>
-              <field name="uri"
-                placeholder="e.g. https://example.com/jira"
-                />
-              <field name="verify_ssl"/>
+          <group>
+            <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
+              <group>
+                <field name="uri"
+                  placeholder="e.g. https://example.com/jira"
+                  />
+                <field name="verify_ssl"/>
+              </group>
             </group>
-          </group>
-          <group name="main_configuration" string="Main Configuration">
-            <field name="company_id"/>
-            <field name="worklog_fallback_project_id"/>
-            <field name="project_template"/>
-            <field name="project_template_shared"
-              attrs="{'invisible': [('project_template', '!=', 'shared')],
-                      'required': [('project_template', '=', 'shared')]}"/>
+            <group name="main_configuration" string="Main Configuration">
+              <group>
+                <field name="company_id"/>
+                <field name="worklog_fallback_project_id"/>
+                <field name="project_template"/>
+                <field name="project_template_shared"
+                  attrs="{'invisible': [('project_template', '!=', 'shared')],
+                          'required': [('project_template', '=', 'shared')]}"/>
+              </group>
+            </group>
           </group>
           <notebook>
             <page name="import" string="Imports" states="running">
@@ -77,7 +86,8 @@
               </p>
               <group>
                 <div>
-                  <label string="Link users"
+                  <label for="import_res_users"
+                    string="Link users"
                     class="oe_inline"/>
                 </div>
                 <button name="import_res_users"
@@ -85,13 +95,15 @@
                   class="oe_highlight"
                   string="Run"/>
                 <div class="alert alert-danger"
+                     role="alert"
                      attrs="{'invisible': [('report_user_sync', '=', False)]}">
                   <field name="report_user_sync" />
                 </div>
               </group>
               <group>
                 <div>
-                  <label string="Import Issue Types"
+                  <label for="import_issue_type"
+                    string="Import Issue Types"
                     class="oe_inline"/>
                 </div>
                 <button name="import_issue_type"
@@ -101,7 +113,8 @@
               </group>
               <group>
                 <div>
-                  <label string="Import project tasks since"
+                  <label for="import_project_task_from_date"
+                    string="Import project tasks since"
                     class="oe_inline"/>
                   <field name="import_project_task_from_date"
                     class="oe_inline"
@@ -114,7 +127,8 @@
               </group>
               <group>
                 <div>
-                  <label string="Import worklogs since"
+                  <label for="import_analytic_line_from_date"
+                    string="Import worklogs since"
                     class="oe_inline"/>
                   <field name="import_analytic_line_from_date"
                     class="oe_inline"
@@ -127,7 +141,8 @@
               </group>
               <group>
                 <div>
-                  <label string="Import deleted worklogs since"
+                  <label for="delete_analytic_line_from_date"
+                    string="Import deleted worklogs since"
                     class="oe_inline"/>
                   <field name="delete_analytic_line_from_date"
                     class="oe_inline"
@@ -141,18 +156,18 @@
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
               <field name="use_webhooks" invisible="1"/>
-              <group col="4">
+              <group name="webhooks" col="4">
                 <field name="odoo_webhook_base_url"/>
                 <div>
                   <button name="create_webhooks"
                     type="object"
                     string="Install Webhooks"
-                    class="oe_inline"
+                    class="btn-sm btn-link oe_inline"
                     attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authenticate')]}"/>
                   <button name="delete_webhooks"
                     type="object"
                     string="Remove Webhooks"
-                    class="oe_inline"
+                    class="btn-sm btn-link oe_inline"
                     attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"/>
                 </div>
                 <p class="oe_grey oe_inline">
@@ -162,26 +177,26 @@
                   directly transmitted to Odoo.
                 </p>
               </group>
-              <group name="epic">
+              <group name="epic" col="4">
                 <group name="epic_fields">
                   <field name="epic_link_field_name"/>
                   <field name="epic_name_field_name"/>
                 </group>
-                <group name="epic_actions">
+                <div>
                   <button name="activate_epic_link"
                     type="object"
                     string="Configure Epic Link"
-                    class="oe_inline"
+                    class="btn-sm btn-link oe_inline"
                     attrs="{'invisible': [('state', '=', 'authenticate')]}"/>
-                  <p class="oe_grey oe_inline">
-                    Activate the synchronization of the Epic Link field.
-                    Only on JIRA Software. The field contains the name of
-                    the JIRA custom field that contains the Epic Link.
+                </div>
+                <p class="oe_grey oe_inline">
+                  Activate the synchronization of the Epic Link field.
+                  Only on JIRA Software. The field contains the name of
+                  the JIRA custom field that contains the Epic Link.
 
-                    Note that if a project does not synchronize the Epics,
-                    the field will be empty.
-                  </p>
-                </group>
+                  Note that if a project does not synchronize the Epics,
+                  the field will be empty.
+                </p>
               </group>
             </page>
             <page name="issue_type" string="Issue Types" states="running">
