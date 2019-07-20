@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
   <record id="edit_project" model="ir.ui.view">
@@ -67,9 +72,11 @@
     <field name="model">project.project</field>
     <field name="inherit_id" ref="project.project_project_view_form_simplified"/>
     <field name="arch" type="xml">
-      <button name="edit_dialog" position="after">
-        <button string="Create and Link with JIRA" name="create_and_link_jira" type="object" class="btn-primary"/>
-      </button>
+      <form>
+        <header>
+          <button string="Create and Link with JIRA" name="create_and_link_jira" type="object" class="btn-primary"/>
+        </header>
+      </form>
     </field>
   </record>
 

@@ -1,5 +1,6 @@
 # Copyright 2016-2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import json
 import logging
@@ -26,10 +27,11 @@ class JiraProjectBaseFields(models.AbstractModel):
     and the wizard to link/create a JIRA project
     """
     _name = 'jira.project.base.mixin'
+    _description = 'JIRA Project Base Mixin'
 
     jira_key = fields.Char(
         string='JIRA Key',
-        kequired=True,
+        required=True,
         size=10,  # limit on JIRA
     )
     sync_issue_type_ids = fields.Many2many(
@@ -104,7 +106,7 @@ class JiraProjectProject(models.Model):
             if key == 'jira_binding_uniq':
                 conname = '%s_%s' % (self._table, key)
                 has_definition = tools.constraint_definition(
-                    self.env.cr, conname
+                    self.env.cr, self._table, conname
                 )
                 if has_definition:
                     tools.drop_constraint(self.env.cr, self._table, conname)

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
   <record id="view_task_form2" model="ir.ui.view">
@@ -39,7 +44,7 @@
         <field name="jira_epic_link_task_id"/>
         <field name="jira_parent_task_id"/>
       </field>
-      <filter name="Stage" position="after">
+      <filter name="stage" position="after">
         <filter string="JIRA Issue Type"
           name="groupby_jira_issue_type"
           context="{'group_by': 'jira_issue_type'}"/>
@@ -68,11 +73,15 @@
         </t>
       </xpath>
 
-      <xpath expr="//div[hasclass('o_dropdown_kanban')]/ul/li[last()]" position="after">
-        <li class="divider"></li>
-        <li t-if="widget.editable" groups="project.group_project_manager">
-          <a name="%(connector_jira.open_task_link_jira)d" type="action">Link with JIRA</a>
-        </li>
+      <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+        <div role="separator" class="dropdown-divider"></div>
+        <a t-if="widget.editable"
+          name="%(connector_jira.open_task_link_jira)d"
+          role="menuitem"
+          type="action"
+          class="dropdown-item"
+          groups="project.group_project_manager"
+        >Link with JIRA</a>
       </xpath>
 
     </field>

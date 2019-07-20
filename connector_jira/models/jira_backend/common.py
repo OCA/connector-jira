@@ -1,6 +1,6 @@
 # Copyright: 2015 LasLabs, Inc.
 # Copyright 2016-2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import binascii
 import logging
@@ -494,8 +494,7 @@ class JiraBackend(models.Model):
 
     @api.multi
     def import_res_users(self):
-        # wipe report
-        self.report_user_sync = ''
+        self.report_user_sync = None
         result = self.env['res.users'].search([]).link_with_jira(backends=self)
         for __, bknd_result in result.items():
             if bknd_result.get('error'):

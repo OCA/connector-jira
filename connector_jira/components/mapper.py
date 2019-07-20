@@ -1,5 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import pytz
 from datetime import datetime
@@ -64,6 +64,7 @@ def iso8601_to_utc(field):
     :param field: name of the source field in the record
 
     """
+
     def modifier(self, record, to_attr):
         value = record.get(field)
         if not value:
@@ -104,6 +105,7 @@ def iso8601_local_date(field):
     :param field: name of the source field in the record
 
     """
+
     def modifier(self, record, to_attr):
         value = record.get(field)
         if not value:
@@ -129,6 +131,7 @@ def follow_dict_path(field):
 
     :param field: field "path", using dots for subkeys
     """
+
     def modifier(self, record, to_attr):
         attrs = field.split('.')
         value = record
@@ -152,6 +155,7 @@ def whenempty(field, default_value):
     :param field: name of the source field in the record
     :param default_value: value to set when the source value is False-ish
     """
+
     def modifier(self, record, to_attr):
         value = record[field]
         if not value:

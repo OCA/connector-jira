@@ -1,5 +1,8 @@
 # Copyright 2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+
+from datetime import date
 
 from .common import recorder, JiraSavepointCase
 
@@ -28,6 +31,10 @@ class TestImportWorklogBase(JiraSavepointCase):
         # Warning: if you add new tests or change the cassettes
         # you might need to change the username
         cls._link_user(cls.env.user, 'gbaconnier')
+        cls.env['hr.employee'].create({
+            'name': 'Test Employee',
+            'user_id': cls.env.user.id,
+        })
         cls.fallback_project = cls.env['project.project'].create({
             'name': 'Test Fallback Project',
         })
@@ -86,7 +93,7 @@ class TestImportAccountAnalyticLine(TestImportWorklogBase):
             [{
                 'account_id': expected_project.analytic_account_id.id,
                 'backend_id': self.backend_record.id,
-                'date': '2019-04-04',
+                'date': date(2019, 4, 4),
                 'employee_id': self.env.user.employee_ids[0].id,
                 'external_id': jira_worklog_id,
                 'jira_epic_issue_key': False,
