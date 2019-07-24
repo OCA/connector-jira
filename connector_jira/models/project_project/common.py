@@ -29,7 +29,7 @@ class JiraProjectBaseFields(models.AbstractModel):
 
     jira_key = fields.Char(
         string='JIRA Key',
-        kequired=True,
+        required=True,
         size=10,  # limit on JIRA
     )
     sync_issue_type_ids = fields.Many2many(
