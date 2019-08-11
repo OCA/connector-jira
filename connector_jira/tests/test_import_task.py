@@ -1,5 +1,8 @@
 # Copyright 2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+
+from odoo import exceptions
 
 from .common import recorder, JiraSavepointCase
 
@@ -62,6 +65,12 @@ class TestImportTask(JiraSavepointCase):
 
         self.assertEqual(binding.odoo_id.active, expected_active)
 
+        with self.assertRaises(exceptions.UserError):
+            binding.odoo_id.active = not expected_active
+
+        with self.assertRaises(exceptions.UserError):
+            binding.odoo_id.unlink()
+
     @recorder.use_cassette
     def test_import_task_type_not_synced(self):
         """Import ask where we do not sync this type issue: ignored"""
@@ -118,3 +127,15 @@ class TestImportTask(JiraSavepointCase):
         self.assertEqual(epic_binding.name, 'Epic1')
         self.assertEqual(epic_binding.jira_issue_type_id,
                          self.epic_issue_type)
+
+    def test_task_restrict_create(self):
+        self._create_project_binding(
+            self.project,
+            issue_types=self.env['jira.issue.type'].search([]),
+            external_id='10000'
+        )
+        with self.assertRaises(exceptions.UserError):
+            self.env['project.task'].create({
+                'name': 'My task',
+                'project_id': self.project.id,
+            })
