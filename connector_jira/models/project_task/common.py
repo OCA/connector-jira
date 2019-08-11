@@ -1,4 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import api, fields, models, exceptions, _
@@ -53,6 +54,10 @@ class JiraProjectTask(models.Model):
         ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
          "A binding already exists for this task and this backend."),
     ]
+
+    @api.multi
+    def _is_linked(self):
+        return self.mapped('jira_project_bind_id')._is_linked()
 
     @api.multi
     def unlink(self):
@@ -159,6 +164,64 @@ class ProjectTask(models.Model):
                 name = '[%s] %s' % (task.jira_compound_key, name)
             names.append((task_id, name))
         return names
+
+    @api.model
+    def _get_connector_jira_fields(self):
+        return [
+            'jira_bind_ids',
+            'name',
+            'date_deadline',
+            'user_id',
+            'description',
+            'active',
+            'project_id',
+            'planned_hours',
+            'stage_id',
+        ]
+
+    @api.model
+    def _connector_jira_create_validate(self, vals):
+        ProjectProject = self.env['project.project']
+        project_id = vals.get('project_id')
+        if project_id:
+            project_id = ProjectProject.sudo().browse(project_id)
+            if not self.env.context.get('connector_jira') and \
+                    project_id.mapped('jira_bind_ids')._is_linked():
+                raise exceptions.UserError(_(
+                    'Task can not be created in project linked to JIRA!'
+                ))
+
+    @api.multi
+    def _connector_jira_write_validate(self, vals):
+        if not self.env.context.get('connector_jira') and \
+                any(f in self._get_connector_jira_fields() for f in vals) and \
+                self.mapped('jira_bind_ids')._is_linked():
+            raise exceptions.UserError(_(
+                'Task linked to JIRA Issue can not be modified!'
+            ))
+
+    @api.multi
+    def _connector_jira_unlink_validate(self):
+        if not self.env.context.get('connector_jira') and \
+                self.mapped('jira_bind_ids')._is_linked():
+            raise exceptions.UserError(_(
+                'Task linked to JIRA Issue can not be deleted!'
+            ))
+
+    @api.model
+    def create(self, vals):
+        self._connector_jira_create_validate(vals)
+        return super().create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self._connector_jira_write_validate(vals)
+        return super().write(vals)
+
+    @api.multi
+    def unlink(self):
+        self._connector_jira_unlink_validate()
+        return super().unlink()
 
 
 class TaskAdapter(Component):
