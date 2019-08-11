@@ -195,6 +195,13 @@ class JiraProjectProject(models.Model):
                     binding.project_template_shared
                 )
 
+    @api.multi
+    def _is_linked(self):
+        for project in self:
+            if project.sync_action == 'link':
+                return True
+        return False
+
     @api.model
     def create(self, values):
         record = super().create(values)

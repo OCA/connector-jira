@@ -190,6 +190,7 @@ class JiraImporter(Component):
 
     def _create_context(self):
         return {
+            'connector_jira': True,
             'connector_no_export': True,
             'tracking_disable': True,
         }
@@ -215,6 +216,7 @@ class JiraImporter(Component):
 
     def _update_context(self):
         return {
+            'connector_jira': True,
             'connector_no_export': True,
             'tracking_disable': True,
         }
