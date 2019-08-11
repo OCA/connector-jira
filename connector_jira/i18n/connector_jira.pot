@@ -19,7 +19,7 @@ msgid "# Tasks"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:213
+#: code:addons/connector_jira/models/jira_backend/common.py:214
 #: code:addons/connector_jira/models/project_project/common.py:175
 #: code:addons/connector_jira/models/project_project/common.py:194
 #: code:addons/connector_jira/models/project_project/project_link_jira.py:73
@@ -456,7 +456,7 @@ msgid "Confirm"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:465
+#: code:addons/connector_jira/models/jira_backend/common.py:466
 #, python-format
 msgid "Connection successful"
 msgstr ""
@@ -750,8 +750,8 @@ msgid "External user with limited access, created only for the purpose of sharin
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:458
-#: code:addons/connector_jira/models/jira_backend/common.py:462
+#: code:addons/connector_jira/models/jira_backend/common.py:459
+#: code:addons/connector_jira/models/jira_backend/common.py:463
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -951,7 +951,7 @@ msgid "If the email address is on the blacklist, the contact won't receive mass 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:426
+#: code:addons/connector_jira/models/jira_backend/common.py:427
 #, python-format
 msgid "If you change the base URL, you must delete and create the Webhooks again."
 msgstr ""
@@ -1555,7 +1555,7 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/res_users/common.py:38
+#: code:addons/connector_jira/models/res_users/common.py:41
 #, python-format
 msgid "No JIRA user could be found"
 msgstr ""
@@ -1683,7 +1683,7 @@ msgid "Only issues of these levels are imported. When a worklog is imported no a
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:368
+#: code:addons/connector_jira/models/jira_backend/common.py:369
 #, python-format
 msgid "Only one JIRA backend can use the webhook at a time. You must disable them on the backend \"%s\" before activating them here."
 msgstr ""
@@ -1695,7 +1695,7 @@ msgid "Only one Jira binding can be configured with the Sync. Action \"Export\" 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:298
+#: code:addons/connector_jira/models/jira_backend/common.py:299
 #, python-format
 msgid "Only one backend can listen to webhooks"
 msgstr ""
@@ -2142,9 +2142,9 @@ msgid "Several users found (%s) for jira account %s (%s). Please link it manuall
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/res_users/common.py:64
+#: code:addons/connector_jira/models/res_users/common.py:71
 #, python-format
-msgid "Several users found for %s. Set it manually."
+msgid "Several users found with \"%s\" set to \"%s\". Set it manually."
 msgstr ""
 
 #. module: connector_jira
@@ -2357,7 +2357,7 @@ msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:380
+#: code:addons/connector_jira/models/jira_backend/common.py:381
 #, python-format
 msgid "The Odoo Webhook base URL must be set."
 msgstr ""
@@ -2428,7 +2428,7 @@ msgid "The project will be created on JIRA in background."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:240
+#: code:addons/connector_jira/models/jira_backend/common.py:241
 #, python-format
 msgid "The synchronization timestamp is currently locked, probably due to an ongoing synchronization."
 msgstr ""
@@ -2599,7 +2599,7 @@ msgid "Visit this URL, authorize and continue"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:428
+#: code:addons/connector_jira/models/jira_backend/common.py:429
 #, python-format
 msgid "Warning"
 msgstr ""
