@@ -1,5 +1,8 @@
 # Copyright 2016-2019 Camptocamp SA
-# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
+
+from itertools import groupby
 
 from odoo import _, api, exceptions, fields, models
 from odoo.addons.component.core import Component
@@ -54,20 +57,24 @@ class ResUsers(models.Model):
                 for user in self:
                     if binder.to_external(user, wrap=True):
                         continue
-                    jira_user = adapter.search(fragment=user.email)
-                    if not jira_user:
-                        jira_user = adapter.search(fragment=user.login)
+                    jira_user = None
+                    for resolve_by in backend.get_user_resolution_order():
+                        resolve_by_key = resolve_by
+                        resolve_by_value = user[resolve_by]
+                        jira_user = adapter.search(fragment=resolve_by_value)
+                        if jira_user:
+                            break
                     if not jira_user:
                         continue
                     elif len(jira_user) > 1:
                         if raise_if_mismatch:
                             raise exceptions.UserError(_(
-                                'Several users found for %s. '
+                                'Several users found with "%s" set to "%s". '
                                 'Set it manually.'
-                            ) % user.login)
+                            ) % (resolve_by_key, resolve_by_value))
                         bknd_result['error'].append({
-                            'key': 'login',
-                            'value': user.login,
+                            'key': resolve_by_key,
+                            'value': resolve_by_value,
                             'error': 'multiple_found',
                             'detail': [x.key for x in jira_user]
                         })
@@ -82,8 +89,8 @@ class ResUsers(models.Model):
                     ])
                     if existing:
                         bknd_result['error'].append({
-                            'key': 'login',
-                            'value': user.login,
+                            'key': resolve_by_key,
+                            'value': resolve_by_value,
                             'error': 'other_user_bound',
                             'detail': 'linked with %s' % (existing.login,)
                         })
@@ -127,4 +134,12 @@ class UserAdapter(Component):
         users = self.client.search_users(fragment, maxResults=None,
                                          includeActive=True,
                                          includeInactive=True)
+
+        # User 'key' is unique and if same key appears several times, it means
+        # that same user is present in multiple User Directories
+        users = list(map(
+            lambda group: list(group[1])[0],
+            groupby(users, key=lambda user: user.key)
+        ))
+
         return users
