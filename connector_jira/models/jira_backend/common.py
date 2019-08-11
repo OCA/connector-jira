@@ -1,5 +1,6 @@
 # Copyright: 2015 LasLabs, Inc.
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import binascii
@@ -502,6 +503,12 @@ class JiraBackend(models.Model):
                     'connector_jira.backend_report_user_sync'
                 ).render({'backend': self, 'result': bknd_result})
         return True
+
+    @api.multi
+    def get_user_resolution_order(self):
+        """ User resolution should happen by login first as it's unique, while
+        resolving by email is likely to give false positives """
+        return ['login', 'email']
 
     @api.multi
     def import_issue_type(self):
