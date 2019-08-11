@@ -80,6 +80,31 @@
     </field>
   </record>
 
+  <record id="view_project" model="ir.ui.view">
+    <field name="name">project.project.tree</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project"/>
+    <field name="arch" type="xml">
+      <field name="name" position="before">
+        <field name="jira_key"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="view_project_kanban" model="ir.ui.view">
+    <field name="name">project.project.kanban</field>
+    <field name="model">project.project</field>
+    <field name="inherit_id" ref="project.view_project_kanban"/>
+    <field name="arch" type="xml">
+      <field name="name" position="after">
+        <field name="jira_key"/>
+      </field>
+      <xpath expr="//t[@t-esc='record.name.value']" position="before">
+        <span t-if="record.jira_key.value">[<t t-esc="record.jira_key.value"/>] </span>
+      </xpath>
+    </field>
+  </record>
+
   <record id="view_jira_project_project_tree" model="ir.ui.view">
     <field name="name">jira.project.project.tree</field>
     <field name="model">jira.project.project</field>
