@@ -1,4 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 """
@@ -189,7 +190,8 @@ class JiraImporter(Component):
 
     def _create_context(self):
         return {
-            'connector_no_export': True
+            'connector_no_export': True,
+            'tracking_disable': True,
         }
 
     def _create(self, data):
@@ -198,7 +200,7 @@ class JiraImporter(Component):
         self._validate_data(data)
         with self._retry_unique_violation():
             model_ctx = self.model.with_context(**self._create_context())
-            binding = model_ctx.create(data)
+            binding = model_ctx.sudo().create(data)
 
         _logger.debug('%s created from Jira %s',
                       binding, self.external_id)
@@ -211,11 +213,18 @@ class JiraImporter(Component):
             **kwargs
         )
 
+    def _update_context(self):
+        return {
+            'connector_no_export': True,
+            'tracking_disable': True,
+        }
+
     def _update(self, binding, data):
         """ Update an Odoo record """
         # special check on data before import
         self._validate_data(data)
-        binding.with_context(connector_no_export=True).write(data)
+        binding_ctx = binding.with_context(**self._update_context())
+        binding_ctx.sudo().write(data)
         _logger.debug('%s updated from Jira %s', binding, self.external_id)
         return
 
