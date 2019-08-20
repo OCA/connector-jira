@@ -185,7 +185,7 @@ msgid "Allow timesheets"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:345
+#: code:addons/connector_jira/components/importer.py:354
 #, python-format
 msgid "Already up-to-date."
 msgstr ""
@@ -280,13 +280,13 @@ msgid "Batch from {} UTC to {} UTC generated {} delete jobs"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:458
+#: code:addons/connector_jira/components/importer.py:467
 #, python-format
 msgid "Batch from {} UTC to {} UTC generated {} imports"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:514
+#: code:addons/connector_jira/components/importer.py:523
 #, python-format
 msgid "Binding not found"
 msgstr ""
@@ -1980,13 +1980,13 @@ msgid "Record Thread ID"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:524
+#: code:addons/connector_jira/components/importer.py:533
 #, python-format
 msgid "Record deleted"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:263
+#: code:addons/connector_jira/components/importer.py:272
 #: code:addons/connector_jira/models/account_analytic_line/importer.py:290
 #, python-format
 msgid "Record does no longer exist in Jira"
