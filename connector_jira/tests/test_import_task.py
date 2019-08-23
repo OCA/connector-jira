@@ -25,6 +25,11 @@ class TestImportTask(JiraSavepointCase):
         cls.project = cls.env['project.project'].create({
             'name': 'Jira Project',
         })
+        cls.env['project.task.type'].create({
+            'name': 'To Do',
+            'sequence': 1,
+            'project_ids': [(4, cls.project.id)],
+        })
 
     @recorder.use_cassette
     def test_import_task_epic(self):
@@ -64,6 +69,7 @@ class TestImportTask(JiraSavepointCase):
         self.assertFalse(binding.jira_parent_id)
 
         self.assertEqual(binding.odoo_id.active, expected_active)
+        self.assertEqual(binding.odoo_id.stage_id.name, 'To Do')
 
         with self.assertRaises(exceptions.UserError):
             binding.odoo_id.active = not expected_active
@@ -125,6 +131,7 @@ class TestImportTask(JiraSavepointCase):
         self.assertEqual(task_binding.jira_issue_type_id,
                          self.task_issue_type)
         self.assertTrue(task_binding.jira_epic_link_id)
+        self.assertAlmostEqual(task_binding.odoo_id.planned_hours, 4.5)
 
         epic_binding = task_binding.jira_epic_link_id
         self.assertEqual(epic_binding.jira_key, 'TEST-1')
