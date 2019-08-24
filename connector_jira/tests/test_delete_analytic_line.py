@@ -13,7 +13,7 @@ class TestBatchTimestampDelete(JiraSavepointCase):
             ('name', '=', 'Epic'),
         ])
         cls.project = cls.env['project.project'].create({
-            'name': 'Test Project',
+            'name': 'Jira Project',
         })
 
     @recorder.use_cassette
