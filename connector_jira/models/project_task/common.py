@@ -4,6 +4,7 @@
 
 from odoo import api, fields, models, exceptions, _
 from odoo.addons.component.core import Component
+from odoo.osv import expression
 
 
 class JiraProjectTask(models.Model):
@@ -164,6 +165,23 @@ class ProjectTask(models.Model):
                 name = '[%s] %s' % (task.jira_compound_key, name)
             names.append((task_id, name))
         return names
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        res = super().name_search(name, args, operator, limit)
+        if not name:
+            return res
+        domain = [
+            '|',
+            ('jira_compound_key', '=ilike', name + '%'),
+            ('id', 'in', [x[0] for x in res])
+        ]
+        if operator in expression.NEGATIVE_TERM_OPERATORS:
+            domain = ['&', '!'] + domain[1:]
+        return self.search(
+            domain + (args or []),
+            limit=limit,
+        ).name_get()
 
     @api.model
     def _get_connector_jira_fields(self):

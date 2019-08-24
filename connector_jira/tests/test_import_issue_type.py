@@ -27,7 +27,7 @@ class TestImportIssueType(JiraSavepointCase):
         ])
 
         project = self.env['project.project'].create({
-            'name': 'Test Project',
+            'name': 'Jira Project',
         })
         project_binding = self._create_project_binding(
             project, issue_types=epic_issue_type,

@@ -18,7 +18,7 @@ class TestBatchTimestampDelete(JiraSavepointCase):
             ('name', '=', 'Epic'),
         ])
         cls.project = cls.env['project.project'].create({
-            'name': 'Test Project',
+            'name': 'Jira Project',
         })
 
     # note: when you are recording tests with VCR, Jira
