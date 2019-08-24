@@ -39,7 +39,7 @@ msgid "<strong>error:</strong>"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:66
+#: code:addons/connector_jira/models/project_task/common.py:67
 #, python-format
 msgid "A Jira task cannot be deleted."
 msgstr ""
@@ -1908,7 +1908,7 @@ msgid "Project or issue type is not synchronized."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_project/common.py:324
+#: code:addons/connector_jira/models/project_project/common.py:342
 #, python-format
 msgid "Project template with key \"%s\" not found."
 msgstr ""
@@ -2325,19 +2325,19 @@ msgid "Task Count"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:190
+#: code:addons/connector_jira/models/project_task/common.py:208
 #, python-format
 msgid "Task can not be created in project linked to JIRA!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:207
+#: code:addons/connector_jira/models/project_task/common.py:225
 #, python-format
 msgid "Task linked to JIRA Issue can not be deleted!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:199
+#: code:addons/connector_jira/models/project_task/common.py:217
 #, python-format
 msgid "Task linked to JIRA Issue can not be modified!"
 msgstr ""

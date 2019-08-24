@@ -14,7 +14,7 @@ class TestImportWorklogBase(JiraSavepointCase):
         super().setUpClass()
         cls._create_issue_type_bindings()
         cls.project = cls.env['project.project'].create({
-            'name': 'Test Project',
+            'name': 'Jira Project',
         })
         cls.task = cls.env['project.task'].create({
             'name': 'My task',

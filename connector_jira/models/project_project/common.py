@@ -14,8 +14,8 @@ except ImportError:
     pass  # already logged in components/adapter.py
 
 from odoo import api, fields, models, exceptions, _, tools
-
 from odoo.addons.component.core import Component
+from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
@@ -250,6 +250,7 @@ class ProjectProject(models.Model):
     jira_key = fields.Char(
         string='JIRA Key',
         compute='_compute_jira_key',
+        store=True,
     )
 
     @api.depends('jira_bind_ids.jira_key')
@@ -267,6 +268,23 @@ class ProjectProject(models.Model):
                 name = '[%s] %s' % (project.jira_key, name)
             names.append((project_id, name))
         return names
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        res = super().name_search(name, args, operator, limit)
+        if not name:
+            return res
+        domain = [
+            '|',
+            ('jira_key', '=ilike', name + '%'),
+            ('id', 'in', [x[0] for x in res])
+        ]
+        if operator in expression.NEGATIVE_TERM_OPERATORS:
+            domain = ['&', '!'] + domain[1:]
+        return self.search(
+            domain + (args or []),
+            limit=limit,
+        ).name_get()
 
     @api.multi
     def create_and_link_jira(self):
