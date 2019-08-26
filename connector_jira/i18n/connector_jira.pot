@@ -39,7 +39,7 @@ msgid "<strong>error:</strong>"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:61
+#: code:addons/connector_jira/models/project_task/common.py:66
 #, python-format
 msgid "A Jira task cannot be deleted."
 msgstr ""
@@ -185,7 +185,7 @@ msgid "Allow timesheets"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:354
+#: code:addons/connector_jira/components/importer.py:356
 #, python-format
 msgid "Already up-to-date."
 msgstr ""
@@ -280,13 +280,13 @@ msgid "Batch from {} UTC to {} UTC generated {} delete jobs"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:467
+#: code:addons/connector_jira/components/importer.py:469
 #, python-format
 msgid "Batch from {} UTC to {} UTC generated {} imports"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:523
+#: code:addons/connector_jira/components/importer.py:525
 #, python-format
 msgid "Binding not found"
 msgstr ""
@@ -739,7 +739,7 @@ msgid "Export to JIRA"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_project/common.py:228
+#: code:addons/connector_jira/models/project_project/common.py:235
 #, python-format
 msgid "Exported project cannot be deleted."
 msgstr ""
@@ -1908,7 +1908,7 @@ msgid "Project or issue type is not synchronized."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_project/common.py:317
+#: code:addons/connector_jira/models/project_project/common.py:324
 #, python-format
 msgid "Project template with key \"%s\" not found."
 msgstr ""
@@ -1980,13 +1980,13 @@ msgid "Record Thread ID"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:533
+#: code:addons/connector_jira/components/importer.py:535
 #, python-format
 msgid "Record deleted"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:272
+#: code:addons/connector_jira/components/importer.py:274
 #: code:addons/connector_jira/models/account_analytic_line/importer.py:290
 #, python-format
 msgid "Record does no longer exist in Jira"
@@ -2325,6 +2325,24 @@ msgid "Task Count"
 msgstr ""
 
 #. module: connector_jira
+#: code:addons/connector_jira/models/project_task/common.py:190
+#, python-format
+msgid "Task can not be created in project linked to JIRA!"
+msgstr ""
+
+#. module: connector_jira
+#: code:addons/connector_jira/models/project_task/common.py:207
+#, python-format
+msgid "Task linked to JIRA Issue can not be deleted!"
+msgstr ""
+
+#. module: connector_jira
+#: code:addons/connector_jira/models/project_task/common.py:199
+#, python-format
+msgid "Task linked to JIRA Issue can not be modified!"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__task_ids
 msgid "Tasks"
@@ -2351,7 +2369,7 @@ msgid "The 'Epic Name' field on JIRA is a custom field. The name of the field is
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_project/common.py:221
+#: code:addons/connector_jira/models/project_project/common.py:228
 #, python-format
 msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
@@ -2417,7 +2435,7 @@ msgid "The project is now linked with JIRA."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_project/common.py:208
+#: code:addons/connector_jira/models/project_project/common.py:215
 #, python-format
 msgid "The project template cannot be modified."
 msgstr ""
