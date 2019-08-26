@@ -16,6 +16,10 @@ class TestImportWorklogBase(JiraSavepointCase):
         cls.project = cls.env['project.project'].create({
             'name': 'Test Project',
         })
+        cls.task = cls.env['project.task'].create({
+            'name': 'My task',
+            'project_id': cls.project.id,
+        })
         cls.project_binding = cls._create_project_binding(
             cls.project,
             issue_types=cls.env['jira.issue.type'].search([]),
@@ -24,10 +28,6 @@ class TestImportWorklogBase(JiraSavepointCase):
         cls.epic_issue_type = cls.env['jira.issue.type'].search([
             ('name', '=', 'Epic'),
         ])
-        cls.task = cls.env['project.task'].create({
-            'name': 'My task',
-            'project_id': cls.project.id,
-        })
         # Warning: if you add new tests or change the cassettes
         # you might need to change the username
         cls._link_user(cls.env.user, 'gbaconnier')
