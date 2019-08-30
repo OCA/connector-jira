@@ -653,6 +653,57 @@ interactions:
         YXBwbGljYXRpb24vanNvbg==
       Cookie:
       - !!binary |
+        YXRsYXNzaWFuLnhzcmYudG9rZW49QjdEUy1PMllVLUlUMDAtTDhGRF9iOGU1YjdkZjcyMGYwMjY5
+        OWNmZTQyZWRjNjQwODVhOTQyNjNiNzFkX2xpbjsgSlNFU1NJT05JRD1FMDhEMzZFQUI3NTk3NjEx
+        NjkxQURFODE2MDBERTA3Qw==
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+      X-Atlassian-Token:
+      - !!binary |
+        bm8tY2hlY2s=
+    method: GET
+    uri: http://jira:8080/rest/tempo-timesheets/3/worklogs/10000
+  response:
+    body: {string: '{"timeSpentSeconds":1200,"dateStarted":"2019-09-02T00:00:00.000","dateCreated":"2019-09-02T12:38:44.000","dateUpdated":"2019-09-02T12:38:44.000","comment":"daily call","self":"http://jira:8080/rest/api/2/tempo-timesheets/3/worklogs/10000","id":10000,"jiraWorklogId":10000,"author":{"self":"http://jira:8080/rest/api/2/user?username=sorsi","name":"sorsi","key":"sorsi","emailAddress":"simone.orsi@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=32"},"displayName":"simone.orsi@camptocamp.com","active":true,"timeZone":"GMT"},"updateAuthor":{"self":"http://jira:8080/rest/api/2/user?username=sorsi","name":"sorsi","key":"sorsi","emailAddress":"simone.orsi@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/70277b85d2dd0aa7368c6b803836808e?d=mm&s=32"},"displayName":"simone.orsi@camptocamp.com","active":true,"timeZone":"GMT"},"issue":{"self":"http://jira:8080/rest/api/2/issue/10000","id":10000,"projectId":10000,"key":"SIMO-1","remainingEstimateSeconds":171600,"issueType":{"name":"Task","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype"},"summary":"testing this thing"},"worklogAttributes":[],"workAttributeValues":[]}'}
+    headers:
+      Cache-Control: ['no-cache, no-store, no-transform']
+      Content-Security-Policy: [frame-ancestors 'self']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Thu, 09 May 2019 09:34:08 GMT']
+      Set-Cookie: [JSESSIONID=03E4CCF463F68701010AD8F3E984F62D; Path=/; HttpOnly]
+      Transfer-Encoding: [chunked]
+      Vary: [User-Agent]
+      X-AREQUESTID: [574x238x1]
+      X-ASEN: [SEN-L13572467]
+      X-ASESSIONID: [6j7zw5]
+      X-AUSERNAME: [sorsi]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Seraph-LoginReason: [OK]
+      X-XSS-Protection: [1; mode=block]
+      content-length: ['1757']
+    status: {code: 200, message: ''}
+- request:
+    body: null
+    headers:
+      Accept:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Cache-Control:
+      - !!binary |
+        bm8tY2FjaGU=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24vanNvbg==
+      Cookie:
+      - !!binary |
         YXRsYXNzaWFuLnhzcmYudG9rZW49QjdEUy1PMllVLUlUMDAtTDhGRF9iZjQyNWRhMTkzMmFjZDY1
         OGU5ZjM1NmI3YTZiYTI2MzYzMmVlNDg4X2xpbjsgSlNFU1NJT05JRD0wRTAxOTQyRjBBOTAzNEZG
         Q0VGQ0U0RkI5RDExMjgwNQ==
