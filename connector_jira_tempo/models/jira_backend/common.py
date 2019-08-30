@@ -1,4 +1,5 @@
 # Copyright 2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import fields, models, api
@@ -36,7 +37,8 @@ class JiraBackend(models.Model):
     )
 
     @api.multi
-    def _scheduler_sync_jira_tempo_status(self, period_start=None):
+    def _scheduler_sync_tempo_timesheets_approval_status(
+            self, period_start=None):
         """Synchronize JIRA Tempo timesheet status on Odoo TS lines.
 
         Look up for previous week timesheets and update Odoo status.
@@ -55,14 +57,17 @@ class JiraBackend(models.Model):
             # the past week period.
             period_start = get_past_week_1st_day()
         for backend in self:
-            backend._sync_jira_tempo_status(period_start)
+            backend._sync_tempo_timesheets_approval_status(period_start)
 
-    def _sync_jira_tempo_status(self, period_start):
+    def _sync_tempo_timesheets_approval_status(self, period_start):
         """Find users and TS lines and update tempo status."""
         team_id = self.jira_company_team_id
         with self.work_on('jira.account.analytic.line') as work:
             importer = work.component(usage='backend.adapter')
-            result = importer.tempo_read_status_by_team(team_id, period_start)
+            result = importer.tempo_timesheets_approval_read_status_by_team(
+                team_id,
+                period_start,
+            )
             user_binder = importer.binder_for('jira.res.users')
         # Pick the date range from the Tempo period.
         # In this way we make sure we affect only the dates we want.

@@ -29,10 +29,10 @@ msgid "If this flag is ON, once the status is sync'ed from Jira, all approved ti
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.actions.server,name:connector_jira_tempo.ir_cron_jira_sync_jira_tempo_status_ir_actions_server
-#: model:ir.cron,cron_name:connector_jira_tempo.ir_cron_jira_sync_jira_tempo_status
-#: model:ir.cron,name:connector_jira_tempo.ir_cron_jira_sync_jira_tempo_status
-msgid "JIRA - Sync Timesheet approval status"
+#: model:ir.actions.server,name:connector_jira_tempo.ir_cron_jira_sync_tempo_timesheets_approval_status_ir_actions_server
+#: model:ir.cron,cron_name:connector_jira_tempo.ir_cron_jira_sync_tempo_timesheets_approval_status
+#: model:ir.cron,name:connector_jira_tempo.ir_cron_jira_sync_tempo_timesheets_approval_status
+msgid "JIRA - Sync Tempo Timesheet approval status"
 msgstr ""
 
 #. module: connector_jira_tempo
