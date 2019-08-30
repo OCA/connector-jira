@@ -2,12 +2,14 @@
 
 {
     'name': 'JIRA Connector Tempo',
-    'version': '12.0.1.0.0',
-    'author': 'Camptocamp,Odoo Community Association (OCA)',
+    'version': '12.0.2.0.0',
+    'author':
+        'Camptocamp, '
+        'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'category': 'Connector',
     'depends': [
-        'connector_jira',
+        'connector_jira_tempo_base',
         'hr_timesheet',
     ],
     'website': 'https://github.com/OCA/connector-jira',
