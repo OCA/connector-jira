@@ -1,5 +1,8 @@
 # Copyright 2019 Camptocamp SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+
+from datetime import date
 
 from .common import recorder
 from odoo.addons.connector_jira.tests.test_import_analytic_line \
@@ -47,7 +50,9 @@ class TestImportWorklogStatus(TestImportWorklogBase):
         cls.issue_type = cls.env['jira.issue.type'].search([
             ('name', '=', 'Task'),
         ])
-        cls.task2 = cls.env['project.task'].create({
+        cls.task2 = cls.env['project.task'].with_context(
+            connector_jira=True,
+        ).create({
             'name': 'My task 2',
             'project_id': cls.project.id,
         })
@@ -67,7 +72,7 @@ class TestImportWorklogStatus(TestImportWorklogBase):
             [{
                 'account_id': self.project.analytic_account_id.id,
                 'backend_id': self.backend_record.id,
-                'date': '2019-05-08',
+                'date': date(2019, 5, 8),
                 'employee_id': self.user1.employee_ids[0].id,
                 'external_id': jira_worklog_id,
                 'jira_epic_issue_key': False,
