@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgid "Approved"
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.model.fields,help:connector_jira_tempo.field_jira_backend_validate_approved_ts
+#: model:ir.model.fields,help:connector_jira_tempo.field_jira_backend__validate_approved_ts
 msgid "If this flag is ON, once the status is sync'ed from Jira, all approved timesheets will be validated on Odoo as well."
 msgstr ""
 
@@ -41,13 +41,13 @@ msgid "Jira Backend"
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_backend_jira_company_team_id
+#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_backend__jira_company_team_id
 msgid "Jira Company Team"
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.model.fields,field_description:connector_jira_tempo.field_account_analytic_line_jira_tempo_status
-#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_account_analytic_line_jira_tempo_status
+#: model:ir.model.fields,field_description:connector_jira_tempo.field_account_analytic_line__jira_tempo_status
+#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_account_analytic_line__jira_tempo_status
 msgid "Jira Tempo Status"
 msgstr ""
 
@@ -62,12 +62,12 @@ msgid "Ready to submit"
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.model.fields,help:connector_jira_tempo.field_jira_backend_jira_company_team_id
+#: model:ir.model.fields,help:connector_jira_tempo.field_jira_backend__jira_company_team_id
 msgid "This field contains the ID of a company wide group on JIRA. Its main usage is to fetch tempo statuses for ALL employees."
 msgstr ""
 
 #. module: connector_jira_tempo
-#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_backend_validate_approved_ts
+#: model:ir.model.fields,field_description:connector_jira_tempo.field_jira_backend__validate_approved_ts
 msgid "Validate Approved Ts"
 msgstr ""
 
