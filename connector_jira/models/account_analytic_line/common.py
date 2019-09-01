@@ -1,14 +1,17 @@
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import json
 
 from collections import namedtuple
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions, _
 from odoo.addons.queue_job.job import job, related_action
 
 from odoo.addons.component.core import Component
+
+from ...fields import normalize_field_value
 
 
 UpdatedWorklog = namedtuple(
@@ -46,6 +49,13 @@ class JiraAccountAnalyticLine(models.Model):
     # in case we'll need it for an eventual export
     jira_issue_id = fields.Char()
 
+    # As we can have more than one jira binding on a project.project, we store
+    # to which one a task binding is related.
+    jira_project_bind_id = fields.Many2one(
+        comodel_name='jira.project.project',
+        ondelete='restrict',
+    )
+
     # we have to store these fields on the analytic line because
     # they may be different than the ones on their odoo task:
     # for instance, we do not import "Tasks" but we import "Epics",
@@ -77,6 +87,10 @@ class JiraAccountAnalyticLine(models.Model):
         ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
          "A binding already exists for this line and this backend."),
     ]
+
+    @api.multi
+    def _is_linked(self):
+        return self.mapped('jira_project_bind_id')._is_linked()
 
     @api.depends('jira_issue_key', 'jira_epic_issue_key')
     def _compute_jira_issue_url(self):
@@ -123,31 +137,26 @@ class AccountAnalyticLine(models.Model):
     jira_issue_key = fields.Char(
         string='Original JIRA Issue Key',
         compute='_compute_jira_references',
-        readonly=True,
         store=True,
     )
     jira_issue_url = fields.Char(
         string='Original JIRA issue Link',
         compute='_compute_jira_references',
-        readonly=True,
     )
     jira_epic_issue_key = fields.Char(
         compute='_compute_jira_references',
         string='Original JIRA Epic Key',
-        readonly=True,
         store=True,
     )
     jira_epic_issue_url = fields.Char(
         string='Original JIRA Epic Link',
         compute='_compute_jira_references',
-        readonly=True
     )
 
     jira_issue_type_id = fields.Many2one(
         comodel_name='jira.issue.type',
         string='Original JIRA Issue Type',
         compute='_compute_jira_references',
-        readonly=True,
         store=True
     )
 
@@ -170,6 +179,73 @@ class AccountAnalyticLine(models.Model):
             record.jira_issue_type_id = main_binding.jira_issue_type_id
             record.jira_epic_issue_key = main_binding.jira_epic_issue_key
             record.jira_epic_issue_url = main_binding.jira_epic_issue_url
+
+    @api.model
+    def _get_connector_jira_fields(self):
+        return [
+            'jira_bind_ids',
+            'project_id',
+            'task_id',
+            'user_id',
+            'employee_id',
+            'name',
+            'date',
+            'unit_amount',
+        ]
+
+    @api.model
+    def _connector_jira_create_validate(self, vals):
+        ProjectProject = self.env['project.project']
+        project_id = vals.get('project_id')
+        if project_id:
+            project_id = ProjectProject.sudo().browse(project_id)
+            if not self.env.context.get('connector_jira') and \
+                    project_id.mapped('jira_bind_ids')._is_linked():
+                raise exceptions.UserError(_(
+                    'Timesheet can not be created in project linked to JIRA!'
+                ))
+
+    @api.multi
+    def _connector_jira_write_validate(self, vals):
+        if not self.env.context.get('connector_jira') and \
+                self.mapped('jira_bind_ids')._is_linked():
+            normalized_vals = {
+                field: normalize_field_value(self._fields[field], value)
+                for field, value in vals.items()
+            }
+            for current_vals in self.read(
+                    list(vals.keys()), load='_classic_write'):
+                for field in self._get_connector_jira_fields():
+                    if field not in vals:
+                        continue
+                    if normalized_vals[field] == current_vals[field]:
+                        continue
+                    raise exceptions.UserError(_(
+                        'Timesheet linked to JIRA Worklog can not be modified!'
+                    ))
+
+    @api.multi
+    def _connector_jira_unlink_validate(self):
+        if not self.env.context.get('connector_jira') and \
+                self.mapped('jira_bind_ids')._is_linked():
+            raise exceptions.UserError(_(
+                'Timesheet linked to JIRA Worklog can not be deleted!'
+            ))
+
+    @api.model
+    def create(self, vals):
+        self._connector_jira_create_validate(vals)
+        return super().create(vals)
+
+    @api.multi
+    def write(self, vals):
+        self._connector_jira_write_validate(vals)
+        return super().write(vals)
+
+    @api.multi
+    def unlink(self):
+        self._connector_jira_unlink_validate()
+        return super().unlink()
 
 
 class WorklogAdapter(Component):

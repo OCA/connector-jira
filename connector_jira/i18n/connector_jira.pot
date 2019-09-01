@@ -39,7 +39,7 @@ msgid "<strong>error:</strong>"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:67
+#: code:addons/connector_jira/models/project_task/common.py:69
 #, python-format
 msgid "A Jira task cannot be deleted."
 msgstr ""
@@ -1254,6 +1254,7 @@ msgid "Jira Project"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_project_bind_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_project_bind_id
 msgid "Jira Project Bind"
 msgstr ""
@@ -1567,7 +1568,7 @@ msgid "No user found for jira account %s (%s). Please link it manually from the 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:66
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:67
 #: code:addons/connector_jira/models/project_task/importer.py:66
 #, python-format
 msgid "No user found with login \"%s\" or email \"%s\".You must create a user or link it manually if the login/email differs."
@@ -1987,7 +1988,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:274
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:290
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:297
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
@@ -2325,19 +2326,19 @@ msgid "Task Count"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:208
+#: code:addons/connector_jira/models/project_task/common.py:210
 #, python-format
 msgid "Task can not be created in project linked to JIRA!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:225
+#: code:addons/connector_jira/models/project_task/common.py:237
 #, python-format
 msgid "Task linked to JIRA Issue can not be deleted!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:217
+#: code:addons/connector_jira/models/project_task/common.py:229
 #, python-format
 msgid "Task linked to JIRA Issue can not be modified!"
 msgstr ""
@@ -2486,6 +2487,24 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__odoo_id
 msgid "Timesheet Line"
+msgstr ""
+
+#. module: connector_jira
+#: code:addons/connector_jira/models/account_analytic_line/common.py:204
+#, python-format
+msgid "Timesheet can not be created in project linked to JIRA!"
+msgstr ""
+
+#. module: connector_jira
+#: code:addons/connector_jira/models/account_analytic_line/common.py:231
+#, python-format
+msgid "Timesheet linked to JIRA Worklog can not be deleted!"
+msgstr ""
+
+#. module: connector_jira
+#: code:addons/connector_jira/models/account_analytic_line/common.py:223
+#, python-format
+msgid "Timesheet linked to JIRA Worklog can not be modified!"
 msgstr ""
 
 #. module: connector_jira
@@ -2721,7 +2740,7 @@ msgid "e.g. https://example.com/jira"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:24
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:25
 #, python-format
 msgid "missing description"
 msgstr ""
