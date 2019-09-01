@@ -19,10 +19,6 @@ class TestBatchTimestampDelete(JiraSavepointCase):
     @recorder.use_cassette
     def test_delete_analytic_line(self):
         """Import all deleted worklogs since last timestamp"""
-        self._create_project_binding(
-            self.project, issue_types=self.epic_issue_type,
-            external_id='10000'
-        )
         # Simulate a worklogs we would already have imported and is
         # deleted in Jira. First create the binding as it would be
         # in Odoo.
@@ -33,6 +29,10 @@ class TestBatchTimestampDelete(JiraSavepointCase):
             'name': 'A worklog that will be deleted',
             'user_id': self.env.user.id,
         })
+        self._create_project_binding(
+            self.project, issue_types=self.epic_issue_type,
+            external_id='10000'
+        )
         binding = self._create_analytic_line_binding(
             line,
             jira_issue_id='10101',

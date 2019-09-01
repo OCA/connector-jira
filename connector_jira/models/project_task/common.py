@@ -5,6 +5,8 @@
 from odoo import api, fields, models, exceptions, _
 from odoo.addons.component.core import Component
 
+from ...fields import normalize_field_value
+
 
 class JiraProjectTask(models.Model):
     _name = 'jira.project.task'
@@ -194,11 +196,21 @@ class ProjectTask(models.Model):
     @api.multi
     def _connector_jira_write_validate(self, vals):
         if not self.env.context.get('connector_jira') and \
-                any(f in self._get_connector_jira_fields() for f in vals) and \
                 self.mapped('jira_bind_ids')._is_linked():
-            raise exceptions.UserError(_(
-                'Task linked to JIRA Issue can not be modified!'
-            ))
+            normalized_vals = {
+                field: normalize_field_value(self._fields[field], value)
+                for field, value in vals.items()
+            }
+            for current_vals in self.read(
+                    list(vals.keys()), load='_classic_write'):
+                for field in self._get_connector_jira_fields():
+                    if field not in vals:
+                        continue
+                    if normalized_vals[field] == current_vals[field]:
+                        continue
+                    raise exceptions.UserError(_(
+                        'Task linked to JIRA Issue can not be modified!'
+                    ))
 
     @api.multi
     def _connector_jira_unlink_validate(self):
