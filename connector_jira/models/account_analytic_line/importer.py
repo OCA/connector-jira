@@ -1,4 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
@@ -86,11 +87,17 @@ class AnalyticLineMapper(Component):
                 return {'project_id': self.options.fallback_project.id}
             project = self.options.project_binding.odoo_id
             if project:
-                return {'project_id': project.id}
+                return {
+                    'project_id': project.id,
+                    'jira_project_bind_id': self.options.project_binding.id,
+                }
 
         project = task_binding.project_id
-        return {'task_id': task_binding.odoo_id.id,
-                'project_id': project.id}
+        return {
+            'task_id': task_binding.odoo_id.id,
+            'project_id': project.id,
+            'jira_project_bind_id': task_binding.jira_project_bind_id.id,
+        }
 
     @mapping
     def backend_id(self, record):
