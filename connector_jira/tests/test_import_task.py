@@ -23,7 +23,7 @@ class TestImportTask(JiraSavepointCase):
             ('name', '=', 'Sub-task'),
         ])
         cls.project = cls.env['project.project'].create({
-            'name': 'Test Project',
+            'name': 'Jira Project',
         })
 
     @recorder.use_cassette
@@ -99,6 +99,10 @@ class TestImportTask(JiraSavepointCase):
             ),
             external_id='10000'
         )
+
+        projects_by_name = self.env['project.project'].name_search('TEST')
+        self.assertEqual(len(projects_by_name), 1)
+
         jira_subtask_issue_id = '10002'
         self.env['jira.project.task'].import_record(
             self.backend_record, jira_subtask_issue_id
@@ -127,6 +131,10 @@ class TestImportTask(JiraSavepointCase):
         self.assertEqual(epic_binding.name, 'Epic1')
         self.assertEqual(epic_binding.jira_issue_type_id,
                          self.epic_issue_type)
+
+        tasks_by_name = self.env['project.task'].name_search('TEST-3')
+        self.assertEqual(len(tasks_by_name), 1)
+        self.assertEqual(tasks_by_name[0][0], binding.odoo_id.id)
 
     def test_task_restrict_create(self):
         self._create_project_binding(
