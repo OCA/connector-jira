@@ -1,4 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
+# Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import _
@@ -96,7 +97,7 @@ class ProjectTaskMapper(Component):
 
     @mapping
     def parent(self, record):
-        jira_parent = record['fields'].get('parent', {})
+        jira_parent = record['fields'].get('parent')
         if not jira_parent:
             return {}
         jira_parent_id = jira_parent['id']
@@ -107,6 +108,32 @@ class ProjectTaskMapper(Component):
     @mapping
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
+
+    @mapping
+    def status(self, record):
+        status = record['fields'].get('status', {})
+        status_name = status.get('name')
+        if not status_name:
+            return {'stage_id': False}
+        project_binder = self.binder_for('jira.project.project')
+        project_id = project_binder.unwrap_binding(
+            self.options.project_binding
+        )
+        stage = self.env['project.task.type'].search(
+            [
+                ('name', '=', status_name),
+                ('project_ids', '=', project_id.id),
+            ],
+            limit=1,
+        )
+        return {'stage_id': stage.id}
+
+    @mapping
+    def time_estimate(self, record):
+        original_estimate = record['fields'].get('timeoriginalestimate')
+        if not original_estimate:
+            return {'planned_hours': False}
+        return {'planned_hours': float(original_estimate) / 3600.0}
 
     def finalize(self, map_record, values):
         values = values.copy()
