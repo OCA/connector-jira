@@ -43,7 +43,7 @@ class JiraAdapter(Component):
             self,
             path,
             data=None,
-            base=jira.resources.Resource.JIRA_BASE_URL,
+            base=None,
     ):
         """Get the json for a given path and payload
 
@@ -55,6 +55,8 @@ class JiraAdapter(Component):
         :type base: Optional[str]
         :rtype: Union[Dict[str, Any], List[Dict[str, str]]]
         """
+        if not base:
+            base = jira.resources.Resource.JIRA_BASE_URL
         url = self.client._get_url(path, base)
         r = self.client._session.post(url, data=data)
         try:
