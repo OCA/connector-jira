@@ -7,13 +7,15 @@ from odoo.addons.component.core import Component
 _logger = logging.getLogger(__name__)
 
 try:
-    import jira
+    from jira.resources import Resource
     from jira.utils import CaseInsensitiveDict
 except ImportError as err:
     _logger.debug(err)
+    Resource = object
+    CaseInsensitiveDict = None
 
 
-class Organization(jira.resources.Resource):
+class Organization(Resource):
     """A Service Desk Organization."""
 
     def __init__(self, options, session, raw=None):
@@ -35,7 +37,10 @@ class OrganizationAdapter(Component):
     # The Service Desk REST API returns an error if this header
     # is not used. The API may change so they want an agreement for
     # the client about this.
-    _desk_headers = CaseInsensitiveDict({'X-ExperimentalApi': 'opt-in'})
+    _desk_headers = CaseInsensitiveDict({'X-ExperimentalApi': 'opt-in'}) if (
+        CaseInsensitiveDict
+    ) else None
+
     _desk_api_path_base = '{server}/rest/servicedeskapi/{path}'
 
     def __init__(self, work_context):
