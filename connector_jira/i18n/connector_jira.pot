@@ -735,7 +735,7 @@ msgid "Epic Name Field"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/backend_adapter.py:95
+#: code:addons/connector_jira/components/backend_adapter.py:97
 #, python-format
 msgid "Error during connection with Jira: %s"
 msgstr ""
@@ -1201,7 +1201,7 @@ msgid "Jira Binding (abstract)"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/backend_adapter.py:99
+#: code:addons/connector_jira/components/backend_adapter.py:101
 #, python-format
 msgid "Jira Error: %s"
 msgstr ""
@@ -1888,7 +1888,7 @@ msgid "Record does no longer exist in Jira"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/backend_adapter.py:103
+#: code:addons/connector_jira/components/backend_adapter.py:105
 #, python-format
 msgid "Record does not exist in Jira: %s"
 msgstr ""
