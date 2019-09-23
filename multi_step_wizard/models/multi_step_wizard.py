@@ -54,6 +54,15 @@ class MultiStepWizard(models.AbstractModel):
         state_method()
         return self._reopen_self()
 
+    def open_previous(self):
+        state_method = getattr(self, 'state_previous_%s' % (self.state,), None)
+        if state_method is None:
+            raise NotImplementedError(
+                'No method defined for state %s' % (self.state,)
+            )
+        state_method()
+        return self._reopen_self()
+
     def _reopen_self(self):
         return {
             'type': 'ir.actions.act_window',
