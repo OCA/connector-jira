@@ -198,6 +198,23 @@
                   the field will be empty.
                 </p>
               </group>
+              <group name="worklog" col="4">
+                <group name="worklog_fields">
+                  <field
+                    name="worklog_date_timezone_mode"
+                    string="Worklog/Timesheet date timezone"
+                  />
+                  <field
+                    name="worklog_date_timezone"
+                    attrs="{'invisible': [('worklog_date_timezone_mode', '!=', 'specific')], 'required': [('worklog_date_timezone_mode', '=', 'specific')]}"
+                    nolabel="1"
+                  />
+                </group>
+                <div/>
+                <p class="oe_grey oe_inline">
+                  Configure worklog fields
+                </p>
+              </group>
             </page>
             <page name="issue_type" string="Issue Types" states="running">
               <field name="issue_type_ids">

@@ -19,7 +19,7 @@ msgid "# Tasks"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:214
+#: code:addons/connector_jira/models/jira_backend/common.py:235
 #: code:addons/connector_jira/models/project_project/common.py:175
 #: code:addons/connector_jira/models/project_project/common.py:194
 #: code:addons/connector_jira/models/project_project/project_link_jira.py:73
@@ -205,6 +205,11 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_account_analytic_line
 msgid "Analytic Line"
+msgstr ""
+
+#. module: connector_jira
+#: selection:jira.backend,worklog_date_timezone_mode:0
+msgid "As-is (naive)"
 msgstr ""
 
 #. module: connector_jira
@@ -451,12 +456,17 @@ msgid "Configure Epic Link"
 msgstr ""
 
 #. module: connector_jira
+#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
+msgid "Configure worklog fields"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
 msgid "Confirm"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:466
+#: code:addons/connector_jira/models/jira_backend/common.py:494
 #, python-format
 msgid "Connection successful"
 msgstr ""
@@ -750,8 +760,8 @@ msgid "External user with limited access, created only for the purpose of sharin
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:459
-#: code:addons/connector_jira/models/jira_backend/common.py:463
+#: code:addons/connector_jira/models/jira_backend/common.py:487
+#: code:addons/connector_jira/models/jira_backend/common.py:491
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -951,7 +961,7 @@ msgid "If the email address is on the blacklist, the contact won't receive mass 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:427
+#: code:addons/connector_jira/models/jira_backend/common.py:448
 #, python-format
 msgid "If you change the base URL, you must delete and create the Webhooks again."
 msgstr ""
@@ -1297,6 +1307,7 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_res_users
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_res_users_form
+#: selection:jira.backend,worklog_date_timezone_mode:0
 msgid "Jira User"
 msgstr ""
 
@@ -1579,7 +1590,7 @@ msgid "No user found for jira account %s (%s). Please link it manually from the 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:67
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:80
 #: code:addons/connector_jira/models/project_task/importer.py:66
 #, python-format
 msgid "No user found with login \"%s\" or email \"%s\".You must create a user or link it manually if the login/email differs."
@@ -1695,7 +1706,7 @@ msgid "Only issues of these levels are imported. When a worklog is imported no a
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:369
+#: code:addons/connector_jira/models/jira_backend/common.py:390
 #, python-format
 msgid "Only one JIRA backend can use the webhook at a time. You must disable them on the backend \"%s\" before activating them here."
 msgstr ""
@@ -1707,7 +1718,7 @@ msgid "Only one Jira binding can be configured with the Sync. Action \"Export\" 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:299
+#: code:addons/connector_jira/models/jira_backend/common.py:320
 #, python-format
 msgid "Only one backend can listen to webhooks"
 msgstr ""
@@ -2004,7 +2015,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:274
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:297
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:310
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
@@ -2225,6 +2236,11 @@ msgid "Small-sized image of this contact. It is automatically resized as a 64x64
 msgstr ""
 
 #. module: connector_jira
+#: selection:jira.backend,worklog_date_timezone_mode:0
+msgid "Specific"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__new_password
 msgid "Specify a value only when creating a user or if you're changing the user's password, otherwise leave empty. After a change of password, the user has to login again."
 msgstr ""
@@ -2397,7 +2413,7 @@ msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:381
+#: code:addons/connector_jira/models/jira_backend/common.py:402
 #, python-format
 msgid "The Odoo Webhook base URL must be set."
 msgstr ""
@@ -2468,7 +2484,7 @@ msgid "The project will be created on JIRA in background."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:241
+#: code:addons/connector_jira/models/jira_backend/common.py:262
 #, python-format
 msgid "The synchronization timestamp is currently locked, probably due to an ongoing synchronization."
 msgstr ""
@@ -2663,7 +2679,7 @@ msgid "Visit this URL, authorize and continue"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:429
+#: code:addons/connector_jira/models/jira_backend/common.py:450
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -2752,6 +2768,30 @@ msgid "Worklog Bindings"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__worklog_date_timezone
+msgid "Worklog Date Timezone"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__worklog_date_timezone_mode
+msgid "Worklog Date Timezone Mode"
+msgstr ""
+
+#. module: connector_jira
+#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
+msgid "Worklog/Timesheet date timezone"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_backend__worklog_date_timezone_mode
+msgid "Worklog/Timesheet date timezone modes:\n"
+" - As-is (naive): ignore timezone information\n"
+" - Jira User: use author's timezone\n"
+" - Specific: use pre-configured timezone\n"
+""
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__worklog_fallback_project_id
 msgid "Worklogs which could not be linked to any project will be created in this project. Worklogs landing in the fallback project can be reassigned to the correct project by: 1. linking the expected project with the Jira one, 2. using 'Refresh Worklogs from Jira' on the timesheet lines."
 msgstr ""
@@ -2767,7 +2807,7 @@ msgid "e.g. https://example.com/jira"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:25
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:26
 #, python-format
 msgid "missing description"
 msgstr ""

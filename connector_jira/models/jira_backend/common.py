@@ -6,6 +6,7 @@
 import binascii
 import logging
 import json
+import pytz
 import urllib.parse
 
 from contextlib import contextmanager, closing
@@ -88,6 +89,26 @@ class JiraBackend(models.Model):
              "the fallback project can be reassigned to the correct "
              "project by: 1. linking the expected project with the Jira one, "
              "2. using 'Refresh Worklogs from Jira' on the timesheet lines."
+    )
+    worklog_date_timezone_mode = fields.Selection(
+        selection=[
+            ('naive', 'As-is (naive)'),
+            ('user', 'Jira User'),
+            ('specific', 'Specific'),
+        ],
+        default='naive',
+        help=(
+            'Worklog/Timesheet date timezone modes:\n'
+            ' - As-is (naive): ignore timezone information\n'
+            ' - Jira User: use author\'s timezone\n'
+            ' - Specific: use pre-configured timezone\n'
+        ),
+    )
+    worklog_date_timezone = fields.Selection(
+        selection=lambda self: [(x, x) for x in pytz.all_timezones],
+        default=(
+            lambda self: self._context.get('tz') or self.env.user.tz or 'UTC'
+        ),
     )
     state = fields.Selection(
         selection=[('authenticate', 'Authenticate'),
@@ -427,6 +448,13 @@ class JiraBackend(models.Model):
             msg = _('If you change the base URL, you must delete and create '
                     'the Webhooks again.')
             return {'warning': {'title': _('Warning'), 'message': msg}}
+
+    @api.onchange('worklog_date_timezone_mode')
+    def _onchange_worklog_date_import_timezone_mode(self):
+        for jira_backend in self:
+            if jira_backend.worklog_date_timezone_mode == 'specific':
+                continue
+            jira_backend.worklog_date_timezone = False
 
     @api.multi
     def delete_webhooks(self):
