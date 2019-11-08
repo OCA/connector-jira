@@ -3,13 +3,14 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
+from pytz import timezone, utc
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.component.core import Component
 from ...components.mapper import (
-    iso8601_local_date, iso8601_to_utc_datetime, whenempty
+    iso8601_to_naive_date, iso8601_to_utc_datetime, whenempty
 )
 from ...fields import MilliDatetime
 
@@ -23,7 +24,6 @@ class AnalyticLineMapper(Component):
 
     direct = [
         (whenempty('comment', _('missing description')), 'name'),
-        (iso8601_local_date('started'), 'date'),
     ]
 
     @only_create
@@ -48,6 +48,19 @@ class AnalyticLineMapper(Component):
         if epic_field_name and epic_field_name in issue['fields']:
             refs['jira_epic_issue_key'] = issue['fields'][epic_field_name]
         return refs
+
+    @mapping
+    def date(self, record):
+        mode = self.backend_record.worklog_date_timezone_mode
+        started = record['started']
+        if not mode or mode == 'naive':
+            return {'date': iso8601_to_naive_date(started)}
+        started = iso8601_to_utc_datetime(started).replace(tzinfo=utc)
+        if mode == 'user':
+            tz = timezone(record['author']['timeZone'])
+        elif mode == 'specific':
+            tz = timezone(self.backend_record.worklog_date_timezone)
+        return {'date': started.astimezone(tz).date()}
 
     @mapping
     def duration(self, record):

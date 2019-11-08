@@ -108,3 +108,85 @@ class TestImportAccountAnalyticLine(TestImportWorklogBase):
                 'user_id': self.env.user.id,
             }]
         )
+
+    @recorder.use_cassette('test_import_worklog.yaml')
+    def test_import_worklog_naive(self):
+        jira_worklog_id = jira_issue_id = '10000'
+        self.backend_record.worklog_date_timezone_mode = 'naive'
+        binding = self._setup_import_worklog(
+            self.task, jira_issue_id, jira_worklog_id)
+        self.assertRecordValues(
+            binding,
+            [{
+                'account_id': self.project.analytic_account_id.id,
+                'backend_id': self.backend_record.id,
+                'date': date(2019, 4, 4),
+                'employee_id': self.env.user.employee_ids[0].id,
+                'external_id': jira_worklog_id,
+                'jira_epic_issue_key': False,
+                'jira_issue_id': jira_issue_id,
+                'jira_issue_key': 'TEST-1',
+                'jira_issue_type_id': self.epic_issue_type.id,
+                'name': 'write tests',
+                'project_id': self.project.id,
+                'tag_ids': [],
+                'task_id': self.task.id if self.task else False,
+                'unit_amount': 1.0,
+                'user_id': self.env.user.id,
+            }]
+        )
+
+    @recorder.use_cassette('test_import_worklog.yaml')
+    def test_import_worklog_user(self):
+        jira_worklog_id = jira_issue_id = '10000'
+        self.backend_record.worklog_date_timezone_mode = 'user'
+        binding = self._setup_import_worklog(
+            self.task, jira_issue_id, jira_worklog_id)
+        self.assertRecordValues(
+            binding,
+            [{
+                'account_id': self.project.analytic_account_id.id,
+                'backend_id': self.backend_record.id,
+                'date': date(2019, 4, 3),
+                'employee_id': self.env.user.employee_ids[0].id,
+                'external_id': jira_worklog_id,
+                'jira_epic_issue_key': False,
+                'jira_issue_id': jira_issue_id,
+                'jira_issue_key': 'TEST-1',
+                'jira_issue_type_id': self.epic_issue_type.id,
+                'name': 'write tests',
+                'project_id': self.project.id,
+                'tag_ids': [],
+                'task_id': self.task.id if self.task else False,
+                'unit_amount': 1.0,
+                'user_id': self.env.user.id,
+            }]
+        )
+
+    @recorder.use_cassette('test_import_worklog.yaml')
+    def test_import_worklog_specific(self):
+        jira_worklog_id = jira_issue_id = '10000'
+        self.backend_record.worklog_date_timezone_mode = 'specific'
+        self.backend_record.worklog_date_timezone = 'Europe/London'
+        binding = self._setup_import_worklog(
+            self.task, jira_issue_id, jira_worklog_id)
+        self.assertRecordValues(
+            binding,
+            [{
+                'account_id': self.project.analytic_account_id.id,
+                'backend_id': self.backend_record.id,
+                'date': date(2019, 4, 3),
+                'employee_id': self.env.user.employee_ids[0].id,
+                'external_id': jira_worklog_id,
+                'jira_epic_issue_key': False,
+                'jira_issue_id': jira_issue_id,
+                'jira_issue_key': 'TEST-1',
+                'jira_issue_type_id': self.epic_issue_type.id,
+                'name': 'write tests',
+                'project_id': self.project.id,
+                'tag_ids': [],
+                'task_id': self.task.id if self.task else False,
+                'unit_amount': 1.0,
+                'user_id': self.env.user.id,
+            }]
+        )
