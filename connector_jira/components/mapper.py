@@ -74,33 +74,33 @@ def iso8601_to_utc(field):
     return modifier
 
 
-def iso8601_to_local_date(isodate):
-    """ Returns the local date from an iso8601 date
+def iso8601_to_naive_date(isodate):
+    """ Returns the naive date from an iso8601 date
 
-    Keep only the date, when we want to keep only the local date.
+    Keep only the date, when we want to keep only the naive date.
     It's safe to extract it directly from the tz-aware timestamp.
     Example with 2014-10-07T00:34:59+0200: we want 2014-10-07 and not
     2014-10-06 that we would have using the timestamp converted to UTC.
     """
-    local_date = isodate[:10]
-    return datetime.strptime(local_date, '%Y-%m-%d').date()
+    naive_date = isodate[:10]
+    return datetime.strptime(naive_date, '%Y-%m-%d').date()
 
 
-def iso8601_local_date(field):
+def iso8601_naive_date(field):
     """ A modifier intended to be used on the ``direct`` mappings for
     importers.
 
     A JIRA datetime is formatted using the ISO 8601 format.
-    Returns the local date from an iso8601 datetime.
+    Returns the naive date from an iso8601 datetime.
 
-    Keep only the date, when we want to keep only the local date.
+    Keep only the date, when we want to keep only the naive date.
     It's safe to extract it directly from the tz-aware timestamp.
     Example with 2014-10-07T00:34:59+0200: we want 2014-10-07 and not
     2014-10-06 that we would have using the timestamp converted to UTC.
 
     Usage::
 
-        direct = [(iso8601_local_date('name'), 'name')]
+        direct = [(iso8601_naive_date('name'), 'name')]
 
     :param field: name of the source field in the record
 
@@ -110,8 +110,8 @@ def iso8601_local_date(field):
         value = record.get(field)
         if not value:
             return False
-        utc_date = iso8601_to_local_date(value)
-        return fields.Date.to_string(utc_date)
+        naive_date = iso8601_to_naive_date(value)
+        return fields.Date.to_string(naive_date)
     return modifier
 
 
