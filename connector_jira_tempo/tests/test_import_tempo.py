@@ -98,7 +98,8 @@ class TestImportWorklogStatus(TestImportWorklogBase):
         jira_worklog_id = jira_issue_id = '10001'
         binding2 = self._setup_import_worklog(
             self.task2, jira_issue_id, jira_worklog_id)
-        self.backend_record._scheduler_sync_jira_tempo_status()
+        self.backend_record \
+            ._scheduler_sync_tempo_timesheets_approval_status()
         self.assertEqual(binding.jira_tempo_status, 'waiting_for_approval')
         self.assertEqual(binding2.jira_tempo_status, 'waiting_for_approval')
 
@@ -111,6 +112,7 @@ class TestImportWorklogStatus(TestImportWorklogBase):
         jira_worklog_id = jira_issue_id = '10001'
         binding2 = self._setup_import_worklog(
             self.task2, jira_issue_id, jira_worklog_id)
-        self.backend_record._scheduler_sync_jira_tempo_status()
+        self.backend_record \
+            ._scheduler_sync_tempo_timesheets_approval_status()
         self.assertEqual(binding.jira_tempo_status, 'approved')
         self.assertEqual(binding2.jira_tempo_status, 'approved')
