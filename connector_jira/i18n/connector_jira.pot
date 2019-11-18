@@ -1903,7 +1903,7 @@ msgid "Project Type"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/importer.py:234
+#: code:addons/connector_jira/models/project_task/importer.py:233
 #, python-format
 msgid "Project or issue type is not synchronized."
 msgstr ""
