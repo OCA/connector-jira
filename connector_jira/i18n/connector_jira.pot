@@ -1008,6 +1008,11 @@ msgid "Industry"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__inherit_assignments
+msgid "Inherit assignments"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Install Webhooks"
 msgstr ""
@@ -1420,6 +1425,12 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__login_date
 msgid "Latest connection"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__limit_role_to_assignments
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__limit_role_to_assignments
+msgid "Limit role to assignments"
 msgstr ""
 
 #. module: connector_jira
@@ -1886,6 +1897,11 @@ msgid "Project"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__assignment_ids
+msgid "Project Assignments"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_project_project__jira_bind_ids
 msgid "Project Bindings"
@@ -2080,6 +2096,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_user_id
 msgid "Responsible User"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__role_id
+msgid "Role"
 msgstr ""
 
 #. module: connector_jira
@@ -2487,6 +2508,12 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__odoo_id
 msgid "Timesheet Line"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__is_role_required
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_timesheet_role_required
+msgid "Timesheet Role Required"
 msgstr ""
 
 #. module: connector_jira
