@@ -164,12 +164,14 @@ class JiraBackend(models.Model):
         inverse='_inverse_import_project_task_from_date',
         string='Import Project Tasks from date',
     )
+    import_project_task_force = fields.Boolean()
 
     import_analytic_line_from_date = fields.Datetime(
         compute='_compute_last_import_date',
         inverse='_inverse_import_analytic_line_from_date',
         string='Import Worklogs from date',
     )
+    import_analytic_line_force = fields.Boolean()
 
     delete_analytic_line_from_date = fields.Datetime(
         compute='_compute_last_import_date',
@@ -296,7 +298,7 @@ class JiraBackend(models.Model):
 
     @api.multi
     def _run_background_from_date(self, model, from_date_field,
-                                  component_usage):
+                                  component_usage, force=False):
         """ Import records from a date
 
         Create jobs and update the sync timestamp in a savepoint; if a
@@ -310,7 +312,7 @@ class JiraBackend(models.Model):
             component_usage,
         )
         self.env[model].with_delay(priority=9).run_batch_timestamp(
-            self, timestamp
+            self, timestamp, force=force
         )
 
     @api.constrains('use_webhooks')
@@ -500,6 +502,7 @@ class JiraBackend(models.Model):
             'jira.project.task',
             'import_project_task_from_date',
             'timestamp.batch.importer',
+            force=self.import_project_task_force,
         )
         return True
 
@@ -509,6 +512,7 @@ class JiraBackend(models.Model):
             'jira.account.analytic.line',
             'import_analytic_line_from_date',
             'timestamp.batch.importer',
+            force=self.import_analytic_line_force,
         )
         return True
 
