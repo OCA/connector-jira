@@ -19,7 +19,7 @@ msgid "# Tasks"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:235
+#: code:addons/connector_jira/models/jira_backend/common.py:237
 #: code:addons/connector_jira/models/project_project/common.py:175
 #: code:addons/connector_jira/models/project_project/common.py:194
 #: code:addons/connector_jira/models/project_project/project_link_jira.py:73
@@ -466,7 +466,7 @@ msgid "Confirm"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:494
+#: code:addons/connector_jira/models/jira_backend/common.py:496
 #, python-format
 msgid "Connection successful"
 msgstr ""
@@ -760,8 +760,8 @@ msgid "External user with limited access, created only for the purpose of sharin
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:487
-#: code:addons/connector_jira/models/jira_backend/common.py:491
+#: code:addons/connector_jira/models/jira_backend/common.py:489
+#: code:addons/connector_jira/models/jira_backend/common.py:493
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -961,7 +961,7 @@ msgid "If the email address is on the blacklist, the contact won't receive mass 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:448
+#: code:addons/connector_jira/models/jira_backend/common.py:450
 #, python-format
 msgid "If you change the base URL, you must delete and create the Webhooks again."
 msgstr ""
@@ -972,8 +972,18 @@ msgid "Image"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_analytic_line_force
+msgid "Import Analytic Line Force"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Import Issue Types"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_project_task_force
+msgid "Import Project Task Force"
 msgstr ""
 
 #. module: connector_jira
@@ -1706,7 +1716,7 @@ msgid "Only issues of these levels are imported. When a worklog is imported no a
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:390
+#: code:addons/connector_jira/models/jira_backend/common.py:392
 #, python-format
 msgid "Only one JIRA backend can use the webhook at a time. You must disable them on the backend \"%s\" before activating them here."
 msgstr ""
@@ -1718,7 +1728,7 @@ msgid "Only one Jira binding can be configured with the Sync. Action \"Export\" 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:320
+#: code:addons/connector_jira/models/jira_backend/common.py:322
 #, python-format
 msgid "Only one backend can listen to webhooks"
 msgstr ""
@@ -2413,7 +2423,7 @@ msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:402
+#: code:addons/connector_jira/models/jira_backend/common.py:404
 #, python-format
 msgid "The Odoo Webhook base URL must be set."
 msgstr ""
@@ -2484,7 +2494,7 @@ msgid "The project will be created on JIRA in background."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:262
+#: code:addons/connector_jira/models/jira_backend/common.py:264
 #, python-format
 msgid "The synchronization timestamp is currently locked, probably due to an ongoing synchronization."
 msgstr ""
@@ -2679,7 +2689,7 @@ msgid "Visit this URL, authorize and continue"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:450
+#: code:addons/connector_jira/models/jira_backend/common.py:452
 #, python-format
 msgid "Warning"
 msgstr ""
@@ -2804,6 +2814,11 @@ msgstr ""
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "e.g. https://example.com/jira"
+msgstr ""
+
+#. module: connector_jira
+#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
+msgid "forced"
 msgstr ""
 
 #. module: connector_jira
