@@ -139,13 +139,13 @@ class AnalyticLineBatchImporter(Component):
         next_timestamp = MilliDatetime.from_timestamp(result.until)
         return (next_timestamp, self.backend_adapter.yield_read(worklog_ids))
 
-    def _handle_records(self, records):
+    def _handle_records(self, records, force=False):
         count = 0
         for worklog in records:
             count += 1
             worklog_id = worklog['id']
             issue_id = worklog['issueId']
-            self._import_record(issue_id, worklog_id)
+            self._import_record(issue_id, worklog_id, force=force)
         return count
 
     def _filter_update(self, updated_worklogs):
@@ -185,10 +185,10 @@ class AnalyticLineBatchImporter(Component):
                 worklog_ids.append(worklog_id)
         return worklog_ids
 
-    def _import_record(self, issue_id, worklog_id, **kwargs):
+    def _import_record(self, issue_id, worklog_id, force=False, **kwargs):
         """ Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record, issue_id, worklog_id,
+            self.backend_record, issue_id, worklog_id, force=force,
         )
 
 

@@ -42,11 +42,11 @@ class JiraBinding(models.AbstractModel):
 
     @job(default_channel='root.connector_jira.import')
     @api.model
-    def run_batch_timestamp(self, backend, timestamp):
+    def run_batch_timestamp(self, backend, timestamp, force=False):
         """Prepare batch of records"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage=timestamp.component_usage)
-            return importer.run(timestamp)
+            return importer.run(timestamp, force=force)
 
     @job(default_channel='root.connector_jira.import')
     @related_action(action="related_action_jira_link")

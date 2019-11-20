@@ -25,7 +25,7 @@ class AnalyticLineBatchDeleter(Component):
     _inherit = ['base.synchronizer', 'jira.base']
     _usage = 'timestamp.batch.deleter'
 
-    def run(self, timestamp):
+    def run(self, timestamp, **kwargs):
         """Run the synchronization using the timestamp"""
         original_timestamp_value = timestamp.last_timestamp
         if not timestamp._lock():

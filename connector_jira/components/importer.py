@@ -484,7 +484,7 @@ class TimestampBatchImporter(AbstractComponent):
     _inherit = ['base.importer', 'jira.base']
     _usage = 'timestamp.batch.importer'
 
-    def run(self, timestamp):
+    def run(self, timestamp, force=False, **kwargs):
         """Run the synchronization using the timestamp"""
         original_timestamp_value = timestamp.last_timestamp
         if not timestamp._lock():
@@ -494,7 +494,7 @@ class TimestampBatchImporter(AbstractComponent):
 
         timestamp._update_timestamp(next_timestamp_value)
 
-        number = self._handle_records(records)
+        number = self._handle_records(records, force=force)
 
         return _('Batch from {} UTC to {} UTC generated {} imports').format(
             original_timestamp_value,
@@ -502,10 +502,10 @@ class TimestampBatchImporter(AbstractComponent):
             number
         )
 
-    def _handle_records(self, records):
+    def _handle_records(self, records, force=False):
         """Handle the records to import and return the number handled"""
         for record_id in records:
-            self._import_record(record_id)
+            self._import_record(record_id, force=force)
         return len(records)
 
     def _handle_lock_failed(self, timestamp):
