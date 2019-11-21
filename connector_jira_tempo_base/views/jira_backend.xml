@@ -11,10 +11,10 @@
         <field name="inherit_id" ref="connector_jira.view_jira_backend_form"/>
         <field name="arch" type="xml">
             <page name="advanced_configuration">
-                <group name="tempo" col="4">
-                    <group name="tempo_timesheet_fields"/>
+                <group name="tempo" col="6">
+                    <group name="tempo_timesheet_fields" colspan="3"/>
                     <div/>
-                    <p class="oe_grey oe_inline">
+                    <p class="oe_grey" colspan="2">
                         Configure link with Tempo Timesheets
                     </p>
                 </group>
