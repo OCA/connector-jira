@@ -2779,7 +2779,7 @@ msgstr ""
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
-msgid "Worklog/Timesheet date timezone"
+msgid "Worklog date timezone"
 msgstr ""
 
 #. module: connector_jira
