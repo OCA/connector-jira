@@ -46,22 +46,16 @@
           </p>
           <group>
             <group name="api_configuration" string="API Configuration" groups="connector.group_connector_manager">
-              <group>
-                <field name="uri"
-                  placeholder="e.g. https://example.com/jira"
-                  />
-                <field name="verify_ssl"/>
-              </group>
+              <field name="uri" placeholder="e.g. https://example.com/jira"/>
+              <field name="verify_ssl"/>
             </group>
             <group name="main_configuration" string="Main Configuration">
-              <group>
-                <field name="company_id"/>
-                <field name="worklog_fallback_project_id"/>
-                <field name="project_template"/>
-                <field name="project_template_shared"
-                  attrs="{'invisible': [('project_template', '!=', 'shared')],
-                          'required': [('project_template', '=', 'shared')]}"/>
-              </group>
+              <field name="company_id"/>
+              <field name="worklog_fallback_project_id"/>
+              <field name="project_template"/>
+              <field name="project_template_shared"
+                attrs="{'invisible': [('project_template', '!=', 'shared')],
+                        'required': [('project_template', '=', 'shared')]}"/>
             </group>
           </group>
           <notebook>
@@ -155,9 +149,11 @@
               </group>
             </page>
             <page name="advanced_configuration" string="Advanced Configuration">
-              <field name="use_webhooks" invisible="1"/>
-              <group name="webhooks" col="4">
-                <field name="odoo_webhook_base_url"/>
+              <group name="webhooks" col="6">
+                <group name="webhook_fields" colspan="3">
+                  <field name="use_webhooks" invisible="1"/>
+                  <field name="odoo_webhook_base_url"/>
+                </group>
                 <div>
                   <button name="create_webhooks"
                     type="object"
@@ -170,15 +166,15 @@
                     class="btn-sm btn-link oe_inline"
                     attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"/>
                 </div>
-                <p class="oe_grey oe_inline">
+                <p class="oe_grey" colspan="2">
                   Webhooks can be created only on one instance of JIRA.
                   When webhooks are activated, each
                   modification of tasks and worklogs are
                   directly transmitted to Odoo.
                 </p>
               </group>
-              <group name="epic" col="4">
-                <group name="epic_fields">
+              <group name="epic" col="6">
+                <group name="epic_fields" colspan="3">
                   <field name="epic_link_field_name"/>
                   <field name="epic_name_field_name"/>
                 </group>
@@ -189,7 +185,7 @@
                     class="btn-sm btn-link oe_inline"
                     attrs="{'invisible': [('state', '=', 'authenticate')]}"/>
                 </div>
-                <p class="oe_grey oe_inline">
+                <p class="oe_grey" colspan="2">
                   Activate the synchronization of the Epic Link field.
                   Only on JIRA Software. The field contains the name of
                   the JIRA custom field that contains the Epic Link.
@@ -198,20 +194,20 @@
                   the field will be empty.
                 </p>
               </group>
-              <group name="worklog" col="4">
-                <group name="worklog_fields">
+              <group name="worklog" col="6">
+                <group name="worklog_fields" colspan="3">
                   <field
                     name="worklog_date_timezone_mode"
-                    string="Worklog/Timesheet date timezone"
+                    string="Worklog date timezone"
                   />
                   <field
                     name="worklog_date_timezone"
                     attrs="{'invisible': [('worklog_date_timezone_mode', '!=', 'specific')], 'required': [('worklog_date_timezone_mode', '=', 'specific')]}"
-                    nolabel="1"
+                    string=""
                   />
                 </group>
                 <div/>
-                <p class="oe_grey oe_inline">
+                <p class="oe_grey" colspan="2">
                   Configure worklog fields
                 </p>
               </group>
