@@ -147,6 +147,29 @@ class JiraImporter(Component):
         """
         return
 
+    def _filter_data(self, binding, data):
+        """Filter values that aren't actually changing"""
+        binding.ensure_one()
+        fields = list(data.keys())
+        new_values = binding._convert_to_cache(
+            data,
+            update=True,
+            validate=False,
+        )
+        old_values = binding._convert_to_cache(
+            binding.read(
+                fields,
+                load='_classic_write',
+            )[0],
+            validate=False,
+        )
+        new_data = {}
+        for field in fields:
+            if new_values[field] == old_values[field]:
+                continue
+            new_data[field] = data[field]
+        return new_data
+
     def _get_binding(self):
         """Return the binding id from the jira id"""
         return self.binder.to_internal(self.external_id)
@@ -223,7 +246,14 @@ class JiraImporter(Component):
 
     def _update(self, binding, data):
         """ Update an Odoo record """
-        # special check on data before import
+        data = self._filter_data(binding, data)
+        if not data:
+            _logger.debug(
+                '%s not updated from Jira %s as nothing changed',
+                binding,
+                self.external_id,
+            )
+            return
         self._validate_data(data)
         binding_ctx = binding.with_context(**self._update_context())
         binding_ctx.sudo().write(data)
