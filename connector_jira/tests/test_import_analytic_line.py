@@ -2,7 +2,7 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from datetime import date
+from datetime import date, timedelta
 
 from .common import recorder, JiraSavepointCase
 
@@ -108,6 +108,23 @@ class TestImportAccountAnalyticLine(TestImportWorklogBase):
                 'user_id': self.env.user.id,
             }]
         )
+
+    def test_reimport_worklog(self):
+        jira_issue_id = '10000'
+        jira_worklog_id = '10000'
+        with recorder.use_cassette('test_import_worklog.yaml'):
+            binding = self._setup_import_worklog(
+                self.task,
+                jira_issue_id,
+                jira_worklog_id,
+            )
+        write_date = binding.write_date - timedelta(seconds=1)
+        binding.write({
+            'write_date': write_date,
+        })
+        with recorder.use_cassette('test_import_worklog.yaml'):
+            binding.force_reimport()
+        self.assertEqual(binding.write_date, write_date)
 
     @recorder.use_cassette('test_import_worklog.yaml')
     def test_import_worklog_naive(self):
