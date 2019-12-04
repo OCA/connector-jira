@@ -39,7 +39,7 @@ msgid "<strong>error:</strong>"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:69
+#: code:addons/connector_jira/models/project_task/common.py:67
 #, python-format
 msgid "A Jira task cannot be deleted."
 msgstr ""
@@ -185,7 +185,7 @@ msgid "Allow timesheets"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:356
+#: code:addons/connector_jira/components/importer.py:386
 #, python-format
 msgid "Already up-to-date."
 msgstr ""
@@ -285,13 +285,13 @@ msgid "Batch from {} UTC to {} UTC generated {} delete jobs"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:469
+#: code:addons/connector_jira/components/importer.py:499
 #, python-format
 msgid "Batch from {} UTC to {} UTC generated {} imports"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:525
+#: code:addons/connector_jira/components/importer.py:555
 #, python-format
 msgid "Binding not found"
 msgstr ""
@@ -2008,13 +2008,13 @@ msgid "Record Thread ID"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:535
+#: code:addons/connector_jira/components/importer.py:565
 #, python-format
 msgid "Record deleted"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/components/importer.py:274
+#: code:addons/connector_jira/components/importer.py:304
 #: code:addons/connector_jira/models/account_analytic_line/importer.py:310
 #, python-format
 msgid "Record does no longer exist in Jira"
@@ -2363,19 +2363,19 @@ msgid "Task Count"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:210
+#: code:addons/connector_jira/models/project_task/common.py:208
 #, python-format
 msgid "Task can not be created in project linked to JIRA!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:237
+#: code:addons/connector_jira/models/project_task/common.py:240
 #, python-format
 msgid "Task linked to JIRA Issue can not be deleted!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/project_task/common.py:229
+#: code:addons/connector_jira/models/project_task/common.py:232
 #, python-format
 msgid "Task linked to JIRA Issue can not be modified!"
 msgstr ""
@@ -2533,19 +2533,19 @@ msgid "Timesheet Role Required"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/common.py:204
+#: code:addons/connector_jira/models/account_analytic_line/common.py:202
 #, python-format
 msgid "Timesheet can not be created in project linked to JIRA!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/common.py:231
+#: code:addons/connector_jira/models/account_analytic_line/common.py:234
 #, python-format
 msgid "Timesheet linked to JIRA Worklog can not be deleted!"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/common.py:223
+#: code:addons/connector_jira/models/account_analytic_line/common.py:226
 #, python-format
 msgid "Timesheet linked to JIRA Worklog can not be modified!"
 msgstr ""

@@ -65,11 +65,3 @@ class MilliDatetime(fields.Field):
                 ", not date." % (value, self)
             )
         return self.from_string(value)
-
-
-def normalize_field_value(field, value):
-    # NOTE: In v13 from_string is likely to go
-    if hasattr(field, 'from_string') and isinstance(value, str):
-        from_string = getattr(field, 'from_string')
-        return from_string(value)
-    return value
