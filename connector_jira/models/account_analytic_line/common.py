@@ -11,8 +11,6 @@ from odoo.addons.queue_job.job import job, related_action
 
 from odoo.addons.component.core import Component
 
-from ...fields import normalize_field_value
-
 
 UpdatedWorklog = namedtuple(
     'UpdatedWorklog',
@@ -209,16 +207,21 @@ class AccountAnalyticLine(models.Model):
     def _connector_jira_write_validate(self, vals):
         if not self.env.context.get('connector_jira') and \
                 self.mapped('jira_bind_ids')._is_linked():
-            normalized_vals = {
-                field: normalize_field_value(self._fields[field], value)
-                for field, value in vals.items()
-            }
-            for current_vals in self.read(
-                    list(vals.keys()), load='_classic_write'):
+            fields = list(vals.keys())
+            new_values = self._convert_to_cache(
+                vals,
+                update=True,
+                validate=False,
+            )
+            for old_values in self.read(fields, load='_classic_write'):
+                old_values = self._convert_to_cache(
+                    old_values,
+                    validate=False,
+                )
                 for field in self._get_connector_jira_fields():
-                    if field not in vals:
+                    if field not in fields:
                         continue
-                    if normalized_vals[field] == current_vals[field]:
+                    if new_values[field] == old_values[field]:
                         continue
                     raise exceptions.UserError(_(
                         'Timesheet linked to JIRA Worklog can not be modified!'
