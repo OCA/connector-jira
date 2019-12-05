@@ -113,6 +113,12 @@
                   <field name="import_project_task_from_date"
                     class="oe_inline"
                     nolabel="1"/>
+                  <span groups="base.group_no_one">
+                    <span class="o_form_label"> (</span>
+                    <field name="import_project_task_force" class="oe_inline" nolabel="1"/>
+                    <label for="import_project_task_force" class="oe_inline" string="forced"/>
+                    <span class="o_form_label">)</span>
+                  </span>
                 </div>
                 <button name="import_project_task"
                   type="object"
@@ -127,6 +133,12 @@
                   <field name="import_analytic_line_from_date"
                     class="oe_inline"
                     nolabel="1"/>
+                  <span groups="base.group_no_one">
+                    <span class="o_form_label"> (</span>
+                    <field name="import_analytic_line_force" class="oe_inline" nolabel="1"/>
+                    <label for="import_analytic_line_force" class="oe_inline" string="forced"/>
+                    <span class="o_form_label">)</span>
+                  </span>
                 </div>
                 <button name="import_analytic_line"
                   type="object"
