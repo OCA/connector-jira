@@ -81,7 +81,9 @@ class AnalyticLineMapper(Component):
                   'You must create a user or link it manually if the '
                   'login/email differs.') % (jira_author_key, email)
             )
-        employee = self.env['hr.employee'].search(
+        employee = self.env['hr.employee'].with_context(
+            active_test=False,
+        ).search(
             [('user_id', '=', user.id)],
             limit=1
         )
