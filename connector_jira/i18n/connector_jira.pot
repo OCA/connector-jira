@@ -2025,7 +2025,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:304
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:310
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:312
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
