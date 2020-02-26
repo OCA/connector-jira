@@ -88,9 +88,7 @@ class JiraBackend(models.Model):
         })
         self._validate_ts(date_from, date_to, state, user_ids)
 
-    def _get_ts_lines(self, date_from, date_to, user_ids,
-                      only_non_validated=False):
-        ts_line_model = self.env['account.analytic.line']
+    def _get_ts_lines_domain(self, date_from, date_to, user_ids):
         domain = [
             # TODO: any better filter here?
             # `is_timesheet` is not available since we don't use ts_grid
@@ -101,10 +99,11 @@ class JiraBackend(models.Model):
             ('date', '<=', date_to),
             ('user_id', 'in', user_ids)
         ]
-        if only_non_validated:
-            domain.append(
-                ('validated', '=', False)
-            )
+        return domain
+
+    def _get_ts_lines(self, date_from, date_to, user_ids):
+        ts_line_model = self.env['account.analytic.line']
+        domain = self._get_ts_lines_domain(date_from, date_to, user_ids)
         return ts_line_model.search(domain)
 
     def _validate_ts(self, date_from, date_to, state, user_ids):
