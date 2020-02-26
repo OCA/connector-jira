@@ -7,7 +7,7 @@ from pytz import timezone, utc
 
 from odoo import _
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.components.mapper import mapping, only_create
+from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.component.core import Component
 from ...components.mapper import (
     iso8601_to_naive_date, iso8601_to_utc_datetime, whenempty
@@ -25,11 +25,6 @@ class AnalyticLineMapper(Component):
     direct = [
         (whenempty('comment', _('missing description')), 'name'),
     ]
-
-    @only_create
-    @mapping
-    def default(self, record):
-        return {'is_timesheet': True}
 
     @mapping
     def issue(self, record):
