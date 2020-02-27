@@ -1521,7 +1521,7 @@ msgid "No user found for jira account %s (%s). Please link it manually from the 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:66
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:61
 #: code:addons/connector_jira/models/project_task/importer.py:65
 #, python-format
 msgid "No user found with login \"%s\" or email \"%s\".You must create a user or link it manually if the login/email differs."
@@ -1882,7 +1882,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:263
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:290
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:285
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
