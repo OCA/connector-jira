@@ -22,6 +22,11 @@ msgid "\n"
 msgstr ""
 
 #. module: connector_jira_tempo_project_role
+#: model:ir.model,name:connector_jira_tempo_project_role.model_account_analytic_line
+msgid "Analytic Line"
+msgstr ""
+
+#. module: connector_jira_tempo_project_role
 #: model:ir.model,name:connector_jira_tempo_project_role.model_jira_backend
 msgid "Jira Backend"
 msgstr ""
