@@ -3,7 +3,7 @@
 
 {
     'name': 'JIRA Connector Tempo: Project Roles',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.1.0',
     'category': 'Connector',
     'website': 'https://github.com/OCA/connector-jira',
     'author':
