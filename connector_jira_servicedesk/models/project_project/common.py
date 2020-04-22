@@ -1,5 +1,6 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+import urllib.parse
 
 from odoo import _, api, exceptions, fields, models
 
@@ -25,6 +26,11 @@ class JiraProjectBaseFields(models.AbstractModel):
 
 class JiraProjectProject(models.Model):
     _inherit = "jira.project.project"
+
+    servicedesk_customer_portal_number = fields.Integer(
+        string="Service desk customer portal ID",
+        help="This number is used to compute servicedesk URL on analytic lines",
+    )
 
     @api.model
     def _selection_project_type(self):
@@ -72,3 +78,11 @@ class JiraProjectProject(models.Model):
                         )
                         % (other.display_name)
                     )
+
+    def make_servicedesk_issue_url(self, jira_issue_id):
+        return urllib.parse.urljoin(
+            self.backend_id.uri,
+            "/service_desk/customer/portal/{}/{}".format(
+                self.servicedesk_customer_portal_number, jira_issue_id
+            ),
+        )

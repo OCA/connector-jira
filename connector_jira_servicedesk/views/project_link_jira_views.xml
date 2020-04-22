@@ -17,13 +17,14 @@
                     />
                     <div colspan="2">
                         <p class="oe_grey oe_inline">
-              The organizations you choose will define how the tasks and worklogs are attached to the project.
+                            The organizations you choose will define how the tasks and
+                            worklogs are attached to the project.
               If a task is assigned to an organization, it will be assigned
               to an Odoo project linked to the JIRA project only if the
               organization match. If no project with an organization exists,
               the task will be assigned to a linked project without organization.
               If no such project exists in Odoo, the task is ignored.
-            </p>
+                        </p>
                     </div>
                 </group>
             </group>
