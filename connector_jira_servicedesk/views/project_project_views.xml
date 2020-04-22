@@ -11,6 +11,9 @@
                widget="many2many_tags"
                options="{'no_create': True}" />
       </field>
+      <field name="project_type" position="after">
+        <field name="servicedesk_customer_portal_number" attrs="{'invisible': [('project_type', '!=', 'service_desk')]}" />
+      </field>
     </field>
   </record>
 
@@ -21,6 +24,9 @@
     <field name="arch" type="xml">
       <field name="external_id" position="after">
         <field name="organization_ids" />
+      </field>
+      <field name="project_type" position="after">
+        <field name="servicedesk_customer_portal_number" attrs="{'invisible': [('project_type', '!=', 'service_desk')]}"  />
       </field>
     </field>
   </record>

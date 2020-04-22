@@ -1,7 +1,5 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-import urllib.parse
-
 from odoo import models, api, fields
 
 
@@ -19,11 +17,6 @@ class JiraBackend(models.Model):
         string='Organization Field',
         help="The 'Organization' field on JIRA is a custom field. "
              "The name of the field is something like 'customfield_10002'. "
-    )
-
-    servicedesk_customer_portal_number = fields.Integer(
-        string="Service desk customer portal ID",
-        help="This number is used to compute servicedesk URL on analytic lines"
     )
 
     @api.model
@@ -54,11 +47,3 @@ class JiraBackend(models.Model):
                 if custom_ref == org_field:
                     self.organization_field_name = field['id']
                     break
-
-    @api.multi
-    def make_servicedesk_issue_url(self, jira_issue_id):
-        return urllib.parse.urljoin(
-            self.uri, '/service_desk/customer_portal/{}/{}'.format(
-                self.servicedesk_customer_portal_number, jira_issue_id
-            )
-        )

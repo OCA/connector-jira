@@ -13,9 +13,10 @@ class JiraAccountAnalyticLine(models.Model):
 
     @api.depends('jira_issue_key')
     def _compute_jira_servicedesk_issue_url(self):
-        """Compute the external URL to JIRA."""
+        """Compute the external URL to JIRA service desk."""
         for record in self:
-            record.jira_servicedesk_issue_url = self.backend_id.make_servicedesk_issue_url(
+            jira_project = self.project_id.jira_bind_ids[0]
+            record.jira_servicedesk_issue_url = jira_project.make_servicedesk_issue_url(
                 record.jira_issue_key
             )
 
