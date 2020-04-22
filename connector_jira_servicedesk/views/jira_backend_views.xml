@@ -51,10 +51,10 @@
                         attrs="{'invisible': [('state', '=', 'authenticate')]}"
                     />
                     <p class="oe_grey oe_inline">
-            Activate the synchronization of the Organization field.
+                        Activate the synchronization of the Organization field.
             Only on JIRA ServiceDesk. The field contains the name of
             the JIRA custom field that contains the Organization.
-          </p>
+                    </p>
                 </group>
             </xpath>
         </field>
