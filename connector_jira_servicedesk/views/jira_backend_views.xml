@@ -7,6 +7,9 @@
     <field name="model">jira.backend</field>
     <field name="inherit_id" ref="connector_jira.view_jira_backend_form" />
     <field name="arch" type="xml">
+      <field name="jira_company_team_id" position="after">
+        <field name="servicedesk_customer_portal_number" />
+      </field>
       <xpath expr="(//page[@name='import']/group)[last()]" position="after">
         <group>
           <div>

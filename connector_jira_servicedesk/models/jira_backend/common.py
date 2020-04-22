@@ -21,6 +21,11 @@ class JiraBackend(models.Model):
              "The name of the field is something like 'customfield_10002'. "
     )
 
+    servicedesk_customer_portal_number = fields.Integer(
+        string="Service desk customer portal ID",
+        help="This number is used to compute servicedesk URL on analytic lines"
+    )
+
     @api.model
     def _selection_project_template(self):
         selection = super()._selection_project_template()
@@ -52,7 +57,8 @@ class JiraBackend(models.Model):
 
     @api.multi
     def make_servicedesk_issue_url(self, jira_issue_id):
-        # TODO /5 in URL below is customer portal ID. Where should we store it?
         return urllib.parse.urljoin(
-            self.uri, '/service_desk/customer_portal/5/{}'.format(jira_issue_id)
+            self.uri, '/service_desk/customer_portal/{}/{}'.format(
+                self.servicedesk_customer_portal_number, jira_issue_id
+            )
         )
