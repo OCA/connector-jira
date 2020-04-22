@@ -1,5 +1,6 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+import urllib.parse
 
 from odoo import models, api, fields
 
@@ -48,3 +49,10 @@ class JiraBackend(models.Model):
                 if custom_ref == org_field:
                     self.organization_field_name = field['id']
                     break
+
+    @api.multi
+    def make_servicedesk_issue_url(self, jira_issue_id):
+        # TODO /5 in URL below is customer portal ID. Where should we store it?
+        return urllib.parse.urljoin(
+            self.uri, '/service_desk/customer_portal/5/{}'.format(jira_issue_id)
+        )
