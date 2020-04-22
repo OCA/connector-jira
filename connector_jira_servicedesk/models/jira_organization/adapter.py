@@ -48,6 +48,7 @@ class OrganizationAdapter(Component):
         self.client._session.headers.update(self._desk_headers)
 
     def read(self, id_):
+        # pylint: disable=method-required-super
         organization = Organization(self.client._options, self.client._session)
         with self.handle_404():
             organization.find(id_)
