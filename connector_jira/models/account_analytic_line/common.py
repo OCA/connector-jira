@@ -86,7 +86,6 @@ class JiraAccountAnalyticLine(models.Model):
          "A binding already exists for this line and this backend."),
     ]
 
-    @api.multi
     def _is_linked(self):
         return self.mapped('jira_project_bind_id')._is_linked()
 
@@ -110,7 +109,6 @@ class JiraAccountAnalyticLine(models.Model):
             importer = work.component(usage='record.importer')
             return importer.run(worklog_id, issue_id=issue_id, force=force)
 
-    @api.multi
     def force_reimport(self):
         for binding in self.sudo().mapped('jira_bind_ids'):
             binding.with_delay(priority=8).import_record(
@@ -203,20 +201,16 @@ class AccountAnalyticLine(models.Model):
                     'Timesheet can not be created in project linked to JIRA!'
                 ))
 
-    @api.multi
     def _connector_jira_write_validate(self, vals):
         if not self.env.context.get('connector_jira') and \
                 self.mapped('jira_bind_ids')._is_linked():
             fields = list(vals.keys())
-            new_values = self._convert_to_cache(
+            new_values = self._convert_to_write(
                 vals,
-                update=True,
-                validate=False,
             )
             for old_values in self.read(fields, load='_classic_write'):
-                old_values = self._convert_to_cache(
+                old_values = self._convert_to_write(
                     old_values,
-                    validate=False,
                 )
                 for field in self._get_connector_jira_fields():
                     if field not in fields:
@@ -227,7 +221,6 @@ class AccountAnalyticLine(models.Model):
                         'Timesheet linked to JIRA Worklog can not be modified!'
                     ))
 
-    @api.multi
     def _connector_jira_unlink_validate(self):
         if not self.env.context.get('connector_jira') and \
                 self.mapped('jira_bind_ids')._is_linked():
@@ -240,12 +233,10 @@ class AccountAnalyticLine(models.Model):
         self._connector_jira_create_validate(vals)
         return super().create(vals)
 
-    @api.multi
     def write(self, vals):
         self._connector_jira_write_validate(vals)
         return super().write(vals)
 
-    @api.multi
     def unlink(self):
         self._connector_jira_unlink_validate()
         return super().unlink()

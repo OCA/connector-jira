@@ -72,14 +72,12 @@ class JiraBackendAuth(models.TransientModel):
         act['res_id'] = self.id
         return act
 
-    @api.multi
     def generate_new_key(self):
         self.backend_id.create_rsa_key_vals()
         jira_model = self.env['jira.backend']
         self.backend_id.consumer_key = jira_model._default_consumer_key()
         return self._next_action()
 
-    @api.multi
     def do_oauth_leg_1(self):
         oauth_hook = OAuth1(
             client_key=self.consumer_key,
@@ -117,7 +115,6 @@ class JiraBackendAuth(models.TransientModel):
         self.state = 'leg_2'
         return self._next_action()
 
-    @api.multi
     def do_oauth_leg_3(self):
         """ Perform OAuth step 3 to get access_token and secret """
         oauth_hook = OAuth1(
