@@ -8,7 +8,6 @@ class JiraAccountAnalyticLineImport(models.TransientModel):
     _name = 'jira.account.analytic.line.import'
     _description = "Reimport Jira Worklogs"
 
-    @api.multi
     def confirm(self):
         self.ensure_one()
         model_name = self.env.context.get('active_model')

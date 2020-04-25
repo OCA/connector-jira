@@ -73,7 +73,6 @@ class JiraBinding(models.AbstractModel):
 
     @job(default_channel='root.connector_jira.export')
     @related_action(action='related_action_unwrap_binding')
-    @api.multi
     def export_record(self, fields=None):
         self.ensure_one()
         with self.backend_id.work_on(self._name) as work:

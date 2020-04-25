@@ -56,11 +56,9 @@ class JiraProjectTask(models.Model):
          "A binding already exists for this task and this backend."),
     ]
 
-    @api.multi
     def _is_linked(self):
         return self.mapped('jira_project_bind_id')._is_linked()
 
-    @api.multi
     def unlink(self):
         if any(self.mapped('external_id')):
             raise exceptions.UserError(
@@ -156,7 +154,6 @@ class ProjectTask(models.Model):
             main_binding = record.jira_bind_ids[0]
             record.jira_issue_url = main_binding.jira_issue_url
 
-    @api.multi
     def name_get(self):
         names = []
         for task in self:
@@ -209,20 +206,17 @@ class ProjectTask(models.Model):
                     'Task can not be created in project linked to JIRA!'
                 ))
 
-    @api.multi
     def _connector_jira_write_validate(self, vals):
         if not self.env.context.get('connector_jira') and \
                 self.mapped('jira_bind_ids')._is_linked():
             fields = list(vals.keys())
-            new_values = self._convert_to_cache(
+            self._update_cache(vals)
+            new_values = self._convert_to_write(
                 vals,
-                update=True,
-                validate=False,
             )
             for old_values in self.read(fields, load='_classic_write'):
-                old_values = self._convert_to_cache(
+                old_values = self._convert_to_write(
                     old_values,
-                    validate=False,
                 )
                 for field in self._get_connector_jira_fields():
                     if field not in fields:
@@ -233,7 +227,6 @@ class ProjectTask(models.Model):
                         'Task linked to JIRA Issue can not be modified!'
                     ))
 
-    @api.multi
     def _connector_jira_unlink_validate(self):
         if not self.env.context.get('connector_jira') and \
                 self.mapped('jira_bind_ids')._is_linked():
@@ -246,12 +239,10 @@ class ProjectTask(models.Model):
         self._connector_jira_create_validate(vals)
         return super().create(vals)
 
-    @api.multi
     def write(self, vals):
         self._connector_jira_write_validate(vals)
         return super().write(vals)
 
-    @api.multi
     def unlink(self):
         self._connector_jira_unlink_validate()
         return super().unlink()

@@ -32,7 +32,6 @@ class ResUsers(models.Model):
         context={'active_test': False},
     )
 
-    @api.multi
     def button_link_with_jira(self):
         self.ensure_one()
         self.link_with_jira(raise_if_mismatch=True)
@@ -41,7 +40,6 @@ class ResUsers(models.Model):
                 _('No JIRA user could be found')
             )
 
-    @api.multi
     def link_with_jira(self, backends=None, raise_if_mismatch=False):
         if backends is None:
             backends = self.env['jira.backend'].search([])

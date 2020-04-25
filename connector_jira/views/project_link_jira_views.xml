@@ -4,7 +4,7 @@
   <record id="project_link_jira_form" model="ir.ui.view">
     <field name="name">project.link.jira.form</field>
     <field name="model">project.link.jira</field>
-    <field name="mode">primary</field>
+    <!-- <field name="mode">primary</field> -->
     <field name="inherit_id" ref="multi_step_wizard.multi_step_wizard_form"/>
     <field name="arch" type="xml">
       <xpath expr="//footer" position="before">
@@ -56,10 +56,13 @@
     </field>
   </record>
 
+
   <act_window id="open_project_link_jira"
               name="Link with JIRA"
               res_model="project.link.jira"
-              src_model="project.project"
               groups="project.group_project_manager"
-              view_mode="form" target="new" view_type="form" />
+              view_mode="form" target="new" /> 
+              <!-- src_model="project.project" -->
+              <!-- view_id="general_ledger_wizard" -->
+
 </odoo>

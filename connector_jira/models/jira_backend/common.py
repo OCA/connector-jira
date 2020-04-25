@@ -238,7 +238,6 @@ class JiraBackend(models.Model):
                     backend.project_template_shared
                 )
 
-    @api.multi
     @api.depends()
     def _compute_last_import_date(self):
         for backend in self:
@@ -251,8 +250,15 @@ class JiraBackend(models.Model):
                 field = row['from_date_field']
                 if field in self._fields:
                     backend[field] = row['last_timestamp']
+            if not rows:
+                backend.update(
+                    {
+                        "import_project_task_from_date": False,
+                        "import_analytic_line_from_date": False,
+                        "delete_analytic_line_from_date": False,
+                    }
+                )
 
-    @api.multi
     def _inverse_date_fields(self, field_name, component_usage):
         for rec in self:
             ts_model = self.env['jira.backend.timestamp']
@@ -275,28 +281,24 @@ class JiraBackend(models.Model):
                 value = datetime.fromtimestamp(0)
             timestamp._update_timestamp(value)
 
-    @api.multi
     def _inverse_import_project_task_from_date(self):
         self._inverse_date_fields(
             'import_project_task_from_date',
             'timestamp.batch.importer',
         )
 
-    @api.multi
     def _inverse_import_analytic_line_from_date(self):
         self._inverse_date_fields(
             'import_analytic_line_from_date',
             'timestamp.batch.importer',
         )
 
-    @api.multi
     def _inverse_delete_analytic_line_from_date(self):
         self._inverse_date_fields(
             'delete_analytic_line_from_date',
             'timestamp.batch.deleter',
         )
 
-    @api.multi
     def _run_background_from_date(self, model, from_date_field,
                                   component_usage, force=False):
         """ Import records from a date
@@ -328,7 +330,6 @@ class JiraBackend(models.Model):
         record.create_rsa_key_vals()
         return record
 
-    @api.multi
     def create_rsa_key_vals(self):
         """ Create public/private RSA keypair """
         for backend in self:
@@ -351,11 +352,9 @@ class JiraBackend(models.Model):
                 'public_key': public_pem,
             })
 
-    @api.multi
     def button_setup(self):
         self.state_running()
 
-    @api.multi
     def activate_epic_link(self):
         self.ensure_one()
         with self.work_on('jira.backend') as work:
@@ -368,19 +367,16 @@ class JiraBackend(models.Model):
                 elif custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-label':
                     self.epic_name_field_name = field['id']
 
-    @api.multi
     def state_setup(self):
         for backend in self:
             if backend.state == 'authenticate':
                 backend.state = 'setup'
 
-    @api.multi
     def state_running(self):
         for backend in self:
             if backend.state == 'setup':
                 backend.state = 'running'
 
-    @api.multi
     def create_webhooks(self):
         self.ensure_one()
         other_using_webhook = self.search(
@@ -458,7 +454,6 @@ class JiraBackend(models.Model):
                 continue
             jira_backend.worklog_date_timezone = False
 
-    @api.multi
     def delete_webhooks(self):
         self.ensure_one()
         with self.work_on('jira.backend') as work:
@@ -479,7 +474,6 @@ class JiraBackend(models.Model):
                         raise
             self.use_webhooks = False
 
-    @api.multi
     def check_connection(self):
         self.ensure_one()
         try:
@@ -496,7 +490,6 @@ class JiraBackend(models.Model):
             _('Connection successful')
         )
 
-    @api.multi
     def import_project_task(self):
         self._run_background_from_date(
             'jira.project.task',
@@ -506,7 +499,6 @@ class JiraBackend(models.Model):
         )
         return True
 
-    @api.multi
     def import_analytic_line(self):
         self._run_background_from_date(
             'jira.account.analytic.line',
@@ -516,7 +508,6 @@ class JiraBackend(models.Model):
         )
         return True
 
-    @api.multi
     def delete_analytic_line(self):
         self._run_background_from_date(
             'jira.account.analytic.line',
@@ -525,7 +516,6 @@ class JiraBackend(models.Model):
         )
         return True
 
-    @api.multi
     def import_res_users(self):
         self.report_user_sync = None
         result = self.env['res.users'].search([]).link_with_jira(backends=self)
@@ -536,13 +526,11 @@ class JiraBackend(models.Model):
                 ).render({'backend': self, 'result': bknd_result})
         return True
 
-    @api.multi
     def get_user_resolution_order(self):
         """ User resolution should happen by login first as it's unique, while
         resolving by email is likely to give false positives """
         return ['login', 'email']
 
-    @api.multi
     def import_issue_type(self):
         self.env['jira.issue.type'].import_batch(self)
         return True
@@ -580,7 +568,6 @@ class JiraBackend(models.Model):
     def _scheduler_delete_analytic_line(self):
         self.search([]).delete_analytic_line()
 
-    @api.multi
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(
             self.uri, '/browse/{}'.format(jira_issue_id))
@@ -641,12 +628,10 @@ class JiraBackendTimestamp(models.Model):
             })
         return timestamp
 
-    @api.multi
     def _update_timestamp(self, timestamp):
         self.ensure_one()
         self.last_timestamp = timestamp
 
-    @api.multi
     def _lock(self):
         """Update the timestamp for a synchro
 

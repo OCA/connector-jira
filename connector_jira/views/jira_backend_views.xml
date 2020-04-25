@@ -258,7 +258,6 @@
   <record id="action_jira_backend" model="ir.actions.act_window">
     <field name="name">Jira Backends</field>
     <field name="res_model">jira.backend</field>
-    <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
   </record>
 

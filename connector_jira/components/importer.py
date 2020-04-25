@@ -151,17 +151,14 @@ class JiraImporter(Component):
         """Filter values that aren't actually changing"""
         binding.ensure_one()
         fields = list(data.keys())
-        new_values = binding._convert_to_cache(
+        new_values = binding._convert_to_write(
             data,
-            update=True,
-            validate=False,
         )
-        old_values = binding._convert_to_cache(
+        old_values = binding._convert_to_write(
             binding.read(
                 fields,
                 load='_classic_write',
             )[0],
-            validate=False,
         )
         new_data = {}
         for field in fields:

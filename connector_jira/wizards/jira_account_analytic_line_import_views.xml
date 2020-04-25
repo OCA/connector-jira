@@ -23,7 +23,6 @@
   <record id="action_jira_aa_line_import" model="ir.actions.act_window">
     <field name="name">Refresh Worklogs from Jira</field>
     <field name="res_model">jira.account.analytic.line.import</field>
-    <field name="view_type">form</field>
     <field name="view_mode">form</field>
     <field name="view_id" ref="view_jira_aa_line_import"/>
     <field name="target">new</field>

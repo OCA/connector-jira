@@ -18,7 +18,6 @@ class JiraIssueType(models.Model):
         ondelete='cascade'
     )
 
-    @api.multi
     def is_sync_for_project(self, project_binding):
         self.ensure_one()
         if not project_binding:

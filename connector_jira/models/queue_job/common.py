@@ -7,7 +7,6 @@ from odoo import api, models
 class QueueJob(models.Model):
     _inherit = 'queue.job'
 
-    @api.multi
     def related_action_jira_link(self):
         """Open a jira url for an issue """
         self.ensure_one()
