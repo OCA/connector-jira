@@ -10,6 +10,6 @@ class BaseJiraConnectorComponent(AbstractComponent):
     All components of this connector should inherit from it.
     """
 
-    _name = 'jira.base'
-    _inherit = 'base.connector'
-    _collection = 'jira.backend'
+    _name = "jira.base"
+    _inherit = "base.connector"
+    _collection = "jira.backend"

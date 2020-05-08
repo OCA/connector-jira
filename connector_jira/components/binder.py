@@ -22,8 +22,8 @@ class JiraBinder(Component):
     Default binder when no specific binder is defined for a model.
     """
 
-    _name = 'jira.binder'
-    _inherit = ['base.binder', 'jira.base']
+    _name = "jira.binder"
+    _inherit = ["base.binder", "jira.base"]
 
     def sync_date(self, binding):
         assert self._sync_date_field
@@ -41,20 +41,24 @@ class JiraModelBinder(Component):
     without `_inherits`.
 
     """
-    _name = 'jira.model.binder'
-    _inherit = ['base.binder', 'jira.base']
+
+    _name = "jira.model.binder"
+    _inherit = ["base.binder", "jira.base"]
 
     _apply_on = [
-        'jira.issue.type',
+        "jira.issue.type",
     ]
 
-    _odoo_field = 'id'
+    _odoo_field = "id"
 
     def to_internal(self, external_id, unwrap=False):
         if unwrap:
-            _logger.warning('unwrap has no effect when the '
-                            'binding is not an inherits '
-                            '(model %s)', self.model._name)
+            _logger.warning(
+                "unwrap has no effect when the "
+                "binding is not an inherits "
+                "(model %s)",
+                self.model._name,
+            )
         return super().to_internal(external_id, unwrap=False)
 
     def unwrap_binding(self, binding):
