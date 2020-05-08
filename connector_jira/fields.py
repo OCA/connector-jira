@@ -1,6 +1,5 @@
 import time
-
-from datetime import datetime, date
+from datetime import date, datetime
 
 from odoo import fields
 
@@ -20,8 +19,9 @@ class MilliDatetime(fields.Field):
     Beware, unlike the Datetime field (prior 12.0), the MilliDatetime
     field works with datetime objects.
     """
-    type = 'millidatetime'
-    column_type = ('timestamp', 'timestamp')
+
+    type = "millidatetime"
+    column_type = ("timestamp", "timestamp")
 
     @staticmethod
     def from_string(value):
@@ -51,17 +51,13 @@ class MilliDatetime(fields.Field):
     @staticmethod
     def to_timestamp(value):
         assert not value.tzinfo
-        return int(
-            time.mktime(value.timetuple()) * 1000 +
-            value.microsecond / 1000
-        )
+        return int(time.mktime(value.timetuple()) * 1000 + value.microsecond / 1000)
 
     def convert_to_cache(self, value, record, validate=True):
         if not value:
             return False
         if isinstance(value, date) and not isinstance(value, datetime):
             raise TypeError(
-                "%s (field %s) must be string or datetime"
-                ", not date." % (value, self)
+                "%s (field %s) must be string or datetime" ", not date." % (value, self)
             )
         return self.from_string(value)

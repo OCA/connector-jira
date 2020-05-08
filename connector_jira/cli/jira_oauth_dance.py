@@ -27,7 +27,6 @@ import logging
 import os
 import signal
 import sys
-
 from contextlib import contextmanager
 
 import odoo
@@ -42,7 +41,6 @@ def raise_keyboard_interrupt(*a):
 
 
 class JiraOauthDance(Command):
-
     def init(self, args):
         config.parse_config(args)
         odoo.cli.server.report_configuration()
@@ -55,68 +53,63 @@ class JiraOauthDance(Command):
             registry = odoo.registry(dbname)
             with registry.cursor() as cr:
                 uid = odoo.SUPERUSER_ID
-                ctx_environment = odoo.api.Environment(
-                    cr, uid, {}
-                )['res.users']
+                ctx_environment = odoo.api.Environment(cr, uid, {})["res.users"]
                 ctx = ctx_environment.context_get()
                 env = odoo.api.Environment(cr, uid, ctx)
                 yield env
 
     def _find_backend(self, env, backend_id=None):
         if backend_id:
-            backend = env['jira.backend'].browse(backend_id)
+            backend = env["jira.backend"].browse(backend_id)
             if not backend.exists():
-                die(
-                    'no backend with id found {}'.format(
-                        backend_id
-                    )
-                )
+                die("no backend with id found {}".format(backend_id))
         else:
             backend = env.ref(
-                'connector_jira.jira_backend_demo',
-                raise_if_not_found=False
+                "connector_jira.jira_backend_demo", raise_if_not_found=False
             )
             if not backend:
-                backend = self.env['jira.backend'].search([], limit=1)
+                backend = self.env["jira.backend"].search([], limit=1)
         return backend
 
     def oauth_dance(self, dbname, options):
         with self.env(dbname) as env:
             backend = self._find_backend(env, backend_id=options.backend_id)
-            auth_wizard = env['jira.backend.auth'].create({
-                'backend_id': backend.id,
-            })
+            auth_wizard = env["jira.backend.auth"].create({"backend_id": backend.id})
             print()
-            print(r'Welcome to the Jira Oauth dance \o| \o/ |o/')
+            print(r"Welcome to the Jira Oauth dance \o| \o/ |o/")
             print()
             print(
-                'You are working on the backend {} (id: {}) with uri {}'
-                .format(backend.name, backend.id, backend.uri)
+                "You are working on the backend {} (id: {}) with uri {}".format(
+                    backend.name, backend.id, backend.uri
+                )
             )
-            print('Now, copy the consumer and public key '
-                  'in the Jira application link')
+            print(
+                "Now, copy the consumer and public key " "in the Jira application link"
+            )
             print()
-            print('Consumer key:')
+            print("Consumer key:")
             print()
             print(auth_wizard.consumer_key)
             print()
-            print('Public key:')
+            print("Public key:")
             print()
             print(auth_wizard.public_key)
             print()
-            input('Press any key when you have pasted these values in Jira')
+            input("Press any key when you have pasted these values in Jira")
 
             auth_wizard.do_oauth_leg_1()
             print()
-            print('Jira wants you to open this link (hostname may change if'
-                  ' you use Docker) and approve the link (no clickbait):')
+            print(
+                "Jira wants you to open this link (hostname may change if"
+                " you use Docker) and approve the link (no clickbait):"
+            )
             print()
             print(auth_wizard.auth_uri)
             print()
-            input('Press any key when approved')
+            input("Press any key when approved")
             auth_wizard.do_oauth_leg_3()
             print()
-            print('That\'s all folks! Keep these tokens for your tests:')
+            print("That's all folks! Keep these tokens for your tests:")
             print()
             print('JIRA_TEST_URL="{}"'.format(backend.uri))
             print('JIRA_TEST_TOKEN_ACCESS="{}"'.format(backend.access_token))
@@ -125,19 +118,22 @@ class JiraOauthDance(Command):
     def run(self, cmdargs):
         parser = argparse.ArgumentParser(
             prog="%s jiraauthdance" % sys.argv[0].split(os.path.sep)[-1],
-            description=self.__doc__
+            description=self.__doc__,
         )
         parser.add_argument(
-            '--backend-id', dest='backend_id', type=int,
-            help='ID of the backend to authenticate. '
-            '(by default the demo backend if exists or the first found)')
+            "--backend-id",
+            dest="backend_id",
+            type=int,
+            help="ID of the backend to authenticate. "
+            "(by default the demo backend if exists or the first found)",
+        )
 
         args, unknown = parser.parse_known_args(args=cmdargs)
 
         self.init(unknown)
-        if not config['db_name']:
-            die('need a db_name')
-        self.oauth_dance(config['db_name'], args)
+        if not config["db_name"]:
+            die("need a db_name")
+        self.oauth_dance(config["db_name"], args)
         return 0
 
 

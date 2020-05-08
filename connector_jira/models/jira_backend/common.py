@@ -4,20 +4,19 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import binascii
-import logging
 import json
-import pytz
+import logging
 import urllib.parse
-
-from contextlib import contextmanager, closing
+from contextlib import closing, contextmanager
 from datetime import datetime
 from os import urandom
 
 import psycopg2
+import pytz
 import requests
 
 import odoo
-from odoo import models, fields, api, exceptions, _, tools
+from odoo import _, api, exceptions, fields, models, tools
 
 from odoo.addons.component.core import Component
 
@@ -53,30 +52,30 @@ def new_env(env):
                 cr.rollback()
                 raise
             else:
-                if not tools.config['test_enable']:
-                    cr.commit()   # pylint: disable=invalid-commit
+                if not tools.config["test_enable"]:
+                    cr.commit()  # pylint: disable=invalid-commit
 
 
 class JiraBackend(models.Model):
-    _name = 'jira.backend'
-    _description = 'Jira Backend'
-    _inherit = 'connector.backend'
+    _name = "jira.backend"
+    _description = "Jira Backend"
+    _inherit = "connector.backend"
 
     RSA_BITS = 4096
     RSA_PUBLIC_EXPONENT = 65537
-    KEY_LEN = 255   # 255 == max Atlassian db col len
+    KEY_LEN = 255  # 255 == max Atlassian db col len
 
     def _default_company(self):
-        return self.env['res.company']._company_default_get('jira.backend')
+        return self.env["res.company"]._company_default_get("jira.backend")
 
     def _default_consumer_key(self):
         """Generate a rnd consumer key of length self.KEY_LEN"""
-        return binascii.hexlify(urandom(self.KEY_LEN))[:self.KEY_LEN]
+        return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
 
-    uri = fields.Char(string='Jira URI', required=True)
+    uri = fields.Char(string="Jira URI", required=True)
     name = fields.Char()
     company_id = fields.Many2one(
-        comodel_name='res.company',
+        comodel_name="res.company",
         string="Company",
         required=True,
         default=lambda self: self._default_company(),
@@ -85,43 +84,41 @@ class JiraBackend(models.Model):
         comodel_name="project.project",
         string="Fallback for Worklogs",
         help="Worklogs which could not be linked to any project "
-             "will be created in this project. Worklogs landing in "
-             "the fallback project can be reassigned to the correct "
-             "project by: 1. linking the expected project with the Jira one, "
-             "2. using 'Refresh Worklogs from Jira' on the timesheet lines."
+        "will be created in this project. Worklogs landing in "
+        "the fallback project can be reassigned to the correct "
+        "project by: 1. linking the expected project with the Jira one, "
+        "2. using 'Refresh Worklogs from Jira' on the timesheet lines.",
     )
     worklog_date_timezone_mode = fields.Selection(
         selection=[
-            ('naive', 'As-is (naive)'),
-            ('user', 'Jira User'),
-            ('specific', 'Specific'),
+            ("naive", "As-is (naive)"),
+            ("user", "Jira User"),
+            ("specific", "Specific"),
         ],
-        default='naive',
+        default="naive",
         help=(
-            'Worklog/Timesheet date timezone modes:\n'
-            ' - As-is (naive): ignore timezone information\n'
-            ' - Jira User: use author\'s timezone\n'
-            ' - Specific: use pre-configured timezone\n'
+            "Worklog/Timesheet date timezone modes:\n"
+            " - As-is (naive): ignore timezone information\n"
+            " - Jira User: use author's timezone\n"
+            " - Specific: use pre-configured timezone\n"
         ),
     )
     worklog_date_timezone = fields.Selection(
         selection=lambda self: [(x, x) for x in pytz.all_timezones],
-        default=(
-            lambda self: self._context.get('tz') or self.env.user.tz or 'UTC'
-        ),
+        default=(lambda self: self._context.get("tz") or self.env.user.tz or "UTC"),
     )
     state = fields.Selection(
-        selection=[('authenticate', 'Authenticate'),
-                   ('setup', 'Setup'),
-                   ('running', 'Running'),
-                   ],
-        default='authenticate',
+        selection=[
+            ("authenticate", "Authenticate"),
+            ("setup", "Setup"),
+            ("running", "Running"),
+        ],
+        default="authenticate",
         required=True,
         readonly=True,
     )
     private_key = fields.Text(
-        readonly=True,
-        groups="connector.group_connector_manager",
+        readonly=True, groups="connector.group_connector_manager",
     )
     public_key = fields.Text(readonly=True)
     consumer_key = fields.Char(
@@ -131,74 +128,70 @@ class JiraBackend(models.Model):
     )
 
     access_token = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
+        readonly=True, groups="connector.group_connector_manager",
     )
     access_secret = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
+        readonly=True, groups="connector.group_connector_manager",
     )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
 
     project_template = fields.Selection(
-        selection='_selection_project_template',
-        string='Default Project Template',
-        default='Scrum software development',
+        selection="_selection_project_template",
+        string="Default Project Template",
+        default="Scrum software development",
         required=True,
     )
-    project_template_shared = fields.Char(
-        string='Default Shared Template Key',
-    )
+    project_template_shared = fields.Char(string="Default Shared Template Key",)
 
     use_webhooks = fields.Boolean(
-        string='Use Webhooks',
+        string="Use Webhooks",
         readonly=True,
         help="Webhooks need to be configured on the Jira instance. "
-             "When activated, synchronization from Jira is blazing fast. "
-             "It can be activated only on one Jira backend at a time. "
+        "When activated, synchronization from Jira is blazing fast. "
+        "It can be activated only on one Jira backend at a time. ",
     )
 
     import_project_task_from_date = fields.Datetime(
-        compute='_compute_last_import_date',
-        inverse='_inverse_import_project_task_from_date',
-        string='Import Project Tasks from date',
+        compute="_compute_last_import_date",
+        inverse="_inverse_import_project_task_from_date",
+        string="Import Project Tasks from date",
     )
     import_project_task_force = fields.Boolean()
 
     import_analytic_line_from_date = fields.Datetime(
-        compute='_compute_last_import_date',
-        inverse='_inverse_import_analytic_line_from_date',
-        string='Import Worklogs from date',
+        compute="_compute_last_import_date",
+        inverse="_inverse_import_analytic_line_from_date",
+        string="Import Worklogs from date",
     )
     import_analytic_line_force = fields.Boolean()
 
     delete_analytic_line_from_date = fields.Datetime(
-        compute='_compute_last_import_date',
-        inverse='_inverse_delete_analytic_line_from_date',
-        string='Delete Extra Worklogs from date',
+        compute="_compute_last_import_date",
+        inverse="_inverse_delete_analytic_line_from_date",
+        string="Delete Extra Worklogs from date",
     )
 
     issue_type_ids = fields.One2many(
-        comodel_name='jira.issue.type',
-        inverse_name='backend_id',
-        string='Issue Types',
+        comodel_name="jira.issue.type",
+        inverse_name="backend_id",
+        string="Issue Types",
         readonly=True,
     )
 
     epic_link_field_name = fields.Char(
-        string='Epic Link Field',
+        string="Epic Link Field",
         help="The 'Epic Link' field on JIRA is a custom field. "
-             "The name of the field is something like 'customfield_10002'. "
+        "The name of the field is something like 'customfield_10002'. ",
     )
     epic_name_field_name = fields.Char(
-        string='Epic Name Field',
+        string="Epic Name Field",
         help="The 'Epic Name' field on JIRA is a custom field. "
-             "The name of the field is something like 'customfield_10003'. "
+        "The name of the field is something like 'customfield_10003'. ",
     )
 
     odoo_webhook_base_url = fields.Char(
-        string='Base Odoo URL for Webhooks',
+        string="Base Odoo URL for Webhooks",
         default=lambda self: self._default_odoo_webhook_base_url(),
     )
     webhook_issue_jira_id = fields.Char()
@@ -209,47 +202,47 @@ class JiraBackend(models.Model):
 
     @api.model
     def _default_odoo_webhook_base_url(self):
-        params = self.env['ir.config_parameter']
-        return params.get_param('web.base.url', '')
+        params = self.env["ir.config_parameter"]
+        return params.get_param("web.base.url", "")
 
     @api.model
     def _selection_project_template(self):
-        return [('Scrum software development',
-                 'Scrum software development (Software)'),
-                ('Kanban software development',
-                 'Kanban software development (Software)'),
-                ('Basic software development',
-                 'Basic software development (Software)'),
-                ('Project management', 'Project management (Business)'),
-                ('Task management', 'Task management (Business)'),
-                ('Process management', 'Process management (Business)'),
-                ('shared', 'From a shared template'),
-                ]
+        return [
+            ("Scrum software development", "Scrum software development (Software)"),
+            ("Kanban software development", "Kanban software development (Software)"),
+            ("Basic software development", "Basic software development (Software)"),
+            ("Project management", "Project management (Business)"),
+            ("Task management", "Task management (Business)"),
+            ("Process management", "Process management (Business)"),
+            ("shared", "From a shared template"),
+        ]
 
-    @api.constrains('project_template_shared')
+    @api.constrains("project_template_shared")
     def check_jira_key(self):
         for backend in self:
             if not backend.project_template_shared:
                 continue
-            valid = self.env['jira.project.project']._jira_key_valid
+            valid = self.env["jira.project.project"]._jira_key_valid
             if not valid(backend.project_template_shared):
                 raise exceptions.ValidationError(
-                    _('%s is not a valid JIRA Key') %
-                    backend.project_template_shared
+                    _("%s is not a valid JIRA Key") % backend.project_template_shared
                 )
 
     @api.depends()
     def _compute_last_import_date(self):
         for backend in self:
-            self.env.cr.execute("""
+            self.env.cr.execute(
+                """
                 SELECT from_date_field, last_timestamp
                 FROM jira_backend_timestamp
-                WHERE backend_id = %s""", (backend.id,))
+                WHERE backend_id = %s""",
+                (backend.id,),
+            )
             rows = self.env.cr.dictfetchall()
             for row in rows:
-                field = row['from_date_field']
+                field = row["from_date_field"]
                 if field in self._fields:
-                    backend[field] = row['last_timestamp']
+                    backend[field] = row["last_timestamp"]
             if not rows:
                 backend.update(
                     {
@@ -261,14 +254,14 @@ class JiraBackend(models.Model):
 
     def _inverse_date_fields(self, field_name, component_usage):
         for rec in self:
-            ts_model = self.env['jira.backend.timestamp']
-            timestamp = ts_model._timestamp_for_field(
-                rec, field_name, component_usage
-            )
+            ts_model = self.env["jira.backend.timestamp"]
+            timestamp = ts_model._timestamp_for_field(rec, field_name, component_usage)
             if not timestamp._lock():
                 raise exceptions.UserError(
-                    _("The synchronization timestamp is currently locked, "
-                      "probably due to an ongoing synchronization.")
+                    _(
+                        "The synchronization timestamp is currently locked, "
+                        "probably due to an ongoing synchronization."
+                    )
                 )
             value = getattr(rec, field_name)
             # As the timestamp field is using MilliDatetime, we lose
@@ -283,45 +276,41 @@ class JiraBackend(models.Model):
 
     def _inverse_import_project_task_from_date(self):
         self._inverse_date_fields(
-            'import_project_task_from_date',
-            'timestamp.batch.importer',
+            "import_project_task_from_date", "timestamp.batch.importer",
         )
 
     def _inverse_import_analytic_line_from_date(self):
         self._inverse_date_fields(
-            'import_analytic_line_from_date',
-            'timestamp.batch.importer',
+            "import_analytic_line_from_date", "timestamp.batch.importer",
         )
 
     def _inverse_delete_analytic_line_from_date(self):
         self._inverse_date_fields(
-            'delete_analytic_line_from_date',
-            'timestamp.batch.deleter',
+            "delete_analytic_line_from_date", "timestamp.batch.deleter",
         )
 
-    def _run_background_from_date(self, model, from_date_field,
-                                  component_usage, force=False):
+    def _run_background_from_date(
+        self, model, from_date_field, component_usage, force=False
+    ):
         """ Import records from a date
 
         Create jobs and update the sync timestamp in a savepoint; if a
         concurrency issue arises, it will be logged and rollbacked silently.
         """
         self.ensure_one()
-        ts_model = self.env['jira.backend.timestamp']
+        ts_model = self.env["jira.backend.timestamp"]
         timestamp = ts_model._timestamp_for_field(
-            self,
-            from_date_field,
-            component_usage,
+            self, from_date_field, component_usage,
         )
         self.env[model].with_delay(priority=9).run_batch_timestamp(
             self, timestamp, force=force
         )
 
-    @api.constrains('use_webhooks')
+    @api.constrains("use_webhooks")
     def _check_use_webhooks_unique(self):
-        if len(self.search([('use_webhooks', '=', True)])) > 1:
+        if len(self.search([("use_webhooks", "=", True)])) > 1:
             raise exceptions.ValidationError(
-                _('Only one backend can listen to webhooks')
+                _("Only one backend can listen to webhooks")
             )
 
     @api.model
@@ -336,58 +325,57 @@ class JiraBackend(models.Model):
             private_key = rsa.generate_private_key(
                 public_exponent=self.RSA_PUBLIC_EXPONENT,
                 key_size=self.RSA_BITS,
-                backend=default_backend()
+                backend=default_backend(),
             )
             pem = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption()
+                encryption_algorithm=serialization.NoEncryption(),
             )
             public_pem = private_key.public_key().public_bytes(
                 encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo
+                format=serialization.PublicFormat.SubjectPublicKeyInfo,
             )
-            backend.write({
-                'private_key': pem,
-                'public_key': public_pem,
-            })
+            backend.write({"private_key": pem, "public_key": public_pem})
 
     def button_setup(self):
         self.state_running()
 
     def activate_epic_link(self):
         self.ensure_one()
-        with self.work_on('jira.backend') as work:
-            adapter = work.component(usage='backend.adapter')
+        with self.work_on("jira.backend") as work:
+            adapter = work.component(usage="backend.adapter")
             jira_fields = adapter.list_fields()
             for field in jira_fields:
-                custom_ref = field.get('schema', {}).get('custom')
-                if custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-link':
-                    self.epic_link_field_name = field['id']
-                elif custom_ref == 'com.pyxis.greenhopper.jira:gh-epic-label':
-                    self.epic_name_field_name = field['id']
+                custom_ref = field.get("schema", {}).get("custom")
+                if custom_ref == "com.pyxis.greenhopper.jira:gh-epic-link":
+                    self.epic_link_field_name = field["id"]
+                elif custom_ref == "com.pyxis.greenhopper.jira:gh-epic-label":
+                    self.epic_name_field_name = field["id"]
 
     def state_setup(self):
         for backend in self:
-            if backend.state == 'authenticate':
-                backend.state = 'setup'
+            if backend.state == "authenticate":
+                backend.state = "setup"
 
     def state_running(self):
         for backend in self:
-            if backend.state == 'setup':
-                backend.state = 'running'
+            if backend.state == "setup":
+                backend.state = "running"
 
     def create_webhooks(self):
         self.ensure_one()
         other_using_webhook = self.search(
-            [('use_webhooks', '=', True),
-             ('id', '!=', self.id)]
+            [("use_webhooks", "=", True), ("id", "!=", self.id)]
         )
         if other_using_webhook:
             raise exceptions.UserError(
-                _('Only one JIRA backend can use the webhook at a time. '
-                  'You must disable them on the backend "%s" before '
-                  'activating them here.') % (other_using_webhook.name,)
+                _(
+                    "Only one JIRA backend can use the webhook at a time. "
+                    'You must disable them on the backend "%s" before '
+                    "activating them here."
+                )
+                % (other_using_webhook.name,)
             )
 
         # open a new cursor because we'll commit after the creations
@@ -396,68 +384,64 @@ class JiraBackend(models.Model):
             backend = env[self._name].browse(self.id)
             base_url = backend.odoo_webhook_base_url
             if not base_url:
-                raise exceptions.UserError(
-                    _('The Odoo Webhook base URL must be set.')
-                )
+                raise exceptions.UserError(_("The Odoo Webhook base URL must be set."))
 
-            with self.work_on('jira.backend') as work:
+            with self.work_on("jira.backend") as work:
                 backend.use_webhooks = True
 
-                adapter = work.component(usage='backend.adapter')
+                adapter = work.component(usage="backend.adapter")
                 # TODO: we could update the JQL of the webhook
                 # each time a new project is sync'ed, so we would
                 # filter out the useless events
-                url = urllib.parse.urljoin(base_url,
-                                           '/connector_jira/webhooks/issue')
+                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/issue")
                 webhook = adapter.create_webhook(
-                    name='Odoo Issues',
+                    name="Odoo Issues",
                     url=url,
-                    events=['jira:issue_created',
-                            'jira:issue_updated',
-                            'jira:issue_deleted',
-                            ],
+                    events=[
+                        "jira:issue_created",
+                        "jira:issue_updated",
+                        "jira:issue_deleted",
+                    ],
                 )
                 # the only place where to find the hook id is in
                 # the 'self' url, looks like
                 # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
-                webhook_id = webhook['self'].split('/')[-1]
+                webhook_id = webhook["self"].split("/")[-1]
                 backend.webhook_issue_jira_id = webhook_id
-                if not tools.config['test_enable']:
+                if not tools.config["test_enable"]:
                     env.cr.commit()  # pylint: disable=invalid-commit
 
-                url = urllib.parse.urljoin(base_url,
-                                           '/connector_jira/webhooks/worklog')
+                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/worklog")
                 webhook = adapter.create_webhook(
-                    name='Odoo Worklogs',
+                    name="Odoo Worklogs",
                     url=url,
-                    events=['worklog_created',
-                            'worklog_updated',
-                            'worklog_deleted',
-                            ],
+                    events=["worklog_created", "worklog_updated", "worklog_deleted"],
                 )
-                webhook_id = webhook['self'].split('/')[-1]
+                webhook_id = webhook["self"].split("/")[-1]
                 backend.webhook_worklog_jira_id = webhook_id
-                if not tools.config['test_enable']:
+                if not tools.config["test_enable"]:
                     env.cr.commit()  # pylint: disable=invalid-commit
 
-    @api.onchange('odoo_webhook_base_url')
+    @api.onchange("odoo_webhook_base_url")
     def onchange_odoo_webhook_base_url(self):
         if self.use_webhooks:
-            msg = _('If you change the base URL, you must delete and create '
-                    'the Webhooks again.')
-            return {'warning': {'title': _('Warning'), 'message': msg}}
+            msg = _(
+                "If you change the base URL, you must delete and create "
+                "the Webhooks again."
+            )
+            return {"warning": {"title": _("Warning"), "message": msg}}
 
-    @api.onchange('worklog_date_timezone_mode')
+    @api.onchange("worklog_date_timezone_mode")
     def _onchange_worklog_date_import_timezone_mode(self):
         for jira_backend in self:
-            if jira_backend.worklog_date_timezone_mode == 'specific':
+            if jira_backend.worklog_date_timezone_mode == "specific":
                 continue
             jira_backend.worklog_date_timezone = False
 
     def delete_webhooks(self):
         self.ensure_one()
-        with self.work_on('jira.backend') as work:
-            adapter = work.component(usage='backend.adapter')
+        with self.work_on("jira.backend") as work:
+            adapter = work.component(usage="backend.adapter")
             if self.webhook_issue_jira_id:
                 try:
                     adapter.delete_webhook(self.webhook_issue_jira_id)
@@ -479,60 +463,54 @@ class JiraBackend(models.Model):
         try:
             self.get_api_client().myself()
         except (ValueError, requests.exceptions.ConnectionError) as err:
-            raise exceptions.UserError(
-                _('Failed to connect (%s)') % (err,)
-            )
+            raise exceptions.UserError(_("Failed to connect (%s)") % (err,))
         except JIRAError as err:
-            raise exceptions.UserError(
-                _('Failed to connect (%s)') % (err.text,)
-            )
-        raise exceptions.UserError(
-            _('Connection successful')
-        )
+            raise exceptions.UserError(_("Failed to connect (%s)") % (err.text,))
+        raise exceptions.UserError(_("Connection successful"))
 
     def import_project_task(self):
         self._run_background_from_date(
-            'jira.project.task',
-            'import_project_task_from_date',
-            'timestamp.batch.importer',
+            "jira.project.task",
+            "import_project_task_from_date",
+            "timestamp.batch.importer",
             force=self.import_project_task_force,
         )
         return True
 
     def import_analytic_line(self):
         self._run_background_from_date(
-            'jira.account.analytic.line',
-            'import_analytic_line_from_date',
-            'timestamp.batch.importer',
+            "jira.account.analytic.line",
+            "import_analytic_line_from_date",
+            "timestamp.batch.importer",
             force=self.import_analytic_line_force,
         )
         return True
 
     def delete_analytic_line(self):
         self._run_background_from_date(
-            'jira.account.analytic.line',
-            'delete_analytic_line_from_date',
-            'timestamp.batch.deleter',
+            "jira.account.analytic.line",
+            "delete_analytic_line_from_date",
+            "timestamp.batch.deleter",
         )
         return True
 
     def import_res_users(self):
         self.report_user_sync = None
-        result = self.env['res.users'].search([]).link_with_jira(backends=self)
+        result = self.env["res.users"].search([]).link_with_jira(backends=self)
         for __, bknd_result in result.items():
-            if bknd_result.get('error'):
+            if bknd_result.get("error"):
                 self.report_user_sync = self.env.ref(
-                    'connector_jira.backend_report_user_sync'
-                ).render({'backend': self, 'result': bknd_result})
+                    "connector_jira.backend_report_user_sync"
+                ).render({"backend": self, "result": bknd_result})
         return True
 
     def get_user_resolution_order(self):
         """ User resolution should happen by login first as it's unique, while
         resolving by email is likely to give false positives """
-        return ['login', 'email']
+        return ["login", "email"]
 
     def import_issue_type(self):
-        self.env['jira.issue.type'].import_batch(self)
+        self.env["jira.issue.type"].import_batch(self)
         return True
 
     @api.model
@@ -541,14 +519,14 @@ class JiraBackend(models.Model):
         # tokens are only readable by connector managers
         backend = self.sudo()
         oauth = {
-            'access_token': backend.access_token,
-            'access_token_secret': backend.access_secret,
-            'consumer_key': backend.consumer_key,
-            'key_cert': backend.private_key,
+            "access_token": backend.access_token,
+            "access_token_secret": backend.access_secret,
+            "consumer_key": backend.consumer_key,
+            "key_cert": backend.private_key,
         }
         options = {
-            'server': backend.uri,
-            'verify': backend.verify_ssl,
+            "server": backend.uri,
+            "verify": backend.verify_ssl,
         }
         return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
 
@@ -569,32 +547,24 @@ class JiraBackend(models.Model):
         self.search([]).delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
-        return urllib.parse.urljoin(
-            self.uri, '/browse/{}'.format(jira_issue_id))
+        return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
 
 
 class JiraBackendTimestamp(models.Model):
-    _name = 'jira.backend.timestamp'
-    _description = 'Jira Backend Import Timestamps'
+    _name = "jira.backend.timestamp"
+    _description = "Jira Backend Import Timestamps"
 
     backend_id = fields.Many2one(
-        comodel_name='jira.backend',
-        string='Jira Backend',
-        required=True,
+        comodel_name="jira.backend", string="Jira Backend", required=True,
     )
-    from_date_field = fields.Char(
-        string='From Date Field',
-        required=True,
-    )
+    from_date_field = fields.Char(string="From Date Field", required=True,)
     # For worklogs, jira allows to work with milliseconds
     # unix timestamps, we keep this precision by using a new type
     # of field. The ORM values for this field are Unix timestamps the
     # same way Jira use them: unix timestamp as integer multiplied * 1000
     # to keep the milli precision with 3 digits (example 1554318348000).
     last_timestamp = MilliDatetime(
-        string='Last Timestamp',
-        required=True,
-        oldname="import_start_time",
+        string="Last Timestamp", required=True, oldname="import_start_time",
     )
     # The content of this field must match to the "usage" of a component.
     # The method JiraBinding.run_batch_timestamp() will find the matching
@@ -602,30 +572,36 @@ class JiraBackendTimestamp(models.Model):
     component_usage = fields.Char(
         required=True,
         help="Used by the connector to find which component "
-             "execute the batch import (technical).",
+        "execute the batch import (technical).",
     )
 
     _sql_constraints = [
-        ('timestamp_field_uniq',
-         'unique(backend_id, from_date_field, component_usage)',
-         "A timestamp already exists."),
+        (
+            "timestamp_field_uniq",
+            "unique(backend_id, from_date_field, component_usage)",
+            "A timestamp already exists.",
+        ),
     ]
 
     @api.model
     def _timestamp_for_field(self, backend, field_name, component_usage):
         """Return the timestamp for a field"""
-        timestamp = self.search([
-            ('backend_id', '=', backend.id),
-            ('from_date_field', '=', field_name),
-            ('component_usage', '=', component_usage),
-        ])
+        timestamp = self.search(
+            [
+                ("backend_id", "=", backend.id),
+                ("from_date_field", "=", field_name),
+                ("component_usage", "=", component_usage),
+            ]
+        )
         if not timestamp:
-            timestamp = self.env['jira.backend.timestamp'].create({
-                'backend_id': backend.id,
-                'from_date_field': field_name,
-                'component_usage': component_usage,
-                'last_timestamp': datetime.fromtimestamp(0),
-            })
+            timestamp = self.env["jira.backend.timestamp"].create(
+                {
+                    "backend_id": backend.id,
+                    "from_date_field": field_name,
+                    "component_usage": component_usage,
+                    "last_timestamp": datetime.fromtimestamp(0),
+                }
+            )
         return timestamp
 
     def _update_timestamp(self, timestamp):
@@ -655,29 +631,30 @@ class JiraBackendTimestamp(models.Model):
 
 
 class BackendAdapter(Component):
-    _name = 'jira.backend.adapter'
-    _inherit = 'jira.webservice.adapter'
-    _apply_on = ['jira.backend']
+    _name = "jira.backend.adapter"
+    _inherit = "jira.webservice.adapter"
+    _apply_on = ["jira.backend"]
 
-    webhook_base_path = '{server}/rest/webhooks/1.0/{path}'
+    webhook_base_path = "{server}/rest/webhooks/1.0/{path}"
 
     def list_fields(self):
-        return self.client._get_json('field')
+        return self.client._get_json("field")
 
-    def create_webhook(self, name=None, url=None, events=None,
-                       jql='', exclude_body=False):
+    def create_webhook(
+        self, name=None, url=None, events=None, jql="", exclude_body=False
+    ):
         assert name and url and events
-        data = {'name': name,
-                'url': url,
-                'events': events,
-                'jqlFilter': jql,
-                'excludeIssueDetails': exclude_body,
-                }
-        url = self.client._get_url('webhook', base=self.webhook_base_path)
+        data = {
+            "name": name,
+            "url": url,
+            "events": events,
+            "jqlFilter": jql,
+            "excludeIssueDetails": exclude_body,
+        }
+        url = self.client._get_url("webhook", base=self.webhook_base_path)
         response = self.client._session.post(url, data=json.dumps(data))
         return json_loads(response)
 
     def delete_webhook(self, id_):
-        url = self.client._get_url('webhook/%s' % id_,
-                                   base=self.webhook_base_path)
+        url = self.client._get_url("webhook/%s" % id_, base=self.webhook_base_path)
         return json_loads(self.client._session.delete(url))
