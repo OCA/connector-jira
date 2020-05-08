@@ -3,46 +3,46 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import json
-
 from collections import namedtuple
 
-from odoo import api, fields, models, exceptions, _
-from odoo.addons.queue_job.job import job, related_action
+from odoo import _, api, exceptions, fields, models
 
 from odoo.addons.component.core import Component
-
+from odoo.addons.queue_job.job import job, related_action
 
 UpdatedWorklog = namedtuple(
-    'UpdatedWorklog',
-    'worklog_id updated'
+    "UpdatedWorklog",
+    "worklog_id updated"
     # id as integer, timestamp
 )
 
 UpdatedWorklogSince = namedtuple(
-    'UpdatedWorklogSince',
-    'since until updated_worklogs'
+    "UpdatedWorklogSince",
+    "since until updated_worklogs"
     # timestamp, timestamp, [UpdatedWorklog]
 )
 
 
 DeletedWorklogSince = namedtuple(
-    'DeletedWorklogSince',
-    'since until deleted_worklog_ids'
+    "DeletedWorklogSince",
+    "since until deleted_worklog_ids"
     # timestamp, timestamp, [ids as integer]
 )
 
 
 class JiraAccountAnalyticLine(models.Model):
-    _name = 'jira.account.analytic.line'
-    _inherit = 'jira.binding'
-    _inherits = {'account.analytic.line': 'odoo_id'}
-    _description = 'Jira Worklog'
+    _name = "jira.account.analytic.line"
+    _inherit = "jira.binding"
+    _inherits = {"account.analytic.line": "odoo_id"}
+    _description = "Jira Worklog"
 
-    odoo_id = fields.Many2one(comodel_name='account.analytic.line',
-                              string='Timesheet Line',
-                              required=True,
-                              index=True,
-                              ondelete='restrict')
+    odoo_id = fields.Many2one(
+        comodel_name="account.analytic.line",
+        string="Timesheet Line",
+        required=True,
+        index=True,
+        ondelete="restrict",
+    )
     # The REST API needs issue id + worklog id, so we keep it along
     # in case we'll need it for an eventual export
     jira_issue_id = fields.Char()
@@ -50,8 +50,7 @@ class JiraAccountAnalyticLine(models.Model):
     # As we can have more than one jira binding on a project.project, we store
     # to which one a task binding is related.
     jira_project_bind_id = fields.Many2one(
-        comodel_name='jira.project.project',
-        ondelete='restrict',
+        comodel_name="jira.project.project", ondelete="restrict",
     )
 
     # we have to store these fields on the analytic line because
@@ -59,37 +58,30 @@ class JiraAccountAnalyticLine(models.Model):
     # for instance, we do not import "Tasks" but we import "Epics",
     # the analytic line for a "Task" will be linked to an "Epic" on
     # Odoo, but we still want to know the original task here
-    jira_issue_key = fields.Char(
-        string='Original Task Key',
-        readonly=True,
-    )
+    jira_issue_key = fields.Char(string="Original Task Key", readonly=True,)
     jira_issue_type_id = fields.Many2one(
-        comodel_name='jira.issue.type',
-        string='Original Issue Type',
-        readonly=True,
+        comodel_name="jira.issue.type", string="Original Issue Type", readonly=True,
     )
     jira_issue_url = fields.Char(
-        string='Original JIRA issue Link',
-        compute='_compute_jira_issue_url',
+        string="Original JIRA issue Link", compute="_compute_jira_issue_url",
     )
-    jira_epic_issue_key = fields.Char(
-        string='Original Epic Key',
-        readonly=True,
-    )
+    jira_epic_issue_key = fields.Char(string="Original Epic Key", readonly=True,)
     jira_epic_issue_url = fields.Char(
-        string='Original JIRA Epic Link',
-        compute='_compute_jira_issue_url',
+        string="Original JIRA Epic Link", compute="_compute_jira_issue_url",
     )
 
     _sql_constraints = [
-        ('jira_binding_backend_uniq', 'unique(backend_id, odoo_id)',
-         "A binding already exists for this line and this backend."),
+        (
+            "jira_binding_backend_uniq",
+            "unique(backend_id, odoo_id)",
+            "A binding already exists for this line and this backend.",
+        ),
     ]
 
     def _is_linked(self):
-        return self.mapped('jira_project_bind_id')._is_linked()
+        return self.mapped("jira_project_bind_id")._is_linked()
 
-    @api.depends('jira_issue_key', 'jira_epic_issue_key')
+    @api.depends("jira_issue_key", "jira_epic_issue_key")
     def _compute_jira_issue_url(self):
         """Compute the external URL to JIRA."""
         for record in self:
@@ -100,17 +92,17 @@ class JiraAccountAnalyticLine(models.Model):
                 record.jira_epic_issue_key
             )
 
-    @job(default_channel='root.connector_jira.import')
+    @job(default_channel="root.connector_jira.import")
     @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
         """ Import a worklog from JIRA """
         with backend.work_on(self._name) as work:
-            importer = work.component(usage='record.importer')
+            importer = work.component(usage="record.importer")
             return importer.run(worklog_id, issue_id=issue_id, force=force)
 
     def force_reimport(self):
-        for binding in self.sudo().mapped('jira_bind_ids'):
+        for binding in self.sudo().mapped("jira_bind_ids"):
             binding.with_delay(priority=8).import_record(
                 binding.backend_id,
                 binding.jira_issue_id,
@@ -120,46 +112,42 @@ class JiraAccountAnalyticLine(models.Model):
 
 
 class AccountAnalyticLine(models.Model):
-    _inherit = 'account.analytic.line'
+    _inherit = "account.analytic.line"
 
     jira_bind_ids = fields.One2many(
-        comodel_name='jira.account.analytic.line',
-        inverse_name='odoo_id',
+        comodel_name="jira.account.analytic.line",
+        inverse_name="odoo_id",
         copy=False,
-        string='Worklog Bindings',
-        context={'active_test': False},
+        string="Worklog Bindings",
+        context={"active_test": False},
     )
     # fields needed to display JIRA issue link in views
     jira_issue_key = fields.Char(
-        string='Original JIRA Issue Key',
-        compute='_compute_jira_references',
+        string="Original JIRA Issue Key",
+        compute="_compute_jira_references",
         store=True,
     )
     jira_issue_url = fields.Char(
-        string='Original JIRA issue Link',
-        compute='_compute_jira_references',
+        string="Original JIRA issue Link", compute="_compute_jira_references",
     )
     jira_epic_issue_key = fields.Char(
-        compute='_compute_jira_references',
-        string='Original JIRA Epic Key',
-        store=True,
+        compute="_compute_jira_references", string="Original JIRA Epic Key", store=True,
     )
     jira_epic_issue_url = fields.Char(
-        string='Original JIRA Epic Link',
-        compute='_compute_jira_references',
+        string="Original JIRA Epic Link", compute="_compute_jira_references",
     )
 
     jira_issue_type_id = fields.Many2one(
-        comodel_name='jira.issue.type',
-        string='Original JIRA Issue Type',
-        compute='_compute_jira_references',
-        store=True
+        comodel_name="jira.issue.type",
+        string="Original JIRA Issue Type",
+        compute="_compute_jira_references",
+        store=True,
     )
 
     @api.depends(
-        'jira_bind_ids.jira_issue_key',
-        'jira_bind_ids.jira_issue_type_id',
-        'jira_bind_ids.jira_epic_issue_key',
+        "jira_bind_ids.jira_issue_key",
+        "jira_bind_ids.jira_issue_type_id",
+        "jira_bind_ids.jira_epic_issue_key",
     )
     def _compute_jira_references(self):
         """Compute the various references to JIRA.
@@ -179,54 +167,56 @@ class AccountAnalyticLine(models.Model):
     @api.model
     def _get_connector_jira_fields(self):
         return [
-            'jira_bind_ids',
-            'project_id',
-            'task_id',
-            'user_id',
-            'employee_id',
-            'name',
-            'date',
-            'unit_amount',
+            "jira_bind_ids",
+            "project_id",
+            "task_id",
+            "user_id",
+            "employee_id",
+            "name",
+            "date",
+            "unit_amount",
         ]
 
     @api.model
     def _connector_jira_create_validate(self, vals):
-        ProjectProject = self.env['project.project']
-        project_id = vals.get('project_id')
+        ProjectProject = self.env["project.project"]
+        project_id = vals.get("project_id")
         if project_id:
             project_id = ProjectProject.sudo().browse(project_id)
-            if not self.env.context.get('connector_jira') and \
-                    project_id.mapped('jira_bind_ids')._is_linked():
-                raise exceptions.UserError(_(
-                    'Timesheet can not be created in project linked to JIRA!'
-                ))
+            if (
+                not self.env.context.get("connector_jira")
+                and project_id.mapped("jira_bind_ids")._is_linked()
+            ):
+                raise exceptions.UserError(
+                    _("Timesheet can not be created in project linked to JIRA!")
+                )
 
     def _connector_jira_write_validate(self, vals):
-        if not self.env.context.get('connector_jira') and \
-                self.mapped('jira_bind_ids')._is_linked():
+        if (
+            not self.env.context.get("connector_jira")
+            and self.mapped("jira_bind_ids")._is_linked()
+        ):
             fields = list(vals.keys())
-            new_values = self._convert_to_write(
-                vals,
-            )
-            for old_values in self.read(fields, load='_classic_write'):
-                old_values = self._convert_to_write(
-                    old_values,
-                )
+            new_values = self._convert_to_write(vals,)
+            for old_values in self.read(fields, load="_classic_write"):
+                old_values = self._convert_to_write(old_values,)
                 for field in self._get_connector_jira_fields():
                     if field not in fields:
                         continue
                     if new_values[field] == old_values[field]:
                         continue
-                    raise exceptions.UserError(_(
-                        'Timesheet linked to JIRA Worklog can not be modified!'
-                    ))
+                    raise exceptions.UserError(
+                        _("Timesheet linked to JIRA Worklog can not be modified!")
+                    )
 
     def _connector_jira_unlink_validate(self):
-        if not self.env.context.get('connector_jira') and \
-                self.mapped('jira_bind_ids')._is_linked():
-            raise exceptions.UserError(_(
-                'Timesheet linked to JIRA Worklog can not be deleted!'
-            ))
+        if (
+            not self.env.context.get("connector_jira")
+            and self.mapped("jira_bind_ids")._is_linked()
+        ):
+            raise exceptions.UserError(
+                _("Timesheet linked to JIRA Worklog can not be deleted!")
+            )
 
     @api.model
     def create(self, vals):
@@ -243,11 +233,12 @@ class AccountAnalyticLine(models.Model):
 
 
 class WorklogAdapter(Component):
-    _name = 'jira.worklog.adapter'
-    _inherit = 'jira.webservice.adapter'
-    _apply_on = ['jira.account.analytic.line']
+    _name = "jira.worklog.adapter"
+    _inherit = "jira.webservice.adapter"
+    _apply_on = ["jira.account.analytic.line"]
 
     def read(self, issue_id, worklog_id):
+        # pylint: disable=W8106
         with self.handle_404():
             return self.client.worklog(issue_id, worklog_id).raw
 
@@ -260,11 +251,11 @@ class WorklogAdapter(Component):
     def _chunks(whole, size):
         """Yield successive n-sized chunks from l."""
         for i in range(0, len(whole), size):
-            yield whole[i:i + size]
+            yield whole[i : i + size]
 
     def yield_read(self, worklog_ids):
         """Generator returning worklog ids data"""
-        path = 'worklog/list'
+        path = "worklog/list"
 
         # the method returns max 1000 results
         for chunk in self._chunks(worklog_ids, 1000):
@@ -274,46 +265,36 @@ class WorklogAdapter(Component):
                 yield worklog
 
     def updated_since(self, since=None):
-        path = 'worklog/updated'
+        path = "worklog/updated"
 
         start_since = since
         updated_worklogs = []
 
         while True:
-            result = self.client._get_json(
-                path, params={'since': since})
+            result = self.client._get_json(path, params={"since": since})
             updated_worklogs += [
-                UpdatedWorklog(
-                    worklog_id=row['worklogId'],
-                    updated=row['updatedTime']
-                ) for row in result['values']
+                UpdatedWorklog(worklog_id=row["worklogId"], updated=row["updatedTime"])
+                for row in result["values"]
             ]
-            until = since = result['until']
-            if result['lastPage']:
+            until = since = result["until"]
+            if result["lastPage"]:
                 break
         return UpdatedWorklogSince(
-            since=start_since,
-            until=until,
-            updated_worklogs=updated_worklogs
+            since=start_since, until=until, updated_worklogs=updated_worklogs
         )
 
     def deleted_since(self, since=None):
-        path = 'worklog/deleted'
+        path = "worklog/deleted"
 
         start_since = since
         deleted_worklog_ids = []
 
         while True:
-            result = self.client._get_json(
-                path, params={'since': since})
-            deleted_worklog_ids += [
-                row['worklogId'] for row in result['values']
-            ]
-            until = since = result['until']
-            if result['lastPage']:
+            result = self.client._get_json(path, params={"since": since})
+            deleted_worklog_ids += [row["worklogId"] for row in result["values"]]
+            until = since = result["until"]
+            if result["lastPage"]:
                 break
         return DeletedWorklogSince(
-            since=start_since,
-            until=until,
-            deleted_worklog_ids=deleted_worklog_ids
+            since=start_since, until=until, deleted_worklog_ids=deleted_worklog_ids
         )

@@ -1,24 +1,23 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo.addons.connector.components.mapper import mapping
-
 from odoo.addons.component.core import Component
+from odoo.addons.connector.components.mapper import mapping
 
 
 class IssueTypeMapper(Component):
-    _name = 'jira.issue.type.mapper'
-    _inherit = ['jira.import.mapper']
-    _apply_on = 'jira.issue.type'
+    _name = "jira.issue.type.mapper"
+    _inherit = ["jira.import.mapper"]
+    _apply_on = "jira.issue.type"
 
     direct = [
-        ('name', 'name'),
-        ('description', 'description'),
+        ("name", "name"),
+        ("description", "description"),
     ]
 
     @mapping
     def backend_id(self, record):
-        return {'backend_id': self.backend_record.id}
+        return {"backend_id": self.backend_record.id}
 
 
 class IssueTypeBatchImporter(Component):
@@ -27,9 +26,10 @@ class IssueTypeBatchImporter(Component):
     For every id in in the list of issue types, a direct import is done.
     Import from a date
     """
-    _name = 'jira.issue.type.batch.importer'
-    _inherit = 'jira.direct.batch.importer'
-    _apply_on = ['jira.issue.type']
+
+    _name = "jira.issue.type.batch.importer"
+    _inherit = "jira.direct.batch.importer"
+    _apply_on = ["jira.issue.type"]
 
     def run(self):
         """ Run the synchronization """
