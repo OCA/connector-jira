@@ -2,12 +2,12 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
-
 from contextlib import contextmanager
 
 import requests
 
 from odoo import _, exceptions
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 
@@ -19,14 +19,15 @@ except ImportError as err:
     _logger.debug(err)
 
 
-JIRA_JQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M'  # no seconds :-(
+JIRA_JQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M"  # no seconds :-(
 
 
 class JiraAdapter(Component):
     """ Generic adapter for using the JIRA backend """
-    _name = 'jira.webservice.adapter'
-    _inherit = ['base.backend.adapter.crud', 'jira.base']
-    _usage = 'backend.adapter'
+
+    _name = "jira.webservice.adapter"
+    _inherit = ["base.backend.adapter.crud", "jira.base"]
+    _usage = "backend.adapter"
 
     def __init__(self, work_context):
         super().__init__(work_context)
@@ -40,10 +41,7 @@ class JiraAdapter(Component):
         return self._client
 
     def _post_get_json(
-            self,
-            path,
-            data=None,
-            base=jira.resources.Resource.JIRA_BASE_URL,
+        self, path, data=None, base=jira.resources.Resource.JIRA_BASE_URL,
     ):
         """Get the json for a given path and payload
 
@@ -60,7 +58,7 @@ class JiraAdapter(Component):
         try:
             r_json = jira.utils.json_loads(r)
         except ValueError as e:
-            logging.error("%s\n%s" % (e, r.text))
+            logging.error("{}\n{}".format(e, r.text))
             raise e
         return r_json
 
@@ -75,10 +73,7 @@ class JiraAdapter(Component):
             yield
         except jira.exceptions.JIRAError as err:
             if err.status_code == 404:
-                raise IDMissingInBackend("{} (url: {})".format(
-                    err.text,
-                    err.url,
-                ))
+                raise IDMissingInBackend("{} (url: {})".format(err.text, err.url,))
             raise
 
     @contextmanager
@@ -91,14 +86,14 @@ class JiraAdapter(Component):
         try:
             yield
         except requests.exceptions.ConnectionError as err:
-            _logger.exception('Jira ConnectionError')
-            message = _('Error during connection with Jira: %s') % (err,)
+            _logger.exception("Jira ConnectionError")
+            message = _("Error during connection with Jira: %s") % (err,)
             raise exceptions.UserError(message)
         except jira.exceptions.JIRAError as err:
-            _logger.exception('Jira JIRAError')
-            message = _('Jira Error: %s') % (err,)
+            _logger.exception("Jira JIRAError")
+            message = _("Jira Error: %s") % (err,)
             raise exceptions.UserError(message)
         except IDMissingInBackend as err:
-            _logger.exception('Jira 404 for an ID')
-            message = _('Record does not exist in Jira: %s') % (err,)
+            _logger.exception("Jira 404 for an ID")
+            message = _("Record does not exist in Jira: %s") % (err,)
             raise exceptions.UserError(message)

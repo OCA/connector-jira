@@ -59,16 +59,15 @@ or record the tests again (in such case, IDs may change).
 
 """
 
-import os
 import logging
-import mock
-
+import os
 from contextlib import contextmanager
 from os.path import dirname, join
 
-from odoo.addons.component.tests.common import SavepointComponentCase
-
+import mock
 from vcr import VCR
+
+from odoo.addons.component.tests.common import SavepointComponentCase
 
 _logger = logging.getLogger(__name__)
 
@@ -102,7 +101,7 @@ class JiraSavepointCase(SavepointComponentCase):
         super().setUpClass()
 
         context = cls.env.context.copy()
-        context['tracking_disable'] = True
+        context["tracking_disable"] = True
         cls.env = cls.env(context=context)
 
         cls.backend_record = cls.env.ref("connector_jira.jira_backend_demo")
@@ -206,11 +205,11 @@ class JiraSavepointCase(SavepointComponentCase):
     @contextmanager
     def mock_with_delay(self):
         with mock.patch(
-            'odoo.addons.queue_job.models.base.DelayableRecordset',
-            name='DelayableRecordset',
+            "odoo.addons.queue_job.models.base.DelayableRecordset",
+            name="DelayableRecordset",
             spec=True,
         ) as delayable_cls:
             # prepare the mocks
-            delayable = mock.MagicMock(name='DelayableBinding')
+            delayable = mock.MagicMock(name="DelayableBinding")
             delayable_cls.return_value = delayable
             yield delayable_cls, delayable

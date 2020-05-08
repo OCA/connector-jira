@@ -4,24 +4,25 @@
 import logging
 
 from odoo import models
+
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
 
 class JiraProjectBinder(Component):
-    _name = 'jira.project.binder'
-    _inherit = 'jira.binder'
+    _name = "jira.project.binder"
+    _inherit = "jira.binder"
 
     _apply_on = [
-        'jira.project.project',
+        "jira.project.project",
     ]
 
     def _domain_to_external(self, binding):
         return [
-            (self._odoo_field, '=', binding.id),
-            (self._backend_field, '=', self.backend_record.id),
-            ('sync_action', '=', 'export'),
+            (self._odoo_field, "=", binding.id),
+            (self._backend_field, "=", self.backend_record.id),
+            ("sync_action", "=", "export"),
         ]
 
     def to_external(self, binding, wrap=False):

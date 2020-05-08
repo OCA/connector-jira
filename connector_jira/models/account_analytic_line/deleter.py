@@ -4,8 +4,10 @@
 import logging
 
 from odoo import _
+
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import RetryableJobError
+
 from ...fields import MilliDatetime
 
 _logger = logging.getLogger(__name__)
@@ -21,9 +23,9 @@ class AnalyticLineBatchDeleter(Component):
     items to delete and schedule jobs for the deletions.
     """
 
-    _name = 'jira.analytic.line.timestamp.batch.deleter'
-    _inherit = ['base.synchronizer', 'jira.base']
-    _usage = 'timestamp.batch.deleter'
+    _name = "jira.analytic.line.timestamp.batch.deleter"
+    _inherit = ["base.synchronizer", "jira.base"]
+    _usage = "timestamp.batch.deleter"
 
     def run(self, timestamp, **kwargs):
         """Run the synchronization using the timestamp"""
@@ -37,11 +39,8 @@ class AnalyticLineBatchDeleter(Component):
 
         number = self._handle_records(records)
 
-        return _('Batch from {} UTC to {} UTC '
-                 'generated {} delete jobs').format(
-            original_timestamp_value,
-            next_timestamp_value,
-            number
+        return _("Batch from {} UTC to {} UTC " "generated {} delete jobs").format(
+            original_timestamp_value, next_timestamp_value, number
         )
 
     def _handle_records(self, records):
@@ -51,12 +50,9 @@ class AnalyticLineBatchDeleter(Component):
         return len(records)
 
     def _handle_lock_failed(self, timestamp):
-        _logger.warning("Failed to acquire timestamps %s",
-                        timestamp,
-                        exc_info=True)
+        _logger.warning("Failed to acquire timestamps %s", timestamp, exc_info=True)
         raise RetryableJobError(
-            'Concurrent job / process already syncing',
-            ignore_retry=True,
+            "Concurrent job / process already syncing", ignore_retry=True,
         )
 
     def _search(self, timestamp):
@@ -69,12 +65,8 @@ class AnalyticLineBatchDeleter(Component):
     def _delete_record(self, record_id, **kwargs):
         """Delay the delete of the records"""
         self.model.with_delay(
-            description=_("Delete a local worklog which has "
-                          "been deleted on JIRA"),
+            description=_("Delete a local worklog which has " "been deleted on JIRA"),
             **kwargs
         ).delete_record(
-            self.backend_record,
-            record_id,
-            only_binding=False,
-            set_inactive=False,
+            self.backend_record, record_id, only_binding=False, set_inactive=False,
         )

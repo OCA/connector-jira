@@ -24,10 +24,11 @@ import odoo
 from odoo import _, tools
 
 from odoo.addons.component.core import AbstractComponent, Component
-from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.connector.exception import IDMissingInBackend
-from .mapper import iso8601_to_utc_datetime
+from odoo.addons.queue_job.exception import RetryableJobError
+
 from .backend_adapter import JIRA_JQL_DATETIME_FORMAT
+from .mapper import iso8601_to_utc_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -46,9 +47,9 @@ class JiraImporter(Component):
     If no specific importer is defined for a model, this one is used.
     """
 
-    _name = 'jira.importer'
-    _inherit = ['base.importer', 'jira.base']
-    _usage = 'record.importer'
+    _name = "jira.importer"
+    _inherit = ["base.importer", "jira.base"]
+    _usage = "record.importer"
 
     def __init__(self, work_context):
         super().__init__(work_context)
@@ -72,8 +73,8 @@ class JiraImporter(Component):
 
     def _get_external_updated_at(self):
         assert self.external_record
-        ext_fields = self.external_record.get('fields', {})
-        external_updated_at = ext_fields.get('updated')
+        ext_fields = self.external_record.get("fields", {})
+        external_updated_at = ext_fields.get("updated")
         if not external_updated_at:
             return None
         return iso8601_to_utc_datetime(external_updated_at)
@@ -94,8 +95,9 @@ class JiraImporter(Component):
             return external_date < binding.jira_updated_at
         return False
 
-    def _import_dependency(self, external_id, binding_model,
-                           component=None, record=None, always=False):
+    def _import_dependency(
+        self, external_id, binding_model, component=None, record=None, always=False
+    ):
         """
         Import a dependency.
 
@@ -122,8 +124,9 @@ class JiraImporter(Component):
         binder = self.binder_for(binding_model)
         if always or not binder.to_internal(external_id):
             if component is None:
-                component = self.component(usage='record.importer',
-                                           model_name=binding_model)
+                component = self.component(
+                    usage="record.importer", model_name=binding_model
+                )
             component.run(external_id, record=record, force=True)
 
     def _import_dependencies(self):
@@ -151,14 +154,9 @@ class JiraImporter(Component):
         """Filter values that aren't actually changing"""
         binding.ensure_one()
         fields = list(data.keys())
-        new_values = binding._convert_to_write(
-            data,
-        )
+        new_values = binding._convert_to_write(data,)
         old_values = binding._convert_to_write(
-            binding.read(
-                fields,
-                load='_classic_write',
-            )[0],
+            binding.read(fields, load="_classic_write",)[0],
         )
         new_data = {}
         for field in fields:
@@ -201,18 +199,19 @@ class JiraImporter(Component):
         except IntegrityError as err:
             if err.pgcode == errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
-                    'A database error caused the failure of the job:\n'
-                    '%s\n\n'
-                    'Likely due to 2 concurrent jobs wanting to create '
-                    'the same record. The job will be retried later.' % err)
+                    "A database error caused the failure of the job:\n"
+                    "%s\n\n"
+                    "Likely due to 2 concurrent jobs wanting to create "
+                    "the same record. The job will be retried later." % err
+                )
             else:
                 raise
 
     def _create_context(self):
         return {
-            'connector_jira': True,
-            'connector_no_export': True,
-            'tracking_disable': True,
+            "connector_jira": True,
+            "connector_no_export": True,
+            "tracking_disable": True,
         }
 
     def _create(self, data):
@@ -223,22 +222,20 @@ class JiraImporter(Component):
             model_ctx = self.model.with_context(**self._create_context())
             binding = model_ctx.sudo().create(data)
 
-        _logger.debug('%s created from Jira %s',
-                      binding, self.external_id)
+        _logger.debug("%s created from Jira %s", binding, self.external_id)
         return binding
 
     def _update_data(self, map_record, **kwargs):
         """ Get the data to pass to :py:meth:`_update` """
         return map_record.values(
-            external_updated_at=self._get_external_updated_at(),
-            **kwargs
+            external_updated_at=self._get_external_updated_at(), **kwargs
         )
 
     def _update_context(self):
         return {
-            'connector_jira': True,
-            'connector_no_export': True,
-            'tracking_disable': True,
+            "connector_jira": True,
+            "connector_no_export": True,
+            "tracking_disable": True,
         }
 
     def _update(self, binding, data):
@@ -246,7 +243,7 @@ class JiraImporter(Component):
         data = self._filter_data(binding, data)
         if not data:
             _logger.debug(
-                '%s not updated from Jira %s as nothing changed',
+                "%s not updated from Jira %s as nothing changed",
                 binding,
                 self.external_id,
             )
@@ -254,7 +251,7 @@ class JiraImporter(Component):
         self._validate_data(data)
         binding_ctx = binding.with_context(**self._update_context())
         binding_ctx.sudo().write(data)
-        _logger.debug('%s updated from Jira %s', binding, self.external_id)
+        _logger.debug("%s updated from Jira %s", binding, self.external_id)
         return
 
     def _after_import(self, binding):
@@ -274,17 +271,15 @@ class JiraImporter(Component):
             registry = odoo.registry(self.env.cr.dbname)
             with closing(registry.cursor()) as cr:
                 try:
-                    new_env = odoo.api.Environment(cr, self.env.uid,
-                                                   self.env.context)
+                    new_env = odoo.api.Environment(cr, self.env.uid, self.env.context)
                     backend = self.backend_record.with_env(new_env)
-                    with backend.work_on(model_name
-                                         or self.model._name) as work:
+                    with backend.work_on(model_name or self.model._name) as work:
                         yield work
                 except Exception:
                     cr.rollback()
                     raise
                 else:
-                    if not tools.config['test_enable']:
+                    if not tools.config["test_enable"]:
                         cr.commit()  # pylint: disable=invalid-commit
 
     def _handle_record_missing_on_jira(self):
@@ -298,7 +293,7 @@ class JiraImporter(Component):
             # emptying the external_id allows to unlink the binding
             binding.external_id = False
             binding.unlink()
-        return _('Record does no longer exist in Jira')
+        return _("Record does no longer exist in Jira")
 
     def run(self, external_id, force=False, record=None, **kwargs):
         """ Run the synchronization
@@ -309,15 +304,14 @@ class JiraImporter(Component):
         :param external_id: identifier of the record on Jira
         """
         self.external_id = external_id
-        lock_name = 'import({}, {}, {}, {})'.format(
+        lock_name = "import({}, {}, {}, {})".format(
             self.backend_record._name,
             self.backend_record.id,
             self.model._name,
             self.external_id,
         )
         # Keep a lock on this import until the transaction is committed
-        self.advisory_lock_or_retry(lock_name,
-                                    retry_seconds=RETRY_ON_ADVISORY_LOCK)
+        self.advisory_lock_or_retry(lock_name, retry_seconds=RETRY_ON_ADVISORY_LOCK)
         if record is not None:
             self.external_record = record
         else:
@@ -367,12 +361,12 @@ class JiraImporter(Component):
                 # a Retryable error so T2 is rollbacked and retried
                 # later (and the new T3 will be aware of the category X
                 # from the its inception).
-                binder = new_work.component(usage='binder')
+                binder = new_work.component(usage="binder")
                 if binder.to_internal(self.external_id):
                     raise RetryableJobError(
-                        'Concurrent error. The job will be retried later',
+                        "Concurrent error. The job will be retried later",
                         seconds=RETRY_WHEN_CONCURRENT_DETECTED,
-                        ignore_retry=True
+                        ignore_retry=True,
                     )
 
         reason = self.must_skip(force=force)
@@ -380,7 +374,7 @@ class JiraImporter(Component):
             return reason
 
         if not force and self._is_uptodate(binding):
-            return _('Already up-to-date.')
+            return _("Already up-to-date.")
 
         self._before_import()
 
@@ -417,9 +411,9 @@ class BatchImporter(AbstractComponent):
     the import of each item separately.
     """
 
-    _name = 'jira.batch.importer'
-    _inherit = ['base.importer', 'jira.base']
-    _usage = 'batch.importer'
+    _name = "jira.batch.importer"
+    _inherit = ["base.importer", "jira.base"]
+    _usage = "batch.importer"
 
     def run(self):
         """Run the synchronization, search all JIRA records"""
@@ -440,29 +434,27 @@ class BatchImporter(AbstractComponent):
 
 class DirectBatchImporter(AbstractComponent):
     """ Import the records directly, without delaying the jobs. """
-    _name = 'jira.direct.batch.importer'
-    _inherit = ['jira.batch.importer']
+
+    _name = "jira.direct.batch.importer"
+    _inherit = ["jira.batch.importer"]
 
     def _import_record(self, record_id, force=False, record=None):
         """ Import the record directly """
         self.model.import_record(
-            self.backend_record, record_id,
-            force=force, record=record
+            self.backend_record, record_id, force=force, record=record
         )
 
 
 class DelayedBatchImporter(AbstractComponent):
     """ Delay import of the records """
-    _name = 'jira.delayed.batch.importer'
-    _inherit = ['jira.batch.importer']
+
+    _name = "jira.delayed.batch.importer"
+    _inherit = ["jira.batch.importer"]
 
     def _import_record(self, record_id, force=False, record=None, **kwargs):
         """ Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record,
-            record_id,
-            force=force,
-            record=record
+            self.backend_record, record_id, force=force, record=record
         )
 
 
@@ -477,9 +469,9 @@ class TimestampBatchImporter(AbstractComponent):
     the import of each item separately.
     """
 
-    _name = 'jira.timestamp.batch.importer'
-    _inherit = ['base.importer', 'jira.base']
-    _usage = 'timestamp.batch.importer'
+    _name = "jira.timestamp.batch.importer"
+    _inherit = ["base.importer", "jira.base"]
+    _usage = "timestamp.batch.importer"
 
     def run(self, timestamp, force=False, **kwargs):
         """Run the synchronization using the timestamp"""
@@ -493,10 +485,8 @@ class TimestampBatchImporter(AbstractComponent):
 
         number = self._handle_records(records, force=force)
 
-        return _('Batch from {} UTC to {} UTC generated {} imports').format(
-            original_timestamp_value,
-            next_timestamp_value,
-            number
+        return _("Batch from {} UTC to {} UTC generated {} imports").format(
+            original_timestamp_value, next_timestamp_value, number
         )
 
     def _handle_records(self, records, force=False):
@@ -506,12 +496,9 @@ class TimestampBatchImporter(AbstractComponent):
         return len(records)
 
     def _handle_lock_failed(self, timestamp):
-        _logger.warning("Failed to acquire timestamps %s",
-                        timestamp,
-                        exc_info=True)
+        _logger.warning("Failed to acquire timestamps %s", timestamp, exc_info=True)
         raise RetryableJobError(
-            'Concurrent job / process already syncing',
-            ignore_retry=True,
+            "Concurrent job / process already syncing", ignore_retry=True,
         )
 
     def _search(self, timestamp):
@@ -527,29 +514,25 @@ class TimestampBatchImporter(AbstractComponent):
             parts.append('updated <= "%s"' % to_date)
 
         next_timestamp = max(until - timedelta(seconds=IMPORT_DELTA), since)
-        record_ids = self.backend_adapter.search(' and '.join(parts))
+        record_ids = self.backend_adapter.search(" and ".join(parts))
         return (next_timestamp, record_ids)
 
-    def _import_record(self, record_id, force=False,
-                       record=None, **kwargs):
+    def _import_record(self, record_id, force=False, record=None, **kwargs):
         """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record,
-            record_id,
-            force=force,
-            record=record,
+            self.backend_record, record_id, force=force, record=record,
         )
 
 
 class JiraDeleter(Component):
-    _name = 'jira.deleter'
-    _inherit = ['base.deleter', 'jira.base']
-    _usage = 'record.deleter'
+    _name = "jira.deleter"
+    _inherit = ["base.deleter", "jira.base"]
+    _usage = "record.deleter"
 
     def run(self, external_id, only_binding=False, set_inactive=False):
         binding = self.binder.to_internal(external_id)
         if not binding.exists():
-            return _('Binding not found')
+            return _("Binding not found")
         if set_inactive:
             binding.active = False
         else:
@@ -559,4 +542,4 @@ class JiraDeleter(Component):
             binding.unlink()
             if not only_binding:
                 record.unlink()
-            return _('Record deleted')
+            return _("Record deleted")

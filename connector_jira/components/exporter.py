@@ -1,18 +1,6 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-import logging
-from contextlib import contextmanager
-import psycopg2
-from odoo import _, fields, tools
-
-from odoo.addons.component.core import AbstractComponent, Component
-from odoo.addons.queue_job.exception import RetryableJobError
-
-from .mapper import iso8601_to_utc_datetime
-
-_logger = logging.getLogger(__name__)
-
 """
 
 Exporters for Jira.
@@ -25,13 +13,27 @@ In addition to its export job, an exporter has to:
 
 """
 
+import logging
+from contextlib import contextmanager
+
+import psycopg2
+
+from odoo import _, fields, tools
+
+from odoo.addons.component.core import AbstractComponent, Component
+from odoo.addons.queue_job.exception import RetryableJobError
+
+from .mapper import iso8601_to_utc_datetime
+
+_logger = logging.getLogger(__name__)
+
 
 class JiraBaseExporter(AbstractComponent):
     """ Base exporter for Jira """
 
-    _name = 'jira.base.exporter'
-    _inherit = ['base.exporter', 'jira.base']
-    _usage = 'record.exporter'
+    _name = "jira.base.exporter"
+    _inherit = ["base.exporter", "jira.base"]
+    _usage = "record.exporter"
 
     def __init__(self, work_context):
         super().__init__(work_context)
@@ -47,8 +49,7 @@ class JiraBaseExporter(AbstractComponent):
         # force is True because the sync_date will be more recent
         # so the import would be skipped if it was not forced
         assert self.external_id
-        self.binding.import_record(self.backend_record, self.external_id,
-                                   force=True)
+        self.binding.import_record(self.backend_record, self.external_id, force=True)
 
     def _should_import(self):
         """ Before the export, compare the update date
@@ -62,10 +63,9 @@ class JiraBaseExporter(AbstractComponent):
         sync = self.binder.sync_date(self.binding)
         if not sync:
             return True
-        jira_updated = self.backend_adapter.read(
-            self.external_id,
-            fields=['updated']
-        )['fields']['updated']
+        jira_updated = self.backend_adapter.read(self.external_id, fields=["updated"])[
+            "fields"
+        ]["updated"]
 
         sync_date = fields.Datetime.from_string(sync)
         jira_date = iso8601_to_utc_datetime(jira_updated)
@@ -86,7 +86,7 @@ class JiraBaseExporter(AbstractComponent):
         with :meth:`_export_dependencies`. Each level will set its own lock
         on the binding record it has to export.
         """
-        self.component('record.locker').lock(self.binding)
+        self.component("record.locker").lock(self.binding)
 
     def run(self, binding, *args, **kwargs):
         """ Run the synchronization
@@ -96,7 +96,7 @@ class JiraBaseExporter(AbstractComponent):
         self.binding = binding
 
         if not self.binding.exists():
-            return _('Record to export does no longer exist.')
+            return _("Record to export does no longer exist.")
 
         # prevent other jobs to export the same record
         # will be released on commit (or rollback)
@@ -107,7 +107,7 @@ class JiraBaseExporter(AbstractComponent):
         self.binder.bind(self.external_id, self.binding)
         # commit so we keep the external ID if several exports
         # are called and one of them fails
-        if not tools.config['test_enable']:
+        if not tools.config["test_enable"]:
             self.env.cr.commit()  # pylint: disable=invalid-commit
         return result
 
@@ -122,9 +122,10 @@ class JiraExporter(Component):
     If no specific exporter overrides the exporter for a model, this one is
     used.
     """
-    _name = 'jira.exporter'
-    _inherit = ['jira.base.exporter']
-    _usage = 'record.exporter'
+
+    _name = "jira.exporter"
+    _inherit = ["jira.base.exporter"]
+    _usage = "record.exporter"
 
     def _has_to_skip(self):
         """ Return True if the export can be skipped """
@@ -151,15 +152,15 @@ class JiraExporter(Component):
         except psycopg2.IntegrityError as err:
             if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
-                    'A database error caused the failure of the job:\n'
-                    '%s\n\n'
-                    'Likely due to 2 concurrent jobs wanting to create '
-                    'the same record. The job will be retried later.' % err)
+                    "A database error caused the failure of the job:\n"
+                    "%s\n\n"
+                    "Likely due to 2 concurrent jobs wanting to create "
+                    "the same record. The job will be retried later." % err
+                )
             else:
                 raise
 
-    def _export_dependency(self, relation, binding_model,
-                           component=None):
+    def _export_dependency(self, relation, binding_model, component=None):
         """
         Export a dependency.
 
@@ -192,9 +193,11 @@ class JiraExporter(Component):
         # record but the binding model is 'jira.project.project'
         wrap = relation._model._name != binding_model
 
-        if wrap and hasattr(relation, 'jira_bind_ids'):
-            domain = [('odoo_id', '=', relation.id),
-                      ('backend_id', '=', self.backend_record.id)]
+        if wrap and hasattr(relation, "jira_bind_ids"):
+            domain = [
+                ("odoo_id", "=", relation.id),
+                ("backend_id", "=", self.backend_record.id),
+            ]
             model = self.env[binding_model].with_context(active_test=False)
             binding = model.search(domain)
             if binding:
@@ -205,19 +208,23 @@ class JiraExporter(Component):
                 # Example: I created a product.product and its binding
                 # jira.project.project, it is exported, but we need to
                 # create the binding for the template.
-                bind_values = {'backend_id': self.backend_record.id,
-                               'odoo_id': relation.id}
+                bind_values = {
+                    "backend_id": self.backend_record.id,
+                    "odoo_id": relation.id,
+                }
                 # If 2 jobs create it at the same time, retry
                 # one later. A unique constraint (backend_id,
                 # odoo_id) should exist on the binding model
                 with self._retry_unique_violation():
-                    model_c = self.env[binding_model].sudo().with_context(
-                        connector_no_export=True
+                    model_c = (
+                        self.env[binding_model]
+                        .sudo()
+                        .with_context(connector_no_export=True)
                     )
                     binding = model_c.create(bind_values)
                     # Eager commit to avoid having 2 jobs
                     # exporting at the same time.
-                    if not tools.config['test_enable']:
+                    if not tools.config["test_enable"]:
                         self.env.cr.commit()  # pylint: disable=invalid-commit
         else:
             # If jira_bind_ids does not exist we are typically in a
@@ -227,8 +234,9 @@ class JiraExporter(Component):
 
         if not rel_binder.to_external(binding):
             if component is None:
-                component = self.component(usage='record.exporter',
-                                           model_name=binding_model)
+                component = self.component(
+                    usage="record.exporter", model_name=binding_model
+                )
             component.run(binding.id)
 
     def _export_dependencies(self):
@@ -306,11 +314,11 @@ class JiraExporter(Component):
         if self.external_id:
             record = self._update_data(map_record, fields=fields)
             if not record:
-                return _('Nothing to export.')
+                return _("Nothing to export.")
             self._update(record)
         else:
             record = self._create_data(map_record, fields=fields)
             if not record:
-                return _('Nothing to export.')
+                return _("Nothing to export.")
             self.external_id = self._create(record)
-        return _('Record exported with ID %s on Jira.') % self.external_id
+        return _("Record exported with ID %s on Jira.") % self.external_id
