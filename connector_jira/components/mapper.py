@@ -1,11 +1,13 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-import pytz
 from datetime import datetime
+
+import pytz
 from dateutil import parser
 
 from odoo import fields
+
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.connector.components.mapper import mapping
 
@@ -13,13 +15,13 @@ from odoo.addons.connector.components.mapper import mapping
 class JiraImportMapper(AbstractComponent):
     """Base Import Mapper for Jira """
 
-    _name = 'jira.import.mapper'
-    _inherit = ['base.import.mapper', 'jira.base']
+    _name = "jira.import.mapper"
+    _inherit = ["base.import.mapper", "jira.base"]
 
     @mapping
     def jira_updated_at(self, record):
         if self.options.external_updated_at:
-            return {'jira_updated_at': self.options.external_updated_at}
+            return {"jira_updated_at": self.options.external_updated_at}
 
 
 def iso8601_to_utc_datetime(isodate):
@@ -31,7 +33,7 @@ def iso8601_to_utc_datetime(isodate):
     parsed = parser.parse(isodate)
     if not parsed.tzinfo:
         return parsed
-    utc = pytz.timezone('UTC')
+    utc = pytz.timezone("UTC")
     # set as UTC and then remove the tzinfo so the date becomes naive
     return parsed.astimezone(utc).replace(tzinfo=None)
 
@@ -42,7 +44,7 @@ def utc_datetime_to_iso8601(dt):
     Example: 2013-11-04 12:52:01 → 2013-11-04T12:52:01+0000
 
     """
-    utc = pytz.timezone('UTC')
+    utc = pytz.timezone("UTC")
     utc_dt = utc.localize(dt, is_dst=False)  # UTC = no DST
     return utc_dt.isoformat()
 
@@ -71,6 +73,7 @@ def iso8601_to_utc(field):
             return False
         utc_date = iso8601_to_utc_datetime(value)
         return fields.Datetime.to_string(utc_date)
+
     return modifier
 
 
@@ -83,7 +86,7 @@ def iso8601_to_naive_date(isodate):
     2014-10-06 that we would have using the timestamp converted to UTC.
     """
     naive_date = isodate[:10]
-    return datetime.strptime(naive_date, '%Y-%m-%d').date()
+    return datetime.strptime(naive_date, "%Y-%m-%d").date()
 
 
 def iso8601_naive_date(field):
@@ -112,6 +115,7 @@ def iso8601_naive_date(field):
             return False
         naive_date = iso8601_to_naive_date(value)
         return fields.Date.to_string(naive_date)
+
     return modifier
 
 
@@ -133,13 +137,14 @@ def follow_dict_path(field):
     """
 
     def modifier(self, record, to_attr):
-        attrs = field.split('.')
+        attrs = field.split(".")
         value = record
         for attr in attrs:
             value = value.get(attr)
             if not value:
                 break
         return value
+
     return modifier
 
 
@@ -161,18 +166,19 @@ def whenempty(field, default_value):
         if not value:
             return default_value
         return value
+
     return modifier
 
 
 class FromFields(Component):
-    _name = 'jira.mapper.from.attrs'
-    _inherit = ['jira.base']
-    _usage = 'map.from.attrs'
+    _name = "jira.mapper.from.attrs"
+    _inherit = ["jira.base"]
+    _usage = "map.from.attrs"
 
     def values(self, record, mapper_):
         values = {}
-        from_fields_mappings = getattr(mapper_, 'from_fields', [])
-        fields_values = record.get('fields', {})
+        from_fields_mappings = getattr(mapper_, "from_fields", [])
+        fields_values = record.get("fields", {})
         for source, target in from_fields_mappings:
             values[target] = mapper_._map_direct(fields_values, source, target)
         return values
