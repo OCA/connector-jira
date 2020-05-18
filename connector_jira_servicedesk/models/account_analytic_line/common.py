@@ -17,9 +17,10 @@ class JiraAccountAnalyticLine(models.Model):
         for record in self:
             jira_project = fields.first(self.project_id.jira_bind_ids)
             if jira_project and record.jira_issue_key:
-                record.jira_servicedesk_issue_url = jira_project.make_servicedesk_issue_url(
-                    record.jira_issue_key
-                )
+                record.jira_servicedesk_issue_url = jira_project.\
+                    make_servicedesk_issue_url(
+                        record.jira_issue_key
+                    )
 
 
 class AccountAnalyticLine(models.Model):
