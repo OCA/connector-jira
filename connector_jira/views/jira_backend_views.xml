@@ -250,12 +250,13 @@
                   When webhooks are activated, each
                   modification of tasks and worklogs are
                   directly transmitted to Odoo.
-                </p>
+                                </p>
                             </group>
                             <group name="epic" col="6">
                                 <group name="epic_fields" colspan="3">
                                     <field name="epic_link_field_name" />
                                     <field name="epic_name_field_name" />
+                                    <field name="epic_link_on_epic" />
                                 </group>
                                 <div>
                                     <button
@@ -273,7 +274,7 @@
 
                   Note that if a project does not synchronize the Epics,
                   the field will be empty.
-                </p>
+                                </p>
                             </group>
                             <group name="worklog" col="6">
                                 <group name="worklog_fields" colspan="3">
@@ -290,7 +291,7 @@
                                 <div />
                                 <p class="oe_grey" colspan="2">
                   Configure worklog fields
-                </p>
+                                </p>
                             </group>
                         </page>
                         <page name="issue_type" string="Issue Types" states="running">
