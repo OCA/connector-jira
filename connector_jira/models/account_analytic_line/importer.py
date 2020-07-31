@@ -37,10 +37,17 @@ class AnalyticLineMapper(Component):
             usage='import.mapper',
             model_name='jira.project.task',
         )
-        refs.update(task_mapper.issue_type(issue))
+        issue_type_dict = task_mapper.issue_type(issue)
+        refs.update(issue_type_dict)
         epic_field_name = self.backend_record.epic_link_field_name
         if epic_field_name and epic_field_name in issue['fields']:
             refs['jira_epic_issue_key'] = issue['fields'][epic_field_name]
+        if self.backend_record.epic_link_on_epic:
+            issue_type = self.env["jira.issue.type"].browse(
+                issue_type_dict.get("jira_issue_type_id")
+            )
+            if issue_type.name == "Epic":
+                refs['jira_epic_issue_key'] = issue.get('key')
         return refs
 
     @mapping

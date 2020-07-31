@@ -166,6 +166,7 @@
                 <group name="epic_fields">
                   <field name="epic_link_field_name"/>
                   <field name="epic_name_field_name"/>
+                  <field name="epic_link_on_epic"/>
                 </group>
                 <group name="epic_actions">
                   <button name="activate_epic_link"
