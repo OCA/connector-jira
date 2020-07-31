@@ -189,6 +189,7 @@
                 <group name="epic_fields" colspan="3">
                   <field name="epic_link_field_name"/>
                   <field name="epic_name_field_name"/>
+                  <field name="epic_link_on_epic"/>
                 </group>
                 <div>
                   <button name="activate_epic_link"
