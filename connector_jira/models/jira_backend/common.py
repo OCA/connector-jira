@@ -186,6 +186,11 @@ class JiraBackend(models.Model):
         help="The 'Epic Name' field on JIRA is a custom field. "
         "The name of the field is something like 'customfield_10003'. ",
     )
+    epic_link_on_epic = fields.Boolean(
+        string="Epic link on epic",
+        help="Epics on JIRA cannot be linked to another epic. Check this box"
+             "to fill the epic field with itself on Odoo."
+    )
 
     odoo_webhook_base_url = fields.Char(
         string="Base Odoo URL for Webhooks",
