@@ -200,3 +200,30 @@ class TestImportAccountAnalyticLine(TestImportWorklogBase):
                 }
             ],
         )
+
+    def _test_import_worklog_epic_link_on_epic(self, expected_project, expected_task):
+        jira_worklog_id = jira_issue_id = "10000"
+        self.backend_record.epic_link_on_epic = True
+        binding = self._setup_import_worklog(self.task, jira_issue_id, jira_worklog_id)
+        self.assertRecordValues(
+            binding,
+            [
+                {
+                    "account_id": expected_project.analytic_account_id.id,
+                    "backend_id": self.backend_record.id,
+                    "date": "2019-04-04",
+                    "employee_id": self.env.user.employee_ids[0].id,
+                    "external_id": jira_worklog_id,
+                    "jira_epic_issue_key": "TEST-1",
+                    "jira_issue_id": jira_issue_id,
+                    "jira_issue_key": "TEST-1",
+                    "jira_issue_type_id": self.epic_issue_type.id,
+                    "name": "write tests",
+                    "project_id": expected_project.id,
+                    "tag_ids": [],
+                    "task_id": expected_task.id if expected_task else False,
+                    "unit_amount": 1.0,
+                    "user_id": self.env.user.id,
+                }
+            ],
+        )
