@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 
 
 class JiraBackend(models.Model):
-    _name = 'jira.backend'
+    _name = "jira.backend"
     _inherit = ["jira.backend", "server.env.mixin"]
 
     @property
