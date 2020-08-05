@@ -563,9 +563,8 @@ class JiraBackendTimestamp(models.Model):
     # of field. The ORM values for this field are Unix timestamps the
     # same way Jira use them: unix timestamp as integer multiplied * 1000
     # to keep the milli precision with 3 digits (example 1554318348000).
-    last_timestamp = MilliDatetime(
-        string="Last Timestamp", required=True, oldname="import_start_time",
-    )
+    last_timestamp = MilliDatetime(string="Last Timestamp", required=True,)
+
     # The content of this field must match to the "usage" of a component.
     # The method JiraBinding.run_batch_timestamp() will find the matching
     # component for the model and call "run()" on it.
