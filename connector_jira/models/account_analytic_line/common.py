@@ -130,13 +130,17 @@ class AccountAnalyticLine(models.Model):
         store=True,
     )
     jira_issue_url = fields.Char(
-        string="Original JIRA issue Link", compute="_compute_jira_references",
+        string="Original JIRA issue Link",
+        compute="_compute_jira_references",
+        compute_sudo=True,
     )
     jira_epic_issue_key = fields.Char(
         compute="_compute_jira_references", string="Original JIRA Epic Key", store=True,
     )
     jira_epic_issue_url = fields.Char(
-        string="Original JIRA Epic Link", compute="_compute_jira_references",
+        string="Original JIRA Epic Link",
+        compute="_compute_jira_references",
+        compute_sudo=True,
     )
 
     jira_issue_type_id = fields.Many2one(
