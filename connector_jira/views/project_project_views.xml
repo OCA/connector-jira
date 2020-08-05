@@ -69,18 +69,19 @@
     <record id="project_project_view_form_simplified" model="ir.ui.view">
         <field name="name">project.project.view.form.simplified.jira</field>
         <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.project_project_view_form_simplified" />
+        <field
+            name="inherit_id"
+            ref="project.project_project_view_form_simplified_footer"
+        />
         <field name="arch" type="xml">
-            <form>
-                <header>
-                    <button
-                        string="Create and Link with JIRA"
-                        name="create_and_link_jira"
-                        type="object"
-                        class="btn-primary"
-                    />
-                </header>
-            </form>
+            <xpath expr="//button[@name='open_tasks']" position="after">
+                <button
+                    string="Create and Link with JIRA"
+                    name="create_and_link_jira"
+                    type="object"
+                    class="btn-primary"
+                />
+            </xpath>
         </field>
     </record>
     <record id="view_project" model="ir.ui.view">
