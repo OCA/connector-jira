@@ -3,7 +3,7 @@
     <record id="project_link_jira_form" model="ir.ui.view">
         <field name="name">project.link.jira.form</field>
         <field name="model">project.link.jira</field>
-        <!-- <field name="mode">primary</field> -->
+        <field name="mode">primary</field>
         <field name="inherit_id" ref="multi_step_wizard.multi_step_wizard_form" />
         <field name="arch" type="xml">
             <xpath expr="//footer" position="before">
