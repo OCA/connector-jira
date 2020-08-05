@@ -81,7 +81,9 @@ class JiraAccountAnalyticLine(models.Model):
     def _is_linked(self):
         return self.mapped("jira_project_bind_id")._is_linked()
 
-    @api.depends("jira_issue_key", "jira_epic_issue_key")
+    @api.depends(
+        "backend_id", "backend_id.uri", "jira_issue_key", "jira_epic_issue_key"
+    )
     def _compute_jira_issue_url(self):
         """Compute the external URL to JIRA."""
         for record in self:
