@@ -3,12 +3,12 @@
 
 {
     "name": "Server environment for JIRA Connector",
-    "version": "11.0.1.0.0",
+    "version": "13.0.1.0.0",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Tools",
-    "depends": ["server_environment", "connector_jira",],  # oca/server-tools
-    "website": "https://www.camptocamp.com",
+    "depends": ["server_environment", "connector_jira"],  # oca/server-env
+    "website": "https://github.com/OCA/connector-jira",
     "data": [],
     "installable": True,
 }
