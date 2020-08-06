@@ -43,14 +43,17 @@ class WorklogAdapter(Component):
         url = self._tempo_timesheets_get_url("timesheet-approval/current")
         with self.handle_404():
             response = self.client._session.get(
-                url, params={"username": worklog["author"]["name"],}
+                url, params={"username": worklog["author"]["name"],}  # noqa
             )
         return response.json()
 
-    def tempo_timesheets_approval_read_status_by_team(self, team_id, period_start):
+    def tempo_timesheets_approval_read_status_by_team(
+        self, team_id, period_start
+    ):  # noqa
         url = self._tempo_timesheets_get_url("timesheet-approval")
         with self.handle_404():
             response = self.client._session.get(
-                url, params={"teamId": team_id, "periodStartDate": period_start,}
+                url,
+                params={"teamId": team_id, "periodStartDate": period_start,},  # noqa
             )
         return response.json()

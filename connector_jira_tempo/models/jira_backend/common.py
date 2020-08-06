@@ -6,7 +6,7 @@ import logging
 from collections import defaultdict
 from datetime import datetime, timedelta
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -35,7 +35,6 @@ class JiraBackend(models.Model):
         "all approved timesheets will be validated on Odoo as well."
     )
 
-    @api.multi
     def _scheduler_sync_tempo_timesheets_approval_status(self, period_start=None):
         """Synchronize JIRA Tempo timesheet status on Odoo TS lines.
 
@@ -85,9 +84,7 @@ class JiraBackend(models.Model):
 
     def _update_ts_line_status(self, date_from, date_to, state, user_ids):
         lines = self._get_ts_lines(date_from, date_to, user_ids)
-        lines.mapped("jira_bind_ids").write(
-            {"jira_tempo_status": state,}
-        )
+        lines.mapped("jira_bind_ids").write({"jira_tempo_status": state})
         self._validate_ts(date_from, date_to, state, user_ids)
 
     def _get_ts_lines_domain(self, date_from, date_to, user_ids):
