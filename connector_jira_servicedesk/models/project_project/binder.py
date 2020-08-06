@@ -50,7 +50,7 @@ class JiraProjectBinder(Component):
                     fallback = candidate
                     continue
 
-                if candidate.organization_ids == organizations:
+                if organizations in candidate.organization_ids:
                     binding = candidate
                     break
             if not binding:

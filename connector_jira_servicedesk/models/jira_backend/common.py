@@ -30,12 +30,10 @@ class JiraBackend(models.Model):
         ]
         return selection
 
-    @api.multi
     def import_organization(self):
         self.env["jira.organization"].import_batch(self)
         return True
 
-    @api.multi
     def activate_organization(self):
         """Get organization field name from JIRA web-service"""
         self.ensure_one()
