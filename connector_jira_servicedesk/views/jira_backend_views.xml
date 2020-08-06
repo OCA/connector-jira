@@ -9,7 +9,11 @@
             <xpath expr="(//page[@name='import']/group)[last()]" position="after">
                 <group>
                     <div>
-                        <label string="Import Organizations" class="oe_inline" />
+                        <label
+                            for="import_organization"
+                            string="Import Organizations"
+                            class="oe_inline"
+                        />
                     </div>
                     <button
                         name="import_organization"
