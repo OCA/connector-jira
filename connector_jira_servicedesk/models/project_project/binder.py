@@ -4,13 +4,14 @@
 import logging
 
 from odoo import tools
+
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
 
 class JiraProjectBinder(Component):
-    _inherit = 'jira.project.binder'
+    _inherit = "jira.project.binder"
 
     def to_internal(self, external_id, unwrap=False, organizations=None):
         """ Give the Odoo recordset for an external ID
@@ -35,13 +36,11 @@ class JiraProjectBinder(Component):
         :rtype: recordset
         """
         domain = [
-            (self._external_field, '=', tools.ustr(external_id)),
-            (self._backend_field, '=', self.backend_record.id),
+            (self._external_field, "=", tools.ustr(external_id)),
+            (self._backend_field, "=", self.backend_record.id),
         ]
         if not organizations:
-            domain.append(
-                ('organization_ids', '=', False),
-            )
+            domain.append(("organization_ids", "=", False),)
         candidates = self.model.with_context(active_test=False).search(domain)
         if organizations:
             fallback = self.model.browse()
