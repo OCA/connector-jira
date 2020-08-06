@@ -33,7 +33,6 @@ class JiraProjectProject(models.Model):
         return selection
 
     @api.constrains("backend_id", "external_id", "organization_ids")
-    @api.multi
     def _constrains_jira_uniq(self):
         """Modify the base constraint by adding organizations
 
