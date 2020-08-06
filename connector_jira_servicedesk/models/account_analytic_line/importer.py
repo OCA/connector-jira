@@ -5,7 +5,7 @@ from odoo.addons.component.core import Component
 
 
 class AnalyticLineImporter(Component):
-    _inherit = 'jira.analytic.line.importer'
+    _inherit = "jira.analytic.line.importer"
 
     @property
     def _issue_fields_to_read(self):
