@@ -7,9 +7,9 @@
         <field name="name">JIRA - Sync Tempo Timesheet approval status</field>
         <field name="model_id" ref="model_jira_backend" />
         <field name="state">code</field>
-        <field
-            name="code"
-        >model.search([])._scheduler_sync_tempo_timesheets_approval_status()</field>
+        <field name="code">
+            model.search([])._scheduler_sync_tempo_timesheets_approval_status()
+        </field>
         <field eval="False" name="active" />
         <field name="user_id" ref="base.user_root" />
         <field name="interval_number">1</field>

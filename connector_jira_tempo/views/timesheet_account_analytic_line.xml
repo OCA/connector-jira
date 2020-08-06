@@ -22,9 +22,9 @@
                 <field name="jira_tempo_status" />
             </field>
             <tree position="attributes">
-                <attribute
-                    name="decoration-danger"
-                >jira_tempo_status=='open'</attribute>
+                <attribute name="decoration-danger">
+                    jira_tempo_status=='open'
+                </attribute>
             </tree>
         </field>
     </record>
