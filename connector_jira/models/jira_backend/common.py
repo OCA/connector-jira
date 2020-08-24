@@ -65,9 +65,6 @@ class JiraBackend(models.Model):
     RSA_PUBLIC_EXPONENT = 65537
     KEY_LEN = 255  # 255 == max Atlassian db col len
 
-    def _default_company(self):
-        return self.env["res.company"]._company_default_get("jira.backend")
-
     def _default_consumer_key(self):
         """Generate a rnd consumer key of length self.KEY_LEN"""
         return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
@@ -78,7 +75,7 @@ class JiraBackend(models.Model):
         comodel_name="res.company",
         string="Company",
         required=True,
-        default=lambda self: self._default_company(),
+        default=lambda self: self.env.company,
     )
     worklog_fallback_project_id = fields.Many2one(
         comodel_name="project.project",
