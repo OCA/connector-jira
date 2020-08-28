@@ -21,6 +21,11 @@ msgid "Activate the synchronization of the Organization field.\n"
 msgstr ""
 
 #. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_account_analytic_line
+msgid "Analytic Line"
+msgstr ""
+
+#. module: connector_jira_servicedesk
 #: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
 msgid "Configure Organization"
 msgstr ""
@@ -75,6 +80,11 @@ msgid "Jira Projects"
 msgstr ""
 
 #. module: connector_jira_servicedesk
+#: model:ir.model,name:connector_jira_servicedesk.model_jira_account_analytic_line
+msgid "Jira Worklog"
+msgstr ""
+
+#. module: connector_jira_servicedesk
 #: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization___last_update
 msgid "Last Modified on"
 msgstr ""
@@ -118,6 +128,16 @@ msgid "Organizations"
 msgstr ""
 
 #. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_account_analytic_line_jira_servicedesk_issue_url
+msgid "Original JIRA issue Link"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_account_analytic_line_jira_servicedesk_issue_url
+msgid "Original JIRA service desk issue Link"
+msgstr ""
+
+#. module: connector_jira_servicedesk
 #: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization_project_ids
 msgid "Project"
 msgstr ""
@@ -125,6 +145,11 @@ msgstr ""
 #. module: connector_jira_servicedesk
 #: model:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
 msgid "Run"
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_project_project_servicedesk_customer_portal_number
+msgid "Service desk customer portal ID"
 msgstr ""
 
 #. module: connector_jira_servicedesk
@@ -143,15 +168,20 @@ msgid "The organizations you choose will define how the tasks and worklogs are a
 msgstr ""
 
 #. module: connector_jira_servicedesk
-#: code:addons/connector_jira_servicedesk/models/project_project/common.py:58
+#: code:addons/connector_jira_servicedesk/models/project_project/common.py:64
 #, python-format
 msgid "The project %s is already linked with the same JIRA project without organization."
 msgstr ""
 
 #. module: connector_jira_servicedesk
-#: code:addons/connector_jira_servicedesk/models/project_project/common.py:63
+#: code:addons/connector_jira_servicedesk/models/project_project/common.py:69
 #, python-format
 msgid "The project %s is already linked with this JIRA project and similar organizations."
+msgstr ""
+
+#. module: connector_jira_servicedesk
+#: model:ir.model.fields,help:connector_jira_servicedesk.field_jira_project_project_servicedesk_customer_portal_number
+msgid "This number is used to compute servicedesk URL on analytic lines"
 msgstr ""
 
 #. module: connector_jira_servicedesk
