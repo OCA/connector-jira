@@ -13,7 +13,7 @@ Available addons
 addon | version | summary
 --- | --- | ---
 [connector_jira](connector_jira/) | 11.0.1.5.0 | JIRA Connector
-[connector_jira_servicedesk](connector_jira_servicedesk/) | 11.0.1.0.0 | JIRA Connector - Service Desk Extension
+[connector_jira_servicedesk](connector_jira_servicedesk/) | 11.0.1.1.0 | JIRA Connector - Service Desk Extension
 [connector_jira_tempo](connector_jira_tempo/) | 11.0.1.0.2 | JIRA Connector Tempo
 [multi_step_wizard](multi_step_wizard/) | 11.0.1.1.1 | Multi-Steps Wizards
 [server_env_connector_jira](server_env_connector_jira/) | 11.0.1.0.0 | Server environment for JIRA Connector
