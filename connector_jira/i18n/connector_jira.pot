@@ -19,7 +19,7 @@ msgid "# Tasks"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:237
+#: code:addons/connector_jira/models/jira_backend/common.py:242
 #: code:addons/connector_jira/models/project_project/common.py:175
 #: code:addons/connector_jira/models/project_project/common.py:194
 #: code:addons/connector_jira/models/project_project/project_link_jira.py:73
@@ -176,6 +176,12 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__lang
 msgid "All the emails and documents sent to this contact will be translated in this language."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__allow_back
+#: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__allow_back
+msgid "Allow Back"
 msgstr ""
 
 #. module: connector_jira
@@ -466,7 +472,7 @@ msgid "Confirm"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:496
+#: code:addons/connector_jira/models/jira_backend/common.py:501
 #, python-format
 msgid "Connection successful"
 msgstr ""
@@ -731,6 +737,16 @@ msgid "Epic Name Field"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_link_on_epic
+msgid "Epic link on epic"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_backend__epic_link_on_epic
+msgid "Epics on JIRA cannot be linked to another epic. Check this boxto fill the epic field with itself on Odoo."
+msgstr ""
+
+#. module: connector_jira
 #: code:addons/connector_jira/components/backend_adapter.py:95
 #, python-format
 msgid "Error during connection with Jira: %s"
@@ -760,8 +776,8 @@ msgid "External user with limited access, created only for the purpose of sharin
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:489
-#: code:addons/connector_jira/models/jira_backend/common.py:493
+#: code:addons/connector_jira/models/jira_backend/common.py:494
+#: code:addons/connector_jira/models/jira_backend/common.py:498
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -961,7 +977,7 @@ msgid "If the email address is on the blacklist, the contact won't receive mass 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:450
+#: code:addons/connector_jira/models/jira_backend/common.py:455
 #, python-format
 msgid "If you change the base URL, you must delete and create the Webhooks again."
 msgstr ""
@@ -1600,7 +1616,7 @@ msgid "No user found for jira account %s (%s). Please link it manually from the 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:75
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:82
 #: code:addons/connector_jira/models/project_task/importer.py:66
 #, python-format
 msgid "No user found with login \"%s\" or email \"%s\".You must create a user or link it manually if the login/email differs."
@@ -1716,7 +1732,7 @@ msgid "Only issues of these levels are imported. When a worklog is imported no a
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:392
+#: code:addons/connector_jira/models/jira_backend/common.py:397
 #, python-format
 msgid "Only one JIRA backend can use the webhook at a time. You must disable them on the backend \"%s\" before activating them here."
 msgstr ""
@@ -1728,7 +1744,7 @@ msgid "Only one Jira binding can be configured with the Sync. Action \"Export\" 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:322
+#: code:addons/connector_jira/models/jira_backend/common.py:327
 #, python-format
 msgid "Only one backend can listen to webhooks"
 msgstr ""
@@ -2025,7 +2041,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:304
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:307
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:314
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
@@ -2423,7 +2439,7 @@ msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:404
+#: code:addons/connector_jira/models/jira_backend/common.py:409
 #, python-format
 msgid "The Odoo Webhook base URL must be set."
 msgstr ""
@@ -2494,7 +2510,7 @@ msgid "The project will be created on JIRA in background."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:264
+#: code:addons/connector_jira/models/jira_backend/common.py:269
 #, python-format
 msgid "The synchronization timestamp is currently locked, probably due to an ongoing synchronization."
 msgstr ""
@@ -2689,7 +2705,7 @@ msgid "Visit this URL, authorize and continue"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:452
+#: code:addons/connector_jira/models/jira_backend/common.py:457
 #, python-format
 msgid "Warning"
 msgstr ""
