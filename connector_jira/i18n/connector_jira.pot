@@ -19,7 +19,7 @@ msgid "# Tasks"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:213
+#: code:addons/connector_jira/models/jira_backend/common.py:218
 #: code:addons/connector_jira/models/project_project/common.py:173
 #: code:addons/connector_jira/models/project_project/common.py:192
 #: code:addons/connector_jira/models/project_project/project_link_jira.py:73
@@ -448,7 +448,7 @@ msgid "Confirm"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:465
+#: code:addons/connector_jira/models/jira_backend/common.py:470
 #, python-format
 msgid "Connection successful"
 msgstr ""
@@ -735,6 +735,16 @@ msgid "Epic Name Field"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend_epic_link_on_epic
+msgid "Epic link on epic"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_backend_epic_link_on_epic
+msgid "Epics on JIRA cannot be linked to another epic. Check this boxto fill the epic field with itself on Odoo."
+msgstr ""
+
+#. module: connector_jira
 #: code:addons/connector_jira/components/backend_adapter.py:97
 #, python-format
 msgid "Error during connection with Jira: %s"
@@ -769,8 +779,8 @@ msgid "External user with limited access, created only for the purpose of sharin
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:458
-#: code:addons/connector_jira/models/jira_backend/common.py:462
+#: code:addons/connector_jira/models/jira_backend/common.py:463
+#: code:addons/connector_jira/models/jira_backend/common.py:467
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -940,7 +950,7 @@ msgid "If the selected language is loaded in the system, all documents related t
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:426
+#: code:addons/connector_jira/models/jira_backend/common.py:431
 #, python-format
 msgid "If you change the base URL, you must delete and create the Webhooks again."
 msgstr ""
@@ -1521,7 +1531,7 @@ msgid "No user found for jira account %s (%s). Please link it manually from the 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:61
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:68
 #: code:addons/connector_jira/models/project_task/importer.py:65
 #, python-format
 msgid "No user found with login \"%s\" or email \"%s\".You must create a user or link it manually if the login/email differs."
@@ -1618,7 +1628,7 @@ msgid "Only issues of these levels are imported. When a worklog is imported no a
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:368
+#: code:addons/connector_jira/models/jira_backend/common.py:373
 #, python-format
 msgid "Only one JIRA backend can use the webhook at a time. You must disable them on the backend \"%s\" before activating them here."
 msgstr ""
@@ -1630,7 +1640,7 @@ msgid "Only one Jira binding can be configured with the Sync. Action \"Export\" 
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:298
+#: code:addons/connector_jira/models/jira_backend/common.py:303
 #, python-format
 msgid "Only one backend can listen to webhooks"
 msgstr ""
@@ -1882,7 +1892,7 @@ msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/components/importer.py:263
-#: code:addons/connector_jira/models/account_analytic_line/importer.py:285
+#: code:addons/connector_jira/models/account_analytic_line/importer.py:292
 #, python-format
 msgid "Record does no longer exist in Jira"
 msgstr ""
@@ -2259,7 +2269,7 @@ msgid "The JIRA Key is mandatory in order to link a project"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:380
+#: code:addons/connector_jira/models/jira_backend/common.py:385
 #, python-format
 msgid "The Odoo Webhook base URL must be set."
 msgstr ""
@@ -2325,7 +2335,7 @@ msgid "The project will be created on JIRA in background."
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:240
+#: code:addons/connector_jira/models/jira_backend/common.py:245
 #, python-format
 msgid "The synchronization timestamp is currently locked, probably due to an ongoing synchronization."
 msgstr ""
@@ -2496,7 +2506,7 @@ msgid "Visit this URL, authorize and continue"
 msgstr ""
 
 #. module: connector_jira
-#: code:addons/connector_jira/models/jira_backend/common.py:428
+#: code:addons/connector_jira/models/jira_backend/common.py:433
 #, python-format
 msgid "Warning"
 msgstr ""
