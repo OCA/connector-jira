@@ -6,7 +6,7 @@ def migrate(cr, version):
     cr.execute(
         """UPDATE ir_model_data
         SET
-            name = 'ir_cron_jira_sync_tempo_timesheets_approval_status',
+            name = 'ir_cron_jira_sync_tempo_timesheets_approval_status'
         WHERE
             name = 'ir_cron_jira_sync_jira_tempo_status';
         """
