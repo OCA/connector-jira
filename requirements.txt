@@ -4,7 +4,7 @@ oauthlib==2.1.0
 requests-oauthlib==1.1.0
 requests-toolbelt==0.9.1
 PyJWT==1.7.1
-cryptography==2.6.1
+cryptography==3.2
 
 # for tests
 vcrpy==2.0.1
