@@ -88,9 +88,13 @@
             <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="inside">
                 <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
                     <br />
-                    <span>JIRA: <field name="jira_compound_key" /> <i>
+                    <span>
+                        JIRA:
+                        <field name="jira_compound_key" />
+                        <i>
                             <field name="jira_issue_type" />
-                        </i></span>
+                        </i>
+                    </span>
                 </t>
             </xpath>
             <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
@@ -102,7 +106,9 @@
                     type="action"
                     class="dropdown-item"
                     groups="project.group_project_manager"
-                >Link with JIRA</a>
+                >
+                    Link with JIRA
+                </a>
             </xpath>
         </field>
     </record>
