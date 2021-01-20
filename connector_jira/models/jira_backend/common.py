@@ -189,7 +189,7 @@ class JiraBackend(models.Model):
     epic_link_on_epic = fields.Boolean(
         string="Epic link on epic",
         help="Epics on JIRA cannot be linked to another epic. Check this box"
-             "to fill the epic field with itself on Odoo."
+        "to fill the epic field with itself on Odoo.",
     )
 
     odoo_webhook_base_url = fields.Char(
