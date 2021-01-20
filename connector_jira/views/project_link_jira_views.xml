@@ -28,18 +28,19 @@
                     <field name="sync_issue_type_ids" widget="many2many_checkboxes" />
                     <div colspan="2">
                         <p class="oe_grey oe_inline">
-              The checkboxes define which types of JIRA issues will be imported
+                            The checkboxes define which types of JIRA issues will be
+                            imported
               into Odoo. For instance, if you check 'Story', only issues of type
               Story will be imported. Several choices possible.
-            </p>
+                        </p>
                         <p class="oe_grey oe_inline">
-              There is a direct implication on the Worklogs.
+                            There is a direct implication on the Worklogs.
               When a worklog is done on a JIRA Sub-Task and this type is not
               sync'ed, the worklog will be attached to the parent Task of the
               Sub-Task. If the Task is not sync'ed, it will be attached to the
               Epic. Finally, if there is no Epic, the worklog will not be
               attached to any task.
-            </p>
+                        </p>
                     </div>
                 </group>
                 <group
@@ -56,12 +57,12 @@
                     </group>
                 </group>
                 <div name="final" attrs="{'invisible': [('state', '!=', 'final')]}">
-                    <p
-                        attrs="{'invisible': [('sync_action', '!=', 'export')]}"
-                    >The project will be created on JIRA in background.</p>
-                    <p
-                        attrs="{'invisible': [('sync_action', '!=', 'link')]}"
-                    >The project is now linked with JIRA.</p>
+                    <p attrs="{'invisible': [('sync_action', '!=', 'export')]}">
+                        The project will be created on JIRA in background.
+                    </p>
+                    <p attrs="{'invisible': [('sync_action', '!=', 'link')]}">
+                        The project is now linked with JIRA.
+                    </p>
                 </div>
             </xpath>
         </field>

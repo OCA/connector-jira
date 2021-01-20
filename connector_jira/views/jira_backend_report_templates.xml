@@ -5,10 +5,16 @@
         <br />
         <ol>
             <li t-foreach="result.get('error', [])" t-as="err">
-        <strong>error:</strong> <span t-esc="err['error']" /> -
-        <strong t-esc="err['key']" />: <span t-esc="err['value']" /> -
-        <strong>detail:</strong><span t-esc="err['detail']" />
-      </li>
+                <strong>error:</strong>
+                <span t-esc="err['error']" />
+                -
+                <strong t-esc="err['key']" />
+                :
+                <span t-esc="err['value']" />
+                -
+                <strong>detail:</strong>
+                <span t-esc="err['detail']" />
+            </li>
         </ol>
     </template>
 </odoo>

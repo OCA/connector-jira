@@ -47,18 +47,19 @@
                     <field name="project_type" />
                     <div colspan="2">
                         <p class="oe_grey oe_inline">
-              The checkboxes define which types of JIRA issues will be imported
+                            The checkboxes define which types of JIRA issues will be
+                            imported
               into Odoo. For instance, if you check 'Story', only issues of type
               Story will be imported. Several choices possible.
-            </p>
+                        </p>
                         <p class="oe_grey oe_inline">
-              There is a direct implication on the Worklogs.
+                            There is a direct implication on the Worklogs.
               When a worklog is done on a JIRA Sub-Task and this type is not
               sync'ed, the worklog will be attached to the parent Task of the
               Sub-Task. If the Task is not sync'ed, it will be attached to the
               Epic. Finally, if there is no Epic, the worklog will not be
               attached to any task.
-            </p>
+                        </p>
                     </div>
                     <field name="sync_issue_type_ids" widget="many2many_checkboxes" />
                     <field name="external_id" />
@@ -103,9 +104,11 @@
                 <field name="jira_key" />
             </field>
             <xpath expr="//t[@t-esc='record.name.value']" position="before">
-                <span t-if="record.jira_key.value">[<t
-                        t-esc="record.jira_key.value"
-                    />] </span>
+                <span t-if="record.jira_key.value">
+                    [
+                    <t t-esc="record.jira_key.value" />
+                    ]
+                </span>
             </xpath>
         </field>
     </record>
@@ -132,10 +135,9 @@
                 position="after"
             >
                 <div groups="project.group_project_manager">
-                    <a
-                        name="%(connector_jira.open_project_link_jira)d"
-                        type="action"
-                    >Link with JIRA</a>
+                    <a name="%(connector_jira.open_project_link_jira)d" type="action">
+                        Link with JIRA
+                    </a>
                 </div>
             </xpath>
         </field>
