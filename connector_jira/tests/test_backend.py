@@ -5,8 +5,7 @@ from datetime import datetime
 
 from odoo import fields
 
-from odoo.addons.connector_jira.fields import MilliDatetime
-
+from ..fields import MilliDatetime
 from .common import JiraSavepointCase
 
 
