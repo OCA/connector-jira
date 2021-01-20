@@ -46,11 +46,11 @@
                         <field name="name" class="oe_inline" />
                     </h1>
                     <p class="oe_grey oe_inline" states="setup">
-            Once you have checked the configuration and
+                        Once you have checked the configuration and
             activated the webhooks and the Epic Link (if
             wanted), click on the "Configuration Done"
             button.
-          </p>
+                    </p>
                     <group>
                         <group
                             name="api_configuration"
@@ -77,23 +77,23 @@
                     <notebook>
                         <page name="import" string="Imports" states="running">
                             <p class="oe_grey oe_inline">
-                By clicking on the buttons,
+                                By clicking on the buttons,
                 you will initiate the synchronizations
                 with Jira.
                 Note that the import or exports
                 won't be done directly,
                 they will create 'Jobs'
                 executed as soon as possible.
-              </p>
+                            </p>
                             <p class="oe_grey oe_inline">
-                Once imported,
+                                Once imported,
                 some types of records,
                 like the products or categories,
                 need a manual review.
                 You will find the list
                 of the new records to review
                 in the menu 'Connectors > Checkpoint'.
-              </p>
+                            </p>
                             <group>
                                 <div>
                                     <label
@@ -144,7 +144,7 @@
                                         nolabel="1"
                                     />
                                     <span groups="base.group_no_one">
-                                        <span class="o_form_label"> (</span>
+                                        <span class="o_form_label">(</span>
                                         <field
                                             name="import_project_task_force"
                                             class="oe_inline"
@@ -178,7 +178,7 @@
                                         nolabel="1"
                                     />
                                     <span groups="base.group_no_one">
-                                        <span class="o_form_label"> (</span>
+                                        <span class="o_form_label">(</span>
                                         <field
                                             name="import_analytic_line_force"
                                             class="oe_inline"
@@ -246,7 +246,8 @@
                                     />
                                 </div>
                                 <p class="oe_grey" colspan="2">
-                  Webhooks can be created only on one instance of JIRA.
+                                    Webhooks can be created only on one instance of
+                                    JIRA.
                   When webhooks are activated, each
                   modification of tasks and worklogs are
                   directly transmitted to Odoo.
@@ -268,7 +269,7 @@
                                     />
                                 </div>
                                 <p class="oe_grey" colspan="2">
-                  Activate the synchronization of the Epic Link field.
+                                    Activate the synchronization of the Epic Link field.
                   Only on JIRA Software. The field contains the name of
                   the JIRA custom field that contains the Epic Link.
 
@@ -290,7 +291,7 @@
                                 </group>
                                 <div />
                                 <p class="oe_grey" colspan="2">
-                  Configure worklog fields
+                                    Configure worklog fields
                                 </p>
                             </group>
                         </page>
