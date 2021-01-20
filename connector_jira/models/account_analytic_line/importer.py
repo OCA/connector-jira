@@ -52,7 +52,7 @@ class AnalyticLineMapper(Component):
                 issue_type_dict.get("jira_issue_type_id")
             )
             if issue_type.name == "Epic":
-                refs['jira_epic_issue_key'] = issue.get('key')
+                refs["jira_epic_issue_key"] = issue.get("key")
         return refs
 
     @mapping
