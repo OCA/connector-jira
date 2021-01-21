@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="jira_backend_demo" model="jira.backend">
+        <field name="name">Jira</field>
+        <field name="uri">http://jira:8080</field>
+    </record>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--
+    Copyright (C) 2014-2015 LasLabs [https://laslabs.com]
+    Copyright 2016-2019 Camptocamp SA
+-->
+    <record id="view_jira_backend_auth_form" model="ir.ui.view">
+        <field name="name">jira.backend.auth.form</field>
+        <field name="model">jira.backend.auth</field>
+        <field name="arch" type="xml">
+            <form string="Jira Auth">
+                <field invisible="1" name="state" />
+                <!--    Leg 1   -->
+                <group states="leg_1">
+                    <h2>Copy the values in the JIRA application link</h2>
+                </group>
+                <group states="leg_1">
+                    <field name="consumer_key" />
+                    <field name="public_key" />
+                </group>
+                <footer states="leg_1">
+                    <button
+                        name="do_oauth_leg_1"
+                        type="object"
+                        string="Continue"
+                        class="btn-primary"
+                    />
+                    <button
+                        name="generate_new_key"
+                        type="object"
+                        string="Generate new key"
+                    />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+                <!-- Leg 2  -->
+                <group states="leg_2">
+                    <h2>Visit this URL, authorize and continue</h2>
+                </group>
+                <group states="leg_2">
+                    <field name="auth_uri" string="Jira Authentication" widget="url" />
+                </group>
+                <footer states="leg_2">
+                    <button
+                        name="do_oauth_leg_3"
+                        type="object"
+                        string="Continue (Only After Above Authorization)"
+                        class="btn-primary"
+                    />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+                <!--    Done    -->
+                <group states="done">
+                    <h2>OAuth configuration complete</h2>
+                </group>
+                <footer states="done">
+                    <button special="cancel" string="Close" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_jira_backend_auth" model="ir.actions.act_window">
+        <field name="name">Jira Auth</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">jira.backend.auth</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_jira_backend_auth_form" />
+        <field name="target">new</field>
+    </record>
+</odoo>

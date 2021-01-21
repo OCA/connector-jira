@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_jira_root"
+        parent="connector.menu_connector_root"
+        name="Jira"
+        sequence="50"
+        groups="connector.group_connector_manager"
+    />
+</odoo>

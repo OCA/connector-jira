@@ -1,0 +1,404 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-12T11:52:03.017+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Fri, 12 Apr 2019 11:52:03 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=0B35641D29E8A8BC5CC7DC552B4BD010; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_dfde8680c1b7b5fd0abd1f5fdad56a9d3eddef6d_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [712x1x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [ihy8d5]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD0wQjM1NjQxRDI5RThBOEJDNUNDN0RDNTUyQjRCRDAxMDsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kZmRlODY4MGMxYjdiNWZkMGFiZDFmNWZkYWQ1
+            NmE5ZDNlZGRlZjZkX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"timespent\"\
+            ],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"}},{\"id\":\"project\"\
+            ,\"name\":\"Project\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\"\
+            ,\"system\":\"project\"}},{\"id\":\"fixVersions\",\"name\":\"Fix
+            Version/s\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"\
+            version\",\"system\":\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\"\
+            :\"\u03A3 Time Spent\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimespent\"}},{\"id\":\"resolution\",\"name\":\"Resolution\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"resolution\"],\"schema\":{\"type\":\"resolution\",\"system\"\
+            :\"resolution\"}},{\"id\":\"customfield_10104\",\"name\":\"Epic Color\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10104]\",\"Epic
+            Color\"],\"schema\":{\"type\":\"string\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\",\"customId\":10104}},{\"\
+            id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10105]\"\
+            ,\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"customfield_10106\",\"name\":\"Story
+            Points\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"resolutiondate\",\"name\":\"Resolved\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\":\"datetime\",\"system\"\
+            :\"resolutiondate\"}},{\"id\":\"workratio\",\"name\":\"Work
+            Ratio\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"workratio\"],\"schema\":{\"type\":\"number\",\"system\":\"workratio\"\
+            }},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"lastViewed\"\
+            ],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"}},{\"id\":\"\
+            watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"watchers\"],\"schema\":{\"type\"\
+            :\"watches\",\"system\":\"watches\"}},{\"id\":\"thumbnail\",\"name\":\"Images\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[]},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            created\",\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"\
+            created\"}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"}},{\"\
+            id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"timeestimate\",\"name\":\"Remaining
+            Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"issuelinks\",\"name\":\"Linked Issues\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"\
+            id\":\"assignee\",\"name\":\"Assignee\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"assignee\"],\"schema\"\
+            :{\"type\":\"user\",\"system\":\"assignee\"}},{\"id\":\"updated\",\"name\"\
+            :\"Updated\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"updated\",\"updatedDate\"],\"schema\":{\"type\":\"\
+            datetime\",\"system\":\"updated\"}},{\"id\":\"status\",\"name\":\"Status\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"status\"],\"schema\":{\"type\":\"status\",\"system\":\"status\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timeoriginalestimate\",\"name\":\"Original\
+            \
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :false,\"clauseNames\":[\"originalEstimate\",\"timeoriginalestimate\"],\"\
+            schema\":{\"type\":\"number\",\"system\":\"timeoriginalestimate\"}},{\"id\"\
+            :\"description\",\"name\":\"Description\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"description\"],\"\
+            schema\":{\"type\":\"string\",\"system\":\"description\"}},{\"id\":\"timetracking\"\
+            ,\"name\":\"Time
+            Tracking\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :false,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"timetracking\"\
+            ,\"system\":\"timetracking\"}},{\"id\":\"customfield_10203\",\"name\":\"Organizations\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10203]\",\"Organizations\"],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"sd-customerorganization\",\"custom\":\"com.atlassian.servicedesk:sd-customer-organizations\"\
+            ,\"customId\":10203}},{\"id\":\"customfield_10204\",\"name\":\"Satisfaction\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10204]\",\"Satisfaction\"],\"schema\":{\"type\":\"any\"\
+            ,\"custom\":\"com.atlassian.servicedesk:sd-request-feedback\",\"customId\"\
+            :10204}},{\"id\":\"security\",\"name\":\"Security
+            Level\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            level\"],\"schema\":{\"type\":\"securitylevel\",\"system\":\"security\"}},{\"\
+            id\":\"customfield_10205\",\"name\":\"Satisfaction
+            date\",\"custom\":true,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            cf[10205]\",\"Satisfaction
+            date\"],\"schema\":{\"type\":\"datetime\",\"custom\"\
+            :\"com.atlassian.servicedesk:sd-request-feedback-date\",\"customId\":10205}},{\"\
+            id\":\"customfield_10206\",\"name\":\"Approvers\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"Approvers\"\
+            ,\"cf[10206]\"],\"schema\":{\"type\":\"array\",\"items\":\"user\",\"custom\"\
+            :\"com.atlassian.jira.plugin.system.customfieldtypes:multiuserpicker\",\"\
+            customId\":10206}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"customfield_10207\",\"name\"\
+            :\"Time to
+            resolution\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10207]\",\"Time to resolution\"],\"\
+            schema\":{\"type\":\"sd-servicelevelagreement\",\"custom\":\"com.atlassian.servicedesk:sd-sla-field\"\
+            ,\"customId\":10207}},{\"id\":\"customfield_10208\",\"name\":\"Time to
+            first\
+            \
+            response\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"cf[10208]\",\"Time to first response\"],\"schema\"\
+            :{\"type\":\"sd-servicelevelagreement\",\"custom\":\"com.atlassian.servicedesk:sd-sla-field\"\
+            ,\"customId\":10208}},{\"id\":\"summary\",\"name\":\"Summary\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"summary\"}},{\"\
+            id\":\"creator\",\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"creator\"],\"schema\"\
+            :{\"type\":\"user\",\"system\":\"creator\"}},{\"id\":\"subtasks\",\"name\"\
+            :\"Sub-Tasks\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":false,\"clauseNames\":[\"subtasks\"],\"schema\":{\"type\":\"\
+            array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"}},{\"id\":\"reporter\"\
+            ,\"name\":\"Reporter\",\"custom\":false,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"reporter\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\",\"name\":\"\u03A3\
+            \
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\",\"system\":\"\
+            aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\":\"Development\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\":{\"type\":\"any\"\
+            ,\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"customfield_10200\",\"name\":\"Approvals\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"Approvals\",\"cf[10200]\"],\"schema\":{\"type\":\"sd-approvals\"\
+            ,\"custom\":\"com.atlassian.servicedesk.approvals-plugin:sd-approvals\",\"\
+            customId\":10200}},{\"id\":\"customfield_10201\",\"name\":\"Request
+            participants\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10201]\",\"Request participants\"],\"schema\":{\"type\"\
+            :\"array\",\"items\":\"user\",\"custom\":\"com.atlassian.servicedesk:sd-request-participants\"\
+            ,\"customId\":10201}},{\"id\":\"customfield_10202\",\"name\":\"Customer
+            Request\
+            \
+            Type\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"cf[10202]\",\"Customer Request Type\"],\"schema\"\
+            :{\"type\":\"sd-customerrequesttype\",\"custom\":\"com.atlassian.servicedesk:vp-origin\"\
+            ,\"customId\":10202}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"duedate\",\"name\":\"Due
+            Date\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            due\",\"duedate\"],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"\
+            id\":\"progress\",\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\"\
+            :{\"type\":\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\"\
+            :\"Comment\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\"\
+            :true,\"clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\"\
+            ,\"system\":\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"votes\"],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\"\
+            :\"worklog\",\"name\":\"Log Work\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"array\",\"items\":\"worklog\",\"system\":\"worklog\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Fri, 12 Apr 2019 11:52:03 GMT"]
+        Set-Cookie: [JSESSIONID=17827319AAF981E5BE8654372F302957; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [712x2x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [15mykmh]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["12093"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD0xNzgyNzMxOUFBRjk4MUU1QkU4NjU0MzcyRjMwMjk1NzsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kZmRlODY4MGMxYjdiNWZkMGFiZDFmNWZkYWQ1
+            NmE5ZDNlZGRlZjZkX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issue/10000?expand=renderedFields
+    response:
+      body:
+        {
+          string:
+            '{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"10000","self":"http://jira:8080/rest/api/2/issue/10000","key":"TEST-1","fields":{"issuetype":{"self":"http://jira:8080/rest/api/2/issuetype/10000","id":"10000","description":"Created
+            by Jira Software - do not edit or delete. Issue type for a big user story
+            that needs to be broken
+            down.","iconUrl":"http://jira:8080/images/icons/issuetypes/epic.svg","name":"Epic","subtask":false},"timespent":3600,"project":{"self":"http://jira:8080/rest/api/2/project/10000","id":"10000","key":"TEST","name":"TEST","avatarUrls":{"48x48":"http://jira:8080/secure/projectavatar?avatarId=10324","24x24":"http://jira:8080/secure/projectavatar?size=small&avatarId=10324","16x16":"http://jira:8080/secure/projectavatar?size=xsmall&avatarId=10324","32x32":"http://jira:8080/secure/projectavatar?size=medium&avatarId=10324"}},"fixVersions":[],"aggregatetimespent":3600,"resolution":null,"customfield_10104":"ghx-label-1","customfield_10105":"0|hzzzzz:","customfield_10106":null,"resolutiondate":null,"workratio":-1,"lastViewed":"2019-04-08T13:51:13.798+0000","watches":{"self":"http://jira:8080/rest/api/2/issue/TEST-1/watchers","watchCount":1,"isWatching":true},"created":"2019-04-04T09:31:27.779+0000","priority":{"self":"http://jira:8080/rest/api/2/priority/3","iconUrl":"http://jira:8080/images/icons/priorities/medium.svg","name":"Medium","id":"3"},"customfield_10100":null,"customfield_10101":null,"customfield_10102":{"self":"http://jira:8080/rest/api/2/customFieldOption/10000","value":"To
+            Do","id":"10000"},"labels":[],"customfield_10103":"Epic1","timeestimate":0,"aggregatetimeoriginalestimate":null,"versions":[],"issuelinks":[],"assignee":null,"updated":"2019-04-04T11:01:47.600+0000","status":{"self":"http://jira:8080/rest/api/2/status/10000","description":"","iconUrl":"http://jira:8080/","name":"To
+            Do","id":"10000","statusCategory":{"self":"http://jira:8080/rest/api/2/statuscategory/2","id":2,"key":"new","colorName":"blue-gray","name":"To
+            Do"}},"components":[],"timeoriginalestimate":null,"description":null,"timetracking":{"remainingEstimate":"0m","timeSpent":"1h","remainingEstimateSeconds":0,"timeSpentSeconds":3600},"customfield_10203":null,"customfield_10204":null,"customfield_10205":null,"customfield_10206":null,"attachment":[],"customfield_10207":null,"aggregatetimeestimate":0,"customfield_10208":null,"summary":"Epic1","creator":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"subtasks":[],"reporter":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"customfield_10000":"{summaryBean=com.atlassian.jira.plugin.devstatus.rest.SummaryBean@771fe2ca[summary={pullrequest=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@21a6f48f[overall=PullRequestOverallBean{stateCount=0,
+            state=''OPEN'', details=PullRequestOverallDetails{openCount=0,
+            mergedCount=0, declinedCount=0}},byInstanceType={}],
+            build=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@2057762a[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BuildOverallBean@3643fc23[failedBuildCount=0,successfulBuildCount=0,unknownBuildCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}],
+            review=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6748c131[overall=com.atlassian.jira.plugin.devstatus.summary.beans.ReviewsOverallBean@79424108[stateCount=0,state=<null>,dueDate=<null>,overDue=false,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}],
+            deployment-environment=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@623f8e2c[overall=com.atlassian.jira.plugin.devstatus.summary.beans.DeploymentOverallBean@4bb4d4ac[topEnvironments=[],showProjects=false,successfulCount=0,count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}],
+            repository=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@6ad4c5a2[overall=com.atlassian.jira.plugin.devstatus.summary.beans.CommitOverallBean@1f593f1[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}],
+            branch=com.atlassian.jira.plugin.devstatus.rest.SummaryItemBean@1fa5230d[overall=com.atlassian.jira.plugin.devstatus.summary.beans.BranchOverallBean@72d995e1[count=0,lastUpdated=<null>,lastUpdatedTimestamp=<null>],byInstanceType={}]},errors=[],configErrors=[]],
+            devSummaryJson={\"cachedValue\":{\"errors\":[],\"configErrors\":[],\"summary\":{\"pullrequest\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":\"OPEN\",\"details\":{\"openCount\":0,\"mergedCount\":0,\"declinedCount\":0,\"total\":0},\"open\":true},\"byInstanceType\":{}},\"build\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"failedBuildCount\":0,\"successfulBuildCount\":0,\"unknownBuildCount\":0},\"byInstanceType\":{}},\"review\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"stateCount\":0,\"state\":null,\"dueDate\":null,\"overDue\":false,\"completed\":false},\"byInstanceType\":{}},\"deployment-environment\":{\"overall\":{\"count\":0,\"lastUpdated\":null,\"topEnvironments\":[],\"showProjects\":false,\"successfulCount\":0},\"byInstanceType\":{}},\"repository\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}},\"branch\":{\"overall\":{\"count\":0,\"lastUpdated\":null},\"byInstanceType\":{}}}},\"isStale\":false}}","aggregateprogress":{"progress":3600,"total":3600,"percent":100},"customfield_10200":null,"customfield_10201":[],"customfield_10202":null,"environment":null,"duedate":null,"progress":{"progress":3600,"total":3600,"percent":100},"comment":{"comments":[],"maxResults":0,"total":0,"startAt":0},"votes":{"self":"http://jira:8080/rest/api/2/issue/TEST-1/votes","votes":0,"hasVoted":false},"worklog":{"startAt":0,"maxResults":20,"total":1,"worklogs":[{"self":"http://jira:8080/rest/api/2/issue/10000/worklog/10000","author":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"updateAuthor":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"comment":"write
+            tests","created":"2019-04-04T11:01:47.597+0000","updated":"2019-04-04T11:01:47.597+0000","started":"2019-04-04T11:01:00.000+0000","timeSpent":"1h","timeSpentSeconds":3600,"id":"10000","issueId":"10000"}]}},"renderedFields":{"issuetype":null,"timespent":"1
+            hour","project":null,"fixVersions":null,"aggregatetimespent":"1
+            hour","resolution":null,"customfield_10104":"ghx-label-1","customfield_10105":null,"customfield_10106":null,"resolutiondate":null,"workratio":null,"lastViewed":"4
+            days ago 1:51 PM","watches":null,"created":"04/Apr/19 9:31
+            AM","priority":null,"customfield_10100":null,"customfield_10101":null,"customfield_10102":null,"labels":null,"customfield_10103":"Epic1","timeestimate":"0
+            minutes","aggregatetimeoriginalestimate":null,"versions":null,"issuelinks":null,"assignee":null,"updated":"04/Apr/19
+            11:01
+            AM","status":null,"components":null,"timeoriginalestimate":null,"description":"","timetracking":{"remainingEstimate":"0
+            minutes","timeSpent":"1
+            hour","remainingEstimateSeconds":0,"timeSpentSeconds":3600},"customfield_10203":null,"customfield_10204":null,"customfield_10205":null,"customfield_10206":null,"attachment":[],"customfield_10207":null,"aggregatetimeestimate":"0
+            minutes","customfield_10208":null,"summary":null,"creator":null,"subtasks":null,"reporter":null,"customfield_10000":null,"aggregateprogress":null,"customfield_10200":null,"customfield_10201":null,"customfield_10202":null,"environment":"","duedate":null,"progress":null,"comment":{"comments":[],"maxResults":0,"total":0,"startAt":0},"votes":null,"worklog":{"startAt":0,"maxResults":20,"total":1,"worklogs":[{"self":"http://jira:8080/rest/api/2/issue/10000/worklog/10000","author":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"updateAuthor":{"self":"http://jira:8080/rest/api/2/user?username=gbaconnier","name":"gbaconnier","key":"gbaconnier","emailAddress":"guewen.baconnier@camptocamp.com","avatarUrls":{"48x48":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=48","24x24":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=24","16x16":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=16","32x32":"https://www.gravatar.com/avatar/ad252192c3f73885676b7d2e850ad13c?d=mm&s=32"},"displayName":"Guewen
+            Baconnier","active":true,"timeZone":"GMT"},"comment":"<p>write
+            tests</p>","created":"04/Apr/19 11:01 AM","updated":"04/Apr/19 11:01
+            AM","started":"04/Apr/19 11:01 AM","timeSpent":"1
+            hour","id":"10000","issueId":"10000"}]}}}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Fri, 12 Apr 2019 11:52:03 GMT"]
+        Set-Cookie: [JSESSIONID=0AA628C8AF77F4629FEDE666CAB9BA57; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [712x3x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [1qd7zns]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["11017"]
+      status: {code: 200, message: ""}
+version: 1
