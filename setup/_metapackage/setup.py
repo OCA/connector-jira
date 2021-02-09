@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo13-addon-connector_jira',
+        'odoo13-addon-connector_jira_tempo_base',
     ],
     classifiers=[
         'Programming Language :: Python',
