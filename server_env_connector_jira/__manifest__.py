@@ -3,7 +3,7 @@
 
 {
     "name": "Server environment for JIRA Connector",
-    "version": "13.0.1.0.0",
+    "version": "13.0.1.0.1",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Tools",
