@@ -1,0 +1,50 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* server_env_connector_jira
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: server_env_connector_jira
+#: model:ir.model,name:server_env_connector_jira.model_jira_backend
+msgid "Jira Backend"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_odoo_webhook_base_url_env_default
+msgid "Odoo Webhook Base Url Env Default"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_odoo_webhook_base_url_env_is_editable
+msgid "Odoo Webhook Base Url Env Is Editable"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_uri_env_default
+msgid "Uri Env Default"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_uri_env_is_editable
+msgid "Uri Env Is Editable"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_verify_ssl_env_default
+msgid "Verify Ssl Env Default"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend_verify_ssl_env_is_editable
+msgid "Verify Ssl Env Is Editable"
+msgstr ""
+
