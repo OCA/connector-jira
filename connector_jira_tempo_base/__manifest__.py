@@ -4,7 +4,7 @@
 
 {
     "name": "JIRA Connector Tempo (base)",
-    "version": "13.0.1.0.0",
+    "version": "13.0.1.0.1",
     "category": "Connector",
     "website": "https://github.com/OCA/connector-jira",
     "author": "Brainbean Apps, Camptocamp, Odoo Community Association (OCA)",
