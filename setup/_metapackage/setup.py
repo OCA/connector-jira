@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo13-addon-connector_jira',
+        'odoo13-addon-connector_jira_tempo',
         'odoo13-addon-connector_jira_tempo_base',
         'odoo13-addon-server_env_connector_jira',
     ],
