@@ -1,5 +1,5 @@
 ==============
-JIRA Connector
+Jira Connector
 ==============
 
 .. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -78,7 +78,7 @@ Authentication of Backend
    will appear, keep these open in a tab
 2. Open Jira and go to System > Applications > Application links
 3. Enter the name of the application, example: odoo, and click on "Create new link"
-4. In the popup, set the URL where JIRA can reach Odoo. Jira might complain and
+4. In the popup, set the URL where Jira can reach Odoo. Jira might complain and
    reopen the popup, confirm it again and a new popup appears
 5. In the new popup, do not set anything in the fields and click on Continue
 6. The link should be created now, edit it with the pen on the right
