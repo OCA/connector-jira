@@ -1,5 +1,5 @@
 ==============
-Jira Connector
+JIRA Connector
 ==============
 
 .. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -78,7 +78,7 @@ Authentication of Backend
    will appear, keep these open in a tab
 2. Open Jira and go to System > Applications > Application links
 3. Enter the name of the application, example: odoo, and click on "Create new link"
-4. In the popup, set the URL where Jira can reach Odoo. Jira might complain and
+4. In the popup, set the URL where JIRA can reach Odoo. Jira might complain and
    reopen the popup, confirm it again and a new popup appears
 5. In the new popup, do not set anything in the fields and click on Continue
 6. The link should be created now, edit it with the pen on the right
@@ -136,12 +136,12 @@ project, and use the action "Link with JIRA" and use the "Export to JIRA" action
 When you choose to export a project to JIRA, if you change the name
 or the key of the project, the new values will be pushed to JIRA.
 
-Link a project with Jira
+Link a project with JIRA
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you already have a project on Jira or prefer to create it first on JIRA,
-you can link an Odoo project. Use the "Link with Jira" action on the project
-and select the "Link with Jira" action.
+If you already have a project on JIRA or prefer to create it first on JIRA,
+you can link an Odoo project. Use the "Link with JIRA" action on the project
+and select the "Link with JIRA" action.
 
 This action establish the link, then changes of the name or the key on either
 side are not pushed.
@@ -152,7 +152,7 @@ Issue Types on Projects
 When you link a project, you have to select which issue types are synchronized.
 Only tasks of the selected types will be created in Odoo.
 
-If a Jira worklog is added to a type of issue that is not synchronized,
+If a JIRA worklog is added to a type of issue that is not synchronized,
 will attach to the closest task following these rules:
 
 * if a subtask, find the parent task
@@ -191,7 +191,7 @@ In order to push data to Jira, we have to apply restrictions on these
 be pushed:
 
 * Not more than one project (can be zero) can have a "Sync Action" set to
-  "Export to Jira". As this configuration pushes the name and key of the project
+  "Export to JIRA". As this configuration pushes the name and key of the project
   to Jira, we cannot push it to more than one project.
 * If we implement push of tasks to Jira, we'll have to add a way to restrict or
   choose to which project we push the task, this is not supported yet (for
@@ -243,6 +243,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/connector-<https://github.com/OCA/connector-jira/tree/13.0/connector_jira>`_ project on GitHub.
+This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/13.0/connector_jira>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
