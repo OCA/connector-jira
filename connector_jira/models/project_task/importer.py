@@ -81,6 +81,7 @@ class ProjectTaskMapper(Component):
         project = binder.unwrap_binding(self.options.project_binding)
         values = {
             "project_id": project.id,
+            "company_id": project.company_id.id,
             "jira_project_bind_id": self.options.project_binding.id,
         }
         if not project.active:
