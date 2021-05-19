@@ -190,7 +190,7 @@ class JiraBackend(models.Model):
 
     @api.model
     def _default_odoo_webhook_base_url(self):
-        params = self.env['ir.config_parameter']
+        params = self.env['ir.config_parameter'].sudo()
         return params.get_param('web.base.url', '')
 
     @api.model
