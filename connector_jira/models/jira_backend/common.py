@@ -131,6 +131,28 @@ class JiraBackend(models.Model):
         readonly=True, groups="connector.group_connector_manager",
     )
 
+    access_method = fields.Selection(
+        [
+            ("system", "System-level"),
+            ("user", "User-level"),
+        ],
+        "Access Method",
+        required=True,
+        default="system",
+        help="If you don't have system-level access to Jira, you can still "
+             "access the API as a user given that you have generated an access "
+             "token. If you do, prefer the system-level access that uses OAuth "
+             "for authentication."
+    )
+
+    username = fields.Char(
+        groups="connector.group_connector_manager",
+    )
+
+    user_token = fields.Char(
+        groups="connector.group_connector_manager",
+    )
+
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
 
     project_template = fields.Selection(
@@ -460,7 +482,7 @@ class JiraBackend(models.Model):
                         raise
             self.use_webhooks = False
 
-    def check_connection(self):
+    def check_connection(self, raise_when_successful=True):
         self.ensure_one()
         try:
             self.get_api_client().myself()
@@ -468,7 +490,13 @@ class JiraBackend(models.Model):
             raise exceptions.UserError(_("Failed to connect (%s)") % (err,))
         except JIRAError as err:
             raise exceptions.UserError(_("Failed to connect (%s)") % (err.text,))
-        raise exceptions.UserError(_("Connection successful"))
+
+        if raise_when_successful:
+            raise exceptions.UserError(_("Connection successful"))
+
+    def authenticate_user(self):
+        self.check_connection(raise_when_successful=False)
+        self.state_setup()
 
     def import_project_task(self):
         self._run_background_from_date(
@@ -520,17 +548,24 @@ class JiraBackend(models.Model):
         self.ensure_one()
         # tokens are only readable by connector managers
         backend = self.sudo()
-        oauth = {
-            "access_token": backend.access_token,
-            "access_token_secret": backend.access_secret,
-            "consumer_key": backend.consumer_key,
-            "key_cert": backend.private_key,
-        }
+
         options = {
             "server": backend.uri,
             "verify": backend.verify_ssl,
         }
-        return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
+        if backend.access_method == "system":
+            oauth = {
+                "access_token": backend.access_token,
+                "access_token_secret": backend.access_secret,
+                "consumer_key": backend.consumer_key,
+                "key_cert": backend.private_key,
+            }
+            return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
+        elif backend.access_method == "user":
+            basic_auth = (backend.username, backend.user_token)
+            return JIRA(options=options, basic_auth=basic_auth, timeout=JIRA_TIMEOUT)
+        else:
+            raise exceptions.UserError(_(f"Invalid access method '%s'") % backend.access_method)
 
     @api.model
     def _scheduler_import_project_task(self):

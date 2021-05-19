@@ -13,7 +13,7 @@ class TestAuth(JiraSavepointCase):
     def test_auth_oauth(self):
         backend = self.backend_record
         # reset access
-        backend.write({"access_token": False, "access_secret": False})
+        backend.write({"access_token": False, "access_secret": False, "access_method": "system"})
         self.assertEqual(backend.state, "authenticate")
         auth_wizard = self.env["jira.backend.auth"].create({"backend_id": backend.id})
 
@@ -45,6 +45,14 @@ class TestAuth(JiraSavepointCase):
         self.assertEqual(backend.access_token, "o7XglNpQdA3pwzGZw9r6WA2X2XZcjaaI")
         self.assertEqual(backend.access_secret, "pwq9Qzc7iax0JtoQqZdLvPlv4ReECZGh")
         self.assertEqual(auth_wizard.state, "done")
+
+    @recorder.use_cassette
+    def test_auth_basic(self):
+        backend = self.backend_record
+        backend.write({"username": "joeblow", "user_token": "dA3pwzGZw9r6WA2X2", "access_method": "user"})
+        self.assertEqual(backend.state, "authenticate")
+        backend.authenticate_user()
+        self.assertEqual(backend.state, "setup")
 
     @recorder.use_cassette
     def test_auth_check_connection(self):

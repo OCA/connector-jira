@@ -8,3 +8,4 @@
 * Tonow-c2c
 * Simone Orsi <simahawk@gmail.com>
 * Alexey Pelykh <alexey.pelykh@brainbeanapps.com>
+* Miku Laitinen <miku@avoin.systems>

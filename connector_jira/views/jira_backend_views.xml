@@ -24,7 +24,16 @@
                         type="action"
                         class="oe_highlight"
                         string="Authenticate"
-                        states="authenticate"
+                        attrs="{'invisible': ['|', ('access_method', '!=', 'system'),
+                        ('state', '!=', 'authenticate')]}"
+                    />
+                    <button
+                        name="authenticate_user"
+                        type="object"
+                        class="oe_highlight"
+                        string="Authenticate"
+                        attrs="{'invisible': ['|', ('access_method', '!=', 'user'),
+                        ('state', '!=', 'authenticate')]}"
                     />
                     <button
                         name="check_connection"
@@ -36,7 +45,8 @@
                         name="%(action_jira_backend_auth)d"
                         type="action"
                         string="Reset Authentication"
-                        states="setup,running"
+                        attrs="{'invisible': ['|', ('access_method', '!=', 'system'),
+                        ('state', 'not in', ['setup', 'running'])]}"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -62,6 +72,14 @@
                                 placeholder="e.g. https://example.com/jira"
                             />
                             <field name="verify_ssl" />
+                            <field name="access_method" />
+                            <field name="username"
+                                   attrs="{'invisible': [('access_method', '!=', 'user')],
+                        'required': [('access_method', '=', 'user')]}" />
+                            <field name="user_token"
+                                   password="True"
+                                   attrs="{'invisible': [('access_method', '!=', 'user')],
+                        'required': [('access_method', '=', 'user')]}" />
                         </group>
                         <group name="main_configuration" string="Main Configuration">
                             <field name="company_id" />

@@ -34,8 +34,8 @@ Backend
 
 3. Save and continue with the Authentication
 
-Authentication of Backend
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Authentication of Backend (OAuth / System-level)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. On the created backend, click on the Authenticate button, a popup with keys
    will appear, keep these open in a tab
@@ -57,6 +57,20 @@ Authentication of Backend
 12. Back on Odoo again, click on Continue
 13. Authentication is complete!
 
+Authentication of Backend (Basic / User-level)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can use a user's username and API token as an access method. This is useful
+if you don't have administrator's access to the accessed Jira.
+
+1. On the created backend, select "User-level" as the Access Method
+2. Type your Jira username / email to the Username field
+3. Open Jira and click your avatar in the top right corner > Account settings
+4. Go to Security > Create and manage API tokens > Create API token
+5. Enter the name of the API token (eg. "Odoo")
+6. Copy-paste the generated API token from Jira to the User Token field.
+7. Click on the Authenticate button
+8. The connection will be checked
 
 Configuration of the Backend
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
