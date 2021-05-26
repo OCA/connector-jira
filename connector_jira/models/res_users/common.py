@@ -88,7 +88,7 @@ class ResUsers(models.Model):
                             'key': 'login',
                             'value': user.login,
                             'error': 'multiple_found',
-                            'detail': [x.key for x in jira_user]
+                            'detail': [x.accountId for x in jira_user]
                         })
                         continue
                     jira_user = jira_user[0]
@@ -96,7 +96,7 @@ class ResUsers(models.Model):
                         active_test=False,
                     ).search([
                         ('backend_id', '=', backend.id),
-                        ('external_id', '=', jira_user.key),
+                        ('external_id', '=', jira_user.accountId),
                         ('odoo_id', '!=', user.id),
                     ])
                     if existing:
@@ -112,11 +112,11 @@ class ResUsers(models.Model):
                             'backend_id': backend.id,
                             'odoo_id': user.id,
                         })
-                        binder.bind(jira_user.key, binding)
+                        binder.bind(jira_user.accountId, binding)
                         bknd_result['success'].append({
                             'key': 'login',
                             'value': user.login,
-                            'detail': jira_user.key,
+                            'detail': jira_user.accountId,
                         })
                     except Exception as err:
                         bknd_result['error'].append({
