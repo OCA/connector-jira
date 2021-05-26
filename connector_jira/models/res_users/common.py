@@ -62,7 +62,9 @@ class ResUsers(models.Model):
                 for user in self:
                     if binder.to_external(user, wrap=True):
                         continue
-                    jira_user = adapter.search(fragment=user.jira_accountID)
+                    jira_user = None
+                    if user.jira_accountID:
+                        jira_user = adapter.search(fragment=user.jira_accountID)
                     if not jira_user:
                         try:
                             jira_user = adapter.search(fragment=user.email)
