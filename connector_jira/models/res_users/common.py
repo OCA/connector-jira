@@ -1,7 +1,11 @@
 # Copyright 2016-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from jira import JIRAError
+try:
+    from jira import JIRAError
+except ImportError:
+    pass  # already logged in components/backend_adapter.py
+
 import logging
 from odoo import _, api, exceptions, fields, models
 from odoo.addons.component.core import Component
