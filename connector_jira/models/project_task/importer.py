@@ -56,7 +56,7 @@ class ProjectTaskMapper(Component):
         assignee = record['fields'].get('assignee')
         if not assignee:
             return {'user_id': False}
-        jira_key = assignee['key']
+        jira_key = assignee['accountId']
         binder = self.binder_for('jira.res.users')
         user = binder.to_internal(jira_key, unwrap=True)
         if not user:
@@ -209,7 +209,7 @@ class ProjectTaskImporter(Component):
 
     def _import_dependency_assignee(self):
         jira_assignee = self.external_record['fields'].get('assignee') or {}
-        jira_key = jira_assignee.get('key')
+        jira_key = jira_assignee.get('accountId')
         self._import_dependency(jira_key,
                                 'jira.res.users',
                                 record=jira_assignee)
