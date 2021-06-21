@@ -312,6 +312,10 @@
                                     Configure worklog fields
                                 </p>
                             </group>
+                            <group name="miscellaneous">
+                                <field
+                                    name="assignee_handling"/>
+                            </group>
                         </page>
                         <page name="issue_type" string="Issue Types" states="running">
                             <field name="issue_type_ids">

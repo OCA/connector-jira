@@ -54,13 +54,13 @@ class ProjectTaskMapper(Component):
     @mapping
     def assignee(self, record):
         assignee = record["fields"].get("assignee")
-        if not assignee or "key" not in assignee:
+        if not assignee or ("key" not in assignee and "accountId" not in assignee):
             return {"user_id": False}
-        jira_key = assignee["key"]
+        jira_key = assignee.get("key", assignee["accountId"])
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_key, unwrap=True)
-        if not user:
-            email = assignee["emailAddress"]
+        if not user and self.backend_record.assignee_handling == "fail":
+            email = assignee.get("emailAddress", "N/A")
             raise MappingError(
                 _(
                     'No user found with login "%s" or email "%s".'

@@ -224,6 +224,18 @@ class JiraBackend(models.Model):
     # For instance, we could use web_notify to simply show a system msg.
     report_user_sync = fields.Html(readonly=True)
 
+    assignee_handling = fields.Selection(
+        [
+            ("fail", "Fail if not found"),
+            ("ignore", "Ignore unidentified"),
+        ],
+        default="fail",
+        required=True,
+        help="Control how the assignee information is handled upon task creation.<br/>"
+             "Fail if not found = the task import fails without a matching user.<br/>"
+             "Ignore unidentified = the task is imported without the assignee."
+    )
+
     @api.model
     def _default_odoo_webhook_base_url(self):
         params = self.env["ir.config_parameter"]
