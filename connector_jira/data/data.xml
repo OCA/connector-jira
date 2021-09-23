@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="automation_task_unbind_jira" model="base.automation">
+        <field name="name">Task: Unbind Jira</field>
+        <field name="model_id" ref="project.model_project_task" />
+        <field name="state">code</field>
+        <field name="trigger">on_write</field>
+        <field
+            name="trigger_field_ids"
+            eval="[(4,ref('project.field_project_task__stage_id'))]"
+        />
+        <field name="code">
+            for record in records:
+    if record.stage_id.unbind_jira:
+        record.jira_bind_ids.write({'external_id': False})
+        record.jira_bind_ids.unlink()
+        </field>
+    </record>
+    <record id="action_task_unbind_jira" model="ir.actions.server">
+        <field name="name">Task: Unbind Jira</field>
+        <field name="model_id" ref="project.model_project_task" />
+        <field name="state">code</field>
+        <field name="code">
+            records.mapped('jira_bind_ids').write({'external_id': False})
+records.mapped('jira_bind_ids').unlink()
+        </field>
+    </record>
+</odoo>
