@@ -86,7 +86,9 @@ class ResUsers(models.Model):
                     jira_user = jira_user[0]
                     existing = (
                         self.env["jira.res.users"]
-                        .with_context(active_test=False,)
+                        .with_context(
+                            active_test=False,
+                        )
                         .search(
                             [
                                 ("backend_id", "=", backend.id),
@@ -141,7 +143,7 @@ class UserAdapter(Component):
             return self.client.user(id_).raw
 
     def search(self, fragment=None):
-        """ Search users
+        """Search users
 
         :param fragment: a string to match usernames, name or email against.
         """

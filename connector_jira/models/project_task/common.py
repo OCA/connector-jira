@@ -24,14 +24,22 @@ class JiraProjectTask(models.Model):
     # As we can have more than one jira binding on a project.project, we store
     # to which one a task binding is related.
     jira_project_bind_id = fields.Many2one(
-        comodel_name="jira.project.project", ondelete="restrict",
+        comodel_name="jira.project.project",
+        ondelete="restrict",
     )
-    jira_key = fields.Char(string="Key", readonly=True,)
+    jira_key = fields.Char(
+        string="Key",
+        readonly=True,
+    )
     jira_issue_type_id = fields.Many2one(
-        comodel_name="jira.issue.type", string="Issue Type", readonly=True,
+        comodel_name="jira.issue.type",
+        string="Issue Type",
+        readonly=True,
     )
     jira_epic_link_id = fields.Many2one(
-        comodel_name="jira.project.task", string="Epic", readonly=True,
+        comodel_name="jira.project.task",
+        string="Epic",
+        readonly=True,
     )
     jira_parent_id = fields.Many2one(
         comodel_name="jira.project.task",
@@ -42,7 +50,8 @@ class JiraProjectTask(models.Model):
         "of the synchronizations.",
     )
     jira_issue_url = fields.Char(
-        string="JIRA issue", compute="_compute_jira_issue_url",
+        string="JIRA issue",
+        compute="_compute_jira_issue_url",
     )
 
     _sql_constraints = [
@@ -79,10 +88,14 @@ class ProjectTask(models.Model):
         context={"active_test": False},
     )
     jira_issue_type = fields.Char(
-        compute="_compute_jira_issue_type", string="JIRA Issue Type", store=True,
+        compute="_compute_jira_issue_type",
+        string="JIRA Issue Type",
+        store=True,
     )
     jira_compound_key = fields.Char(
-        compute="_compute_jira_compound_key", string="JIRA Key", store=True,
+        compute="_compute_jira_compound_key",
+        string="JIRA Key",
+        store=True,
     )
     jira_epic_link_task_id = fields.Many2one(
         comodel_name="project.task",
@@ -97,7 +110,8 @@ class ProjectTask(models.Model):
         store=True,
     )
     jira_issue_url = fields.Char(
-        string="JIRA issue", compute="_compute_jira_issue_url",
+        string="JIRA issue",
+        compute="_compute_jira_issue_url",
     )
 
     @api.depends("jira_bind_ids.jira_issue_type_id.name")
@@ -160,7 +174,10 @@ class ProjectTask(models.Model):
         ]
         if operator in expression.NEGATIVE_TERM_OPERATORS:
             domain = ["&", "!"] + domain[1:]
-        return self.search(domain + (args or []), limit=limit,).name_get()
+        return self.search(
+            domain + (args or []),
+            limit=limit,
+        ).name_get()
 
     @api.model
     def _get_connector_jira_fields(self):
@@ -197,9 +214,13 @@ class ProjectTask(models.Model):
         ):
             fields = list(vals.keys())
             self._update_cache(vals)
-            new_values = self._convert_to_write(vals,)
+            new_values = self._convert_to_write(
+                vals,
+            )
             for old_values in self.read(fields, load="_classic_write"):
-                old_values = self._convert_to_write(old_values,)
+                old_values = self._convert_to_write(
+                    old_values,
+                )
                 for field in self._get_connector_jira_fields():
                     if field not in fields:
                         continue

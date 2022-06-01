@@ -52,7 +52,8 @@ class AnalyticLineBatchDeleter(Component):
     def _handle_lock_failed(self, timestamp):
         _logger.warning("Failed to acquire timestamps %s", timestamp, exc_info=True)
         raise RetryableJobError(
-            "Concurrent job / process already syncing", ignore_retry=True,
+            "Concurrent job / process already syncing",
+            ignore_retry=True,
         )
 
     def _search(self, timestamp):
@@ -68,5 +69,8 @@ class AnalyticLineBatchDeleter(Component):
             description=_("Delete a local worklog which has " "been deleted on JIRA"),
             **kwargs
         ).delete_record(
-            self.backend_record, record_id, only_binding=False, set_inactive=False,
+            self.backend_record,
+            record_id,
+            only_binding=False,
+            set_inactive=False,
         )
