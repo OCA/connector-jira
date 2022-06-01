@@ -9,7 +9,9 @@ class TestImportIssueType(JiraSavepointCase):
     def test_import_issue_type_batch(self):
         issue_types = self.env["jira.issue.type"].search([])
         self.assertEqual(len(issue_types), 0)
-        self.env["jira.issue.type"].import_batch(self.backend_record,)
+        self.env["jira.issue.type"].import_batch(
+            self.backend_record,
+        )
         issue_types = self.env["jira.issue.type"].search([])
         self.assertEqual(len(issue_types), 5)
 
@@ -21,7 +23,8 @@ class TestImportIssueType(JiraSavepointCase):
 
         project = self.env["project.project"].create({"name": "Jira Project"})
         project_binding = self._create_project_binding(
-            project, issue_types=epic_issue_type,
+            project,
+            issue_types=epic_issue_type,
         )
 
         self.assertTrue(epic_issue_type.is_sync_for_project(project_binding))

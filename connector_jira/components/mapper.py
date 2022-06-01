@@ -13,7 +13,7 @@ from odoo.addons.connector.components.mapper import mapping
 
 
 class JiraImportMapper(AbstractComponent):
-    """Base Import Mapper for Jira """
+    """Base Import Mapper for Jira"""
 
     _name = "jira.import.mapper"
     _inherit = ["base.import.mapper", "jira.base"]
@@ -25,7 +25,7 @@ class JiraImportMapper(AbstractComponent):
 
 
 def iso8601_to_utc_datetime(isodate):
-    """ Returns the UTC datetime from an iso8601 date
+    """Returns the UTC datetime from an iso8601 date
 
     A JIRA date is formatted using the ISO 8601 format.
     Example: 2013-11-04T13:52:01+0100
@@ -39,7 +39,7 @@ def iso8601_to_utc_datetime(isodate):
 
 
 def utc_datetime_to_iso8601(dt):
-    """ Returns an iso8601 datetime from a datetime.
+    """Returns an iso8601 datetime from a datetime.
 
     Example: 2013-11-04 12:52:01 → 2013-11-04T12:52:01+0000
 
@@ -50,7 +50,7 @@ def utc_datetime_to_iso8601(dt):
 
 
 def iso8601_to_utc(field):
-    """ A modifier intended to be used on the ``direct`` mappings for
+    """A modifier intended to be used on the ``direct`` mappings for
     importers.
 
     A Jira date is formatted using the ISO 8601 format.
@@ -78,7 +78,7 @@ def iso8601_to_utc(field):
 
 
 def iso8601_to_naive_date(isodate):
-    """ Returns the naive date from an iso8601 date
+    """Returns the naive date from an iso8601 date
 
     Keep only the date, when we want to keep only the naive date.
     It's safe to extract it directly from the tz-aware timestamp.
@@ -90,7 +90,7 @@ def iso8601_to_naive_date(isodate):
 
 
 def iso8601_naive_date(field):
-    """ A modifier intended to be used on the ``direct`` mappings for
+    """A modifier intended to be used on the ``direct`` mappings for
     importers.
 
     A JIRA datetime is formatted using the ISO 8601 format.
@@ -149,7 +149,7 @@ def follow_dict_path(field):
 
 
 def whenempty(field, default_value):
-    """ Set a default value when the value is evaluated to False
+    """Set a default value when the value is evaluated to False
 
     A modifier intended to be used on the ``direct`` mappings.
 

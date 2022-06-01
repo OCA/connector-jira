@@ -115,7 +115,8 @@ class JiraBackend(models.Model):
         readonly=True,
     )
     private_key = fields.Text(
-        readonly=True, groups="connector.group_connector_manager",
+        readonly=True,
+        groups="connector.group_connector_manager",
     )
     public_key = fields.Text(readonly=True)
     consumer_key = fields.Char(
@@ -125,10 +126,12 @@ class JiraBackend(models.Model):
     )
 
     access_token = fields.Char(
-        readonly=True, groups="connector.group_connector_manager",
+        readonly=True,
+        groups="connector.group_connector_manager",
     )
     access_secret = fields.Char(
-        readonly=True, groups="connector.group_connector_manager",
+        readonly=True,
+        groups="connector.group_connector_manager",
     )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
@@ -139,7 +142,9 @@ class JiraBackend(models.Model):
         default="Scrum software development",
         required=True,
     )
-    project_template_shared = fields.Char(string="Default Shared Template Key",)
+    project_template_shared = fields.Char(
+        string="Default Shared Template Key",
+    )
 
     use_webhooks = fields.Boolean(
         string="Use Webhooks",
@@ -278,23 +283,26 @@ class JiraBackend(models.Model):
 
     def _inverse_import_project_task_from_date(self):
         self._inverse_date_fields(
-            "import_project_task_from_date", "timestamp.batch.importer",
+            "import_project_task_from_date",
+            "timestamp.batch.importer",
         )
 
     def _inverse_import_analytic_line_from_date(self):
         self._inverse_date_fields(
-            "import_analytic_line_from_date", "timestamp.batch.importer",
+            "import_analytic_line_from_date",
+            "timestamp.batch.importer",
         )
 
     def _inverse_delete_analytic_line_from_date(self):
         self._inverse_date_fields(
-            "delete_analytic_line_from_date", "timestamp.batch.deleter",
+            "delete_analytic_line_from_date",
+            "timestamp.batch.deleter",
         )
 
     def _run_background_from_date(
         self, model, from_date_field, component_usage, force=False
     ):
-        """ Import records from a date
+        """Import records from a date
 
         Create jobs and update the sync timestamp in a savepoint; if a
         concurrency issue arises, it will be logged and rollbacked silently.
@@ -302,7 +310,9 @@ class JiraBackend(models.Model):
         self.ensure_one()
         ts_model = self.env["jira.backend.timestamp"]
         timestamp = ts_model._timestamp_for_field(
-            self, from_date_field, component_usage,
+            self,
+            from_date_field,
+            component_usage,
         )
         self.env[model].with_delay(priority=9).run_batch_timestamp(
             self, timestamp, force=force
@@ -322,7 +332,7 @@ class JiraBackend(models.Model):
         return record
 
     def create_rsa_key_vals(self):
-        """ Create public/private RSA keypair """
+        """Create public/private RSA keypair"""
         for backend in self:
             private_key = rsa.generate_private_key(
                 public_exponent=self.RSA_PUBLIC_EXPONENT,
@@ -507,8 +517,8 @@ class JiraBackend(models.Model):
         return True
 
     def get_user_resolution_order(self):
-        """ User resolution should happen by login first as it's unique, while
-        resolving by email is likely to give false positives """
+        """User resolution should happen by login first as it's unique, while
+        resolving by email is likely to give false positives"""
         return ["login", "email"]
 
     def import_issue_type(self):
@@ -557,15 +567,23 @@ class JiraBackendTimestamp(models.Model):
     _description = "Jira Backend Import Timestamps"
 
     backend_id = fields.Many2one(
-        comodel_name="jira.backend", string="Jira Backend", required=True,
+        comodel_name="jira.backend",
+        string="Jira Backend",
+        required=True,
     )
-    from_date_field = fields.Char(string="From Date Field", required=True,)
+    from_date_field = fields.Char(
+        string="From Date Field",
+        required=True,
+    )
     # For worklogs, jira allows to work with milliseconds
     # unix timestamps, we keep this precision by using a new type
     # of field. The ORM values for this field are Unix timestamps the
     # same way Jira use them: unix timestamp as integer multiplied * 1000
     # to keep the milli precision with 3 digits (example 1554318348000).
-    last_timestamp = MilliDatetime(string="Last Timestamp", required=True,)
+    last_timestamp = MilliDatetime(
+        string="Last Timestamp",
+        required=True,
+    )
 
     # The content of this field must match to the "usage" of a component.
     # The method JiraBinding.run_batch_timestamp() will find the matching
