@@ -50,7 +50,8 @@ class JiraAccountAnalyticLine(models.Model):
     # As we can have more than one jira binding on a project.project, we store
     # to which one a task binding is related.
     jira_project_bind_id = fields.Many2one(
-        comodel_name="jira.project.project", ondelete="restrict",
+        comodel_name="jira.project.project",
+        ondelete="restrict",
     )
 
     # we have to store these fields on the analytic line because
@@ -58,16 +59,26 @@ class JiraAccountAnalyticLine(models.Model):
     # for instance, we do not import "Tasks" but we import "Epics",
     # the analytic line for a "Task" will be linked to an "Epic" on
     # Odoo, but we still want to know the original task here
-    jira_issue_key = fields.Char(string="Original Task Key", readonly=True,)
+    jira_issue_key = fields.Char(
+        string="Original Task Key",
+        readonly=True,
+    )
     jira_issue_type_id = fields.Many2one(
-        comodel_name="jira.issue.type", string="Original Issue Type", readonly=True,
+        comodel_name="jira.issue.type",
+        string="Original Issue Type",
+        readonly=True,
     )
     jira_issue_url = fields.Char(
-        string="Original JIRA issue Link", compute="_compute_jira_issue_url",
+        string="Original JIRA issue Link",
+        compute="_compute_jira_issue_url",
     )
-    jira_epic_issue_key = fields.Char(string="Original Epic Key", readonly=True,)
+    jira_epic_issue_key = fields.Char(
+        string="Original Epic Key",
+        readonly=True,
+    )
     jira_epic_issue_url = fields.Char(
-        string="Original JIRA Epic Link", compute="_compute_jira_issue_url",
+        string="Original JIRA Epic Link",
+        compute="_compute_jira_issue_url",
     )
 
     _sql_constraints = [
@@ -98,7 +109,7 @@ class JiraAccountAnalyticLine(models.Model):
     @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
-        """ Import a worklog from JIRA """
+        """Import a worklog from JIRA"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.importer")
             return importer.run(worklog_id, issue_id=issue_id, force=force)
@@ -135,7 +146,9 @@ class AccountAnalyticLine(models.Model):
         compute_sudo=True,
     )
     jira_epic_issue_key = fields.Char(
-        compute="_compute_jira_references", string="Original JIRA Epic Key", store=True,
+        compute="_compute_jira_references",
+        string="Original JIRA Epic Key",
+        store=True,
     )
     jira_epic_issue_url = fields.Char(
         string="Original JIRA Epic Link",
@@ -206,9 +219,13 @@ class AccountAnalyticLine(models.Model):
             and self.mapped("jira_bind_ids")._is_linked()
         ):
             fields = list(vals.keys())
-            new_values = self._convert_to_write(vals,)
+            new_values = self._convert_to_write(
+                vals,
+            )
             for old_values in self.read(fields, load="_classic_write"):
-                old_values = self._convert_to_write(old_values,)
+                old_values = self._convert_to_write(
+                    old_values,
+                )
                 for field in self._get_connector_jira_fields():
                     if field not in fields:
                         continue
@@ -252,7 +269,7 @@ class WorklogAdapter(Component):
             return self.client.worklog(issue_id, worklog_id).raw
 
     def search(self, issue_id):
-        """ Search worklogs of an issue """
+        """Search worklogs of an issue"""
         worklogs = self.client.worklogs(issue_id)
         return [worklog.id for worklog in worklogs]
 

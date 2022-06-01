@@ -36,7 +36,8 @@ class TestBatchTimestampImport(JiraSavepointCase):
         jira_ts._update_timestamp(since_date)
         with self.mock_with_delay() as (delayable_cls, delayable):
             self.env["jira.project.task"].run_batch_timestamp(
-                self.backend_record, jira_ts,
+                self.backend_record,
+                jira_ts,
             )
             # Jira WS returns 4 task ids here, we expect to have 4
             # jobs delayed
@@ -45,7 +46,8 @@ class TestBatchTimestampImport(JiraSavepointCase):
             # arguments passed in 'with_delay()'
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual(
-                (self.env["jira.project.task"],), delay_args,
+                (self.env["jira.project.task"],),
+                delay_args,
             )
 
             # Job method called after 'with_delay()'.
@@ -58,7 +60,7 @@ class TestBatchTimestampImport(JiraSavepointCase):
                 ((self.backend_record, "10100"), {"force": False, "record": None}),
             ]
             self.assertEqual(
-                sorted([(args, kwargs) for args, kwargs in delay_args]),
+                sorted((args, kwargs) for args, kwargs in delay_args),
                 sorted(expected),
             )
 
@@ -86,7 +88,8 @@ class TestBatchTimestampImport(JiraSavepointCase):
         jira_ts._update_timestamp(since_date)
         with self.mock_with_delay() as (delayable_cls, delayable):
             self.env["jira.account.analytic.line"].run_batch_timestamp(
-                self.backend_record, jira_ts,
+                self.backend_record,
+                jira_ts,
             )
             # Jira WS returns 3 worklog ids here, we expect to have 3
             # jobs delayed
@@ -95,7 +98,8 @@ class TestBatchTimestampImport(JiraSavepointCase):
             # arguments passed in 'with_delay()'
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual(
-                (self.env["jira.account.analytic.line"],), delay_args,
+                (self.env["jira.account.analytic.line"],),
+                delay_args,
             )
 
             # Job method called after 'with_delay()'.
@@ -108,7 +112,7 @@ class TestBatchTimestampImport(JiraSavepointCase):
                 ((self.backend_record, "10101", "10101"), {"force": False}),
             ]
             self.assertEqual(
-                sorted([(args, kwargs) for args, kwargs in delay_args]),
+                sorted((args, kwargs) for args, kwargs in delay_args),
                 sorted(expected),
             )
 

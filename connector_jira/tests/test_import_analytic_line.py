@@ -108,7 +108,9 @@ class TestImportAccountAnalyticLine(TestImportWorklogBase):
         jira_worklog_id = "10000"
         with recorder.use_cassette("test_import_worklog.yaml"):
             binding = self._setup_import_worklog(
-                self.task, jira_issue_id, jira_worklog_id,
+                self.task,
+                jira_issue_id,
+                jira_worklog_id,
             )
         write_date = binding.write_date - timedelta(seconds=1)
         binding.write({"write_date": write_date})

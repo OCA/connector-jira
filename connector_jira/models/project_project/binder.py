@@ -26,7 +26,7 @@ class JiraProjectBinder(Component):
         ]
 
     def to_external(self, binding, wrap=False):
-        """ Give the external ID for an Odoo binding ID
+        """Give the external ID for an Odoo binding ID
 
         More than one jira binding is possible on projects, but we still
         have to know to which one we have to export. Currently, we'll only

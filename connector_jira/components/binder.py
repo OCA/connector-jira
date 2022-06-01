@@ -34,7 +34,7 @@ class JiraBinder(Component):
 
 
 class JiraModelBinder(Component):
-    """ Binder for standalone models
+    """Binder for standalone models
 
     When we synchronize a model that has no equivalent
     in Odoo, we create a model that hold the Jira records

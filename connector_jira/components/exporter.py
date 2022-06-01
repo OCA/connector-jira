@@ -29,7 +29,7 @@ _logger = logging.getLogger(__name__)
 
 
 class JiraBaseExporter(AbstractComponent):
-    """ Base exporter for Jira """
+    """Base exporter for Jira"""
 
     _name = "jira.base.exporter"
     _inherit = ["base.exporter", "jira.base"]
@@ -41,7 +41,7 @@ class JiraBaseExporter(AbstractComponent):
         self.external_id = None
 
     def _delay_import(self):
-        """ Schedule an import of the record.
+        """Schedule an import of the record.
 
         Adapt in the sub-classes when the model is not imported
         using ``import_record``.
@@ -52,7 +52,7 @@ class JiraBaseExporter(AbstractComponent):
         self.binding.import_record(self.backend_record, self.external_id, force=True)
 
     def _should_import(self):
-        """ Before the export, compare the update date
+        """Before the export, compare the update date
         in Jira and the last sync date in Odoo,
         if the former is more recent, schedule an import
         to not miss changes done in Jira.
@@ -72,7 +72,7 @@ class JiraBaseExporter(AbstractComponent):
         return sync_date < jira_date
 
     def _lock(self):
-        """ Lock the binding record.
+        """Lock the binding record.
 
         Lock the binding record so we are sure that only one export
         job is running for this record if concurrent jobs have to export the
@@ -89,7 +89,7 @@ class JiraBaseExporter(AbstractComponent):
         self.component("record.locker").lock(self.binding)
 
     def run(self, binding, *args, **kwargs):
-        """ Run the synchronization
+        """Run the synchronization
 
         :param binding: binding record to export
         """
@@ -112,7 +112,7 @@ class JiraBaseExporter(AbstractComponent):
         return result
 
     def _run(self, *args, **kwargs):
-        """ Flow of the synchronization, implemented in inherited classes"""
+        """Flow of the synchronization, implemented in inherited classes"""
         raise NotImplementedError
 
 
@@ -128,12 +128,12 @@ class JiraExporter(Component):
     _usage = "record.exporter"
 
     def _has_to_skip(self):
-        """ Return True if the export can be skipped """
+        """Return True if the export can be skipped"""
         return False
 
     @contextmanager
     def _retry_unique_violation(self):
-        """ Context manager: catch Unique constraint error and retry the
+        """Context manager: catch Unique constraint error and retry the
         job later.
 
         When we execute several jobs workers concurrently, it happens
@@ -240,18 +240,18 @@ class JiraExporter(Component):
             component.run(binding.id)
 
     def _export_dependencies(self):
-        """ Export the dependencies for the record"""
+        """Export the dependencies for the record"""
         return
 
     def _map_data(self, fields=None):
-        """ Returns an instance of
+        """Returns an instance of
         :py:class:`~odoo.addons.component.core.Component`
 
         """
         return self.mapper.map_record(self.binding)
 
     def _validate_data(self, data):
-        """ Check if the values to import are correct
+        """Check if the values to import are correct
 
         Pro-actively check before the ``Model.create`` or
         ``Model.update`` if some fields are missing
@@ -261,7 +261,7 @@ class JiraExporter(Component):
         return
 
     def _create_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_create`.
+        """Get the data to pass to :py:meth:`_create`.
 
         Jira expect that we pass always all the fields, not only
         the modified fields. That's why the `fields` argument
@@ -271,12 +271,12 @@ class JiraExporter(Component):
         return map_record.values(for_create=True, fields=None, **kwargs)
 
     def _create(self, data):
-        """ Create the Jira record """
+        """Create the Jira record"""
         self._validate_data(data)
         return self.backend_adapter.create(data)
 
     def _update_data(self, map_record, fields=None, **kwargs):
-        """ Get the data to pass to :py:meth:`_update`.
+        """Get the data to pass to :py:meth:`_update`.
 
         Jira expect that we pass always all the fields, not only
         the modified fields. That's why the `fields` argument
@@ -286,13 +286,13 @@ class JiraExporter(Component):
         return map_record.values(fields=None, **kwargs)
 
     def _update(self, data):
-        """ Update a Jira record """
+        """Update a Jira record"""
         assert self.external_id
         self._validate_data(data)
         self.backend_adapter.write(self.external_id, data)
 
     def _run(self, fields=None):
-        """ Flow of the synchronization, implemented in inherited classes.
+        """Flow of the synchronization, implemented in inherited classes.
 
         `~._export_dependencies` might commit exported ids to the database,
         so please do not do changes in the database before the export of the

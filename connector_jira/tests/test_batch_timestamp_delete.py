@@ -37,7 +37,8 @@ class TestBatchTimestampDelete(JiraSavepointCase):
 
         with self.mock_with_delay() as (delayable_cls, delayable):
             self.env["jira.account.analytic.line"].run_batch_timestamp(
-                self.backend_record, jira_ts,
+                self.backend_record,
+                jira_ts,
             )
             # Jira WS returns 2 worklog ids to delete here, we expect to have 2
             # jobs delayed
@@ -46,7 +47,8 @@ class TestBatchTimestampDelete(JiraSavepointCase):
             # arguments passed in 'with_delay()'
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual(
-                (self.env["jira.account.analytic.line"],), delay_args,
+                (self.env["jira.account.analytic.line"],),
+                delay_args,
             )
 
             # Job method called after 'with_delay()'.
@@ -64,7 +66,7 @@ class TestBatchTimestampDelete(JiraSavepointCase):
                 ),
             ]
             self.assertEqual(
-                sorted([(args, kwargs) for args, kwargs in delay_args]),
+                sorted((args, kwargs) for args, kwargs in delay_args),
                 sorted(expected),
             )
             # the lines would actually be deleted by the 'delete_record' jobs

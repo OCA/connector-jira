@@ -51,13 +51,19 @@ class JiraProjectProjectExporter(Component):
 
     def _create_project(self, adapter, key, name, template, values):
         project = adapter.create(
-            key=key, name=name, template_name=template, values=values,
+            key=key,
+            name=name,
+            template_name=template,
+            values=values,
         )
         return project["projectId"]
 
     def _create_shared_project(self, adapter, key, name, shared_key, lead):
         project = adapter.create_shared(
-            key=key, name=name, shared_key=shared_key, lead=lead,
+            key=key,
+            name=name,
+            shared_key=shared_key,
+            lead=lead,
         )
         return project["projectId"]
 

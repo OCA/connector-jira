@@ -40,7 +40,8 @@ class AnalyticLineMapper(Component):
             "jira_issue_key": issue["key"],
         }
         task_mapper = self.component(
-            usage="import.mapper", model_name="jira.project.task",
+            usage="import.mapper",
+            model_name="jira.project.task",
         )
         issue_type_dict = task_mapper.issue_type(issue)
         refs.update(issue_type_dict)
@@ -92,7 +93,9 @@ class AnalyticLineMapper(Component):
             )
         employee = (
             self.env["hr.employee"]
-            .with_context(active_test=False,)
+            .with_context(
+                active_test=False,
+            )
             .search([("user_id", "=", user.id)], limit=1)
         )
         return {"user_id": user.id, "employee_id": employee.id}
@@ -128,7 +131,7 @@ class AnalyticLineMapper(Component):
 
 
 class AnalyticLineBatchImporter(Component):
-    """ Import the Jira worklogs
+    """Import the Jira worklogs
 
     For every id in in the list, a delayed job is created.
     Import from a date
@@ -193,9 +196,12 @@ class AnalyticLineBatchImporter(Component):
         return worklog_ids
 
     def _import_record(self, issue_id, worklog_id, force=False, **kwargs):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record, issue_id, worklog_id, force=force,
+            self.backend_record,
+            issue_id,
+            worklog_id,
+            force=force,
         )
 
 
@@ -224,7 +230,7 @@ class AnalyticLineImporter(Component):
         return ["issuetype", "project", "parent", epic_field_name]
 
     def _recurse_import_task(self):
-        """ Import and return the task of proper type for the worklog
+        """Import and return the task of proper type for the worklog
 
         As we decide which type of issues are imported for a project,
         a worklog could be linked to an issue that we don't import.
@@ -245,7 +251,8 @@ class AnalyticLineImporter(Component):
         current_project_id = self.external_issue["fields"]["project"]["id"]
         while jira_issue_id:
             issue = issue_adapter.read(
-                jira_issue_id, fields=self._issue_fields_to_read,
+                jira_issue_id,
+                fields=self._issue_fields_to_read,
             )
 
             jira_project_id = issue["fields"]["project"]["id"]
@@ -315,7 +322,7 @@ class AnalyticLineImporter(Component):
         return _("Record does no longer exist in Jira")
 
     def _get_external_data(self):
-        """ Return the raw Jira data for ``self.external_id`` """
+        """Return the raw Jira data for ``self.external_id``"""
         issue_adapter = self.component(
             usage="backend.adapter", model_name="jira.project.task"
         )
@@ -354,5 +361,5 @@ class AnalyticLineImporter(Component):
         self._import_dependency(jira_key, "jira.res.users", record=jira_assignee)
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+        """Import the dependencies for the record"""
         self._import_dependency_assignee()

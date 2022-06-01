@@ -104,7 +104,8 @@ class TestBackend(JiraSavepointCase):
             # arguments passed in 'with_delay()'
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual(
-                (self.env["jira.project.task"],), delay_args,
+                (self.env["jira.project.task"],),
+                delay_args,
             )
 
             # job method called after 'with_delay()'
@@ -112,5 +113,9 @@ class TestBackend(JiraSavepointCase):
             delay_args, __ = delayable.run_batch_timestamp.call_args
 
             self.assertEqual(
-                (self.backend_record, jira_ts,), delay_args,
+                (
+                    self.backend_record,
+                    jira_ts,
+                ),
+                delay_args,
             )

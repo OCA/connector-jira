@@ -32,7 +32,11 @@ class JiraProjectBaseFields(models.AbstractModel):
     _name = "jira.project.base.mixin"
     _description = "JIRA Project Base Mixin"
 
-    jira_key = fields.Char(string="JIRA Key", required=True, size=10,)  # limit on JIRA
+    jira_key = fields.Char(
+        string="JIRA Key",
+        required=True,
+        size=10,
+    )  # limit on JIRA
     sync_issue_type_ids = fields.Many2many(
         comodel_name="jira.issue.type",
         string="Issue Levels to Synchronize",
@@ -48,7 +52,9 @@ class JiraProjectBaseFields(models.AbstractModel):
         string="Default Project Template",
         default="Scrum software development",
     )
-    project_template_shared = fields.Char(string="Default Shared Template",)
+    project_template_shared = fields.Char(
+        string="Default Shared Template",
+    )
     sync_action = fields.Selection(
         selection=[("link", "Link with JIRA"), ("export", "Export to JIRA")],
         default="link",
@@ -236,7 +242,11 @@ class ProjectProject(models.Model):
         string="Project Bindings",
         context={"active_test": False},
     )
-    jira_key = fields.Char(string="JIRA Key", compute="_compute_jira_key", store=True,)
+    jira_key = fields.Char(
+        string="JIRA Key",
+        compute="_compute_jira_key",
+        store=True,
+    )
 
     @api.depends("jira_bind_ids.jira_key")
     def _compute_jira_key(self):
@@ -265,13 +275,18 @@ class ProjectProject(models.Model):
         ]
         if operator in expression.NEGATIVE_TERM_OPERATORS:
             domain = ["&", "!"] + domain[1:]
-        return self.search(domain + (args or []), limit=limit,).name_get()
+        return self.search(
+            domain + (args or []),
+            limit=limit,
+        ).name_get()
 
     def create_and_link_jira(self):
         action_link = self.env.ref("connector_jira.open_project_link_jira")
         action = action_link.read()[0]
         action["context"] = dict(
-            self.env.context, active_id=self.id, active_model=self._name,
+            self.env.context,
+            active_id=self.id,
+            active_model=self._name,
         )
         return action
 
@@ -299,7 +314,9 @@ class ProjectAdapter(Component):
     def create(self, key=None, name=None, template_name=None, values=None):
         super().create(key=key, name=name, template_name=template_name, values=values)
         project = self.client.create_project(
-            key=key, name=name, template_name=template_name,
+            key=key,
+            name=name,
+            template_name=template_name,
         )
         if values:
             project.update(values)

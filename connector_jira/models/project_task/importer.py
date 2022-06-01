@@ -120,7 +120,8 @@ class ProjectTaskMapper(Component):
         project_binder = self.binder_for("jira.project.project")
         project_id = project_binder.unwrap_binding(self.options.project_binding)
         stage = self.env["project.task.type"].search(
-            [("name", "=", status_name), ("project_ids", "=", project_id.id)], limit=1,
+            [("name", "=", status_name), ("project_ids", "=", project_id.id)],
+            limit=1,
         )
         return {"stage_id": stage.id}
 
@@ -143,7 +144,7 @@ class ProjectTaskMapper(Component):
 
 
 class ProjectTaskBatchImporter(Component):
-    """ Import the Jira tasks
+    """Import the Jira tasks
 
     For every id in in the list of tasks, a delayed job is created.
     Import from a date
@@ -179,7 +180,7 @@ class ProjectTaskImporter(Component):
         self.project_binding = None
 
     def _get_external_data(self):
-        """ Return the raw Jira data for ``self.external_id`` """
+        """Return the raw Jira data for ``self.external_id``"""
         result = super()._get_external_data()
         epic_field_name = self.backend_record.epic_link_field_name
         if epic_field_name:
@@ -199,7 +200,9 @@ class ProjectTaskImporter(Component):
         project_binding = self.project_binding
         task_sync_type_id = self.external_record["fields"]["issuetype"]["id"]
         task_sync_type_binder = self.binder_for("jira.issue.type")
-        task_sync_type_binding = task_sync_type_binder.to_internal(task_sync_type_id,)
+        task_sync_type_binding = task_sync_type_binder.to_internal(
+            task_sync_type_id,
+        )
         return task_sync_type_binding.is_sync_for_project(project_binding)
 
     def _create_data(self, map_record, **kwargs):
@@ -251,7 +254,7 @@ class ProjectTaskImporter(Component):
             )
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+        """Import the dependencies for the record"""
         self._import_dependency_assignee()
         self._import_dependency_issue_type()
         self._import_dependency_parent()

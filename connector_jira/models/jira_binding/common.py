@@ -9,7 +9,7 @@ from ...fields import MilliDatetime
 
 
 class JiraBinding(models.AbstractModel):
-    """ Abstract Model for the Bindings.
+    """Abstract Model for the Bindings.
 
     All the models used as bindings between Jira and Odoo
     (``jira.product.product``, ...) should ``_inherit`` it.
@@ -41,7 +41,7 @@ class JiraBinding(models.AbstractModel):
     @job(default_channel="root.connector_jira.import")
     @api.model
     def import_batch(self, backend):
-        """Prepare import of a batch of record """
+        """Prepare import of a batch of record"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="batch.importer")
             return importer.run()
@@ -72,7 +72,9 @@ class JiraBinding(models.AbstractModel):
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.deleter")
             return importer.run(
-                external_id, only_binding=only_binding, set_inactive=set_inactive,
+                external_id,
+                only_binding=only_binding,
+                set_inactive=set_inactive,
             )
 
     @job(default_channel="root.connector_jira.export")

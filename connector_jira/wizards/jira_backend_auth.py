@@ -53,8 +53,14 @@ class JiraBackendAuth(models.TransientModel):
         default="leg_1",
     )
 
-    consumer_key = fields.Char(related="backend_id.consumer_key", readonly=True,)
-    public_key = fields.Text(related="backend_id.public_key", readonly=True,)
+    consumer_key = fields.Char(
+        related="backend_id.consumer_key",
+        readonly=True,
+    )
+    public_key = fields.Text(
+        related="backend_id.public_key",
+        readonly=True,
+    )
 
     # fields populated by leg_1
     request_token = fields.Char(readonly=True)
@@ -113,7 +119,7 @@ class JiraBackendAuth(models.TransientModel):
         return self._next_action()
 
     def do_oauth_leg_3(self):
-        """ Perform OAuth step 3 to get access_token and secret """
+        """Perform OAuth step 3 to get access_token and secret"""
         oauth_hook = OAuth1(
             client_key=self.consumer_key,
             client_secret="",

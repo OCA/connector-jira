@@ -23,7 +23,7 @@ JIRA_JQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M"  # no seconds :-(
 
 
 class JiraAdapter(Component):
-    """ Generic adapter for using the JIRA backend """
+    """Generic adapter for using the JIRA backend"""
 
     _name = "jira.webservice.adapter"
     _inherit = ["base.backend.adapter.crud", "jira.base"]
@@ -41,7 +41,10 @@ class JiraAdapter(Component):
         return self._client
 
     def _post_get_json(
-        self, path, data=None, base=jira.resources.Resource.JIRA_BASE_URL,
+        self,
+        path,
+        data=None,
+        base=jira.resources.Resource.JIRA_BASE_URL,
     ):
         """Get the json for a given path and payload
 
@@ -73,7 +76,12 @@ class JiraAdapter(Component):
             yield
         except jira.exceptions.JIRAError as err:
             if err.status_code == 404:
-                raise IDMissingInBackend("{} (url: {})".format(err.text, err.url,))
+                raise IDMissingInBackend(
+                    "{} (url: {})".format(
+                        err.text,
+                        err.url,
+                    )
+                )
             raise
 
     @contextmanager

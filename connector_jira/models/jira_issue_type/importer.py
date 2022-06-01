@@ -21,7 +21,7 @@ class IssueTypeMapper(Component):
 
 
 class IssueTypeBatchImporter(Component):
-    """ Import the Jira Issue Types
+    """Import the Jira Issue Types
 
     For every id in in the list of issue types, a direct import is done.
     Import from a date
@@ -32,7 +32,7 @@ class IssueTypeBatchImporter(Component):
     _apply_on = ["jira.issue.type"]
 
     def run(self):
-        """ Run the synchronization """
+        """Run the synchronization"""
         record_ids = self.backend_adapter.search()
         for record_id in record_ids:
             self._import_record(record_id)
