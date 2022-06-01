@@ -8,7 +8,7 @@ class QueueJob(models.Model):
     _inherit = "queue.job"
 
     def related_action_jira_link(self):
-        """Open a jira url for an issue """
+        """Open a jira url for an issue"""
         self.ensure_one()
 
         model_name = self.model_name

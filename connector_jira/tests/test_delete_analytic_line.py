@@ -30,7 +30,9 @@ class TestBatchTimestampDelete(JiraSavepointCase):
             self.project, issue_types=self.epic_issue_type, external_id="10000"
         )
         binding = self._create_analytic_line_binding(
-            line, jira_issue_id="10101", external_id="10103",
+            line,
+            jira_issue_id="10101",
+            external_id="10103",
         )
         # This is usually delayed as a job from either a controller,
         # either the component with usage "timestamp.batch.deleter"

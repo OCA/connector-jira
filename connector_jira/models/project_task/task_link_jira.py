@@ -14,9 +14,15 @@ class TaskLinkJira(models.TransientModel):
     _description = "Link Task with JIRA"
 
     task_id = fields.Many2one(
-        comodel_name="project.task", name="Task", required=True, ondelete="cascade",
+        comodel_name="project.task",
+        name="Task",
+        required=True,
+        ondelete="cascade",
     )
-    jira_key = fields.Char(string="JIRA Key", required=True,)
+    jira_key = fields.Char(
+        string="JIRA Key",
+        required=True,
+    )
     backend_id = fields.Many2one(
         comodel_name="jira.backend",
         string="Jira Backend",
@@ -24,9 +30,12 @@ class TaskLinkJira(models.TransientModel):
         ondelete="cascade",
         domain="[('id', 'in', linked_backend_ids)]",
     )
-    linked_backend_ids = fields.Many2many(comodel_name="jira.backend",)
+    linked_backend_ids = fields.Many2many(
+        comodel_name="jira.backend",
+    )
     jira_task_id = fields.Many2one(
-        comodel_name="jira.project.task", ondelete="cascade",
+        comodel_name="jira.project.task",
+        ondelete="cascade",
     )
 
     @api.model

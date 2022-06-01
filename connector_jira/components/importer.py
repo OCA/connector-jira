@@ -57,7 +57,7 @@ class JiraImporter(Component):
         self.external_record = None
 
     def _get_external_data(self):
-        """ Return the raw Jira data for ``self.external_id`` """
+        """Return the raw Jira data for ``self.external_id``"""
         return self.backend_adapter.read(self.external_id)
 
     def must_skip(self, force=False):
@@ -68,7 +68,7 @@ class JiraImporter(Component):
         assert self.external_record
 
     def _before_import(self):
-        """ Hook called before the import, when we have the Jira
+        """Hook called before the import, when we have the Jira
         data"""
 
     def _get_external_updated_at(self):
@@ -130,18 +130,18 @@ class JiraImporter(Component):
             component.run(external_id, record=record, force=True)
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record"""
+        """Import the dependencies for the record"""
         return
 
     def _map_data(self):
-        """ Returns an instance of
+        """Returns an instance of
         :py:class:`~odoo.addons.component.core.Component`
 
         """
         return self.mapper.map_record(self.external_record)
 
     def _validate_data(self, data):
-        """ Check if the values to import are correct
+        """Check if the values to import are correct
 
         Pro-actively check before the ``_create`` or
         ``_update`` if some fields are missing or invalid.
@@ -154,9 +154,14 @@ class JiraImporter(Component):
         """Filter values that aren't actually changing"""
         binding.ensure_one()
         fields = list(data.keys())
-        new_values = binding._convert_to_write(data,)
+        new_values = binding._convert_to_write(
+            data,
+        )
         old_values = binding._convert_to_write(
-            binding.read(fields, load="_classic_write",)[0],
+            binding.read(
+                fields,
+                load="_classic_write",
+            )[0],
         )
         new_data = {}
         for field in fields:
@@ -170,7 +175,7 @@ class JiraImporter(Component):
         return self.binder.to_internal(self.external_id)
 
     def _create_data(self, map_record, **kwargs):
-        """ Get the data to pass to :py:meth:`_create` """
+        """Get the data to pass to :py:meth:`_create`"""
         return map_record.values(
             for_create=True,
             external_updated_at=self._get_external_updated_at(),
@@ -179,7 +184,7 @@ class JiraImporter(Component):
 
     @contextmanager
     def _retry_unique_violation(self):
-        """ Context manager: catch Unique constraint error and retry the
+        """Context manager: catch Unique constraint error and retry the
         job later.
 
         When we execute several jobs workers concurrently, it happens
@@ -215,7 +220,7 @@ class JiraImporter(Component):
         }
 
     def _create(self, data):
-        """ Create the Odoo record """
+        """Create the Odoo record"""
         # special check on data before import
         self._validate_data(data)
         with self._retry_unique_violation():
@@ -226,7 +231,7 @@ class JiraImporter(Component):
         return binding
 
     def _update_data(self, map_record, **kwargs):
-        """ Get the data to pass to :py:meth:`_update` """
+        """Get the data to pass to :py:meth:`_update`"""
         return map_record.values(
             external_updated_at=self._get_external_updated_at(), **kwargs
         )
@@ -239,7 +244,7 @@ class JiraImporter(Component):
         }
 
     def _update(self, binding, data):
-        """ Update an Odoo record """
+        """Update an Odoo record"""
         data = self._filter_data(binding, data)
         if not data:
             _logger.debug(
@@ -255,12 +260,12 @@ class JiraImporter(Component):
         return
 
     def _after_import(self, binding):
-        """ Hook called at the end of the import """
+        """Hook called at the end of the import"""
         return
 
     @contextmanager
     def do_in_new_work_context(self, model_name=None):
-        """ Context manager that yields a new component work context
+        """Context manager that yields a new component work context
 
         Using a new Odoo Environment thus a new PG transaction.
 
@@ -296,7 +301,7 @@ class JiraImporter(Component):
         return _("Record does no longer exist in Jira")
 
     def run(self, external_id, force=False, record=None, **kwargs):
-        """ Run the synchronization
+        """Run the synchronization
 
         A record can be given, reducing number of calls when
         a call already returns data (example: user returns addresses)
@@ -384,7 +389,7 @@ class JiraImporter(Component):
         self._import(binding, **kwargs)
 
     def _import(self, binding, **kwargs):
-        """ Import the external record.
+        """Import the external record.
 
         Can be inherited to modify for instance the environment
         (change current user, values in context, ...)
@@ -406,7 +411,7 @@ class JiraImporter(Component):
 
 
 class BatchImporter(AbstractComponent):
-    """ The role of a BatchImporter is to search for a list of
+    """The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
@@ -425,7 +430,7 @@ class BatchImporter(AbstractComponent):
         return self.backend_adapter.search()
 
     def _import_record(self, record_id, **kwargs):
-        """ Import a record directly or delay the import of the record.
+        """Import a record directly or delay the import of the record.
 
         Method to implement in sub-classes.
         """
@@ -433,33 +438,33 @@ class BatchImporter(AbstractComponent):
 
 
 class DirectBatchImporter(AbstractComponent):
-    """ Import the records directly, without delaying the jobs. """
+    """Import the records directly, without delaying the jobs."""
 
     _name = "jira.direct.batch.importer"
     _inherit = ["jira.batch.importer"]
 
     def _import_record(self, record_id, force=False, record=None):
-        """ Import the record directly """
+        """Import the record directly"""
         self.model.import_record(
             self.backend_record, record_id, force=force, record=record
         )
 
 
 class DelayedBatchImporter(AbstractComponent):
-    """ Delay import of the records """
+    """Delay import of the records"""
 
     _name = "jira.delayed.batch.importer"
     _inherit = ["jira.batch.importer"]
 
     def _import_record(self, record_id, force=False, record=None, **kwargs):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
             self.backend_record, record_id, force=force, record=record
         )
 
 
 class TimestampBatchImporter(AbstractComponent):
-    """ Batch Importer working with a jira.backend.timestamp.record
+    """Batch Importer working with a jira.backend.timestamp.record
 
     It locks the timestamp to ensure no other job is working on it,
     and uses the latest timestamp value as reference for the search.
@@ -498,7 +503,8 @@ class TimestampBatchImporter(AbstractComponent):
     def _handle_lock_failed(self, timestamp):
         _logger.warning("Failed to acquire timestamps %s", timestamp, exc_info=True)
         raise RetryableJobError(
-            "Concurrent job / process already syncing", ignore_retry=True,
+            "Concurrent job / process already syncing",
+            ignore_retry=True,
         )
 
     def _search(self, timestamp):
@@ -520,7 +526,10 @@ class TimestampBatchImporter(AbstractComponent):
     def _import_record(self, record_id, force=False, record=None, **kwargs):
         """Delay the import of the records"""
         self.model.with_delay(**kwargs).import_record(
-            self.backend_record, record_id, force=force, record=record,
+            self.backend_record,
+            record_id,
+            force=force,
+            record=record,
         )
 
 
