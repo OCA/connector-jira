@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
@@ -8,7 +8,6 @@ from collections import namedtuple
 from odoo import _, api, exceptions, fields, models
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job, related_action
 
 UpdatedWorklog = namedtuple(
     "UpdatedWorklog",
@@ -105,8 +104,6 @@ class JiraAccountAnalyticLine(models.Model):
                 record.jira_epic_issue_key
             )
 
-    @job(default_channel="root.connector_jira.import")
-    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
         """Import a worklog from JIRA"""

@@ -6,10 +6,10 @@ from datetime import datetime
 from odoo import fields
 
 from ..fields import MilliDatetime
-from .common import JiraSavepointCase
+from .common import JiraTransactionComponentCase
 
 
-class TestBackendTimestamp(JiraSavepointCase):
+class TestBackendTimestamp(JiraTransactionComponentCase):
     def _create_timestamp(self):
         return self.env["jira.backend.timestamp"].create(
             {
@@ -46,7 +46,7 @@ class TestBackendTimestamp(JiraSavepointCase):
         )
 
 
-class TestBackend(JiraSavepointCase):
+class TestBackend(JiraTransactionComponentCase):
     def _test_import_date_computed_field(self, timestamp_field_name, component_usage):
         backend = self.backend_record
         self.assertFalse(backend[timestamp_field_name])

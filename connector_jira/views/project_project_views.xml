@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-  Copyright 2019 Camptocamp SA
+  Copyright 2022 Camptocamp SA
   Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
   License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 -->
@@ -75,7 +75,7 @@
             ref="project.project_project_view_form_simplified_footer"
         />
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='open_tasks']" position="after">
+            <xpath expr="//button[@name='action_view_tasks']" position="after">
                 <button
                     string="Create and Link with JIRA"
                     name="create_and_link_jira"
@@ -116,7 +116,7 @@
         <field name="name">jira.project.project.tree</field>
         <field name="model">jira.project.project</field>
         <field name="arch" type="xml">
-            <tree string="Jira Project" create="0">
+            <tree create="0">
                 <field name="backend_id" />
                 <field name="jira_key" />
                 <field name="external_id" />
@@ -131,7 +131,7 @@
         <field name="inherit_id" ref="project.view_project_kanban" />
         <field name="arch" type="xml">
             <xpath
-                expr="//div[hasclass('o_kanban_manage_reports')]/div[last()]"
+                expr="//div[hasclass('o_kanban_card_manage_pane')]/div[last()]"
                 position="after"
             >
                 <div groups="project.group_project_manager">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-  Copyright 2019 Camptocamp SA
+  Copyright 2022 Camptocamp SA
   Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
   License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 -->
@@ -297,12 +297,7 @@
                         </page>
                         <page name="issue_type" string="Issue Types" states="running">
                             <field name="issue_type_ids">
-                                <tree
-                                    string="Jira Issue Type"
-                                    create="0"
-                                    delete="0"
-                                    edit="0"
-                                >
+                                <tree create="0" delete="0" edit="0">
                                     <field name="name" />
                                     <field name="description" />
                                 </tree>
@@ -328,7 +323,7 @@
         <field name="name">jira.backend.tree</field>
         <field name="model">jira.backend</field>
         <field name="arch" type="xml">
-            <tree string="Jira Backend">
+            <tree>
                 <field name="name" />
                 <field name="uri" />
             </tree>

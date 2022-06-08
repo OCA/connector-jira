@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 """
@@ -156,7 +156,7 @@ class JiraExporter(Component):
                     "%s\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
                     "the same record. The job will be retried later." % err
-                )
+                ) from err
             else:
                 raise
 

@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
@@ -85,11 +85,12 @@ class AnalyticLineMapper(Component):
             email = jira_author["emailAddress"]
             raise MappingError(
                 _(
-                    'No user found with login "%s" or email "%s".'
+                    'No user found with login "%(jira_author_key)s" or email "%(email)s".'
                     "You must create a user or link it manually if the "
-                    "login/email differs."
+                    "login/email differs.",
+                    jira_author_key=jira_author_key,
+                    email=email,
                 )
-                % (jira_author_key, email)
             )
         employee = (
             self.env["hr.employee"]

@@ -4,10 +4,10 @@
 
 from datetime import date, timedelta
 
-from .common import JiraSavepointCase, recorder
+from .common import JiraTransactionComponentCase, recorder
 
 
-class TestImportWorklogBase(JiraSavepointCase):
+class TestImportWorklogBase(JiraTransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

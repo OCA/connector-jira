@@ -5,10 +5,10 @@ import unittest
 
 from odoo import exceptions
 
-from .common import JiraSavepointCase, recorder
+from .common import JiraTransactionComponentCase, recorder
 
 
-class TestAuth(JiraSavepointCase):
+class TestAuth(JiraTransactionComponentCase):
     @recorder.use_cassette
     def test_auth_oauth(self):
         backend = self.backend_record

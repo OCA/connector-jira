@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
@@ -12,14 +12,13 @@ from odoo.osv import expression
 
 from odoo.addons.component.core import Component
 
+_logger = logging.getLogger(__name__)
+
 try:
     from jira import JIRAError
     from jira.utils import json_loads
-except ImportError:
-    pass  # already logged in components/adapter.py
-
-
-_logger = logging.getLogger(__name__)
+except ImportError as err:
+    _logger.debug(err)
 
 
 class JiraProjectBaseFields(models.AbstractModel):
@@ -100,19 +99,17 @@ class JiraProjectProject(models.Model):
     def _add_sql_constraints(self):
         # we replace the sql constraint by a python one
         # to include the organizations
-        constraints = []
-        for (key, definition, msg) in self._sql_constraints:
+        for (key, definition, _msg) in self._sql_constraints:
+            conname = "{}_{}".format(self._table, key)
             if key == "jira_binding_uniq":
-                conname = "{}_{}".format(self._table, key)
                 has_definition = tools.constraint_definition(
                     self.env.cr, self._table, conname
                 )
                 if has_definition:
                     tools.drop_constraint(self.env.cr, self._table, conname)
             else:
-                constraints.append((key, definition, msg))
-        self._sql_constraints = constraints
-        super()._add_sql_constraints()
+                tools.add_constraint(self.env.cr, self._table, conname, definition)
+        return super()._add_sql_constraints()
 
     def _export_binding_domain(self):
         """Return the domain for the constraints on export bindings"""
@@ -309,7 +306,7 @@ class ProjectAdapter(Component):
     def write(self, id_, values):
         super().write(id_, values)
         with self.handle_404():
-            self.get(id_).update(values)
+            return self.get(id_).update(values)
 
     def create(self, key=None, name=None, template_name=None, values=None):
         super().create(key=key, name=name, template_name=template_name, values=values)
@@ -336,7 +333,7 @@ class ProjectAdapter(Component):
             if err.status_code == 404:
                 raise exceptions.UserError(
                     _('Project template with key "%s" not found.') % shared_key
-                )
+                ) from err
             else:
                 raise
 

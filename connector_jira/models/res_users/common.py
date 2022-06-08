@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
@@ -69,10 +69,12 @@ class ResUsers(models.Model):
                         if raise_if_mismatch:
                             raise exceptions.UserError(
                                 _(
-                                    'Several users found with "%s" set to "%s". '
-                                    "Set it manually."
+                                    'Several users found with "%(resolve_by_key)s"'
+                                    'set to "%(resolve_by_value)s". '
+                                    "Set it manually.",
+                                    resolve_by_key=resolve_by_key,
+                                    resolve_by_value=resolve_by_value,
                                 )
-                                % (resolve_by_key, resolve_by_value)
                             )
                         bknd_result["error"].append(
                             {
