@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
@@ -81,7 +81,7 @@ class JiraAdapter(Component):
                         err.text,
                         err.url,
                     )
-                )
+                ) from err
             raise
 
     @contextmanager
@@ -96,12 +96,12 @@ class JiraAdapter(Component):
         except requests.exceptions.ConnectionError as err:
             _logger.exception("Jira ConnectionError")
             message = _("Error during connection with Jira: %s") % (err,)
-            raise exceptions.UserError(message)
+            raise exceptions.UserError(message) from err
         except jira.exceptions.JIRAError as err:
             _logger.exception("Jira JIRAError")
             message = _("Jira Error: %s") % (err,)
-            raise exceptions.UserError(message)
+            raise exceptions.UserError(message) from err
         except IDMissingInBackend as err:
             _logger.exception("Jira 404 for an ID")
             message = _("Record does not exist in Jira: %s") % (err,)
-            raise exceptions.UserError(message)
+            raise exceptions.UserError(message) from err

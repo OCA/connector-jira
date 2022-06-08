@@ -2,7 +2,7 @@
 
 {
     "name": "JIRA Connector",
-    "version": "13.0.1.1.0",
+    "version": "15.0.1.0.0",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Connector",
@@ -20,11 +20,9 @@
             "requests",
             "jira",
             "oauthlib",
-            # these are dependencies but as they don't have the same name of
-            # package / module, we can't list them here
-            # 'requests-oauthlib',
-            # 'requests-toolbelt',
-            # 'PyJWT',
+            "requests-oauthlib",
+            "requests-toolbelt",
+            "PyJWT",
             "cryptography",
         ],
     },
@@ -44,6 +42,7 @@
         "wizards/jira_account_analytic_line_import_views.xml",
         "security/ir.model.access.csv",
         "data/cron.xml",
+        "data/queue_job_data.xml",
     ],
     "demo": ["demo/jira_backend_demo.xml"],
     "installable": True,

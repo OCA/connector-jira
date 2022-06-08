@@ -37,7 +37,7 @@
         <field name="name">jira.res.users.tree</field>
         <field name="model">jira.res.users</field>
         <field name="arch" type="xml">
-            <tree string="Jira Users">
+            <tree>
                 <field name="backend_id" />
                 <field name="external_id" />
             </tree>
