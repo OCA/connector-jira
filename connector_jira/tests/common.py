@@ -1,4 +1,4 @@
-# Copyright 2019 Camptocamp SA
+# Copyright 2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 """Tests for connector_jira
@@ -63,11 +63,11 @@ import logging
 import os
 from contextlib import contextmanager
 from os.path import dirname, join
+from unittest import mock
 
-import mock
 from vcr import VCR
 
-from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.tests.common import TransactionComponentCase
 
 _logger = logging.getLogger(__name__)
 
@@ -93,7 +93,7 @@ def get_recorder(base_path=None, **kw):
 recorder = get_recorder()
 
 
-class JiraSavepointCase(SavepointComponentCase):
+class JiraTransactionComponentCase(TransactionComponentCase):
     """Base class for tests with Jira"""
 
     @classmethod

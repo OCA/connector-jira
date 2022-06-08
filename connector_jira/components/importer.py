@@ -272,20 +272,19 @@ class JiraImporter(Component):
         This can be used to make a preemptive check in a new transaction,
         for instance to see if another transaction already made the work.
         """
-        with odoo.api.Environment.manage():
-            registry = odoo.registry(self.env.cr.dbname)
-            with closing(registry.cursor()) as cr:
-                try:
-                    new_env = odoo.api.Environment(cr, self.env.uid, self.env.context)
-                    backend = self.backend_record.with_env(new_env)
-                    with backend.work_on(model_name or self.model._name) as work:
-                        yield work
-                except Exception:
-                    cr.rollback()
-                    raise
-                else:
-                    if not tools.config["test_enable"]:
-                        cr.commit()  # pylint: disable=invalid-commit
+        registry = odoo.registry(self.env.cr.dbname)
+        with closing(registry.cursor()) as cr:
+            try:
+                new_env = odoo.api.Environment(cr, self.env.uid, self.env.context)
+                backend = self.backend_record.with_env(new_env)
+                with backend.work_on(model_name or self.model._name) as work:
+                    yield work
+            except Exception:
+                cr.rollback()
+                raise
+            else:
+                if not tools.config["test_enable"]:
+                    cr.commit()  # pylint: disable=invalid-commit
 
     def _handle_record_missing_on_jira(self):
         """Hook called when we are importing a record missing on Jira

@@ -69,8 +69,8 @@ class JiraBackendAuth(models.TransientModel):
 
     @api.model
     def _next_action(self):
-        act = self.env["ir.actions.act_window"].for_xml_id(
-            "connector_jira", "action_jira_backend_auth"
+        act = self.env["ir.actions.act_window"]._for_xml_id(
+            "connector_jira.action_jira_backend_auth"
         )
         act["res_id"] = self.id
         return act

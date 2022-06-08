@@ -100,18 +100,16 @@ class JiraProjectProject(models.Model):
     def _add_sql_constraints(self):
         # we replace the sql constraint by a python one
         # to include the organizations
-        constraints = []
         for (key, definition, msg) in self._sql_constraints:
+            conname = "{}_{}".format(self._table, key)
             if key == "jira_binding_uniq":
-                conname = "{}_{}".format(self._table, key)
                 has_definition = tools.constraint_definition(
                     self.env.cr, self._table, conname
                 )
                 if has_definition:
                     tools.drop_constraint(self.env.cr, self._table, conname)
             else:
-                constraints.append((key, definition, msg))
-        self._sql_constraints = constraints
+                tools.add_constraint(self.env.cr, self._table, conname, definition)
         super()._add_sql_constraints()
 
     def _export_binding_domain(self):

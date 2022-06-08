@@ -8,7 +8,6 @@ from collections import namedtuple
 from odoo import _, api, exceptions, fields, models
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job, related_action
 
 UpdatedWorklog = namedtuple(
     "UpdatedWorklog",
@@ -105,8 +104,6 @@ class JiraAccountAnalyticLine(models.Model):
                 record.jira_epic_issue_key
             )
 
-    @job(default_channel="root.connector_jira.import")
-    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, issue_id, worklog_id, force=False):
         """Import a worklog from JIRA"""

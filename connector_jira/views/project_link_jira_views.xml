@@ -67,14 +67,14 @@
             </xpath>
         </field>
     </record>
-    <act_window
-        id="open_project_link_jira"
-        name="Link with JIRA"
-        res_model="project.link.jira"
-        groups="project.group_project_manager"
-        view_mode="form"
-        target="new"
-    />
+
+    <record id="open_project_link_jira" model="ir.actions.act_window">
+        <field name="name">Link with JIRA</field>
+        <field name="res_model">project.link.jira</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+        <field name="groups_id" eval="[(4, ref('project.group_project_manager'))]" />
+    </record>
     <!-- src_model="project.project" -->
     <!-- view_id="general_ledger_wizard" -->
 </odoo>

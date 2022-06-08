@@ -4,7 +4,6 @@
 from odoo import fields, models
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
 
 
 class JiraIssueType(models.Model):
@@ -22,7 +21,6 @@ class JiraIssueType(models.Model):
             return False
         return self in project_binding.sync_issue_type_ids
 
-    @job(default_channel="root.connector_jira.import")
     def import_batch(self, backend, from_date=None, to_date=None):
         """Prepare a batch import of issue types from Jira
 
