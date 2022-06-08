@@ -1,10 +1,9 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import fields, models
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import job
 
 
 class JiraIssueType(models.Model):
@@ -22,7 +21,6 @@ class JiraIssueType(models.Model):
             return False
         return self in project_binding.sync_issue_type_ids
 
-    @job(default_channel="root.connector_jira.import")
     def import_batch(self, backend, from_date=None, to_date=None):
         """Prepare a batch import of issue types from Jira
 

@@ -2,4 +2,7 @@
 cryptography
 jira
 oauthlib
+PyJWT
 requests
+requests-oauthlib
+requests-toolbelt

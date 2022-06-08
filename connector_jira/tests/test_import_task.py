@@ -4,10 +4,10 @@
 
 from odoo import exceptions
 
-from .common import JiraSavepointCase, recorder
+from .common import JiraTransactionComponentCase, recorder
 
 
-class TestImportTask(JiraSavepointCase):
+class TestImportTask(JiraTransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

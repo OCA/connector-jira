@@ -1,9 +1,7 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import api, fields, models
-
-from odoo.addons.queue_job.job import job, related_action
 
 from ...fields import MilliDatetime
 
@@ -38,7 +36,6 @@ class JiraBinding(models.AbstractModel):
         ),
     ]
 
-    @job(default_channel="root.connector_jira.import")
     @api.model
     def import_batch(self, backend):
         """Prepare import of a batch of record"""
@@ -46,7 +43,6 @@ class JiraBinding(models.AbstractModel):
             importer = work.component(usage="batch.importer")
             return importer.run()
 
-    @job(default_channel="root.connector_jira.import")
     @api.model
     def run_batch_timestamp(self, backend, timestamp, force=False):
         """Prepare batch of records"""
@@ -54,8 +50,6 @@ class JiraBinding(models.AbstractModel):
             importer = work.component(usage=timestamp.component_usage)
             return importer.run(timestamp, force=force)
 
-    @job(default_channel="root.connector_jira.import")
-    @related_action(action="related_action_jira_link")
     @api.model
     def import_record(self, backend, external_id, force=False, record=None):
         """Import a record"""
@@ -63,7 +57,6 @@ class JiraBinding(models.AbstractModel):
             importer = work.component(usage="record.importer")
             return importer.run(external_id, force=force, record=record)
 
-    @job(default_channel="root.connector_jira.import")
     @api.model
     def delete_record(
         self, backend, external_id, only_binding=False, set_inactive=False
@@ -77,8 +70,6 @@ class JiraBinding(models.AbstractModel):
                 set_inactive=set_inactive,
             )
 
-    @job(default_channel="root.connector_jira.export")
-    @related_action(action="related_action_unwrap_binding")
     def export_record(self, fields=None):
         self.ensure_one()
         with self.backend_id.work_on(self._name) as work:

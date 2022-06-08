@@ -1,5 +1,5 @@
 # Copyright: 2015 LasLabs, Inc.
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
@@ -29,8 +29,8 @@ JIRA_TIMEOUT = 30  # seconds
 try:
     from jira import JIRA, JIRAError
     from jira.utils import json_loads
-except ImportError:
-    pass  # already logged in components/backend_adapter.py
+except ImportError as err:
+    _logger.debug(err)
 
 try:
     from cryptography.hazmat.backends import default_backend
@@ -42,18 +42,17 @@ except ImportError as err:
 
 @contextmanager
 def new_env(env):
-    with api.Environment.manage():
-        registry = odoo.registry(env.cr.dbname)
-        with closing(registry.cursor()) as cr:
-            new_env = api.Environment(cr, env.uid, env.context)
-            try:
-                yield new_env
-            except Exception:
-                cr.rollback()
-                raise
-            else:
-                if not tools.config["test_enable"]:
-                    cr.commit()  # pylint: disable=invalid-commit
+    registry = odoo.registry(env.cr.dbname)
+    with closing(registry.cursor()) as cr:
+        new_env = api.Environment(cr, env.uid, env.context)
+        try:
+            yield new_env
+        except Exception:
+            cr.rollback()
+            raise
+        else:
+            if not tools.config["test_enable"]:
+                cr.commit()  # pylint: disable=invalid-commit
 
 
 class JiraBackend(models.Model):
@@ -147,7 +146,6 @@ class JiraBackend(models.Model):
     )
 
     use_webhooks = fields.Boolean(
-        string="Use Webhooks",
         readonly=True,
         help="Webhooks need to be configured on the Jira instance. "
         "When activated, synchronization from Jira is blazing fast. "
@@ -192,7 +190,6 @@ class JiraBackend(models.Model):
         "The name of the field is something like 'customfield_10003'. ",
     )
     epic_link_on_epic = fields.Boolean(
-        string="Epic link on epic",
         help="Epics on JIRA cannot be linked to another epic. Check this box"
         "to fill the epic field with itself on Odoo.",
     )
@@ -475,9 +472,11 @@ class JiraBackend(models.Model):
         try:
             self.get_api_client().myself()
         except (ValueError, requests.exceptions.ConnectionError) as err:
-            raise exceptions.UserError(_("Failed to connect (%s)") % (err,))
+            raise exceptions.UserError(_("Failed to connect (%s)") % (err,)) from err
         except JIRAError as err:
-            raise exceptions.UserError(_("Failed to connect (%s)") % (err.text,))
+            raise exceptions.UserError(
+                _("Failed to connect (%s)") % (err.text,)
+            ) from err
         raise exceptions.UserError(_("Connection successful"))
 
     def import_project_task(self):
@@ -572,7 +571,6 @@ class JiraBackendTimestamp(models.Model):
         required=True,
     )
     from_date_field = fields.Char(
-        string="From Date Field",
         required=True,
     )
     # For worklogs, jira allows to work with milliseconds

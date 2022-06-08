@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
@@ -55,7 +55,7 @@ class ProjectTaskMapper(Component):
     def assignee(self, record):
         assignee = record["fields"].get("assignee")
         if not assignee:
-            return {"user_id": False}
+            return {"user_ids": False}
         jira_key = assignee["key"]
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_key, unwrap=True)
@@ -63,11 +63,12 @@ class ProjectTaskMapper(Component):
             email = assignee["emailAddress"]
             raise MappingError(
                 _(
-                    'No user found with login "%s" or email "%s".'
+                    'No user found with login "%(jira_key)s" or email "%(email)s".'
                     "You must create a user or link it manually if the "
-                    "login/email differs."
+                    "login/email differs.",
+                    jira_key=jira_key,
+                    email=email,
                 )
-                % (jira_key, email)
             )
         return {"user_id": user.id}
 

@@ -69,8 +69,8 @@ class JiraBackendAuth(models.TransientModel):
 
     @api.model
     def _next_action(self):
-        act = self.env["ir.actions.act_window"].for_xml_id(
-            "connector_jira", "action_jira_backend_auth"
+        act = self.env["ir.actions.act_window"]._for_xml_id(
+            "connector_jira.action_jira_backend_auth"
         )
         act["res_id"] = self.id
         return act
@@ -95,7 +95,9 @@ class JiraBackendAuth(models.TransientModel):
                 auth=oauth_hook,
             )
         except requests.exceptions.SSLError as err:
-            raise exceptions.UserError(_("SSL error during negociation: %s") % (err,))
+            raise exceptions.UserError(
+                _("SSL error during negociation: %s") % (err,)
+            ) from err
         resp = dict(parse_qsl(req.text))
 
         token = resp.get("oauth_token")
@@ -103,8 +105,13 @@ class JiraBackendAuth(models.TransientModel):
 
         if None in [token, secret]:
             raise exceptions.UserError(
-                _("Did not get token (%s) or secret (%s) from Jira. Resp %s")
-                % (token, secret, resp)
+                _(
+                    "Did not get token (%(token)s) or secret (%(secret)s) \
+                        from Jira. Resp %(resp)s",
+                    token=token,
+                    secret=secret,
+                    resp=resp,
+                )
             )
 
         self.write(
@@ -135,7 +142,9 @@ class JiraBackendAuth(models.TransientModel):
                 auth=oauth_hook,
             )
         except requests.exceptions.SSLError as err:
-            raise exceptions.UserError(_("SSL error during negociation: %s") % (err,))
+            raise exceptions.UserError(
+                _("SSL error during negociation: %s") % (err,)
+            ) from err
         resp = dict(parse_qsl(req.text))
 
         token = resp.get("oauth_token")
@@ -143,8 +152,13 @@ class JiraBackendAuth(models.TransientModel):
 
         if None in [token, secret]:
             raise exceptions.UserError(
-                _("Did not get token (%s) or secret (%s) from Jira. Resp %s")
-                % (token, secret, resp)
+                _(
+                    "Did not get token (%(token)s) or secret (%(secret)s) \
+                        from Jira. Resp %(resp)s",
+                    token=token,
+                    secret=secret,
+                    resp=resp,
+                )
             )
 
         self.backend_id.write({"access_token": token, "access_secret": secret})
