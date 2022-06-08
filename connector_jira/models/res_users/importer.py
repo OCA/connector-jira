@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import _
@@ -25,17 +25,21 @@ class UserImporter(Component):
             if len(user) > 1:
                 raise JobError(
                     _(
-                        "Several users found (%s) for jira account %s (%s)."
-                        " Please link it manually from the Odoo user's form."
+                        "Several users found (%(login)s) for jira account"
+                        "%(jira_key)s (%(email)s)."
+                        " Please link it manually from the Odoo user's form.",
+                        login=user.mapped("login"),
+                        jira_key=jira_key,
+                        email=email,
                     )
-                    % (user.mapped("login"), jira_key, email)
                 )
             elif not user:
                 raise JobError(
                     _(
-                        "No user found for jira account %s (%s)."
-                        " Please link it manually from the Odoo user's form."
+                        "No user found for jira account %(jira_key)s (%(email)s)."
+                        " Please link it manually from the Odoo user's form.",
+                        jira_key=jira_key,
+                        email=email,
                     )
-                    % (jira_key, email)
                 )
             return user.link_with_jira(backends=self.backend_record)

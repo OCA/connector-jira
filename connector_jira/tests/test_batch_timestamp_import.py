@@ -5,10 +5,10 @@ from datetime import datetime
 
 from freezegun import freeze_time
 
-from .common import JiraSavepointCase, recorder
+from .common import JiraTransactionComponentCase, recorder
 
 
-class TestBatchTimestampImport(JiraSavepointCase):
+class TestBatchTimestampImport(JiraTransactionComponentCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

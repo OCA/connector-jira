@@ -16,3 +16,11 @@
 "access_jira_issue_type_user","jira_issue_type user","model_jira_issue_type","base.group_user",1,0,0,0
 "access_jira_account_analytic_line","jira_account_analytic_line connector manager","model_jira_account_analytic_line","connector.group_connector_manager",1,1,1,1
 "access_jira_account_analytic_line_manager","jira_account_analytic_line manager","model_jira_account_analytic_line","base.group_user",1,0,0,0
+"access_project_link_jira_manager","access_project_link_jira manager","connector_jira.model_project_link_jira","project.group_project_manager",1,1,1,1
+"access_project_link_jira","access_project_link_jira user",connector_jira.model_project_link_jira,base.group_user,1,0,0,0
+"access_task_link_jira_task_manager","access_task_link_jira manager","connector_jira.model_task_link_jira","connector.group_connector_manager",1,1,1,1
+"access_task_link_jira","access_task_link_jira user","connector_jira.model_task_link_jira",base.group_user,1,0,0,0
+"access_jira_backend_auth_manager","access_jira_backend_auth manager","connector_jira.model_jira_backend_auth","connector.group_connector_manager",1,1,1,1
+"access_jira_backend_auth","access_jira_backend_auth","connector_jira.model_jira_backend_auth","base.group_user",1,0,0,0
+"access_jira_account_analytic_line_import_manager","access_jira_account_analytic_line_import","connector_jira.model_jira_account_analytic_line_import","connector.group_connector_manager",1,1,1,1
+"access_jira_account_analytic_line_import","access_jira_account_analytic_line_import","connector_jira.model_jira_account_analytic_line_import","base.group_user",1,0,0,0
