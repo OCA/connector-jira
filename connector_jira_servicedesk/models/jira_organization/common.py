@@ -1,10 +1,8 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-Today Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class JiraOrganization(models.Model):
@@ -12,11 +10,10 @@ class JiraOrganization(models.Model):
     _inherit = "jira.binding"
     _description = "Jira Organization"
 
-    name = fields.Char("Name", required=True, readonly=True)
+    name = fields.Char(required=True, readonly=True)
     backend_id = fields.Many2one(ondelete="cascade")
     project_ids = fields.Many2many(comodel_name="jira.project.project")
 
-    @job(default_channel="root.connector_jira.import")
     def import_batch(self, backend, from_date=None, to_date=None):
         """Prepare a batch import of organization from Jira
 
