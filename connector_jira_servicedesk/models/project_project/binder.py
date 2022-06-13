@@ -14,7 +14,7 @@ class JiraProjectBinder(Component):
     _inherit = "jira.project.binder"
 
     def to_internal(self, external_id, unwrap=False, organizations=None):
-        """ Give the Odoo recordset for an external ID
+        """Give the Odoo recordset for an external ID
 
         When organizations are passed (ids are odoo ids), the binder
         will return:
@@ -40,7 +40,9 @@ class JiraProjectBinder(Component):
             (self._backend_field, "=", self.backend_record.id),
         ]
         if not organizations:
-            domain.append(("organization_ids", "=", False),)
+            domain.append(
+                ("organization_ids", "=", False),
+            )
         candidates = self.model.with_context(active_test=False).search(domain)
         if organizations:
             fallback = self.model.browse()
