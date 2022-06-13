@@ -1,7 +1,9 @@
-# Copyright 2019 Camptocamp SA
+# Copyright 2022 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+
+from requests.structures import CaseInsensitiveDict
 
 from odoo.addons.component.core import Component
 
@@ -9,11 +11,9 @@ _logger = logging.getLogger(__name__)
 
 try:
     from jira.resources import Resource
-    from jira.utils import CaseInsensitiveDict
 except ImportError as err:
     _logger.debug(err)
     Resource = object
-    CaseInsensitiveDict = None
 
 
 class Organization(Resource):
@@ -35,11 +35,7 @@ class OrganizationAdapter(Component):
     # The Service Desk REST API returns an error if this header
     # is not used. The API may change so they want an agreement for
     # the client about this.
-    _desk_headers = (
-        CaseInsensitiveDict({"X-ExperimentalApi": "opt-in"})
-        if (CaseInsensitiveDict)
-        else None
-    )
+    _desk_headers = CaseInsensitiveDict({"X-ExperimentalApi": "opt-in"})
 
     _desk_api_path_base = "{server}/rest/servicedeskapi/{path}"
 

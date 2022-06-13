@@ -31,7 +31,9 @@ class JiraBackend(models.Model):
         return selection
 
     def import_organization(self):
-        self.env["jira.organization"].import_batch(self)
+        self.env["jira.organization"].with_delay(
+            channel="root.connector_jira.import"
+        ).import_batch(self)
         return True
 
     def activate_organization(self):

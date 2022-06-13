@@ -1,4 +1,4 @@
-# Copyright 2019 Camptocamp SA
+# Copyright 2022 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
@@ -21,7 +21,8 @@ class ProjectLinkJira(models.TransientModel):
         if self.sync_action == "link":
             self.state = "link_organizations"
         else:
-            super().state_exit_start()
+            res = super().state_exit_start()
+            return res
 
     def state_exit_link_organizations(self):
         if not self.jira_project_id:

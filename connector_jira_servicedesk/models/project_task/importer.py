@@ -1,4 +1,4 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-Today Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo.addons.component.core import Component
@@ -48,9 +48,10 @@ class ProjectTaskImporter(Component):
 
     def _import_dependencies(self):
         """Import the dependencies for the record"""
-        super()._import_dependencies()
+        res = super()._import_dependencies()
         jira_org_ids = self.component(usage="organization.from.task").get_jira_org_ids(
             self.external_record
         )
         for jira_org_id in jira_org_ids:
             self._import_dependency(jira_org_id, "jira.organization")
+        return res
