@@ -3,6 +3,8 @@
 
 import logging
 
+import requests
+
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -36,7 +38,7 @@ class OrganizationAdapter(Component):
     # is not used. The API may change so they want an agreement for
     # the client about this.
     _desk_headers = (
-        CaseInsensitiveDict({"X-ExperimentalApi": "opt-in"})
+        requests.structures.CaseInsensitiveDict({"X-ExperimentalApi": "opt-in"})
         if (CaseInsensitiveDict)
         else None
     )

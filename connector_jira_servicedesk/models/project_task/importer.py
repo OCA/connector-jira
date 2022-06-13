@@ -54,3 +54,4 @@ class ProjectTaskImporter(Component):
         )
         for jira_org_id in jira_org_ids:
             self._import_dependency(jira_org_id, "jira.organization")
+        return

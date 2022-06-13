@@ -1,12 +1,12 @@
 # Copyright 2019-2021 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from odoo.addons.connector_jira.tests.common import JiraSavepointCase
+from odoo.addons.connector_jira.tests.common import JiraTransactionComponentCase
 
 from .common import recorder
 
 
-class TestImportOrganization(JiraSavepointCase):
+class TestImportOrganization(JiraTransactionComponentCase):
     @recorder.use_cassette
     def test_import_organization_batch(self):
         """Batch import of organizations

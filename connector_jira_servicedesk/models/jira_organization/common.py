@@ -4,8 +4,6 @@
 
 from odoo import fields, models
 
-from odoo.addons.queue_job.job import job
-
 
 class JiraOrganization(models.Model):
     _name = "jira.organization"
@@ -16,7 +14,6 @@ class JiraOrganization(models.Model):
     backend_id = fields.Many2one(ondelete="cascade")
     project_ids = fields.Many2many(comodel_name="jira.project.project")
 
-    @job(default_channel="root.connector_jira.import")
     def import_batch(self, backend, from_date=None, to_date=None):
         """Prepare a batch import of organization from Jira
 

@@ -22,6 +22,7 @@ class ProjectLinkJira(models.TransientModel):
             self.state = "link_organizations"
         else:
             super().state_exit_start()
+        return
 
     def state_exit_link_organizations(self):
         if not self.jira_project_id:
