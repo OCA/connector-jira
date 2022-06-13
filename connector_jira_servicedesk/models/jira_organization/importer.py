@@ -20,7 +20,7 @@ class OrganizationMapper(Component):
 
 
 class OrganizationBatchImporter(Component):
-    """ Import the Jira Organizations
+    """Import the Jira Organizations
 
     For every id in in the list of organizations, a direct import is done.
     """
@@ -30,7 +30,7 @@ class OrganizationBatchImporter(Component):
     _apply_on = ["jira.organization"]
 
     def run(self):
-        """ Run the synchronization """
+        """Run the synchronization"""
         records = self.backend_adapter.search()
         for record in records:
             self._import_record(record["id"], record=record)

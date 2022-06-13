@@ -18,7 +18,7 @@ class JiraOrganization(models.Model):
 
     @job(default_channel="root.connector_jira.import")
     def import_batch(self, backend, from_date=None, to_date=None):
-        """ Prepare a batch import of organization from Jira
+        """Prepare a batch import of organization from Jira
 
         from_date and to_date are ignored for organization
         """

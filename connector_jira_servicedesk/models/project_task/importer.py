@@ -18,7 +18,9 @@ class ProjectTaskProjectMatcher(Component):
         jira_project_id = jira_task_data["fields"]["project"]["id"]
         binder = self.binder_for("jira.project.project")
         return binder.to_internal(
-            jira_project_id, unwrap=unwrap, organizations=organizations,
+            jira_project_id,
+            unwrap=unwrap,
+            organizations=organizations,
         )
 
 
