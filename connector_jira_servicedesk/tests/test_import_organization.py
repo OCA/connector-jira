@@ -16,7 +16,9 @@ class TestImportOrganization(JiraSavepointCase):
         """
         organizations = self.env["jira.organization"].search([])
         self.assertEqual(len(organizations), 0)
-        self.env["jira.organization"].import_batch(self.backend_record,)
+        self.env["jira.organization"].import_batch(
+            self.backend_record,
+        )
         organizations = self.env["jira.organization"].search([])
         # ensure that we have more than 50 records which
         # is the pagination of the REST API
@@ -36,7 +38,9 @@ class TestImportOrganization(JiraSavepointCase):
             }
         )
         binding.import_record(
-            self.backend_record, "55", record={"id": "55", "name": "new name"},
+            self.backend_record,
+            "55",
+            record={"id": "55", "name": "new name"},
         )
         self.assertEqual(binding.name, "new name")
 
@@ -51,6 +55,7 @@ class TestImportOrganization(JiraSavepointCase):
             }
         )
         binding.import_record(
-            self.backend_record, "55",
+            self.backend_record,
+            "55",
         )
         self.assertEqual(binding.name, "org25")

@@ -7,7 +7,7 @@
     "license": "AGPL-3",
     "category": "Connector",
     "depends": ["connector_jira"],
-    "website": "https://github.com/camptocamp/connector-jira",
+    "website": "https://github.com/OCA/connector-jira",
     "data": [
         "views/jira_backend_views.xml",
         "views/project_project_views.xml",
