@@ -11,7 +11,10 @@ class WorklogAdapter(Component):
     _tempo_timesheets_api_path_base = "{server}/rest/tempo-timesheets/3/{path}"
 
     def _tempo_timesheets_get_url(self, path):
-        return self.client._get_url(path, base=self._tempo_timesheets_api_path_base,)
+        return self.client._get_url(
+            path,
+            base=self._tempo_timesheets_api_path_base,
+        )
 
     def read(self, issue_id, worklog_id):
         worklog = super().read(issue_id, worklog_id)
