@@ -51,12 +51,21 @@ class TestImportWorklogStatus(TestImportWorklogBase):
         cls._link_user(cls.user2, "manager")
 
         cls.issue_type = cls.env["jira.issue.type"].search(
-            [("name", "=", "Task"),]  # noqa
+            [
+                ("name", "=", "Task"),
+            ]  # noqa
         )
         cls.task2 = (
             cls.env["project.task"]
-            .with_context(connector_jira=True,)
-            .create({"name": "My task 2", "project_id": cls.project.id,})  # noqa
+            .with_context(
+                connector_jira=True,
+            )
+            .create(
+                {
+                    "name": "My task 2",
+                    "project_id": cls.project.id,
+                }
+            )  # noqa
         )
 
     # note: when you are recording tests with VCR, Jira

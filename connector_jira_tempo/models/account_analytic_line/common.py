@@ -43,7 +43,10 @@ class WorklogAdapter(Component):
         url = self._tempo_timesheets_get_url("timesheet-approval/current")
         with self.handle_404():
             response = self.client._session.get(
-                url, params={"username": worklog["author"]["name"],}  # noqa
+                url,
+                params={
+                    "username": worklog["author"]["name"],
+                },  # noqa
             )
         return response.json()
 
@@ -54,6 +57,9 @@ class WorklogAdapter(Component):
         with self.handle_404():
             response = self.client._session.get(
                 url,
-                params={"teamId": team_id, "periodStartDate": period_start,},  # noqa
+                params={
+                    "teamId": team_id,
+                    "periodStartDate": period_start,
+                },  # noqa
             )
         return response.json()
