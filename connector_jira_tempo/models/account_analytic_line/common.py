@@ -33,12 +33,6 @@ class WorklogAdapter(Component):
             )
         return worklog
 
-    # This one seems useless ATM.
-    # def tempo_read_worklog(self, worklog):
-    #     url = self._tempo_timesheets_get_url('worklogs')
-    #     r = self.client._session.get(url, params={'dateFrom': '2018-01-01'})
-    #     return {}
-
     def tempo_timesheets_approval_read(self, worklog):
         url = self._tempo_timesheets_get_url("timesheet-approval/current")
         with self.handle_404():
