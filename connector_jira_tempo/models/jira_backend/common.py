@@ -62,7 +62,8 @@ class JiraBackend(models.Model):
         with self.work_on("jira.account.analytic.line") as work:
             importer = work.component(usage="backend.adapter")
             result = importer.tempo_timesheets_approval_read_status_by_team(
-                team_id, period_start,
+                team_id,
+                period_start,
             )
             user_binder = importer.binder_for("jira.res.users")
         # Pick the date range from the Tempo period.
