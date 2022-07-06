@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connector" name="connector">
+                    <group string="Jira">
+                        <field name="jira_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <field name="partner_id" position="before">
+                <field name="jira_key" />
+            </field>
+        </field>
+    </record>
+    <record id="view_jira_project_project_form" model="ir.ui.view">
+        <field name="name">jira.project.project.form</field>
+        <field name="model">jira.project.project</field>
+        <field name="arch" type="xml">
+            <form string="Jira Project">
+                <group>
+                    <field name="jira_key" />
+                    <field
+                        name="backend_id"
+                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                    />
+                    <field
+                        name="project_template"
+                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                    />
+                    <field
+                        name="project_template_shared"
+                        attrs="{'readonly': [('external_id', '!=', False)],
+                    'invisible': [('project_template', '!=', 'shared')],
+                    'required': [('project_template', '=', 'shared')]}"
+                    />
+                    <field name="sync_action" />
+                    <field name="project_type" />
+                    <div colspan="2">
+                        <p class="oe_grey oe_inline">
+                            The checkboxes define which types of JIRA issues will be
+                            imported
+              into Odoo. For instance, if you check 'Story', only issues of type
+              Story will be imported. Several choices possible.
+                        </p>
+                        <p class="oe_grey oe_inline">
+                            There is a direct implication on the Worklogs.
+              When a worklog is done on a JIRA Sub-Task and this type is not
+              sync'ed, the worklog will be attached to the parent Task of the
+              Sub-Task. If the Task is not sync'ed, it will be attached to the
+              Epic. Finally, if there is no Epic, the worklog will not be
+              attached to any task.
+                        </p>
+                    </div>
+                    <field name="sync_issue_type_ids" widget="many2many_checkboxes" />
+                    <field name="external_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="project_project_view_form_simplified" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified.jira</field>
+        <field name="model">project.project</field>
+        <field
+            name="inherit_id"
+            ref="project.project_project_view_form_simplified_footer"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_tasks']" position="after">
+                <button
+                    string="Create and Link with JIRA"
+                    name="create_and_link_jira"
+                    type="object"
+                    class="btn-primary"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_project" model="ir.ui.view">
+        <field name="name">project.project.tree</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project" />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="jira_key" />
+            </field>
+        </field>
+    </record>
+    <record id="view_project_kanban" model="ir.ui.view">
+        <field name="name">project.project.kanban</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="jira_key" />
+            </field>
+            <xpath expr="//t[@t-esc='record.name.value']" position="before">
+                <span t-if="record.jira_key.value">
+                    [
+                    <t t-esc="record.jira_key.value" />
+                    ]
+                </span>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_jira_project_project_tree" model="ir.ui.view">
+        <field name="name">jira.project.project.tree</field>
+        <field name="model">jira.project.project</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="backend_id" />
+                <field name="jira_key" />
+                <field name="external_id" />
+                <field name="project_type" />
+                <field name="sync_issue_type_ids" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_project_kanban_jira">
+        <field name="name">project.project.kanban.jira</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[hasclass('o_kanban_card_manage_pane')]/div[last()]"
+                position="after"
+            >
+                <div groups="project.group_project_manager">
+                    <a name="%(connector_jira.open_project_link_jira)d" type="action">
+                        Link with JIRA
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

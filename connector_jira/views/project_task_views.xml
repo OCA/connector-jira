@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_task_form2" model="ir.ui.view">
+        <field name="name">project.task.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connector" name="connector">
+                    <group string="Jira">
+                        <field name="jira_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <field name="legend_done" position="after">
+                <field name="jira_compound_key" invisible="1" />
+                <field
+                    name="jira_issue_url"
+                    widget="url"
+                    text_field="jira_compound_key"
+                    attrs="{'invisible': [('jira_bind_ids', '=', [])]}"
+                />
+                <field
+                    name="jira_issue_type"
+                    attrs="{'invisible': [('jira_bind_ids', '=', [])]}"
+                />
+                <field
+                    name="jira_epic_link_task_id"
+                    attrs="{'invisible': [('jira_epic_link_task_id', '=', False)]}"
+                />
+                <field
+                    name="jira_parent_task_id"
+                    attrs="{'invisible': [('jira_parent_task_id', '=', False)]}"
+                />
+            </field>
+        </field>
+    </record>
+    <record id="view_task_tree2" model="ir.ui.view">
+        <field name="name">project.task.tree</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2" />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="jira_compound_key" />
+            </field>
+        </field>
+    </record>
+    <record id="view_task_search_form" model="ir.ui.view">
+        <field name="name">project.task.search.form</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form" />
+        <field name="arch" type="xml">
+            <field name="stage_id" position="after">
+                <field name="jira_compound_key" />
+                <field name="jira_issue_type" />
+                <field name="jira_epic_link_task_id" />
+                <field name="jira_parent_task_id" />
+            </field>
+            <filter name="stage" position="after">
+                <filter
+                    string="JIRA Issue Type"
+                    name="groupby_jira_issue_type"
+                    context="{'group_by': 'jira_issue_type'}"
+                />
+                <filter
+                    string="JIRA Epic"
+                    name="groupby_jira_epic_link_task_id"
+                    context="{'group_by': 'jira_epic_link_task_id'}"
+                />
+            </filter>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_task_kanban">
+        <field name="name">project.task.kanban</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban" />
+        <field name="arch" type="xml">
+            <field name="legend_done" position="after">
+                <field name="jira_issue_type" />
+                <field name="jira_bind_ids" />
+                <field name="jira_compound_key" />
+            </field>
+            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="inside">
+                <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
+                    <br />
+                    <span>
+                        JIRA:
+                        <field name="jira_compound_key" />
+                        <i>
+                            <field name="jira_issue_type" />
+                        </i>
+                    </span>
+                </t>
+            </xpath>
+            <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
+                <div role="separator" class="dropdown-divider" />
+                <a
+                    t-if="widget.editable"
+                    name="%(connector_jira.open_task_link_jira)d"
+                    role="menuitem"
+                    type="action"
+                    class="dropdown-item"
+                    groups="project.group_project_manager"
+                >
+                    Link with JIRA
+                </a>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_jira_project_task_form" model="ir.ui.view">
+        <field name="name">jira.project.task.form</field>
+        <field name="model">jira.project.task</field>
+        <field name="arch" type="xml">
+            <form string="Jira Issue">
+                <group>
+                    <field
+                        name="backend_id"
+                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                    />
+                    <field name="external_id" />
+                    <field name="jira_key" />
+                    <field name="jira_issue_type_id" />
+                    <field name="jira_epic_link_id" />
+                    <field name="jira_parent_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_project_task_tree" model="ir.ui.view">
+        <field name="name">jira.project.task.tree</field>
+        <field name="model">jira.project.task</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="external_id" />
+                <field name="jira_key" />
+                <field name="jira_issue_type_id" />
+                <field name="jira_epic_link_id" />
+                <field name="jira_parent_id" />
+            </tree>
+        </field>
+    </record>
+</odoo>

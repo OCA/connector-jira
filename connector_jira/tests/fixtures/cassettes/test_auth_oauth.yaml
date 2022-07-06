@@ -1,0 +1,88 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            Ki8q
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Length:
+          - !!binary |
+            MA==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMTkuMQ==
+      method: POST
+      uri: http://jira:8080/plugins/servlet/oauth/request-token
+    response:
+      body:
+        {
+          string: oauth_token=ygdy5CS2FGTKnGHoX29TehoRQvb6T19X&oauth_token_secret=pwq9Qzc7iax0JtoQqZdLvPlv4ReECZGh,
+        }
+      headers:
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [text/plain;charset=UTF-8]
+        Date: ["Wed, 03 Apr 2019 14:49:44 GMT"]
+        Set-Cookie:
+          [
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_391215749860b95636848223385ab73412134dc5_lout;
+            Path=/,
+          ]
+        Vary: [User-Agent]
+        X-AREQUESTID: [889x732x1]
+        X-ASEN: [SEN-L13384799]
+        X-AUSERNAME: [anonymous]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["96"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            Ki8q
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Length:
+          - !!binary |
+            MA==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMTkuMQ==
+      method: POST
+      uri: http://jira:8080/plugins/servlet/oauth/access-token
+    response:
+      body:
+        {
+          string: oauth_token=o7XglNpQdA3pwzGZw9r6WA2X2XZcjaaI&oauth_token_secret=pwq9Qzc7iax0JtoQqZdLvPlv4ReECZGh&oauth_expires_in=157680000&oauth_session_handle=WYSDJUpF0KTQjsX5vAq3vcWJtcfcNw8C&oauth_authorization_expires_in=160272000,
+        }
+      headers:
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [text/plain;charset=UTF-8]
+        Date: ["Wed, 03 Apr 2019 14:51:49 GMT"]
+        Set-Cookie:
+          [
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_a09f0120c8cc6d03ffc01dce7a72b73f1cae63d2_lout;
+            Path=/,
+          ]
+        Vary: [User-Agent]
+        X-AREQUESTID: [891x742x1]
+        X-ASEN: [SEN-L13384799]
+        X-AUSERNAME: [anonymous]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["218"]
+      status: {code: 200, message: ""}
+version: 1

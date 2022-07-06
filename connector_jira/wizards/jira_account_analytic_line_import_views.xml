@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_jira_aa_line_import" model="ir.ui.view">
+        <field name="name">Refresh Worklogs from Jira</field>
+        <field name="model">jira.account.analytic.line.import</field>
+        <field name="arch" type="xml">
+            <form string="Reimport lines">
+                <p>
+                    At confirmation, the selected lines will be reimported from Jira in
+          background. If a line was linked to the wrong project (e.g. the fallback
+          project) and the project binding has been corrected meanwhile, the line
+          will be moved to the expected target project.
+                </p>
+                <footer>
+                    <button
+                        name="confirm"
+                        string="Confirm"
+                        type="object"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" special="cancel" class="btn-default" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_jira_aa_line_import" model="ir.actions.act_window">
+        <field name="name">Refresh Worklogs from Jira</field>
+        <field name="res_model">jira.account.analytic.line.import</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_jira_aa_line_import" />
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="analytic.model_account_analytic_line" />
+    </record>
+</odoo>

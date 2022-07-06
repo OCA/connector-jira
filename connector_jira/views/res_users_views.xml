@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connector" name="connector">
+                    <group string="Jira">
+                        <field name="jira_bind_ids" nolabel="1" />
+                    </group>
+                </page>
+            </xpath>
+            <header position="inside">
+                <button
+                    string="Link with Jira"
+                    type="object"
+                    name="button_link_with_jira"
+                />
+            </header>
+        </field>
+    </record>
+    <record id="view_jira_res_users_form" model="ir.ui.view">
+        <field name="name">jira.res.users.form</field>
+        <field name="model">jira.res.users</field>
+        <field name="arch" type="xml">
+            <form string="Jira User">
+                <group>
+                    <field name="backend_id" />
+                    <field name="external_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_res_users_tree" model="ir.ui.view">
+        <field name="name">jira.res.users.tree</field>
+        <field name="model">jira.res.users</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="external_id" />
+            </tree>
+        </field>
+    </record>
+</odoo>

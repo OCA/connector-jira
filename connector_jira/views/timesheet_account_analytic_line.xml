@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hr_timesheet_line_form" model="ir.ui.view">
+        <field name="name">account.analytic.line.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form" />
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="jira_issue_key" invisible="1" />
+                <field
+                    name="jira_issue_url"
+                    widget="url"
+                    options='{"text_field": "jira_issue_key"}'
+                    attrs="{'invisible': [('jira_issue_key', '=', False)]}"
+                />
+                <field name="jira_epic_issue_key" invisible="1" />
+                <field
+                    name="jira_epic_issue_url"
+                    widget="url"
+                    options='{"text_field": "jira_epic_issue_key"}'
+                    attrs="{'invisible': [('jira_epic_issue_key', '=', False)]}"
+                />
+                <field name="jira_issue_type_id" />
+            </field>
+        </field>
+    </record>
+    <record id="hr_timesheet_line_tree" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree" />
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="jira_issue_key" invisible="1" />
+                <field
+                    name="jira_issue_url"
+                    widget="url"
+                    options='{"text_field": "jira_issue_key"}'
+                    attrs="{'invisible': [('jira_issue_key', '=', False)]}"
+                />
+                <field name="jira_epic_issue_key" invisible="1" />
+                <field
+                    name="jira_epic_issue_url"
+                    widget="url"
+                    options='{"text_field":"jira_epic_issue_key"}'
+                    attrs="{'invisible': [('jira_epic_issue_key', '=', False)]}"
+                />
+                <field name="jira_issue_type_id" />
+            </field>
+        </field>
+    </record>
+    <record id="hr_timesheet_line_search" model="ir.ui.view">
+        <field name="name">account.analytic.line.search</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search" />
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="jira_issue_key" string="JIRA issue" />
+                <field name="jira_epic_issue_key" string="JIRA Epic" />
+            </field>
+            <filter name="groupby_date" position="after">
+                <filter
+                    string="JIRA Original Issue"
+                    name="groupby_jira_task"
+                    domain="[]"
+                    context="{'group_by':'jira_issue_key'}"
+                />
+                <filter
+                    string="JIRA Original Epic"
+                    name="groupby_jira_epic"
+                    domain="[]"
+                    context="{'group_by':'jira_epic_issue_key'}"
+                />
+                <filter
+                    string="JIRA Original Issue Type"
+                    name="groupby_jira_type"
+                    domain="[]"
+                    context="{'group_by':'jira_issue_type_id'}"
+                />
+            </filter>
+        </field>
+    </record>
+</odoo>

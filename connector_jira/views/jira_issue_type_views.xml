@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_jira_issue_type_form" model="ir.ui.view">
+        <field name="name">jira.issue.type.form</field>
+        <field name="model">jira.issue.type</field>
+        <field name="arch" type="xml">
+            <form string="Jira Issue Type" create="0" delete="0" edit="0">
+                <group>
+                    <field name="name" />
+                    <field name="description" />
+                    <field
+                        name="backend_id"
+                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                    />
+                    <field name="external_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_issue_type_tree" model="ir.ui.view">
+        <field name="name">jira.issue.type.tree</field>
+        <field name="model">jira.issue.type</field>
+        <field name="arch" type="xml">
+            <tree create="0" delete="0" edit="0">
+                <field name="name" />
+                <field name="description" />
+                <field name="backend_id" />
+                <field name="external_id" />
+            </tree>
+        </field>
+    </record>
+</odoo>

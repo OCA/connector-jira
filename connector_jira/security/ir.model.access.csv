@@ -1,0 +1,26 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_jira_backend","jira_backend connector manager","model_jira_backend","connector.group_connector_manager",1,1,1,1
+"access_jira_backend_user","jira_backend user","model_jira_backend","base.group_user",1,0,0,0
+"access_jira_backend_timestamp_user","jira_backend_timestamp user","model_jira_backend_timestamp","base.group_user",1,0,0,0
+"access_jira_backend_timestamp","jira_backend_timestamp connector manager","model_jira_backend_timestamp","connector.group_connector_manager",1,1,1,1
+"access_jira_project_project","jira_project_project connector manager","model_jira_project_project","connector.group_connector_manager",1,1,1,1
+"access_jira_project_project_manager","jira_project_project manager","model_jira_project_project","base.group_user",1,0,0,0
+"access_jira_project_project_user","jira_project_project user","model_jira_project_project","project.group_project_manager",1,1,1,1
+"access_jira_project_task","jira_project_task connector manager","model_jira_project_task","connector.group_connector_manager",1,1,1,1
+"access_jira_project_task_user","jira_project_task user","model_jira_project_task","base.group_user",1,0,0,0
+"access_jira_project_task_manager","jira_project_task manager","model_jira_project_task","project.group_project_manager",1,1,1,1
+"access_jira_res_users","jira_res_users connector manager","model_jira_res_users","connector.group_connector_manager",1,1,1,1
+"access_jira_res_users_user","jira_res_users user","model_jira_res_users","base.group_user",1,0,0,0
+"access_jira_res_users_manager","jira_res_users manager","model_jira_res_users","project.group_project_manager",1,1,1,1
+"access_jira_issue_type","jira_issue_type connector manager","model_jira_issue_type","connector.group_connector_manager",1,1,1,1
+"access_jira_issue_type_user","jira_issue_type user","model_jira_issue_type","base.group_user",1,0,0,0
+"access_jira_account_analytic_line","jira_account_analytic_line connector manager","model_jira_account_analytic_line","connector.group_connector_manager",1,1,1,1
+"access_jira_account_analytic_line_manager","jira_account_analytic_line manager","model_jira_account_analytic_line","base.group_user",1,0,0,0
+"access_project_link_jira_manager","access_project_link_jira manager","connector_jira.model_project_link_jira","project.group_project_manager",1,1,1,1
+"access_project_link_jira","access_project_link_jira user",connector_jira.model_project_link_jira,base.group_user,1,0,0,0
+"access_task_link_jira_task_manager","access_task_link_jira manager","connector_jira.model_task_link_jira","connector.group_connector_manager",1,1,1,1
+"access_task_link_jira","access_task_link_jira user","connector_jira.model_task_link_jira",base.group_user,1,0,0,0
+"access_jira_backend_auth_manager","access_jira_backend_auth manager","connector_jira.model_jira_backend_auth","connector.group_connector_manager",1,1,1,1
+"access_jira_backend_auth","access_jira_backend_auth","connector_jira.model_jira_backend_auth","base.group_user",1,0,0,0
+"access_jira_account_analytic_line_import_manager","access_jira_account_analytic_line_import","connector_jira.model_jira_account_analytic_line_import","connector.group_connector_manager",1,1,1,1
+"access_jira_account_analytic_line_import","access_jira_account_analytic_line_import","connector_jira.model_jira_account_analytic_line_import","base.group_user",1,0,0,0

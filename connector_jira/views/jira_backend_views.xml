@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <!-- Backend -->
+    <record id="view_jira_backend_form" model="ir.ui.view">
+        <field name="name">jira.backend.form</field>
+        <field name="model">jira.backend</field>
+        <field name="arch" type="xml">
+            <form string="Jira Backend">
+                <header groups="connector.group_connector_manager">
+                    <button
+                        name="button_setup"
+                        type="object"
+                        class="oe_highlight"
+                        string="Configuration Done"
+                        states="setup"
+                    />
+                    <button
+                        name="%(action_jira_backend_auth)d"
+                        type="action"
+                        class="oe_highlight"
+                        string="Authenticate"
+                        states="authenticate"
+                    />
+                    <button
+                        name="check_connection"
+                        type="object"
+                        string="Check Connection"
+                        states="setup,running"
+                    />
+                    <button
+                        name="%(action_jira_backend_auth)d"
+                        type="action"
+                        string="Reset Authentication"
+                        states="setup,running"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" class="oe_inline" />
+                    </h1>
+                    <p class="oe_grey oe_inline" states="setup">
+                        Once you have checked the configuration and
+            activated the webhooks and the Epic Link (if
+            wanted), click on the "Configuration Done"
+            button.
+                    </p>
+                    <group>
+                        <group
+                            name="api_configuration"
+                            string="API Configuration"
+                            groups="connector.group_connector_manager"
+                        >
+                            <field
+                                name="uri"
+                                placeholder="e.g. https://example.com/jira"
+                            />
+                            <field name="verify_ssl" />
+                        </group>
+                        <group name="main_configuration" string="Main Configuration">
+                            <field name="company_id" />
+                            <field name="worklog_fallback_project_id" />
+                            <field name="project_template" />
+                            <field
+                                name="project_template_shared"
+                                attrs="{'invisible': [('project_template', '!=', 'shared')],
+                        'required': [('project_template', '=', 'shared')]}"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="import" string="Imports" states="running">
+                            <p class="oe_grey oe_inline">
+                                By clicking on the buttons,
+                you will initiate the synchronizations
+                with Jira.
+                Note that the import or exports
+                won't be done directly,
+                they will create 'Jobs'
+                executed as soon as possible.
+                            </p>
+                            <p class="oe_grey oe_inline">
+                                Once imported,
+                some types of records,
+                like the products or categories,
+                need a manual review.
+                You will find the list
+                of the new records to review
+                in the menu 'Connectors > Checkpoint'.
+                            </p>
+                            <group>
+                                <div>
+                                    <label
+                                        for="import_res_users"
+                                        string="Link users"
+                                        class="oe_inline"
+                                    />
+                                </div>
+                                <button
+                                    name="import_res_users"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Run"
+                                />
+                                <div
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    attrs="{'invisible': [('report_user_sync', '=', False)]}"
+                                >
+                                    <field name="report_user_sync" />
+                                </div>
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        for="import_issue_type"
+                                        string="Import Issue Types"
+                                        class="oe_inline"
+                                    />
+                                </div>
+                                <button
+                                    name="import_issue_type"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Run"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        for="import_project_task_from_date"
+                                        string="Import project tasks since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="import_project_task_from_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                    <span groups="base.group_no_one">
+                                        <span class="o_form_label">(</span>
+                                        <field
+                                            name="import_project_task_force"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                        <label
+                                            for="import_project_task_force"
+                                            class="oe_inline"
+                                            string="forced"
+                                        />
+                                        <span class="o_form_label">)</span>
+                                    </span>
+                                </div>
+                                <button
+                                    name="import_project_task"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Run in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        for="import_analytic_line_from_date"
+                                        string="Import worklogs since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="import_analytic_line_from_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                    <span groups="base.group_no_one">
+                                        <span class="o_form_label">(</span>
+                                        <field
+                                            name="import_analytic_line_force"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                        <label
+                                            for="import_analytic_line_force"
+                                            class="oe_inline"
+                                            string="forced"
+                                        />
+                                        <span class="o_form_label">)</span>
+                                    </span>
+                                </div>
+                                <button
+                                    name="import_analytic_line"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Run in background"
+                                />
+                            </group>
+                            <group>
+                                <div>
+                                    <label
+                                        for="delete_analytic_line_from_date"
+                                        string="Import deleted worklogs since"
+                                        class="oe_inline"
+                                    />
+                                    <field
+                                        name="delete_analytic_line_from_date"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                </div>
+                                <button
+                                    name="delete_analytic_line"
+                                    type="object"
+                                    class="oe_highlight"
+                                    string="Run in background"
+                                />
+                            </group>
+                        </page>
+                        <page
+                            name="advanced_configuration"
+                            string="Advanced Configuration"
+                        >
+                            <group name="webhooks" col="6">
+                                <group name="webhook_fields" colspan="3">
+                                    <field name="use_webhooks" invisible="1" />
+                                    <field name="odoo_webhook_base_url" />
+                                </group>
+                                <div>
+                                    <button
+                                        name="create_webhooks"
+                                        type="object"
+                                        string="Install Webhooks"
+                                        class="btn-sm btn-link oe_inline"
+                                        attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authenticate')]}"
+                                    />
+                                    <button
+                                        name="delete_webhooks"
+                                        type="object"
+                                        string="Remove Webhooks"
+                                        class="btn-sm btn-link oe_inline"
+                                        attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"
+                                    />
+                                </div>
+                                <p class="oe_grey" colspan="2">
+                                    Webhooks can be created only on one instance of
+                                    JIRA.
+                  When webhooks are activated, each
+                  modification of tasks and worklogs are
+                  directly transmitted to Odoo.
+                                </p>
+                            </group>
+                            <group name="epic" col="6">
+                                <group name="epic_fields" colspan="3">
+                                    <field name="epic_link_field_name" />
+                                    <field name="epic_name_field_name" />
+                                    <field name="epic_link_on_epic" />
+                                </group>
+                                <div>
+                                    <button
+                                        name="activate_epic_link"
+                                        type="object"
+                                        string="Configure Epic Link"
+                                        class="btn-sm btn-link oe_inline"
+                                        attrs="{'invisible': [('state', '=', 'authenticate')]}"
+                                    />
+                                </div>
+                                <p class="oe_grey" colspan="2">
+                                    Activate the synchronization of the Epic Link field.
+                  Only on JIRA Software. The field contains the name of
+                  the JIRA custom field that contains the Epic Link.
+
+                  Note that if a project does not synchronize the Epics,
+                  the field will be empty.
+                                </p>
+                            </group>
+                            <group name="worklog" col="6">
+                                <group name="worklog_fields" colspan="3">
+                                    <field
+                                        name="worklog_date_timezone_mode"
+                                        string="Worklog date timezone"
+                                    />
+                                    <field
+                                        name="worklog_date_timezone"
+                                        attrs="{'invisible': [('worklog_date_timezone_mode', '!=', 'specific')], 'required': [('worklog_date_timezone_mode', '=', 'specific')]}"
+                                        string=""
+                                    />
+                                </group>
+                                <div />
+                                <p class="oe_grey" colspan="2">
+                                    Configure worklog fields
+                                </p>
+                            </group>
+                        </page>
+                        <page name="issue_type" string="Issue Types" states="running">
+                            <field name="issue_type_ids">
+                                <tree create="0" delete="0" edit="0">
+                                    <field name="name" />
+                                    <field name="description" />
+                                </tree>
+                                <form
+                                    string="Jira Issue Type"
+                                    create="0"
+                                    delete="0"
+                                    edit="0"
+                                >
+                                    <group>
+                                        <field name="name" />
+                                        <field name="description" />
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_backend_tree" model="ir.ui.view">
+        <field name="name">jira.backend.tree</field>
+        <field name="model">jira.backend</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="uri" />
+            </tree>
+        </field>
+    </record>
+    <record id="action_jira_backend" model="ir.actions.act_window">
+        <field name="name">Jira Backends</field>
+        <field name="res_model">jira.backend</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="menu_jira_backend"
+        name="Backends"
+        parent="menu_jira_root"
+        action="action_jira_backend"
+    />
+</odoo>

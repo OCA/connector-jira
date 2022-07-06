@@ -1,0 +1,1938 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:50.944+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=A284F9F3C946F4DE90B46F23A9D322E4; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_3a9e497f41c4cbb37d12feff7f471568305cbff1_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x865x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [nhuy89]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1BMjg0RjlGM0M5NDZGNERFOTBCNDZGMjNBOUQzMjJFNDsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zYTllNDk3ZjQxYzRjYmIzN2QxMmZlZmY3ZjQ3
+            MTU2ODMwNWNiZmYxX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=6761E3CECDCBF4CB54F5BA1A68863929; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x866x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [5b6jp7]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD02NzYxRTNDRUNEQ0JGNENCNTRGNUJBMUE2ODg2MzkyOTsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zYTllNDk3ZjQxYzRjYmIzN2QxMmZlZmY3ZjQ3
+            MTU2ODMwNWNiZmYxX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype
+    response:
+      body:
+        {
+          string:
+            '[{"self":"http://jira:8080/rest/api/2/issuetype/10002","id":"10002","description":"A
+            task that needs to be
+            done.","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype","name":"Task","subtask":false,"avatarId":10318},{"self":"http://jira:8080/rest/api/2/issuetype/10003","id":"10003","description":"The
+            sub-task of the
+            issue","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10316&avatarType=issuetype","name":"Sub-task","subtask":true,"avatarId":10316},{"self":"http://jira:8080/rest/api/2/issuetype/10001","id":"10001","description":"Created
+            by Jira Software - do not edit or delete. Issue type for a user
+            story.","iconUrl":"http://jira:8080/images/icons/issuetypes/story.svg","name":"Story","subtask":false},{"self":"http://jira:8080/rest/api/2/issuetype/10004","id":"10004","description":"A
+            problem which impairs or prevents the functions of the
+            product.","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype","name":"Bug","subtask":false,"avatarId":10303},{"self":"http://jira:8080/rest/api/2/issuetype/10000","id":"10000","description":"Created
+            by Jira Software - do not edit or delete. Issue type for a big user story
+            that needs to be broken
+            down.","iconUrl":"http://jira:8080/images/icons/issuetypes/epic.svg","name":"Epic","subtask":false}]',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=09FE672783BC464570E54E584261DAAB; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x867x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [2pq75o]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["1348"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:51.032+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=8FBBA4B8926FF9A4281D349789C62AA1; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_c2c24c965e11aa18ea0402e2a5477e8c26f723a9_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x868x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [19oay4n]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD04RkJCQTRCODkyNkZGOUE0MjgxRDM0OTc4OUM2MkFBMTsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19jMmMyNGM5NjVlMTFhYTE4ZWEwNDAyZTJhNTQ3
+            N2U4YzI2ZjcyM2E5X2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=B39C784459149141BDC06785E4E4CA0B; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x869x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [apvf7q]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1CMzlDNzg0NDU5MTQ5MTQxQkRDMDY3ODVFNEU0Q0EwQjsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19jMmMyNGM5NjVlMTFhYTE4ZWEwNDAyZTJhNTQ3
+            N2U4YzI2ZjcyM2E5X2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype/10002
+    response:
+      body:
+        {
+          string:
+            '{"self":"http://jira:8080/rest/api/2/issuetype/10002","id":"10002","description":"A
+            task that needs to be
+            done.","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10318&avatarType=issuetype","name":"Task","subtask":false,"avatarId":10318}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=6F0F6E51042053CFA951AD74C7B13578; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x870x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [yw9uvr]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["255"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:51.124+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=7D9C5AFDAC293751E952A422A64000C8; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_37be6e80153b108551846cda18072cbee346b443_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x871x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [187k70u]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD03RDlDNUFGREFDMjkzNzUxRTk1MkE0MjJBNjQwMDBDODsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zN2JlNmU4MDE1M2IxMDg1NTE4NDZjZGExODA3
+            MmNiZWUzNDZiNDQzX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=8B2DF9092966563AA3CD7796DC071B70; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x872x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [1lco607]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD04QjJERjkwOTI5NjY1NjNBQTNDRDc3OTZEQzA3MUI3MDsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zN2JlNmU4MDE1M2IxMDg1NTE4NDZjZGExODA3
+            MmNiZWUzNDZiNDQzX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype/10003
+    response:
+      body:
+        {
+          string:
+            '{"self":"http://jira:8080/rest/api/2/issuetype/10003","id":"10003","description":"The
+            sub-task of the
+            issue","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10316&avatarType=issuetype","name":"Sub-task","subtask":true,"avatarId":10316}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=4EB098AA2D926B6D3CD93F4E735A65DC; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x873x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [vjasnw]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["254"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:51.203+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=BF85A8C3CD4EAEB937336E33BF7C94A0; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_3393f556ff4f62b6731dbaadc6375383c9f2e44b_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x874x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [njv9cs]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1CRjg1QThDM0NENEVBRUI5MzczMzZFMzNCRjdDOTRBMDsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zMzkzZjU1NmZmNGY2MmI2NzMxZGJhYWRjNjM3
+            NTM4M2M5ZjJlNDRiX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=944AB3971637AA62CD2D1BC08F20525A; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x875x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [11lkqre]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD05NDRBQjM5NzE2MzdBQTYyQ0QyRDFCQzA4RjIwNTI1QTsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18zMzkzZjU1NmZmNGY2MmI2NzMxZGJhYWRjNjM3
+            NTM4M2M5ZjJlNDRiX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype/10001
+    response:
+      body:
+        {
+          string:
+            '{"self":"http://jira:8080/rest/api/2/issuetype/10001","id":"10001","description":"Created
+            by Jira Software - do not edit or delete. Issue type for a user
+            story.","iconUrl":"http://jira:8080/images/icons/issuetypes/story.svg","name":"Story","subtask":false}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=EAC894290BAE5618DEEA90ED16627DCA; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x876x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [1wxvpx8]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["256"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:51.278+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=ACF11B7F5582201B91581B11F31637FA; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_0d796386486fa2c80ade6e265d8b6d1c5339bb65_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x877x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [c2163r]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1BQ0YxMUI3RjU1ODIyMDFCOTE1ODFCMTFGMzE2MzdGQTsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18wZDc5NjM4NjQ4NmZhMmM4MGFkZTZlMjY1ZDhi
+            NmQxYzUzMzliYjY1X2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=91B78D3112BCBA30F361CA3D894981F0; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x878x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [18xj5fc]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD05MUI3OEQzMTEyQkNCQTMwRjM2MUNBM0Q4OTQ5ODFGMDsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT18wZDc5NjM4NjQ4NmZhMmM4MGFkZTZlMjY1ZDhi
+            NmQxYzUzMzliYjY1X2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype/10004
+    response:
+      body:
+        {
+          string:
+            '{"self":"http://jira:8080/rest/api/2/issuetype/10004","id":"10004","description":"A
+            problem which impairs or prevents the functions of the
+            product.","iconUrl":"http://jira:8080/secure/viewavatar?size=xsmall&avatarId=10303&avatarType=issuetype","name":"Bug","subtask":false,"avatarId":10303}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=9717EDAECB93F99C8AA9B5300684D7AE; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x879x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [1n3azds]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["290"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/serverInfo
+    response:
+      body:
+        {
+          string: '{"baseUrl":"http://localhost:8080","version":"7.12.3","versionNumbers":[7,12,3],"deploymentType":"Server","buildNumber":712004,"buildDate":"2018-10-12T00:00:00.000+0000","serverTime":"2019-04-04T08:47:51.355+0000","scmInfo":"5ef91d760d7124da5ebec5c16a948a4a807698df","serverTitle":"Jira"}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie:
+          [
+            JSESSIONID=71E64EB8460FC6084682A409CCC54D0F; Path=/; HttpOnly,
+            atlassian.xsrf.token=BYG3-6SPF-0UM1-2LBO_58499d4673de026e97ade13f4b59cb151f60092c_lin;
+            Path=/,
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x880x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [5a2fr7]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["288"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD03MUU2NEVCODQ2MEZDNjA4NDY4MkE0MDlDQ0M1NEQwRjsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT181ODQ5OWQ0NjczZGUwMjZlOTdhZGUxM2Y0YjU5
+            Y2IxNTFmNjAwOTJjX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/field
+    response:
+      body: {string: "[{\"id\":\"issuetype\",\"name\":\"Issue
+            Type\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            issuetype\",\"type\"],\"schema\":{\"type\":\"issuetype\",\"system\":\"issuetype\"\
+            }},{\"id\":\"components\",\"name\":\"Component/s\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"component\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"component\",\"system\":\"components\"\
+            }},{\"id\":\"issuekey\",\"name\":\"Key\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[\"id\",\"issue\",\"\
+            issuekey\",\"key\"]},{\"id\":\"timespent\",\"name\":\"Time
+            Spent\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"timespent\"],\"schema\":{\"type\":\"number\",\"system\":\"timespent\"\
+            }},{\"id\":\"timeoriginalestimate\",\"name\":\"Original
+            Estimate\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"originalEstimate\",\"timeoriginalestimate\"],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"timeoriginalestimate\"}},{\"id\":\"project\",\"name\":\"Project\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"project\"],\"schema\":{\"type\":\"project\",\"system\":\"\
+            project\"}},{\"id\":\"description\",\"name\":\"Description\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            description\"],\"schema\":{\"type\":\"string\",\"system\":\"description\"\
+            }},{\"id\":\"fixVersions\",\"name\":\"Fix Version/s\",\"custom\":false,\"\
+            orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"\
+            fixVersion\"],\"schema\":{\"type\":\"array\",\"items\":\"version\",\"system\"\
+            :\"fixVersions\"}},{\"id\":\"aggregatetimespent\",\"name\":\"\u03A3 Time
+            Spent\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[],\"schema\":{\"type\":\"number\",\"system\":\"aggregatetimespent\"\
+            }},{\"id\":\"resolution\",\"name\":\"Resolution\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"resolution\"\
+            ],\"schema\":{\"type\":\"resolution\",\"system\":\"resolution\"}},{\"id\"\
+            :\"timetracking\",\"name\":\"Time Tracking\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":false,\"searchable\":true,\"clauseNames\":[],\"schema\"\
+            :{\"type\":\"timetracking\",\"system\":\"timetracking\"}},{\"id\":\"customfield_10104\"\
+            ,\"name\":\"Epic Color\",\"custom\":true,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"cf[10104]\",\"Epic Color\"],\"\
+            schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-color\"\
+            ,\"customId\":10104}},{\"id\":\"customfield_10105\",\"name\":\"Rank\",\"custom\"\
+            :true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"cf[10105]\",\"Rank\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-lexo-rank\"\
+            ,\"customId\":10105}},{\"id\":\"security\",\"name\":\"Security Level\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"level\"],\"schema\":{\"type\":\"securitylevel\",\"system\"\
+            :\"security\"}},{\"id\":\"customfield_10106\",\"name\":\"Story Points\",\"\
+            custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10106]\",\"Story
+            Points\"],\"schema\":{\"type\":\"number\"\
+            ,\"custom\":\"com.atlassian.jira.plugin.system.customfieldtypes:float\",\"\
+            customId\":10106}},{\"id\":\"attachment\",\"name\":\"Attachment\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"clauseNames\"\
+            :[\"attachments\"],\"schema\":{\"type\":\"array\",\"items\":\"attachment\"\
+            ,\"system\":\"attachment\"}},{\"id\":\"aggregatetimeestimate\",\"name\":\"\
+            \u03A3 Remaining
+            Estimate\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"number\"\
+            ,\"system\":\"aggregatetimeestimate\"}},{\"id\":\"resolutiondate\",\"name\"\
+            :\"Resolved\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\"\
+            :true,\"clauseNames\":[\"resolutiondate\",\"resolved\"],\"schema\":{\"type\"\
+            :\"datetime\",\"system\":\"resolutiondate\"}},{\"id\":\"workratio\",\"name\"\
+            :\"Work Ratio\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"workratio\"],\"schema\":{\"type\":\"\
+            number\",\"system\":\"workratio\"}},{\"id\":\"summary\",\"name\":\"Summary\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"summary\"],\"schema\":{\"type\":\"string\",\"system\":\"\
+            summary\"}},{\"id\":\"lastViewed\",\"name\":\"Last
+            Viewed\",\"custom\":false,\"\
+            orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[\"lastViewed\"],\"schema\":{\"type\":\"datetime\",\"system\":\"lastViewed\"\
+            }},{\"id\":\"watches\",\"name\":\"Watchers\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"watchers\"\
+            ],\"schema\":{\"type\":\"watches\",\"system\":\"watches\"}},{\"id\":\"creator\"\
+            ,\"name\":\"Creator\",\"custom\":false,\"orderable\":false,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"creator\"],\"schema\":{\"type\":\"user\"\
+            ,\"system\":\"creator\"}},{\"id\":\"thumbnail\",\"name\":\"Images\",\"custom\"\
+            :false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"clauseNames\"\
+            :[]},{\"id\":\"subtasks\",\"name\":\"Sub-Tasks\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"subtasks\"\
+            ],\"schema\":{\"type\":\"array\",\"items\":\"issuelinks\",\"system\":\"subtasks\"\
+            }},{\"id\":\"created\",\"name\":\"Created\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"created\"\
+            ,\"createdDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"created\"\
+            }},{\"id\":\"reporter\",\"name\":\"Reporter\",\"custom\":false,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"reporter\"\
+            ],\"schema\":{\"type\":\"user\",\"system\":\"reporter\"}},{\"id\":\"aggregateprogress\"\
+            ,\"name\":\"\u03A3
+            Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\":\"progress\"\
+            ,\"system\":\"aggregateprogress\"}},{\"id\":\"customfield_10000\",\"name\"\
+            :\"Development\",\"custom\":true,\"orderable\":true,\"navigable\":true,\"\
+            searchable\":true,\"clauseNames\":[\"cf[10000]\",\"Development\"],\"schema\"\
+            :{\"type\":\"any\",\"custom\":\"com.atlassian.jira.plugins.jira-development-integration-plugin:devsummary\"\
+            ,\"customId\":10000}},{\"id\":\"priority\",\"name\":\"Priority\",\"custom\"\
+            :false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"clauseNames\"\
+            :[\"priority\"],\"schema\":{\"type\":\"priority\",\"system\":\"priority\"\
+            }},{\"id\":\"customfield_10100\",\"name\":\"Sprint\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10100]\"\
+            ,\"Sprint\"],\"schema\":{\"type\":\"array\",\"items\":\"string\",\"custom\"\
+            :\"com.pyxis.greenhopper.jira:gh-sprint\",\"customId\":10100}},{\"id\":\"\
+            customfield_10101\",\"name\":\"Epic
+            Link\",\"custom\":true,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10101]\",\"Epic\
+            \
+            Link\"],\"schema\":{\"type\":\"any\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-link\"\
+            ,\"customId\":10101}},{\"id\":\"customfield_10102\",\"name\":\"Epic
+            Status\"\
+            ,\"custom\":true,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"cf[10102]\",\"Epic
+            Status\"],\"schema\":{\"type\":\"option\"\
+            ,\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-status\",\"customId\":10102}},{\"\
+            id\":\"labels\",\"name\":\"Labels\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"labels\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"string\",\"system\":\"labels\"}},{\"id\"\
+            :\"customfield_10103\",\"name\":\"Epic Name\",\"custom\":true,\"orderable\"\
+            :true,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"cf[10103]\"\
+            ,\"Epic
+            Name\"],\"schema\":{\"type\":\"string\",\"custom\":\"com.pyxis.greenhopper.jira:gh-epic-label\"\
+            ,\"customId\":10103}},{\"id\":\"environment\",\"name\":\"Environment\",\"\
+            custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"environment\"],\"schema\":{\"type\":\"string\",\"system\"\
+            :\"environment\"}},{\"id\":\"timeestimate\",\"name\":\"Remaining Estimate\"\
+            ,\"custom\":false,\"orderable\":false,\"navigable\":true,\"searchable\":false,\"\
+            clauseNames\":[\"remainingEstimate\",\"timeestimate\"],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"timeestimate\"}},{\"id\":\"aggregatetimeoriginalestimate\"\
+            ,\"name\":\"\u03A3 Original
+            Estimate\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":false,\"clauseNames\":[],\"schema\":{\"type\"\
+            :\"number\",\"system\":\"aggregatetimeoriginalestimate\"}},{\"id\":\"versions\"\
+            ,\"name\":\"Affects
+            Version/s\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[\"affectedVersion\"],\"schema\"\
+            :{\"type\":\"array\",\"items\":\"version\",\"system\":\"versions\"}},{\"id\"\
+            :\"duedate\",\"name\":\"Due Date\",\"custom\":false,\"orderable\":true,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"due\",\"duedate\"\
+            ],\"schema\":{\"type\":\"date\",\"system\":\"duedate\"}},{\"id\":\"progress\"\
+            ,\"name\":\"Progress\",\"custom\":false,\"orderable\":false,\"navigable\"\
+            :true,\"searchable\":false,\"clauseNames\":[\"progress\"],\"schema\":{\"type\"\
+            :\"progress\",\"system\":\"progress\"}},{\"id\":\"comment\",\"name\":\"Comment\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":false,\"searchable\":true,\"\
+            clauseNames\":[\"comment\"],\"schema\":{\"type\":\"comments-page\",\"system\"\
+            :\"comment\"}},{\"id\":\"votes\",\"name\":\"Votes\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":false,\"clauseNames\":[\"votes\"\
+            ],\"schema\":{\"type\":\"votes\",\"system\":\"votes\"}},{\"id\":\"issuelinks\"\
+            ,\"name\":\"Linked
+            Issues\",\"custom\":false,\"orderable\":true,\"navigable\"\
+            :true,\"searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\"\
+            ,\"items\":\"issuelinks\",\"system\":\"issuelinks\"}},{\"id\":\"worklog\"\
+            ,\"name\":\"Log
+            Work\",\"custom\":false,\"orderable\":true,\"navigable\":false,\"\
+            searchable\":true,\"clauseNames\":[],\"schema\":{\"type\":\"array\",\"items\"\
+            :\"worklog\",\"system\":\"worklog\"}},{\"id\":\"assignee\",\"name\":\"Assignee\"\
+            ,\"custom\":false,\"orderable\":true,\"navigable\":true,\"searchable\":true,\"\
+            clauseNames\":[\"assignee\"],\"schema\":{\"type\":\"user\",\"system\":\"assignee\"\
+            }},{\"id\":\"updated\",\"name\":\"Updated\",\"custom\":false,\"orderable\"\
+            :false,\"navigable\":true,\"searchable\":true,\"clauseNames\":[\"updated\"\
+            ,\"updatedDate\"],\"schema\":{\"type\":\"datetime\",\"system\":\"updated\"\
+            }},{\"id\":\"status\",\"name\":\"Status\",\"custom\":false,\"orderable\":false,\"\
+            navigable\":true,\"searchable\":true,\"clauseNames\":[\"status\"],\"schema\"\
+            :{\"type\":\"status\",\"system\":\"status\"}}]"}
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=DFEB7770E9D27B2E88E1693E54937AF2; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x881x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [gsma0i]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["9557"]
+      status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1ERkVCNzc3MEU5RDI3QjJFODhFMTY5M0U1NDkzN0FGMjsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT181ODQ5OWQ0NjczZGUwMjZlOTdhZGUxM2Y0YjU5
+            Y2IxNTFmNjAwOTJjX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/issuetype/10000
+    response:
+      body:
+        {
+          string:
+            '{"self":"http://jira:8080/rest/api/2/issuetype/10000","id":"10000","description":"Created
+            by Jira Software - do not edit or delete. Issue type for a big user story
+            that needs to be broken
+            down.","iconUrl":"http://jira:8080/images/icons/issuetypes/epic.svg","name":"Epic","subtask":false}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Thu, 04 Apr 2019 08:47:50 GMT"]
+        Set-Cookie: [JSESSIONID=CFC29C747288A6659FA67FDC373E6DF5; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [527x882x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [45y3el]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["287"]
+      status: {code: 200, message: ""}
+version: 1
