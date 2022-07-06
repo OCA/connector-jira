@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,8 +19,18 @@ msgid "# Access Rights"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__collaborator_count
+msgid "# Collaborators"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__groups_count
 msgid "# Groups"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_count
+msgid "# Ratings"
 msgstr ""
 
 #. module: connector_jira
@@ -50,6 +60,16 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
+#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
+msgid "<span class=\"o_form_label\">(</span>"
+msgstr ""
+
+#. module: connector_jira
+#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
+msgid "<span class=\"o_form_label\">)</span>"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.backend_report_user_sync
 msgid "<strong>error:</strong>"
 msgstr ""
@@ -71,7 +91,7 @@ msgstr ""
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_account_analytic_line_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_binding_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_issue_type_jira_binding_uniq
-#: model:ir.model.constraint,message:connector_jira.constraint_jira_organization_jira_binding_uniq
+#: model:ir.model.constraint,message:connector_jira.constraint_jira_project_project_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_task_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_res_users_jira_binding_uniq
 msgid "A binding already exists for this Jira record"
@@ -95,6 +115,11 @@ msgstr ""
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "API Configuration"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__api_key_ids
+msgid "API Keys"
 msgstr ""
 
 #. module: connector_jira
@@ -139,26 +164,41 @@ msgid "Active"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_account_active
+msgid "Active Analytic Account"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__active_lang_count
 msgid "Active Lang Count"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_ids
 msgid "Activities"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_exception_decoration
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_exception_decoration
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_exception_decoration
 msgid "Activity Exception Decoration"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_state
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_state
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_state
 msgid "Activity State"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_type_icon
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_type_icon
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_type_icon
+msgid "Activity Type Icon"
 msgstr ""
 
 #. module: connector_jira
@@ -188,13 +228,11 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_id
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__alias_id
 msgid "Alias"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_contact
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__alias_contact
 msgid "Alias Contact Security"
 msgstr ""
 
@@ -209,12 +247,18 @@ msgid "Alias domain"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_value
+msgid "Alias email"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_model_id
 msgid "Aliased Model"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__lang
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__private_lang
 msgid ""
 "All the emails and documents sent to this contact will be translated in this"
 " language."
@@ -224,6 +268,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__allow_back
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__allow_back
 msgid "Allow Back"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_subtasks
+msgid "Allow Sub-tasks"
 msgstr ""
 
 #. module: connector_jira
@@ -245,7 +294,7 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__account_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__analytic_account_id
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_account_active
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_account_id
 msgid "Analytic Account"
 msgstr ""
 
@@ -255,10 +304,24 @@ msgid "Analytic Line"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_tag_ids
+msgid "Analytic Tag"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__analytic_account_id
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__project_analytic_account_id
 msgid ""
 "Analytic account to which this project is linked for financial management. "
 "Use an analytic account to record cost and revenue on your project."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__analytic_account_id
+msgid ""
+"Analytic account to which this task is linked for financial management. Use "
+"an analytic account to record cost and revenue on your task. If empty, the "
+"analytic account of the project will be used."
 msgstr ""
 
 #. module: connector_jira
@@ -267,13 +330,18 @@ msgid "As-is (naive)"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__user_id
-msgid "Assigned to"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__user_ids
+msgid "Assignees"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_assign
 msgid "Assigning Date"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__timesheet_ids
+msgid "Associated Timesheets"
 msgstr ""
 
 #. module: connector_jira
@@ -294,7 +362,7 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__attachment_ids
-msgid "Attachment that don't come from message."
+msgid "Attachments that don't come from a message."
 msgstr ""
 
 #. module: connector_jira
@@ -306,6 +374,31 @@ msgstr ""
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__state__authenticate
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Authenticate"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_1920
+msgid "Avatar"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_1024
+msgid "Avatar 1024"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_128
+msgid "Avatar 128"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_256
+msgid "Avatar 256"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_512
+msgid "Avatar 512"
 msgstr ""
 
 #. module: connector_jira
@@ -321,6 +414,11 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__barcode
 msgid "Badge ID"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__analytic_account_balance
+msgid "Balance"
 msgstr ""
 
 #. module: connector_jira
@@ -357,6 +455,26 @@ msgid "Blacklist"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__mobile_blacklisted
+msgid "Blacklisted Phone Is Mobile"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone_blacklisted
+msgid "Blacklisted Phone is Phone"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__dependent_ids
+msgid "Block"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__depend_on_ids
+msgid "Blocked By"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_bounce
 msgid "Bounce"
 msgstr ""
@@ -385,7 +503,7 @@ msgid "Cancel"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__product_uom_category_id
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__category
 msgid "Category"
 msgstr ""
 
@@ -400,16 +518,12 @@ msgid "Channels"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__out_of_office_message
-msgid "Chat Status"
-msgstr ""
-
-#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Check Connection"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__partner_is_company
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__is_company
 msgid "Check if the contact is a company, otherwise it is a person"
 msgstr ""
@@ -417,6 +531,11 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee
 msgid "Check this box if this contact is an Employee."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__child_text
+msgid "Child Text"
 msgstr ""
 
 #. module: connector_jira
@@ -431,8 +550,18 @@ msgid "Close"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__is_closed
+msgid "Closing Stage"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__coach_id
 msgid "Coach"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__collaborator_ids
+msgid "Collaborators"
 msgstr ""
 
 #. module: connector_jira
@@ -443,6 +572,8 @@ msgid "Color Index"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__commercial_partner_id
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__commercial_partner_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__commercial_partner_id
 msgid "Commercial Entity"
 msgstr ""
@@ -499,23 +630,6 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__component_usage
 msgid "Component Usage"
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__total_hours_spent
-msgid "Computed as: Time Spent + Sub-tasks Hours."
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_planned_hours
-msgid ""
-"Computed using sum of hours planned of all subtasks created from main task. "
-"Usually these hours are less or equal to the Planned Hours (of main task)."
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__effective_hours
-msgid "Computed using the sum of the task work done."
 msgstr ""
 
 #. module: connector_jira
@@ -595,6 +709,11 @@ msgid "Country"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__country_code
+msgid "Country Code"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__country_of_birth
 msgid "Country of Birth"
 msgstr ""
@@ -651,6 +770,11 @@ msgid "Currency"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_bounced_content
+msgid "Custom Bounced Message"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__partner_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__partner_id
 msgid "Customer"
@@ -663,8 +787,13 @@ msgid "Customer Portal URL"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_active
+msgid "Customer Ratings"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_status
-msgid "Customer(s) Ratings"
+msgid "Customer Ratings Status"
 msgstr ""
 
 #. module: connector_jira
@@ -674,13 +803,13 @@ msgid "Date"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_deadline_formatted
-msgid "Date Deadline Formatted"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__birthday
+msgid "Date of Birth"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__birthday
-msgid "Date of Birth"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_weekday
+msgid "Day Of The Week"
 msgstr ""
 
 #. module: connector_jira
@@ -735,16 +864,6 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_project__privacy_visibility
-msgid ""
-"Defines the visibility of the tasks of the project:\n"
-"- Invited employees: employees may only see the followed project and tasks.\n"
-"- All employees: employees may see all project and tasks.\n"
-"- Portal users and all employees: employees may see everything.   Portal users may see project and tasks followed by.\n"
-"   them or by someone of their company."
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__delete_analytic_line_from_date
 msgid "Delete Extra Worklogs from date"
 msgstr ""
@@ -763,8 +882,14 @@ msgid "Department"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__dependent_tasks_count
+msgid "Dependent Tasks"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_issue_type__description
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__description
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__description
 msgid "Description"
 msgstr ""
@@ -773,7 +898,9 @@ msgstr ""
 #: code:addons/connector_jira/wizards/jira_backend_auth.py:0
 #: code:addons/connector_jira/wizards/jira_backend_auth.py:0
 #, python-format
-msgid "Did not get token (%s) or secret (%s) from Jira. Resp %s"
+msgid ""
+"Did not get token (%(token)s) or secret (%(secret)s)"
+"                         from Jira. Resp %(resp)s"
 msgstr ""
 
 #. module: connector_jira
@@ -782,15 +909,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_auth__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__display_name
-#: model:ir.model.fields,field_description:connector_jira.field_jira_binding__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_issue_type__display_name
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__display_project_id
+msgid "Display Project"
 msgstr ""
 
 #. module: connector_jira
@@ -807,21 +937,20 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__email_from
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__partner_email
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__partner_email
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__email
 msgid "Email"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signature
-msgid "Email Signature"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__email_from
+msgid "Email From"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_res_users__alias_id
-msgid ""
-"Email address internally associated with this user. Incoming emails will "
-"appear in the user's notifications."
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signature
+msgid "Email Signature"
 msgstr ""
 
 #. module: connector_jira
@@ -851,8 +980,18 @@ msgid "Employee Count"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_lang
+msgid "Employee Lang"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__category_ids
 msgid "Employee Tags"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_type
+msgid "Employee Type"
 msgstr ""
 
 #. module: connector_jira
@@ -871,13 +1010,29 @@ msgid "Employee's Country"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employees_count
+msgid "Employees Count"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__allow_timesheets
 msgid "Enable timesheeting on the project."
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__encode_uom_in_days
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__encode_uom_in_days
+msgid "Encode Uom In Days"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__encoding_uom_id
 msgid "Encoding Uom"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_until
+msgid "End Date"
 msgstr ""
 
 #. module: connector_jira
@@ -903,13 +1058,13 @@ msgid "Epic Link Field"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_name_field_name
-msgid "Epic Name Field"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_link_on_epic
+msgid "Epic Link On Epic"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_link_on_epic
-msgid "Epic link on epic"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_name_field_name
+msgid "Epic Name Field"
 msgstr ""
 
 #. module: connector_jira
@@ -987,17 +1142,17 @@ msgid "Followers"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_channel_ids
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_channel_ids
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_partner_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_partner_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_partner_ids
 msgid "Followers (Partners)"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_type_icon
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_type_icon
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: connector_jira
@@ -1008,6 +1163,11 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__email_formatted
 msgid "Formatted Email"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__fri
+msgid "Fri"
 msgstr ""
 
 #. module: connector_jira
@@ -1056,8 +1216,25 @@ msgid "Groups"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__has_message
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__has_message
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__has_planned_hours_tasks
+msgid "Has Planned Hours Tasks"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__action_id
 msgid "Home Action"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__km_home_work
+msgid "Home-Work Distance"
 msgstr ""
 
 #. module: connector_jira
@@ -1069,10 +1246,10 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__rating_status
 msgid ""
 "How to get customer feedback?\n"
-"- Rating when changing stage: an email will be sent when a task is pulled in another stage.\n"
-"- Periodical Rating: email will be sent periodically.\n"
+"- Rating when changing stage: an email will be sent when a task is pulled to another stage.\n"
+"- Periodic rating: an email will be sent periodically.\n"
 "\n"
-"Don't forget to set up the mail templates on the stages for which you want to get the customer's feedbacks."
+"Don't forget to set up the email templates on the stages for which you want to get customer feedback."
 msgstr ""
 
 #. module: connector_jira
@@ -1086,9 +1263,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_auth__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__id
-#: model:ir.model.fields,field_description:connector_jira.field_jira_binding__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_issue_type__id
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__id
@@ -1125,12 +1300,14 @@ msgid "IM Status"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_exception_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_exception_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_exception_icon
 msgid "Icon"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_exception_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_exception_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_exception_icon
 msgid "Icon to indicate an exception activity."
@@ -1162,17 +1339,17 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_bounced_content
+msgid ""
+"If set, this content will automatically be sent out to unauthorized users "
+"instead of the default message."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__action_id
 msgid ""
 "If specified, this action will be opened at log on for this user, in "
 "addition to the standard menu."
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__analytic_account_active
-msgid ""
-"If the active field is set to False, it will allow you to hide the account "
-"without removing it."
 msgstr ""
 
 #. module: connector_jira
@@ -1184,10 +1361,16 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__is_blacklisted
-#: model:ir.model.fields,help:connector_jira.field_jira_res_users__phone_blacklisted
 msgid ""
 "If the email address is on the blacklist, the contact won't receive mass "
 "mailing anymore, from any list"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__phone_sanitized_blacklisted
+msgid ""
+"If the sanitized phone number is on the blacklist, the contact won't receive"
+" mass mailing sms anymore, from any list"
 msgstr ""
 
 #. module: connector_jira
@@ -1274,8 +1457,29 @@ msgid "Imports"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__mobile_blacklisted
+msgid ""
+"Indicates if a blacklisted sanitized phone number is a mobile number. Helps "
+"distinguish which number is blacklisted             when there is both a "
+"mobile and phone field in a model."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__phone_blacklisted
+msgid ""
+"Indicates if a blacklisted sanitized phone number is a phone number. Helps "
+"distinguish which number is blacklisted             when there is both a "
+"mobile and phone field in a model."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__industry_id
 msgid "Industry"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__planned_hours
+msgid "Initially Planned Hours"
 msgstr ""
 
 #. module: connector_jira
@@ -1306,13 +1510,24 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_company
-msgid "Is a Company"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_internal_project
+msgid "Is Internal Project"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_moderator
-msgid "Is moderator"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__is_private
+msgid "Is Private"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_system
+msgid "Is System"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__partner_is_company
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_company
+msgid "Is a Company"
 msgstr ""
 
 #. module: connector_jira
@@ -1331,13 +1546,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__issue_type_ids
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Issue Types"
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__planned_hours
-msgid ""
-"It is the time planned to achieve the task. If this document has sub-tasks, "
-"it means the time needed to achieve this tasks and its childs."
 msgstr ""
 
 #. module: connector_jira
@@ -1465,7 +1673,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__backend_id
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__backend_id
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
-#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_tree
 msgid "Jira Backend"
 msgstr ""
 
@@ -1505,19 +1712,12 @@ msgstr ""
 #: model:ir.model,name:connector_jira.model_jira_issue_type
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_issue_type_form
-#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_issue_type_tree
 msgid "Jira Issue Type"
-msgstr ""
-
-#. module: connector_jira
-#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_task_tree
-msgid "Jira Issues"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__jira_project_id
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_project_form
-#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_project_tree
 msgid "Jira Project"
 msgstr ""
 
@@ -1565,11 +1765,6 @@ msgid "Jira User"
 msgstr ""
 
 #. module: connector_jira
-#: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_res_users_tree
-msgid "Jira Users"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_account_analytic_line
 msgid "Jira Worklog"
 msgstr ""
@@ -1595,11 +1790,6 @@ msgid "Kanban Ongoing Explanation"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__kanban_state
-msgid "Kanban State"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__kanban_state_label
 msgid "Kanban State Label"
 msgstr ""
@@ -1618,11 +1808,6 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_key
 msgid "Key"
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__km_home_work
-msgid "Km Home-Work"
 msgstr ""
 
 #. module: connector_jira
@@ -1651,9 +1836,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_auth____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp____last_update
-#: model:ir.model.fields,field_description:connector_jira.field_jira_binding____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_issue_type____last_update
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task____last_update
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users____last_update
@@ -1670,6 +1853,21 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__last_timestamp
 msgid "Last Timestamp"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_id
+msgid "Last Update"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_color
+msgid "Last Update Color"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_status
+msgid "Last Update Status"
 msgstr ""
 
 #. module: connector_jira
@@ -1810,18 +2008,30 @@ msgid "Messages"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__milestone_ids
+msgid "Milestone"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__milestone_count
+msgid "Milestone Count"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__mobile
 msgid "Mobile"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__moderation_channel_ids
-msgid "Moderated channels"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__mon
+msgid "Mon"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__moderation_counter
-msgid "Moderation count"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__my_activity_date_deadline
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__my_activity_date_deadline
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__my_activity_date_deadline
+msgid "My Activity Deadline"
 msgstr ""
 
 #. module: connector_jira
@@ -1833,21 +2043,29 @@ msgid "Name"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_summary
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_summary
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_summary
 msgid "Next Activity Summary"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_type_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_type_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_type_id
 msgid "Next Activity Type"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurrence_message
+msgid "Next Recurrencies"
 msgstr ""
 
 #. module: connector_jira
@@ -1860,17 +2078,24 @@ msgstr ""
 #: code:addons/connector_jira/models/res_users/importer.py:0
 #, python-format
 msgid ""
-"No user found for jira account %s (%s). Please link it manually from the "
-"Odoo user's form."
+"No user found for jira account %(jira_key)s (%(email)s). Please link it "
+"manually from the Odoo user's form."
 msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/models/account_analytic_line/importer.py:0
+#, python-format
+msgid ""
+"No user found with login \"%(jira_author_key)s\" or email \"%(email)s\".You "
+"must create a user or link it manually if the login/email differs."
+msgstr ""
+
+#. module: connector_jira
 #: code:addons/connector_jira/models/project_task/importer.py:0
 #, python-format
 msgid ""
-"No user found with login \"%s\" or email \"%s\".You must create a user or "
-"link it manually if the login/email differs."
+"No user found with login \"%(jira_key)s\" or email \"%(email)s\".You must "
+"create a user or link it manually if the login/email differs."
 msgstr ""
 
 #. module: connector_jira
@@ -1981,6 +2206,11 @@ msgid "OdooBot Status"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__odoobot_failed
+msgid "Odoobot Failed"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid ""
 "Once imported,\n"
@@ -2088,21 +2318,26 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__legend_blocked
 msgid ""
 "Override the default value displayed for the blocked state for kanban "
-"selection, when the task or issue is in that stage."
+"selection when the task or issue is in that stage."
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__legend_done
 msgid ""
-"Override the default value displayed for the done state for kanban "
-"selection, when the task or issue is in that stage."
+"Override the default value displayed for the done state for kanban selection"
+" when the task or issue is in that stage."
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__legend_normal
 msgid ""
 "Override the default value displayed for the normal state for kanban "
-"selection, when the task or issue is in that stage."
+"selection when the task or issue is in that stage."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__overtime
+msgid "Overtime"
 msgstr ""
 
 #. module: connector_jira
@@ -2117,7 +2352,10 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__pin
-msgid "PIN used to Check In/Out in Kiosk Mode (if enabled in Configuration)."
+msgid ""
+"PIN used to Check In/Out in the Kiosk Mode of the Attendance application (if"
+" enabled in Configuration) and to change the cashier in the Point of Sale "
+"application."
 msgstr ""
 
 #. module: connector_jira
@@ -2191,28 +2429,65 @@ msgid "Password"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__privacy_visibility
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__project_privacy_visibility
+msgid ""
+"People to whom this project and its tasks will be visible.\n"
+"\n"
+"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
+"\n"
+"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"\n"
+"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+"\n"
+"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
+"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
+"\n"
+"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_type_ids
+msgid "Personal Stage"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_id
+msgid "Personal Stage State"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_type_id
+msgid "Personal User Stage"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__partner_phone
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__partner_phone
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone
 msgid "Phone"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone_blacklisted
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone_sanitized_blacklisted
 msgid "Phone Blacklisted"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone_mobile_search
+msgid "Phone/Mobile"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__place_of_birth
 msgid "Place of Birth"
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__planned_hours
-msgid "Planned Hours"
 msgstr ""
 
 #. module: connector_jira
@@ -2225,7 +2500,6 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_contact
-#: model:ir.model.fields,help:connector_jira.field_jira_res_users__alias_contact
 msgid ""
 "Policy to post a message on the document using the mailgateway.\n"
 "- everyone: everyone can post\n"
@@ -2240,8 +2514,18 @@ msgid "Portal Access URL"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__priority
-msgid "Priority"
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__portal_user_names
+msgid "Portal User Names"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_city
+msgid "Private City"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_country_id
+msgid "Private Country"
 msgstr ""
 
 #. module: connector_jira
@@ -2260,6 +2544,26 @@ msgid "Private Phone"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_state_id
+msgid "Private State"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_street
+msgid "Private Street"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_street2
+msgid "Private Street2"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_zip
+msgid "Private Zip"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__progress
 msgid "Progress"
 msgstr ""
@@ -2271,6 +2575,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__project_id
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__project_id
 msgid "Project"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__project_analytic_account_id
+msgid "Project Analytic Account"
 msgstr ""
 
 #. module: connector_jira
@@ -2291,11 +2600,8 @@ msgid "Project Type"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_project__subtask_project_id
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_project_id
-msgid ""
-"Project in which sub-tasks of the current project will be created. It can be"
-" the current project itself."
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__project_privacy_visibility
+msgid "Project Visibility"
 msgstr ""
 
 #. module: connector_jira
@@ -2372,11 +2678,6 @@ msgid "Rating count"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__portal_show_rating
-msgid "Rating visible publicly"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_ids
 msgid "Ratings"
 msgstr ""
@@ -2423,6 +2724,27 @@ msgid "Record to export does no longer exist."
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurrence_id
+msgid "Recurrence"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurrence_update
+msgid "Recurrence Update"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurring_task
+msgid "Recurrent"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_recurring_tasks
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_recurring_tasks
+msgid "Recurring Tasks"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__ref
 msgid "Reference"
 msgstr ""
@@ -2463,8 +2785,73 @@ msgid "Remaining Hours"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__remaining_hours
+msgid "Remaining Invoiced Time"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Remove Webhooks"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_day
+msgid "Repeat Day"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_interval
+msgid "Repeat Every"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_month
+msgid "Repeat Month"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_on_month
+msgid "Repeat On Month"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_on_year
+msgid "Repeat On Year"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_show_day
+msgid "Repeat Show Day"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_show_dow
+msgid "Repeat Show Dow"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_show_month
+msgid "Repeat Show Month"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_show_week
+msgid "Repeat Show Week"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_unit
+msgid "Repeat Unit"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_week
+msgid "Repeat Week"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_number
+msgid "Repetitions"
 msgstr ""
 
 #. module: connector_jira
@@ -2483,6 +2870,11 @@ msgid "Request Token"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__res_users_settings_ids
+msgid "Res Users Settings"
+msgstr ""
+
+#. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Reset Authentication"
 msgstr ""
@@ -2493,6 +2885,7 @@ msgid "Resources"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_user_id
 msgid "Responsible User"
@@ -2538,6 +2931,11 @@ msgid "Sanitized Number"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__sat
+msgid "Sat"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__study_school
 msgid "School"
 msgstr ""
@@ -2546,6 +2944,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__access_token
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__access_token
 msgid "Security Token"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__coach_id
+msgid ""
+"Select the \"Employee\" who is the coach of this employee.\n"
+"The \"Coach\" has no specific rights or responsibilities by default."
 msgstr ""
 
 #. module: connector_jira
@@ -2573,14 +2978,16 @@ msgstr ""
 #: code:addons/connector_jira/models/res_users/importer.py:0
 #, python-format
 msgid ""
-"Several users found (%s) for jira account %s (%s). Please link it manually "
-"from the Odoo user's form."
+"Several users found (%(login)s) for jira account%(jira_key)s (%(email)s). "
+"Please link it manually from the Odoo user's form."
 msgstr ""
 
 #. module: connector_jira
 #: code:addons/connector_jira/models/res_users/common.py:0
 #, python-format
-msgid "Several users found with \"%s\" set to \"%s\". Set it manually."
+msgid ""
+"Several users found with \"%(resolve_by_key)s\"set to "
+"\"%(resolve_by_value)s\". Set it manually."
 msgstr ""
 
 #. module: connector_jira
@@ -2595,7 +3002,7 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_favorite
-msgid "Show Project on dashboard"
+msgid "Show Project on Dashboard"
 msgstr ""
 
 #. module: connector_jira
@@ -2647,8 +3054,14 @@ msgid "Spouse Complete Name"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__stage_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__stage_id
 msgid "Stage"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__priority
+msgid "Starred"
 msgstr ""
 
 #. module: connector_jira
@@ -2666,11 +3079,13 @@ msgid "State"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__kanban_state
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__state
 msgid "Status"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_state
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_state
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_state
 msgid ""
@@ -2691,17 +3106,12 @@ msgid "Street2"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__subtask_project_id
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_project_id
-msgid "Sub-task Project"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_count
-msgid "Sub-task count"
+msgid "Sub-task Count"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_subtasks
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__child_ids
 msgid "Sub-tasks"
 msgstr ""
@@ -2713,12 +3123,19 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_planned_hours
-msgid "Subtasks"
+msgid "Sub-tasks Planned Hours"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_effective_hours
-msgid "Sum of actually spent hours on the subtask(s)"
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_planned_hours
+msgid ""
+"Sum of the time planned of all the sub-tasks linked to this task. Usually "
+"less than or equal to the initially planned time of this task."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__sun
+msgid "Sun"
 msgstr ""
 
 #. module: connector_jira
@@ -2730,6 +3147,7 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__tag_ids
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__tag_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__tag_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__category_id
 msgid "Tags"
@@ -2757,6 +3175,17 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_count
 msgid "Task Count"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_count_with_subtasks
+msgid "Task Count With Subtasks"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_task_dependencies
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_task_dependencies
+msgid "Task Dependencies"
 msgstr ""
 
 #. module: connector_jira
@@ -2789,6 +3218,16 @@ msgid "Tasks Stages"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurring_count
+msgid "Tasks in Recurrence"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__is_closed
+msgid "Tasks in this stage are considered as closed."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__vat
 msgid "Tax ID"
 msgstr ""
@@ -2805,6 +3244,13 @@ msgstr ""
 msgid ""
 "The 'Epic Name' field on JIRA is a custom field. The name of the field is "
 "something like 'customfield_10003'. "
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__country_code
+msgid ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
 msgstr ""
 
 #. module: connector_jira
@@ -2837,6 +3283,16 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__personal_stage_id
+msgid "The current user's personal stage."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__personal_stage_type_id
+msgid "The current user's personal task stage."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__company_id
 msgid "The default company for this user."
 msgstr ""
@@ -2844,6 +3300,15 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_address_home_a_company
 msgid "The employee address has a company linked"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee_type
+msgid ""
+"The employee type. Although the primary purpose may seem to categorize "
+"employees, this field has also an impact in the Contract History. Only "
+"Employee type is supposed to be under contract and will have a Contract "
+"History."
 msgstr ""
 
 #. module: connector_jira
@@ -2935,6 +3400,48 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__timesheet_encode_uom_id
+msgid ""
+"This will set the unit of measure used to encode timesheet. This will simply provide tools\n"
+"        and widgets to help the encoding. All reporting will still be expressed in hours (default value)."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__thu
+msgid "Thu"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__planned_hours
+msgid "Time planned to achieve this task (including its sub-tasks)."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_effective_hours
+msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__effective_hours
+msgid "Time spent on this task, excluding its sub-tasks."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_task__total_hours_spent
+msgid "Time spent on this task, including its sub-tasks."
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__timesheet_count
+msgid "Timesheet Count"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__timesheet_encode_uom_id
+msgid "Timesheet Encoding Unit"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__odoo_id
 msgid "Timesheet Line"
 msgstr ""
@@ -2969,11 +3476,6 @@ msgid "Timesheets can be logged on this task."
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,help:connector_jira.field_jira_project_project__resource_calendar_id
-msgid "Timetable working hours to adjust the gantt diagram report"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__tz
 msgid "Timezone"
 msgstr ""
@@ -2995,6 +3497,18 @@ msgid "Total Hours"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__total_timesheet_time
+msgid "Total Timesheet Time"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__total_timesheet_time
+msgid ""
+"Total number of time (in the proper UoM) recorded in the project, rounded to"
+" the unit."
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__remaining_hours
 msgid ""
 "Total remaining time, can be re-estimated periodically by the assignee of "
@@ -3002,6 +3516,32 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_secret
+msgid "Totp Secret"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__has_planned_hours_tasks
+msgid "True if any of the project's task has a set planned hours"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_trusted_device_ids
+msgid "Trusted Devices"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__tue
+msgid "Tue"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_enabled
+msgid "Two-factor authentication"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_exception_decoration
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_exception_decoration
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_exception_decoration
 msgid "Type of the exception activity on record."
@@ -3024,6 +3564,26 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_unread_counter
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_unread_counter
 msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_type
+msgid "Until"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__product_uom_category_id
+msgid "UoM Category"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__update_ids
+msgid "Update"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_enabled
+msgid "Use Email Alias"
 msgstr ""
 
 #. module: connector_jira
@@ -3058,11 +3618,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_res_users__jira_bind_ids
 msgid "User Bindings"
-msgstr ""
-
-#. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__user_email
-msgid "User Email"
 msgstr ""
 
 #. module: connector_jira
@@ -3155,6 +3710,11 @@ msgid "Website communication history"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__wed
+msgid "Wed"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__tz
 msgid ""
 "When printing documents and exporting/importing data, time values are computed according to this timezone.\n"
@@ -3178,7 +3738,7 @@ msgid "Work Email"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_location
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_location_id
 msgid "Work Location"
 msgstr ""
 
@@ -3198,28 +3758,28 @@ msgid "Work Phone"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__resource_calendar_id
-msgid "Working Time"
-msgstr ""
-
-#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_days_open
-msgid "Working days to assign"
+msgid "Working Days to Assign"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_days_close
-msgid "Working days to close"
+msgid "Working Days to Close"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_hours_open
-msgid "Working hours to assign"
+msgid "Working Hours to Assign"
 msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_hours_close
-msgid "Working hours to close"
+msgid "Working Hours to Close"
+msgstr ""
+
+#. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__resource_calendar_id
+msgid "Working Time"
 msgstr ""
 
 #. module: connector_jira
