@@ -17,7 +17,15 @@ Atlassian JIRA connectors
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[connector_jira](connector_jira/) | 13.0.1.1.0 |  | JIRA Connector
+[connector_jira_servicedesk](connector_jira_servicedesk/) | 13.0.1.1.0 |  | JIRA Connector - Service Desk Extension
+[connector_jira_tempo](connector_jira_tempo/) | 13.0.1.0.0 |  | JIRA Connector Tempo
+[connector_jira_tempo_base](connector_jira_tempo_base/) | 13.0.1.0.1 |  | Base for JIRA Connector Tempo
+[server_env_connector_jira](server_env_connector_jira/) | 13.0.1.0.1 |  | Server environment for JIRA Connector
 
 [//]: # (end addons)
 
