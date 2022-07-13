@@ -23,7 +23,7 @@ JIRA Connector Tempo (base)
     :target: https://runbot.odoo-community.org/runbot/233/13.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5|
+|badge1| |badge2| |badge3| |badge4| |badge5| 
 
 This module provides base for building Tempo connectors.
 
@@ -57,7 +57,6 @@ Contributors
 * `CorporateHub <https://corporatehub.eu/>`__
 
   * Alexey Pelykh <alexey.pelykh@corphub.eu>
-
 * Simone Orsi <simone.orsi@camptocamp.com>
 
 Maintainers
