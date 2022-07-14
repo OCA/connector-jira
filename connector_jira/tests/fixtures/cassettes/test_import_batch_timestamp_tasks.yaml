@@ -317,4 +317,58 @@ interactions:
         X-XSS-Protection: [1; mode=block]
         content-length: ["922"]
       status: {code: 200, message: ""}
+  - request:
+      body: null
+      headers:
+        Accept:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbiwqLio7cT0wLjk=
+        Accept-Encoding:
+          - !!binary |
+            Z3ppcCwgZGVmbGF0ZQ==
+        Cache-Control:
+          - !!binary |
+            bm8tY2FjaGU=
+        Connection:
+          - !!binary |
+            a2VlcC1hbGl2ZQ==
+        Content-Type:
+          - !!binary |
+            YXBwbGljYXRpb24vanNvbg==
+        Cookie:
+          - !!binary |
+            SlNFU1NJT05JRD1BOUUyRjY3QUYyRjhDNjE0MkREN0I1RDU5NTA0QjA4MzsgYXRsYXNzaWFuLnhz
+            cmYudG9rZW49QllHMy02U1BGLTBVTTEtMkxCT19kMjc2ZTQzNmJkZWRhMDFhN2UwZWZkN2VmNjU4
+            MWExMTA3YWVkMzFjX2xpbg==
+        User-Agent:
+          - !!binary |
+            cHl0aG9uLXJlcXVlc3RzLzIuMjEuMA==
+        X-Atlassian-Token:
+          - !!binary |
+            bm8tY2hlY2s=
+      method: GET
+      uri: http://jira:8080/rest/api/2/search?startAt=0&validateQuery=True&fields=issuekey&fields=updated&jql=updated+%3E%3D+%222019-04-05+00%3A00%22+and+updated+%3C%3D+%222019-04-08+12%3A51%22&maxResults=100
+    response:
+      body:
+        {
+          string: '{"expand":"schema,names","startAt":0,"maxResults":50,"total":4,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10103","self":"http://jira:8080/rest/api/2/issue/10103","key":"TEST-7","fields":{"updated":"2019-04-08T12:38:01.000+0000"}},{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10102","self":"http://jira:8080/rest/api/2/issue/10102","key":"TEST-6","fields":{"updated":"2019-04-08T12:37:55.000+0000"}},{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10101","self":"http://jira:8080/rest/api/2/issue/10101","key":"TEST-5","fields":{"updated":"2019-04-08T12:37:44.000+0000"}},{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"10100","self":"http://jira:8080/rest/api/2/issue/10100","key":"TEST-4","fields":{"updated":"2019-04-08T12:38:01.000+0000"}}]}',
+        }
+      headers:
+        Cache-Control: ["no-cache, no-store, no-transform"]
+        Content-Security-Policy: [frame-ancestors 'self']
+        Content-Type: [application/json;charset=UTF-8]
+        Date: ["Mon, 08 Apr 2019 12:51:45 GMT"]
+        Set-Cookie: [JSESSIONID=3EF9F21BED163A7F93DDA2F4E9E82C45; Path=/; HttpOnly]
+        Transfer-Encoding: [chunked]
+        Vary: [User-Agent]
+        X-AREQUESTID: [771x914x1]
+        X-ASEN: [SEN-L13384799]
+        X-ASESSIONID: [1km321n]
+        X-AUSERNAME: [gbaconnier]
+        X-Content-Type-Options: [nosniff]
+        X-Frame-Options: [SAMEORIGIN]
+        X-Seraph-LoginReason: [OK]
+        X-XSS-Protection: [1; mode=block]
+        content-length: ["922"]
+      status: {code: 200, message: ""}
 version: 1
