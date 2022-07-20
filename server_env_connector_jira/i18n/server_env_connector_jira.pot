@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,4 +16,19 @@ msgstr ""
 #. module: server_env_connector_jira
 #: model:ir.model,name:server_env_connector_jira.model_jira_backend
 msgid "Jira Backend"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend__server_env_defaults
+msgid "Server Env Defaults"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,field_description:server_env_connector_jira.field_jira_backend__tech_name
+msgid "Tech Name"
+msgstr ""
+
+#. module: server_env_connector_jira
+#: model:ir.model.fields,help:server_env_connector_jira.field_jira_backend__tech_name
+msgid "Unique name for technical purposes. Eg: server env keys."
 msgstr ""
