@@ -91,6 +91,7 @@ msgstr ""
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_account_analytic_line_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_binding_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_issue_type_jira_binding_uniq
+#: model:ir.model.constraint,message:connector_jira.constraint_jira_organization_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_project_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_task_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_res_users_jira_binding_uniq
