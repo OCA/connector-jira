@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <record id="view_jira_backend_form" model="ir.ui.view">
+        <field name="name">jira.backend.form</field>
+        <field name="model">jira.backend</field>
+        <field name="inherit_id" ref="connector_jira.view_jira_backend_form" />
+        <field name="arch" type="xml">
+            <page name="advanced_configuration">
+                <group name="tempo" col="6">
+                    <group name="tempo_timesheet_fields" colspan="3" />
+                    <div />
+                    <p class="oe_grey" colspan="2">
+                        Configure link with Tempo Timesheets
+                    </p>
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>
