@@ -224,7 +224,9 @@ Contributors
 * Thierry Ducrest
 * Tonow-c2c
 * Simone Orsi <simahawk@gmail.com>
-* Alexey Pelykh <alexey.pelykh@brainbeanapps.com>
+* `CorporateHub <https://corporatehub.eu/>`__
+
+  * Alexey Pelykh <alexey.pelykh@corphub.eu>
 * `Camptocamp <https://camptocamp.com>`_:
 
     * Timon Tschanz <timon.tschanz@camptocamp.com>
