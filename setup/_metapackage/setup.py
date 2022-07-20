@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo-addon-connector_jira>=15.0dev,<15.1dev',
+        'odoo-addon-server_env_connector_jira>=15.0dev,<15.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
