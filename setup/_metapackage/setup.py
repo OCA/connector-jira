@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo-addon-connector_jira>=15.0dev,<15.1dev',
         'odoo-addon-connector_jira_servicedesk>=15.0dev,<15.1dev',
+        'odoo-addon-connector_jira_tempo>=15.0dev,<15.1dev',
         'odoo-addon-connector_jira_tempo_base>=15.0dev,<15.1dev',
         'odoo-addon-server_env_connector_jira>=15.0dev,<15.1dev',
     ],
