@@ -278,8 +278,9 @@ class ProjectProject(models.Model):
         ).name_get()
 
     def create_and_link_jira(self):
-        action_link = self.env.ref("connector_jira.open_project_link_jira")
-        action = action_link.read()[0]
+        action = self.env["ir.actions.actions"]._for_xml_id(
+            "connector_jira.open_project_link_jira"
+        )
         action["context"] = dict(
             self.env.context,
             active_id=self.id,
