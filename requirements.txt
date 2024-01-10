@@ -1,8 +1,8 @@
 # generated from manifests external_dependencies
-cryptography
-jira
-oauthlib
-PyJWT
-requests
-requests-oauthlib
-requests-toolbelt
+cryptography>=2.6.1
+jira>=2.0.0
+oauthlib>=2.1.0
+PyJWT>=1.7.1
+requests-oauthlib>=1.1.0
+requests-toolbelt>=0.9.1
+requests>=2.21.0
