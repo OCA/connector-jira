@@ -132,6 +132,8 @@ class ProjectTask(models.Model):
             tasks = record.mapped("jira_bind_ids.jira_epic_link_id.odoo_id")
             if len(tasks) == 1:
                 record.jira_epic_link_task_id = tasks
+            else:
+                record.jira_epic_link_task_id = False
 
     @api.depends("jira_bind_ids.jira_parent_id.odoo_id")
     def _compute_jira_parent_task_id(self):
@@ -139,6 +141,8 @@ class ProjectTask(models.Model):
             tasks = record.mapped("jira_bind_ids.jira_parent_id.odoo_id")
             if len(tasks) == 1:
                 record.jira_parent_task_id = tasks
+            else:
+                record.jira_epic_link_task_id = False
 
     @api.depends("jira_bind_ids.jira_key")
     def _compute_jira_issue_url(self):

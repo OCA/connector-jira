@@ -22,6 +22,8 @@ class JiraAccountAnalyticLine(models.Model):
                         record.jira_issue_key
                     )
                 )
+            else:
+                record.jira_servicedesk_issue_url = False
 
 
 class AccountAnalyticLine(models.Model):
@@ -43,6 +45,7 @@ class AccountAnalyticLine(models.Model):
         """
         for record in self:
             if not record.jira_bind_ids:
+                record.jira_servicedesk_issue_url = False
                 continue
             main_binding = record.jira_bind_ids[0]
             record.jira_servicedesk_issue_url = main_binding.jira_servicedesk_issue_url
