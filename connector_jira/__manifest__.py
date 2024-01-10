@@ -23,7 +23,7 @@
             "requests-oauthlib==1.1.0",
             "requests-toolbelt==0.9.1",
             "PyJWT==1.7.1",
-            "cryptography==2.6.1",
+            "cryptography>=2.6.1",
         ],
     },
     "website": "https://github.com/OCA/connector-jira",
