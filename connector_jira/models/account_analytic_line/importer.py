@@ -78,7 +78,7 @@ class AnalyticLineMapper(Component):
     @mapping
     def author(self, record):
         jira_author = record["author"]
-        jira_author_key = jira_author["key"]  # accountId ?
+        jira_author_key = jira_author["accountId"]
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_author_key, unwrap=True)
         if not user:
@@ -358,7 +358,7 @@ class AnalyticLineImporter(Component):
 
     def _import_dependency_assignee(self):
         jira_assignee = self.external_record["author"]
-        jira_key = jira_assignee.get("key")  # accountId ?
+        jira_key = jira_assignee.get("accountId")
         self._import_dependency(jira_key, "jira.res.users", record=jira_assignee)
 
     def _import_dependencies(self):
