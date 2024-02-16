@@ -20,7 +20,7 @@ class UserImporter(Component):
         if not user:
             email = record["emailAddress"]
             user = self.env["res.users"].search(
-                ["|", ("login", "=", jira_key), ("email", "=", email)],
+                [("email", "=", email)],
             )
             if len(user) > 1:
                 raise JobError(
