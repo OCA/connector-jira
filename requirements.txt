@@ -1,5 +1,5 @@
 # generated from manifests external_dependencies
-cryptography<=2.6, <<2.7
+cryptography>=2.6, <<2.7
 jira>=2.0.0
 oauthlib>=2.1.0
 PyJWT>=1.7, << 2.0
