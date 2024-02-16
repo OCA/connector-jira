@@ -25,7 +25,7 @@ composition is enough::
     services:
 
     jira:
-        image: cptactionhank/atlassian-jira-software:7.12.3
+        image: atlassian/jira-software:9.13-ubuntu-jdk11
         volumes:
         - "data-jira:/var/atlassian/jira"
         ports:
