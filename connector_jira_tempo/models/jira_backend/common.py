@@ -75,7 +75,7 @@ class JiraBackend(models.Model):
         for entry in approvals:
             user_data = entry["user"]
             try:
-                user = user_binder.to_internal(user_data["key"], unwrap=True)
+                user = user_binder.to_internal(user_data["accountId"], unwrap=True)
             except ValueError:
                 _logger.error("User %(key)s not found" % user_data)
                 continue
