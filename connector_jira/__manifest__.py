@@ -14,6 +14,7 @@
         "web",
         "web_widget_url_advanced",
         "multi_step_wizard",
+        "auth_jwt",
     ],
     "external_dependencies": {
         "python": [
@@ -22,8 +23,8 @@
             "oauthlib>=2.1.0",
             "requests-oauthlib>=1.1.0",
             "requests-toolbelt>=0.9.1",
-            "PyJWT>=1.7.1,<2.0.0",
-            "cryptography>=2.6.1,<2.7",
+            "PyJWT",
+            "cryptography<37",
         ],
     },
     "website": "https://github.com/OCA/connector-jira",

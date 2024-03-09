@@ -27,6 +27,9 @@ gets the data by itself (with the nice side-effect that the job is retryable).
 """
 
 import logging
+import json
+
+import jwt
 
 import odoo
 from odoo import _, http
@@ -41,9 +44,17 @@ class JiraWebhookController(http.Controller):
     @http.route("/connector_jira/webhooks/issue", type="json", auth="none", csrf=False)
     def webhook_issue(self, issue_id=None, **kw):
         ensure_db()
+        import pprint
+
+        pprint.pprint(request.jsonrequest)
         request.uid = odoo.SUPERUSER_ID
         env = request.env
-        backend = env["jira.backend"].search([("use_webhooks", "=", True)], limit=1)
+        backend = env["jira.backend"].search(
+            [
+                # ("use_webhooks", "=", True)
+            ],
+            limit=1,
+        )
         if not backend:
             _logger.warning(
                 "Received a webhook from Jira but cannot find a "
@@ -69,7 +80,12 @@ class JiraWebhookController(http.Controller):
         ensure_db()
         request.uid = odoo.SUPERUSER_ID
         env = request.env
-        backend = env["jira.backend"].search([("use_webhooks", "=", True)], limit=1)
+        backend = env["jira.backend"].search(
+            [
+                # ("use_webhooks", "=", True)
+            ],
+            limit=1,
+        )
         if not backend:
             _logger.warning(
                 "Received a webhook from Jira but cannot find a "
@@ -93,3 +109,118 @@ class JiraWebhookController(http.Controller):
             env["jira.account.analytic.line"].with_delay(
                 description=_("Import a worklog from JIRA")
             ).import_record(backend, issue_id, worklog_id)
+
+
+class JiraConnectAppController(http.Controller):
+    """Manage the lifecyle of the App
+
+    The app-descriptor endpoint when called returns the app descriptor, which lists the endpoints for installation / uninstallation / enabling / disabling the app on a Jira cloud server.
+
+    The lifecycle requests all receive a payload with the following keys:
+
+    {
+        "key": "installed-addon-key",
+        "clientKey": "unique-client-identifier",
+        "sharedSecret": "a-secret-key-not-to-be-lost",
+        "serverVersion": "server-version", # DEPRECATED
+        "pluginsVersion": "version-of-connect",
+        "baseUrl": "https://example.atlassian.net",
+        "displayUrl": "https://issues.example.com",
+        "displayUrlServicedeskHelpCenter": "https://support.example.com",
+        "productType": "jira",
+        "description": "Atlassian Jira at https://example.atlassian.net",
+        "serviceEntitlementNumber": "SEN-number",
+        "entitlementId": "Entitlement-Id",
+        "entitlementNumber": "Entitlement-Number",
+        "eventType": "installed",
+        "installationId": "ari:cloud:ecosystem::installation/uuid-of-forge-installation-identifier"
+    }
+
+    Upon reception of an "installed" lifecycle call, we create a backend record for the app, in state "disabled".
+    Upon reception of an "enabled" lifecycle call, we set the backend to "enabled".
+    Upon reception of a "disabled" lifecycle call, we set the backend to "disabled".
+    Upon reception of a "uninstalled" lifecycle call, we unlink the backend record.
+
+    Documentation: https://developer.atlassian.com/cloud/jira/platform/connect-app-descriptor/#lifecycle
+    """
+
+    @http.route(
+        "/jira/app-descriptor.json",
+        type="http",
+        methods=["GET"],
+        auth="public",
+        csrf=False,
+    )
+    def app_descriptor(self, **kwargs):
+        ensure_db()
+        request.uid = odoo.SUPERUSER_ID
+        env = request.env
+
+        backend = env["jira.backend"]  # .search([("use_webhooks", "=", True)], limit=1)
+        descriptor = backend._get_app_descriptor()
+        mime = "application/json"
+
+        body = json.dumps(descriptor)
+        print(body)
+        return request.make_response(
+            body, [("Content-Type", mime), ("Content-Length", len(body))]
+        )
+
+    @http.route(
+        "/jira/installed", type="json", methods=["POST"], auth="public", csrf=False
+    )  # FIXME: auth management
+    def install_app(self, **kwargs):
+        payload = request.jsonrequest
+        # TODO use autorization header to validate the request
+        # See https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/#validating-installation-lifecycle-requests
+        authorization_header = request.httprequest.headers["Authorization"]
+        assert authorization_header.startswith("JWT ")
+        jwt_token = authorization_header[4:]
+        decoded = jwt.get_unverified_header(jwt_token)
+        # GET https://connect-install-keys.atlassian.com/{decoded['kid']} -> public key
+        # decoded = jwt.decode(jwt_token, public_key, algorithms=[decoded['alg']])
+
+        _logger.info("installed: %s", payload)
+
+        assert payload["eventType"] == "installed"
+        ensure_db()
+        env = request.env
+        backend = env["jira.backend"].sudo()
+        backend._install_app(payload)
+        return {"status": "OK"}
+
+    @http.route(
+        "/jira/uninstalled", type="json", methods=["POST"], auth="public", csrf=False
+    )  # FIXME: auth management
+    def uninstall_app(self, **kwargs):
+        payload = request.jsonrequest
+        _logger.info("uninstalled: %s", payload)
+        assert payload["eventType"] == "uninstalled"
+        env = request.env
+        backend = env["jira.backend"].sudo()
+        response = backend._uninstall_app(payload)
+        return {"status": response}
+
+    @http.route(
+        "/jira/enabled", type="json", methods=["POST"], auth="public", csrf=False
+    )
+    def enable_app(self, payload=None, **kwargs):
+        payload = request.jsonrequest
+        _logger.info("enabled: %s", payload)
+        assert payload["eventType"] == "enabled"
+        env = request.env
+        backend = env["jira.backend"].sudo()
+        response = backend._enable_app(payload)
+        return {"status": response}
+
+    @http.route(
+        "/jira/disabled", type="json", methods=["POST"], auth="public", csrf=False
+    )
+    def disable_app(self, payload=None, **kwargs):
+        payload = request.jsonrequest
+        _logger.info("disabled: %s", payload)
+        assert payload["eventType"] == "disabled"
+        env = request.env
+        backend = env["jira.backend"].sudo()
+        response = backend._disable_app(payload)
+        return {"status": response}
