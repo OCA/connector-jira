@@ -6,6 +6,17 @@
 -->
 <odoo>
     <!-- Backend -->
+    <record id="view_jira_backend_search" model="ir.ui.view">
+        <field name="name">jira.backend.form</field>
+        <field name="model">jira.backend</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <filter name="all" string="All" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="view_jira_backend_form" model="ir.ui.view">
         <field name="name">jira.backend.form</field>
         <field name="model">jira.backend</field>
@@ -41,7 +52,9 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <label for="name" class="oe_edit_only" />
+                    <field name="active" invisible="1"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                   <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
                     </h1>
@@ -224,7 +237,7 @@
                             name="advanced_configuration"
                             string="Advanced Configuration"
                         >
-                            <group name="webhooks" col="6">
+                            <!--group name="webhooks" col="6">
                                 <group name="webhook_fields" colspan="3">
                                     <field name="use_webhooks" invisible="1" />
                                     <field name="odoo_webhook_base_url" />
@@ -252,7 +265,7 @@
                   modification of tasks and worklogs are
                   directly transmitted to Odoo.
                                 </p>
-                            </group>
+                            </group-->
                             <group name="epic" col="6">
                                 <group name="epic_fields" colspan="3">
                                     <field name="epic_link_field_name" />
@@ -333,6 +346,7 @@
         <field name="name">Jira Backends</field>
         <field name="res_model">jira.backend</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_all": 1}</field>
     </record>
     <menuitem
         id="menu_jira_backend"
