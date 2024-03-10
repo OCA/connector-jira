@@ -83,6 +83,9 @@ class JiraBackend(models.Model):
         help="URL to use when registering the backend as an app on the marketplace",
         compute="_compute_app_descriptor_url",
     )
+    display_url = fields.Char(
+        help="Url used for the Jira app in messages", readonly=True
+    )
     application_key = fields.Char(
         compute="_compute_application_key",
         store=True,
@@ -240,7 +243,7 @@ class JiraBackend(models.Model):
     def _compute_application_key(self):
         db_name = config["db_name"]
         for rec in self:
-            rec.application_key = f"{db_name}-{rec.id}"
+            rec.application_key = f"odoo-jira-connector-{db_name}-{rec.id}"
 
     def _compute_app_descriptor_url(self):
         fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
@@ -567,7 +570,7 @@ class JiraBackend(models.Model):
         jwt = {
             "secret": backend.private_key,
             "payload": {
-                "iss": "odoo-connector-jira2",  # application key in the app descriptor
+                "iss": self.application_key,  # application key in the app descriptor
             },
         }
         return JIRA(
