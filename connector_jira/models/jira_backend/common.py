@@ -17,6 +17,7 @@ import requests
 
 import odoo
 from odoo import _, api, exceptions, fields, models, tools
+from odoo.tools import config
 
 from odoo.addons.component.core import Component
 
@@ -64,12 +65,30 @@ class JiraBackend(models.Model):
     RSA_PUBLIC_EXPONENT = 65537
     KEY_LEN = 255  # 255 == max Atlassian db col len
 
-    def _default_consumer_key(self):
-        """Generate a rnd consumer key of length self.KEY_LEN"""
-        return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
+    # def _default_consumer_key(self):
+    #     """Generate a rnd consumer key of length self.KEY_LEN"""
+    #     return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
 
-    uri = fields.Char(string="Jira URI", required=True)
-    name = fields.Char()
+    uri = fields.Char(
+        string="Jira URI",
+        readonly=True,
+        help="the value is provided when the app is installed on Jira Cloud.",
+    )
+    name = fields.Char(
+        size=60,
+        help="Display name of the app on the Atlassian Marketplace. Max 60 chars.",
+    )
+    app_descriptor_url = fields.Char(
+        string="App Descriptor URL",
+        help="URL to use when registering the backend as an app on the marketplace",
+        compute="_compute_app_descriptor_url",
+    )
+    application_key = fields.Char(
+        compute="_compute_application_key",
+        store=True,
+        help="The name that will be used as application key to register the app on the "
+        "Atlassian marketplace website. It has to be unique among all apps on the marketplace.",
+    )
     company_id = fields.Many2one(
         comodel_name="res.company",
         string="Company",
@@ -105,33 +124,41 @@ class JiraBackend(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ("authenticate", "Authenticate"),
+            # ("authenticate", "Authenticate"),
             ("setup", "Setup"),
             ("running", "Running"),
         ],
-        default="authenticate",
+        default="setup",
         required=True,
         readonly=True,
+        help="State of the Backend.\n"
+        "Setup: in this state you can register the backend on "
+        "https://marketplace.atlassian.com/ as an app, using the app descriptor url.\n"
+        "Running: when you have installed the backend on a Jira cloud instance "
+        "(transition is automatic).",
     )
-    private_key = fields.Text(
+    private_key = fields.Char(
         readonly=True,
         groups="connector.group_connector_manager",
+        help="The shared secret for JWT, provided at app installation",
     )
-    public_key = fields.Text(readonly=True)
-    consumer_key = fields.Char(
-        default=lambda self: self._default_consumer_key(),
-        readonly=True,
-        groups="connector.group_connector_manager",
+    public_key = fields.Text(
+        readonly=True, help="The Client Key for JWT, provided at app installation"
     )
+    # consumer_key = fields.Char(
+    #     default=lambda self: self._default_consumer_key(),
+    #     readonly=True,
+    #     groups="connector.group_connector_manager",
+    # )
 
-    access_token = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
-    )
-    access_secret = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
-    )
+    # access_token = fields.Char(
+    #     readonly=True,
+    #     groups="connector.group_connector_manager",
+    # )
+    # access_secret = fields.Char(
+    #     readonly=True,
+    #     groups="connector.group_connector_manager",
+    # )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
 
@@ -204,12 +231,25 @@ class JiraBackend(models.Model):
     # TODO: use something better to show this info
     # For instance, we could use web_notify to simply show a system msg.
     report_user_sync = fields.Html(readonly=True)
-    active = fields.Boolean(default=True)
 
     # @api.model
     # def _default_odoo_webhook_base_url(self):
     #     params = self.env["ir.config_parameter"]
     #     return params.get_param("web.base.url", "")
+
+    def _compute_application_key(self):
+        db_name = config["db_name"]
+        for rec in self:
+            rec.application_key = f"{db_name}-{rec.id}"
+
+    def _compute_app_descriptor_url(self):
+        fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
+        if "://" in fqdn:
+            fqdn = fqdn.split("://", maxsplit=1)[-1]
+        base_url = "https://" + fqdn
+
+        for rec in self:
+            rec.app_descriptor_url = f"{base_url}/jira/{rec.id}/app-descriptor.json"
 
     @api.model
     def _selection_project_template(self):
@@ -561,63 +601,57 @@ class JiraBackend(models.Model):
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
 
-    @api.model
     def _get_app_descriptor(self):
+        self.ensure_one()
         fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
         if "://" in fqdn:
             fqdn = fqdn.split("://", maxsplit=1)[-1]
-        name_extension = fqdn.replace(".", "-")[:5]
         base_url = "https://" + fqdn
         return {
-            "key": f"odoo-connector-jira2",  # -{name_extension}",
-            "name": "Odoo Jira Connector ",
+            "key": self.application_key,
+            "name": self.name,
             "description": "Connect your Odoo instance to Jira, manage linking Jira Cards with Odoo projects and tasks, and Tempo worklogs with Odoo Timesheets",
             "vendor": {"name": "Camptocamp", "url": "https://www.camptocamp.com/"},
             "baseUrl": base_url,
             "authentication": {"type": "jwt"},
             "lifecycle": {
-                "installed": f"{base_url}/jira/installed",
-                "uninstalled": f"{base_url}/jira/uninstalled",
-                "enabled": f"{base_url}/jira/enabled",
-                "disabled": f"{base_url}/jira/disabled",
+                "installed": f"{base_url}/jira/{self.id}/installed",
+                "uninstalled": f"{base_url}/jira/{self.id}/uninstalled",
+                "enabled": f"{base_url}/jira/{self.id}/enabled",
+                "disabled": f"{base_url}/jira/{self.id}/disabled",
             },
             "modules": {
-                # "oauthConsumer": {
-                #     "clientId": "{{consumerKey}}"
-                # },
                 "webhooks": [
                     {
                         "event": "jira:issue_created",
-                        "url": f"{base_url}/connector_jira/webhooks/issue",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
                     },
                     {
                         "event": "jira:issue_deleted",
-                        "url": f"{base_url}/connector_jira/webhooks/issue",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
                     },
                     {
                         "event": "jira:issue_updated",
-                        "url": f"{base_url}/connector_jira/webhooks/issue",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
                     },
                     {
                         "event": "worklog_updated",
-                        "url": f"{base_url}/connector_jira/webhooks/worklog",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
                     },
                     {
                         "event": "worklog_deleted",
-                        "url": f"{base_url}/connector_jira/webhooks/worklog",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
                     },
                     {
                         "event": "worklog_created",
-                        "url": f"{base_url}/connector_jira/webhooks/worklog",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
                     },
                 ],
             },
             "apiMigrations": {"gdpr": True, "signed-install": True},
             "scopes": ["project_admin"],
-            # "contexts": ["account"]
         }
 
-    @api.model
     def _install_app(self, payload):
         """
         When we receive an 'installed' notification, we create a backend record with the proper settings.
@@ -637,25 +671,16 @@ class JiraBackend(models.Model):
         'eventType': 'installed',
 
         """
-        backends = self.with_context(active_test=False).search(
-            [("name", "=", payload["displayUrl"])]
-        )
-        for backend in backends:
-            if backend.uri == payload["baseUrl"]:
-                if not backend.active:
-                    backend.active = True
-                backend.write(self._prepare_backend_values(payload))
-                _logger.info("Updated Jira backend for uri %s", backend.uri)
-                break
-        else:
-            backend = self.create(self._prepare_backend_values(payload))
-            _logger.info("Registered now Jira backend for uri %s", backend.uri)
-        assert backend.private_key
-        return backend.id
+        self.ensure_one()
+        if self.uri == payload["baseUrl"]:
+            self.write(self._prepare_backend_values(payload))
+            _logger.info("Updated Jira backend for uri %s", self.uri)
+        assert self.private_key
+        return self.id
 
     def _prepare_backend_values(self, payload):
         values = {
-            "name": payload.get("displayUrl", False),
+            "display_url": payload.get("displayUrl", False),
             "uri": payload.get("baseUrl", False),
             "state": "setup",
             "public_key": payload.get("clientKey", False),
@@ -664,26 +689,23 @@ class JiraBackend(models.Model):
             values["private_key"] = payload["sharedSecret"]
         return values
 
-    @api.model
     def _uninstall_app(self, payload):
-        backends = self.search([("name", "=", payload["displayUrl"])])
+        self.ensure_one()
         # wait for disabled to complete
         self.env.cr.execute(
-            "SELECT id from jira_backend WHERE id IN %s FOR UPDATE",
-            (tuple(backends.ids),),
+            "SELECT id from jira_backend WHERE id = %s FOR UPDATE",
+            (self.id,),
         )
-        for backend in backends:
-            if backend.uri == payload["baseUrl"]:
-                backend.write(
-                    {
-                        "active": False,
-                        "public_key": False,
-                        "private_key": False,
-                        "state": "authenticate",
-                    }
-                )
-                _logger.info("Uninstalled Jira backend for uri %s", backend.uri)
-                return "ok"
+        if self.uri == payload["baseUrl"]:
+            self.write(
+                {
+                    "public_key": False,
+                    "private_key": False,
+                    "state": "setup",
+                }
+            )
+            _logger.info("Uninstalled Jira backend for uri %s", self.uri)
+            return "ok"
         else:
             _logger.warn(
                 "Could not find a matching Jira backend for uri %s",
@@ -691,48 +713,26 @@ class JiraBackend(models.Model):
             )
             return "no installation found"
 
-        return "ok"
-
-    @api.model
     def _enable_app(self, payload):
-        backends = self.search(
-            [("name", "=", payload["displayUrl"]), ("uri", "=", payload["baseUrl"])]
-        )
-        if not backends:
-            _logger.warn(
-                "Could not find a matching Jira backend for uri %s",
-                payload["displayUrl"],
-            )
-            return "no installation found"
-
+        self.ensure_one()
         values = self._prepare_backend_values(payload)
         values["state"] = "running"
-        backends.write(values)
-        _logger.info("enable %s -> %s", backends.ids, values)
-        _logger.info("Enabled Jira backend for uri %s", backends.mapped("uri"))
+        self.write(values)
+        _logger.info("enable %s -> %s", self.ids, values)
+        _logger.info("Enabled Jira backend for uri %s", self.mapped("uri"))
         return "ok"
 
-    @api.model
     def _disable_app(self, payload):
-        backends = self.search(
-            [("name", "=", payload["displayUrl"]), ("uri", "=", payload["baseUrl"])]
-        )
-        if not backends:
-            _logger.warn(
-                "Could not find a matching Jira backend for uri %s",
-                payload["displayUrl"],
-            )
-            return "no installation found"
-        # prevent uninstall from concurrently updating the backend
+        self.ensure_one()
         self.env.cr.execute(
-            "SELECT id from jira_backend WHERE id IN %s FOR UPDATE",
-            (tuple(backends.ids),),
+            "SELECT id from jira_backend WHERE id = %s FOR UPDATE",
+            (self.id,),
         )
         values = self._prepare_backend_values(payload)
         values["state"] = "setup"
-        _logger.info("disable %s -> %s", backends.ids, values)
-        backends.write(values)
-        _logger.info("Disabled Jira backend for uri %s", backends.mapped("uri"))
+        _logger.info("disable %s -> %s", self.ids, values)
+        self.write(values)
+        _logger.info("Disabled Jira backend for uri %s", self.mapped("uri"))
         return "ok"
 
 

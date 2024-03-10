@@ -6,17 +6,6 @@
 -->
 <odoo>
     <!-- Backend -->
-    <record id="view_jira_backend_search" model="ir.ui.view">
-        <field name="name">jira.backend.form</field>
-        <field name="model">jira.backend</field>
-        <field name="arch" type="xml">
-            <search>
-                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
-                <filter name="all" string="All" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
-            </search>
-        </field>
-    </record>
-
     <record id="view_jira_backend_form" model="ir.ui.view">
         <field name="name">jira.backend.form</field>
         <field name="model">jira.backend</field>
@@ -52,8 +41,6 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <field name="active" invisible="1"/>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                    <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
@@ -75,6 +62,8 @@
                                 placeholder="e.g. https://example.com/jira"
                             />
                             <field name="verify_ssl" />
+                            <field name="application_key"/>
+                            <field name="app_descriptor_url"/>
                         </group>
                         <group name="main_configuration" string="Main Configuration">
                             <field name="company_id" />
