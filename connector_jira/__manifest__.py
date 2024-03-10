@@ -30,7 +30,6 @@
     "website": "https://github.com/OCA/connector-jira",
     "data": [
         "views/jira_menus.xml",
-        "wizards/jira_backend_auth_views.xml",
         "views/project_link_jira_views.xml",
         "views/task_link_jira_views.xml",
         "views/jira_backend_views.xml",
