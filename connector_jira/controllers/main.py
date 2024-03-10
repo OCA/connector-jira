@@ -194,8 +194,8 @@ class JiraConnectAppController(http.Controller):
         ensure_db()
         env = request.env
         backend = env["jira.backend"].sudo().browse(backend_id)
-        backend._install_app(payload)
-        return {"status": "OK"}
+        response = backend._install_app(payload)
+        return {"status": response}
 
     @http.route(
         "/jira/<int:backend_id>/uninstalled",
@@ -227,6 +227,7 @@ class JiraConnectAppController(http.Controller):
         env = request.env
         backend = env["jira.backend"].sudo()
         backend = env["jira.backend"].sudo().browse(backend_id)
+        response = backend._enable_app(payload)
         return {"status": response}
 
     @http.route(
@@ -243,4 +244,5 @@ class JiraConnectAppController(http.Controller):
         env = request.env
         backend = env["jira.backend"].sudo()
         backend = env["jira.backend"].sudo().browse(backend_id)
+        response = backend._disable_app(payload)
         return {"status": response}

@@ -20,22 +20,9 @@
                         states="setup"
                     />
                     <button
-                        name="%(action_jira_backend_auth)d"
-                        type="action"
-                        class="oe_highlight"
-                        string="Authenticate"
-                        states="authenticate"
-                    />
-                    <button
                         name="check_connection"
                         type="object"
                         string="Check Connection"
-                        states="setup,running"
-                    />
-                    <button
-                        name="%(action_jira_backend_auth)d"
-                        type="action"
-                        string="Reset Authentication"
                         states="setup,running"
                     />
                     <field name="state" widget="statusbar" />
@@ -64,6 +51,7 @@
                             <field name="verify_ssl" />
                             <field name="application_key"/>
                             <field name="app_descriptor_url"/>
+                            <field name="display_url"/>
                         </group>
                         <group name="main_configuration" string="Main Configuration">
                             <field name="company_id" />
