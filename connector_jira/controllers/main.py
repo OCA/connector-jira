@@ -30,6 +30,9 @@ import logging
 import json
 
 import jwt
+import requests
+
+from werkzeug.exceptions import Forbidden
 
 import odoo
 from odoo import _, http
@@ -44,7 +47,7 @@ class JiraWebhookController(http.Controller):
     @http.route(
         "/connector_jira/<int:backend_id>/webhooks/issue",
         type="json",
-        auth="none",
+        auth="none",  # security handled with manual JWT check (backend._validate_jwt)
         csrf=False,
     )
     def webhook_issue(self, backend_id, issue_id=None, **kw):
@@ -64,7 +67,10 @@ class JiraWebhookController(http.Controller):
                 backend_id,
             )
             return
-        # TODO: check jwt
+        backend._validate_jwt(
+            request.httprequest.headers["Authorization"],
+            f"{request.httprequest.path}?{request.httprequest.query_string}",
+        )
         action = request.jsonrequest["webhookEvent"]
 
         payload = request.jsonrequest["issue"]
@@ -79,7 +85,7 @@ class JiraWebhookController(http.Controller):
     @http.route(
         "/connector_jira/<int:backend_id>/webhooks/worklog",
         type="json",
-        auth="none",
+        auth="none",  # security handled with manual JWT check (backend._validate_jwt)
         csrf=False,
     )
     def webhook_worklog(self, backend_id, **kw):
@@ -96,7 +102,10 @@ class JiraWebhookController(http.Controller):
                 backend_id,
             )
             return
-        # TODO: check jwt
+        backend._validate_jwt(
+            request.httprequest.headers["Authorization"],
+            f"{request.httprequest.path}?{request.httprequest.query_string}",
+        )
 
         action = request.jsonrequest["webhookEvent"]
 
@@ -170,24 +179,46 @@ class JiraConnectAppController(http.Controller):
             body, [("Content-Type", mime), ("Content-Length", len(body))]
         )
 
+    def _validate_jwt_token(self):
+        """use autorization header to validate the request
+        The process is described in
+        https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/#validating-installation-lifecycle-requests
+        """
+        authorization_header = request.httprequest.headers["Authorization"]
+        assert authorization_header.startswith(
+            "JWT "
+        ), "unexpected content in Authorization header"
+        jwt_token = authorization_header[4:]
+        decoded = jwt.get_unverified_header(jwt_token)
+        if "kid" in decoded:
+            response = requests.get(
+                f"https://connect-install-keys.atlassian.com/{decoded['kid']}"
+            )
+            response.raise_for_status()
+            public_key = response.text
+            response.close()
+            _logger.info("public key:\n%s", public_key)
+            decoded = jwt.decode(
+                jwt_token,
+                public_key,
+                algorithms=[decoded["alg"]],
+                audience=request.env["jira.backend"].sudo()._get_base_url(),
+            )
+            _logger.warning("decoded JWT Token: %s", decoded)
+        else:
+            raise Forbidden()
+        return True
+
     @http.route(
         "/jira/<int:backend_id>/installed",
         type="json",
         methods=["POST"],
-        auth="public",
+        auth="public",  # security implemented by _validated_jwt_token
         csrf=False,
-    )  # FIXME: auth management
+    )
     def install_app(self, backend_id, **kwargs):
+        self._validate_jwt_token()
         payload = request.jsonrequest
-        # TODO use autorization header to validate the request
-        # See https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/#validating-installation-lifecycle-requests
-        authorization_header = request.httprequest.headers["Authorization"]
-        assert authorization_header.startswith("JWT ")
-        jwt_token = authorization_header[4:]
-        decoded = jwt.get_unverified_header(jwt_token)
-        # GET https://connect-install-keys.atlassian.com/{decoded['kid']} -> public key
-        # decoded = jwt.decode(jwt_token, public_key, algorithms=[decoded['alg']])
-
         _logger.info("installed: %s", payload)
 
         assert payload["eventType"] == "installed"
@@ -201,10 +232,11 @@ class JiraConnectAppController(http.Controller):
         "/jira/<int:backend_id>/uninstalled",
         type="json",
         methods=["POST"],
-        auth="public",
+        auth="public",  # security implemented by _validated_jwt_token
         csrf=False,
-    )  # FIXME: auth management
+    )
     def uninstall_app(self, backend_id, **kwargs):
+        self._validate_jwt_token()
         payload = request.jsonrequest
         _logger.info("uninstalled: %s", payload)
         assert payload["eventType"] == "uninstalled"
@@ -217,16 +249,21 @@ class JiraConnectAppController(http.Controller):
         "/jira/<int:backend_id>/enabled",
         type="json",
         methods=["POST"],
-        auth="public",
+        auth="public",  # security handled with manual JWT check (backend._validate_jwt)
         csrf=False,
     )
     def enable_app(self, backend_id, **kwargs):
+        # self._validate_jwt_token()
         payload = request.jsonrequest
         _logger.info("enabled: %s", payload)
         assert payload["eventType"] == "enabled"
         env = request.env
         backend = env["jira.backend"].sudo()
         backend = env["jira.backend"].sudo().browse(backend_id)
+        backend._validate_jwt(
+            request.httprequest.headers["Authorization"],
+            f"{request.httprequest.path}?{request.httprequest.query_string}",
+        )
         response = backend._enable_app(payload)
         return {"status": response}
 
@@ -234,15 +271,20 @@ class JiraConnectAppController(http.Controller):
         "/jira/<int:backend_id>/disabled",
         type="json",
         methods=["POST"],
-        auth="public",
+        auth="public",  # security handled with manual JWT check (backend._validate_jwt)
         csrf=False,
     )
     def disable_app(self, backend_id, **kwargs):
+        # self._validate_jwt_token()
         payload = request.jsonrequest
         _logger.info("disabled: %s", payload)
         assert payload["eventType"] == "disabled"
         env = request.env
         backend = env["jira.backend"].sudo()
         backend = env["jira.backend"].sudo().browse(backend_id)
+        backend._validate_jwt(
+            request.httprequest.headers["Authorization"],
+            f"{request.httprequest.path}?{request.httprequest.query_string}",
+        )
         response = backend._disable_app(payload)
         return {"status": response}
