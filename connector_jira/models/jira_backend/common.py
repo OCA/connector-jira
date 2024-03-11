@@ -14,6 +14,8 @@ from os import urandom
 import psycopg2
 import pytz
 import requests
+import jwt
+from atlassian_jwt import url_utils
 
 import odoo
 from odoo import _, api, exceptions, fields, models, tools
@@ -246,10 +248,7 @@ class JiraBackend(models.Model):
             rec.application_key = f"odoo-jira-connector-{db_name}-{rec.id}"
 
     def _compute_app_descriptor_url(self):
-        fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
-        if "://" in fqdn:
-            fqdn = fqdn.split("://", maxsplit=1)[-1]
-        base_url = "https://" + fqdn
+        base_url = self._get_base_url()
 
         for rec in self:
             rec.app_descriptor_url = f"{base_url}/jira/{rec.id}/app-descriptor.json"
@@ -604,12 +603,16 @@ class JiraBackend(models.Model):
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
 
-    def _get_app_descriptor(self):
-        self.ensure_one()
+    def _get_base_url(self):
         fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
         if "://" in fqdn:
             fqdn = fqdn.split("://", maxsplit=1)[-1]
         base_url = "https://" + fqdn
+        return base_url
+
+    def _get_app_descriptor(self):
+        self.ensure_one()
+        base_url = self._get_base_url()
         return {
             "key": self.application_key,
             "name": self.name,
@@ -737,6 +740,34 @@ class JiraBackend(models.Model):
         self.write(values)
         _logger.info("Disabled Jira backend for uri %s", self.mapped("uri"))
         return "ok"
+
+    def _validate_jwt(self, authorization_header, query_url=None):
+        self.ensure_one()
+        assert authorization_header.startswith(
+            "JWT "
+        ), "unexpected content in Authorization header"
+        jwt_token = authorization_header[4:]
+        decoded = jwt.decode(
+            jwt_token,
+            self.private_key,
+            algorithms=["HS256"],
+            # audience=self._get_base_url(),
+            issuer=self.public_key,
+            options={
+                "require": [
+                    "exp",
+                    "iss",
+                    "sub",
+                    "qsh",
+                ]
+            },
+        )
+        _logger.warning("Decoded Token: %s", decoded)
+        if query_url is not None:
+            expected_hash = url_utils.hash_url("POST", query_url)
+            if decoded["iss"] != expected_hash:
+                return False
+        return True
 
 
 class JiraBackendTimestamp(models.Model):
