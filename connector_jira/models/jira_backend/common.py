@@ -579,26 +579,26 @@ class JiraBackend(models.Model):
     @api.model
     def _scheduler_import_project_task(self):
         backends = self.search([("state", "=", "running")])
-        if backends:
-            backends.import_project_task()
+        for backend in backends:
+            backend.import_project_task()
 
     @api.model
     def _scheduler_import_res_users(self):
         backends = self.search([("state", "=", "running")])
-        if backends:
-            backends.import_res_users()
+        for backend in backends:
+            backend.import_res_users()
 
     @api.model
     def _scheduler_import_analytic_line(self):
         backends = self.search([("state", "=", "running")])
-        if backends:
-            backends.search([]).import_analytic_line()
+        for backend in backends:
+            backend.search([]).import_analytic_line()
 
     @api.model
     def _scheduler_delete_analytic_line(self):
         backends = self.search([("state", "=", "running")])
-        if backends:
-            backends.search([]).delete_analytic_line()
+        for backend in backends:
+            backend.search([]).delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
