@@ -14,7 +14,6 @@
         "web",
         "web_widget_url_advanced",
         "multi_step_wizard",
-        "auth_jwt",
     ],
     "external_dependencies": {
         "python": [
