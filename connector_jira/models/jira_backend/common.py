@@ -3,18 +3,15 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-import binascii
-import json
 import logging
 import urllib.parse
 from contextlib import closing, contextmanager
 from datetime import datetime
-from os import urandom
 
+import jwt
 import psycopg2
 import pytz
 import requests
-import jwt
 from atlassian_jwt import url_utils
 
 import odoo
@@ -31,14 +28,11 @@ JIRA_TIMEOUT = 30  # seconds
 
 try:
     from jira import JIRA, JIRAError
-    from jira.utils import json_loads
 except ImportError as err:
     _logger.debug(err)
 
 try:
-    from cryptography.hazmat.backends import default_backend
-    from cryptography.hazmat.primitives import serialization
-    from cryptography.hazmat.primitives.asymmetric import rsa
+    pass
 except ImportError as err:
     _logger.debug(err)
 
@@ -150,20 +144,6 @@ class JiraBackend(models.Model):
     public_key = fields.Text(
         readonly=True, help="The Client Key for JWT, provided at app installation"
     )
-    # consumer_key = fields.Char(
-    #     default=lambda self: self._default_consumer_key(),
-    #     readonly=True,
-    #     groups="connector.group_connector_manager",
-    # )
-
-    # access_token = fields.Char(
-    #     readonly=True,
-    #     groups="connector.group_connector_manager",
-    # )
-    # access_secret = fields.Char(
-    #     readonly=True,
-    #     groups="connector.group_connector_manager",
-    # )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
 
@@ -176,13 +156,6 @@ class JiraBackend(models.Model):
     project_template_shared = fields.Char(
         string="Default Shared Template Key",
     )
-
-    # use_webhooks = fields.Boolean(
-    #     readonly=True,
-    #     help="Webhooks need to be configured on the Jira instance. "
-    #     "When activated, synchronization from Jira is blazing fast. "
-    #     "It can be activated only on one Jira backend at a time. ",
-    # )
 
     import_project_task_from_date = fields.Datetime(
         compute="_compute_last_import_date",
@@ -226,21 +199,16 @@ class JiraBackend(models.Model):
         "to fill the epic field with itself on Odoo.",
     )
 
-    # odoo_webhook_base_url = fields.Char(
-    #     string="Base Odoo URL for Webhooks",
-    #     default=lambda self: self._default_odoo_webhook_base_url(),
-    # )
-    # webhook_issue_jira_id = fields.Char()
-    # webhook_worklog_jira_id = fields.Char()
-
     # TODO: use something better to show this info
     # For instance, we could use web_notify to simply show a system msg.
     report_user_sync = fields.Html(readonly=True)
 
-    # @api.model
-    # def _default_odoo_webhook_base_url(self):
-    #     params = self.env["ir.config_parameter"]
-    #     return params.get_param("web.base.url", "")
+    @api.model_create_multi
+    @api.returns("self", lambda value: value.id)
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._compute_application_key()
+        return records
 
     def _compute_application_key(self):
         db_name = config["db_name"]
@@ -359,19 +327,6 @@ class JiraBackend(models.Model):
             self, timestamp, force=force
         )
 
-    # @api.constrains("use_webhooks")
-    # def _check_use_webhooks_unique(self):
-    #     if len(self.search([("use_webhooks", "=", True)])) > 1:
-    #         raise exceptions.ValidationError(
-    #             _("Only one backend can listen to webhooks")
-    #         )
-
-    # @api.model
-    # def create(self, values):
-    #     record = super().create(values)
-    #     #record.create_rsa_key_vals()
-    #     return record
-
     # XXX check this
     def button_setup(self):
         self.state_running()
@@ -400,103 +355,12 @@ class JiraBackend(models.Model):
             if backend.state == "setup":
                 backend.state = "running"
 
-    # TODO remove
-    def create_webhooks(self):
-        self.ensure_one()
-        other_using_webhook = self.search(
-            [("use_webhooks", "=", True), ("id", "!=", self.id)]
-        )
-        if other_using_webhook:
-            raise exceptions.UserError(
-                _(
-                    "Only one JIRA backend can use the webhook at a time. "
-                    'You must disable them on the backend "%s" before '
-                    "activating them here."
-                )
-                % (other_using_webhook.name,)
-            )
-
-        # open a new cursor because we'll commit after the creations
-        # to be sure to keep the webhook ids
-        with new_env(self.env) as env:
-            backend = env[self._name].browse(self.id)
-            base_url = backend.odoo_webhook_base_url
-            if not base_url:
-                raise exceptions.UserError(_("The Odoo Webhook base URL must be set."))
-
-            with self.work_on("jira.backend") as work:
-                backend.use_webhooks = True
-
-                adapter = work.component(usage="backend.adapter")
-                # TODO: we could update the JQL of the webhook
-                # each time a new project is sync'ed, so we would
-                # filter out the useless events
-                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/issue")
-                webhook = adapter.create_webhook(
-                    name="Odoo Issues",
-                    url=url,
-                    events=[
-                        "jira:issue_created",
-                        "jira:issue_updated",
-                        "jira:issue_deleted",
-                    ],
-                )
-                # the only place where to find the hook id is in
-                # the 'self' url, looks like
-                # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
-                webhook_id = webhook["self"].split("/")[-1]
-                backend.webhook_issue_jira_id = webhook_id
-                if not tools.config["test_enable"]:
-                    env.cr.commit()  # pylint: disable=invalid-commit
-
-                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/worklog")
-                webhook = adapter.create_webhook(
-                    name="Odoo Worklogs",
-                    url=url,
-                    events=["worklog_created", "worklog_updated", "worklog_deleted"],
-                )
-                webhook_id = webhook["self"].split("/")[-1]
-                backend.webhook_worklog_jira_id = webhook_id
-                if not tools.config["test_enable"]:
-                    env.cr.commit()  # pylint: disable=invalid-commit
-
-    # TODO remove
-    # @api.onchange("odoo_webhook_base_url")
-    # def onchange_odoo_webhook_base_url(self):
-    #     if self.use_webhooks:
-    #         msg = _(
-    #             "If you change the base URL, you must delete and create "
-    #             "the Webhooks again."
-    #         )
-    #         return {"warning": {"title": _("Warning"), "message": msg}}
-
     @api.onchange("worklog_date_timezone_mode")
     def _onchange_worklog_date_import_timezone_mode(self):
         for jira_backend in self:
             if jira_backend.worklog_date_timezone_mode == "specific":
                 continue
             jira_backend.worklog_date_timezone = False
-
-    # TODO remove
-    def delete_webhooks(self):
-        self.ensure_one()
-        with self.work_on("jira.backend") as work:
-            adapter = work.component(usage="backend.adapter")
-            if self.webhook_issue_jira_id:
-                try:
-                    adapter.delete_webhook(self.webhook_issue_jira_id)
-                except JIRAError as err:
-                    # 404 means it has been deleted in JIRA, ignore it
-                    if err.status_code != 404:
-                        raise
-            if self.webhook_worklog_jira_id:
-                try:
-                    adapter.delete_webhook(self.webhook_worklog_jira_id)
-                except JIRAError as err:
-                    # 404 means it has been deleted in JIRA, ignore it
-                    if err.status_code != 404:
-                        raise
-            self.use_webhooks = False
 
     def check_connection(self):
         self.ensure_one()
@@ -555,8 +419,6 @@ class JiraBackend(models.Model):
         self.env["jira.issue.type"].import_batch(self)
         return True
 
-    # XXX check
-    @api.model
     def get_api_client(self):
         self.ensure_one()
         # tokens are only readable by connector managers
@@ -616,7 +478,9 @@ class JiraBackend(models.Model):
         return {
             "key": self.application_key,
             "name": self.name,
-            "description": "Connect your Odoo instance to Jira, manage linking Jira Cards with Odoo projects and tasks, and Tempo worklogs with Odoo Timesheets",
+            "description": "Connect your Odoo instance to Jira, manage linking "
+            "Jira Cards with Odoo projects and tasks, and Tempo worklogs with Odoo "
+            "Timesheets",
             "vendor": {"name": "Camptocamp", "url": "https://www.camptocamp.com/"},
             "baseUrl": base_url,
             "authentication": {"type": "jwt"},
@@ -660,7 +524,8 @@ class JiraBackend(models.Model):
 
     def _install_app(self, payload):
         """
-        When we receive an 'installed' notification, we create a backend record with the proper settings.
+        When we receive an 'installed' notification, we create a backend record with
+        the proper settings.
 
         payload keys:
 
@@ -670,17 +535,19 @@ class JiraBackend(models.Model):
         'sharedSecret': Use to sign JWT tokens
         'serverVersion': DEPRECATED
         'pluginsVersion': DEPRECATED
-        'baseUrl': URL prefix for this Atlassian product instance. All of its REST endpoints begin with this `baseUrl`. Do not use the `baseUrl` as an identifier for the Atlassian product as this value may not be unique.
-        'displayUrl': If the Atlassian product instance has an associated custom domain, this is the URL through which users will access the product.
+        'baseUrl': URL prefix for this Atlassian product instance. All of its REST endpoints
+            begin with this `baseUrl`. Do not use the `baseUrl` as an identifier for the
+            Atlassian product as this value may not be unique.
+        'displayUrl': If the Atlassian product instance has an associated custom domain, this
+            is the URL through which users will access the product.
         'productType': 'jira',
         'description': 'Atlassian JIRA at https: //testcamptocamp.atlassian.net ',
         'eventType': 'installed',
 
         """
         self.ensure_one()
-        if self.uri == payload["baseUrl"]:
-            self.write(self._prepare_backend_values(payload))
-            _logger.info("Updated Jira backend for uri %s", self.uri)
+        self.write(self._prepare_backend_values(payload))
+        _logger.info("Updated Jira backend for uri %s", self.uri)
         assert self.private_key
         return self.id
 
@@ -702,22 +569,15 @@ class JiraBackend(models.Model):
             "SELECT id from jira_backend WHERE id = %s FOR UPDATE",
             (self.id,),
         )
-        if self.uri == payload["baseUrl"]:
-            self.write(
-                {
-                    "public_key": False,
-                    "private_key": False,
-                    "state": "setup",
-                }
-            )
-            _logger.info("Uninstalled Jira backend for uri %s", self.uri)
-            return "ok"
-        else:
-            _logger.warn(
-                "Could not find a matching Jira backend for uri %s",
-                payload["displayUrl"],
-            )
-            return "no installation found"
+        self.write(
+            {
+                "public_key": False,
+                "private_key": False,
+                "state": "setup",
+            }
+        )
+        _logger.info("Uninstalled Jira backend for uri %s", self.uri)
+        return "ok"
 
     def _enable_app(self, payload):
         self.ensure_one()
@@ -742,6 +602,12 @@ class JiraBackend(models.Model):
         return "ok"
 
     def _validate_jwt(self, authorization_header, query_url=None):
+        """validation if the JSON Web Token
+
+        Use the algorithm provided by the atlassan module to compute the 'iss' hash
+        from the URL and compare it to the value in the token, in addition to the
+        standard claims checks.
+        """
         self.ensure_one()
         assert authorization_header.startswith(
             "JWT "
@@ -762,7 +628,6 @@ class JiraBackend(models.Model):
                 ]
             },
         )
-        _logger.warning("Decoded Token: %s", decoded)
         if query_url is not None:
             expected_hash = url_utils.hash_url("POST", query_url)
             if decoded["iss"] != expected_hash:
@@ -865,22 +730,3 @@ class BackendAdapter(Component):
 
     def list_fields(self):
         return self.client._get_json("field")
-
-    def create_webhook(
-        self, name=None, url=None, events=None, jql="", exclude_body=False
-    ):
-        assert name and url and events
-        data = {
-            "name": name,
-            "url": url,
-            "events": events,
-            "jqlFilter": jql,
-            "excludeIssueDetails": exclude_body,
-        }
-        url = self.client._get_url("webhook", base=self.webhook_base_path)
-        response = self.client._session.post(url, data=json.dumps(data))
-        return json_loads(response)
-
-    def delete_webhook(self, id_):
-        url = self.client._get_url("webhook/%s" % id_, base=self.webhook_base_path)
-        return json_loads(self.client._session.delete(url))

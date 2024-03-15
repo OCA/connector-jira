@@ -8,6 +8,7 @@
   * Patrick Tombez <patrick.tombez@camptocamp.com>
   * Guewen Baconnier <guewen.baconnier@camptocamp.com>
   * Akim Juillerat <akim.juillerat@camptocamp.com>
+  * Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
 
 * `CorporateHub <https://corporatehub.eu/>`__
 

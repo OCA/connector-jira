@@ -13,13 +13,6 @@
             <form string="Jira Backend">
                 <header groups="connector.group_connector_manager">
                     <button
-                        name="button_setup"
-                        type="object"
-                        class="oe_highlight"
-                        string="Configuration Done"
-                        states="setup"
-                    />
-                    <button
                         name="check_connection"
                         type="object"
                         string="Check Connection"
@@ -32,12 +25,6 @@
                     <h1>
                         <field name="name" class="oe_inline" />
                     </h1>
-                    <p class="oe_grey oe_inline" states="setup">
-                        Once you have checked the configuration and
-            activated the webhooks and the Epic Link (if
-            wanted), click on the "Configuration Done"
-            button.
-                    </p>
                     <group>
                         <group
                             name="api_configuration"
@@ -49,9 +36,12 @@
                                 placeholder="e.g. https://example.com/jira"
                             />
                             <field name="verify_ssl" />
-                            <field name="application_key"/>
-                            <field name="app_descriptor_url"/>
-                            <field name="display_url"/>
+                            <field name="application_key" />
+                            <p class="oe_grey oe_inline" states="setup">
+                                You can use the App Descriptor URL to register a new App on Atlassian Marketplace. Check the module README for the detailed process.
+                            </p>
+                            <field name="app_descriptor_url" />
+                            <field name="display_url" />
                         </group>
                         <group name="main_configuration" string="Main Configuration">
                             <field name="company_id" />
@@ -214,35 +204,6 @@
                             name="advanced_configuration"
                             string="Advanced Configuration"
                         >
-                            <!--group name="webhooks" col="6">
-                                <group name="webhook_fields" colspan="3">
-                                    <field name="use_webhooks" invisible="1" />
-                                    <field name="odoo_webhook_base_url" />
-                                </group>
-                                <div>
-                                    <button
-                                        name="create_webhooks"
-                                        type="object"
-                                        string="Install Webhooks"
-                                        class="btn-sm btn-link oe_inline"
-                                        attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authenticate')]}"
-                                    />
-                                    <button
-                                        name="delete_webhooks"
-                                        type="object"
-                                        string="Remove Webhooks"
-                                        class="btn-sm btn-link oe_inline"
-                                        attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"
-                                    />
-                                </div>
-                                <p class="oe_grey" colspan="2">
-                                    Webhooks can be created only on one instance of
-                                    JIRA.
-                  When webhooks are activated, each
-                  modification of tasks and worklogs are
-                  directly transmitted to Odoo.
-                                </p>
-                            </group-->
                             <group name="epic" col="6">
                                 <group name="epic_fields" colspan="3">
                                     <field name="epic_link_field_name" />

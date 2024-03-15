@@ -18,3 +18,8 @@ be pushed:
   choose to which project we push the task, this is not supported yet (for
   instance, add a Boolean "export tasks" on the project binding, or explicitly
   select the target binding on the task)
+* Now that the webhooks are authenticated, use the values sent by the webhooks
+  rather than querying them back
+* We now can have multiple backends, registering multiple webhooks. If we want
+  to use this in practice, testing must be done and probably some things will
+  need fixing. 
