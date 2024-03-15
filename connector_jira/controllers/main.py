@@ -1,37 +1,28 @@
-# Copyright 2016-2019 Camptocamp SA
+# Copyright 2016-2024 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 """
 
 Receive webhooks from Jira
 
-Webhooks to create in Jira:
 
-1. Odoo Issues
-   URL: http://odoo:8069/connector_jira/webhooks/issue/${issue.id}
-   Events: Issue{created, updated, deleted}
-   Exclude body: yes
-
-1. Odoo Worklogs
-   URL: http://odoo:8069/connector_jira/webhooks/worklog
-   Events: Issue{created, updated, deleted}
-   Exclude body: no
-
-
-JIRA could well send all the data in the webhook request's body,
+(Outdated) JIRA could well send all the data in the webhook request's body,
 which would avoid Odoo to make another GET to get this data, but
 JIRA webhooks are potentially insecure as we don't know if it really
 comes from JIRA. So we don't use the data sent by the webhook and the job
 gets the data by itself (with the nice side-effect that the job is retryable).
 
+TODO: we now have authenticated calls from Jira through the JWT tokens, so we
+could move back to a setup where we avoid querying the data back to Jira.
+Changing this is on the roadmap.
+
 """
 
-import logging
 import json
+import logging
 
 import jwt
 import requests
-
 from werkzeug.exceptions import Forbidden
 
 import odoo
@@ -126,7 +117,9 @@ class JiraWebhookController(http.Controller):
 class JiraConnectAppController(http.Controller):
     """Manage the lifecyle of the App
 
-    The app-descriptor endpoint when called returns the app descriptor, which lists the endpoints for installation / uninstallation / enabling / disabling the app on a Jira cloud server.
+    The app-descriptor endpoint when called returns the app descriptor,
+    which lists the endpoints for installation / uninstallation /
+    enabling / disabling the app on a Jira cloud server.
 
     The lifecycle requests all receive a payload with the following keys:
 
@@ -145,15 +138,18 @@ class JiraConnectAppController(http.Controller):
         "entitlementId": "Entitlement-Id",
         "entitlementNumber": "Entitlement-Number",
         "eventType": "installed",
-        "installationId": "ari:cloud:ecosystem::installation/uuid-of-forge-installation-identifier"
+        "installationId":
+            "ari:cloud:ecosystem::installation/uuid-of-forge-installation-identifier"
     }
 
-    Upon reception of an "installed" lifecycle call, we create a backend record for the app, in state "disabled".
+    Upon reception of an "installed" lifecycle call, we create a backend record
+    for the app, in state "disabled".
     Upon reception of an "enabled" lifecycle call, we set the backend to "enabled".
     Upon reception of a "disabled" lifecycle call, we set the backend to "disabled".
     Upon reception of a "uninstalled" lifecycle call, we unlink the backend record.
 
-    Documentation: https://developer.atlassian.com/cloud/jira/platform/connect-app-descriptor/#lifecycle
+    Documentation:
+    https://developer.atlassian.com/cloud/jira/platform/connect-app-descriptor/#lifecycle
     """
 
     @http.route(
@@ -182,7 +178,7 @@ class JiraConnectAppController(http.Controller):
     def _validate_jwt_token(self):
         """use autorization header to validate the request
         The process is described in
-        https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/#validating-installation-lifecycle-requests
+        https://developer.atlassian.com/cloud/jira/platform/security-for-connect-apps/
         """
         authorization_header = request.httprequest.headers["Authorization"]
         assert authorization_header.startswith(
