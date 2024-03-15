@@ -25,7 +25,7 @@
             "requests-toolbelt>=0.9.1",
             "pyjwt>=1.7.1,<2.0.0",
             "cryptography<37",
-            "atlassian_jwt=3.0.0",
+            "atlassian_jwt>=3.0.0",
         ],
     },
     "website": "https://github.com/OCA/connector-jira",
