@@ -15,7 +15,7 @@ class JiraBackend(models.Model):
     @property
     def _server_env_fields(self):
         return {
-            #"uri": {},
-            #"verify_ssl": {},
-            #"odoo_webhook_base_url": {},
+            # "uri": {},
+            # "verify_ssl": {},
+            # "odoo_webhook_base_url": {},
         }
