@@ -8,8 +8,21 @@ def migrate(cr, version):
 
 def remove_field_selection(cr, version):
     query = """
+        DELETE FROM ir_model_data imd
+        USING ir_model_fields_selection fs, ir_model_fields f, ir_model m
+        WHERE imd.module='connector_jira'
+        AND imd.model='ir.model.fields.selection'
+        AND res_id=fs.id
+        AND f.model_id = m.id
+        AND m.name='jira.backend.auth'
+        AND fs.field_id=f.id;
+    """
+    cr.execute(query)
+    query = """
         DELETE FROM ir_model_fields_selection
         USING ir_model_fields f, ir_model m
-        WHERE f.model_id = m.id AND m.name='jira.backend.auth' AND field_id=f.id;
+        WHERE f.model_id = m.id
+        AND m.name='jira.backend.auth'
+        AND field_id=f.id;
     """
     cr.execute(query)
