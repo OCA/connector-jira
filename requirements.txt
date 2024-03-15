@@ -1,5 +1,5 @@
 # generated from manifests external_dependencies
-atlassian_jwt=3.0.0
+atlassian_jwt>=3.0.0
 cryptography<37
 jira>=2.0.0
 oauthlib>=2.1.0
