@@ -179,7 +179,7 @@ class JiraImporter(Component):
         return map_record.values(
             for_create=True,
             external_updated_at=self._get_external_updated_at(),
-            **kwargs
+            **kwargs,
         )
 
     @contextmanager
@@ -489,8 +489,9 @@ class TimestampBatchImporter(AbstractComponent):
 
         number = self._handle_records(records, force=force)
 
-        return _("Batch from {} UTC to {} UTC generated {} imports").format(
-            original_timestamp_value, next_timestamp_value, number
+        return _(
+            f"Batch from {original_timestamp_value} UTC to {next_timestamp_value} "
+            f"UTC generated {number} imports"
         )
 
     def _handle_records(self, records, force=False):

@@ -99,6 +99,7 @@ class ResUsers(models.Model):
                             ]
                         )
                     )
+
                     if existing:
                         bknd_result["error"].append(
                             {
@@ -121,6 +122,7 @@ class ResUsers(models.Model):
                                 "detail": jira_user.key,
                             }
                         )
+
                     except Exception as err:
                         bknd_result["error"].append(
                             {

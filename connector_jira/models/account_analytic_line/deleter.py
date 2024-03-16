@@ -37,10 +37,11 @@ class AnalyticLineBatchDeleter(Component):
 
         timestamp._update_timestamp(next_timestamp_value)
 
-        number = self._handle_records(records)
+        self._handle_records(records)
 
-        return _("Batch from {} UTC to {} UTC " "generated {} delete jobs").format(
-            original_timestamp_value, next_timestamp_value, number
+        return _(
+            f"Batch from {original_timestamp_value} UTC to {next_timestamp_value} UTC "
+            "generated {number} delete jobs"
         )
 
     def _handle_records(self, records):
@@ -67,7 +68,7 @@ class AnalyticLineBatchDeleter(Component):
         """Delay the delete of the records"""
         self.model.with_delay(
             description=_("Delete a local worklog which has " "been deleted on JIRA"),
-            **kwargs
+            **kwargs,
         ).delete_record(
             self.backend_record,
             record_id,
