@@ -6,7 +6,7 @@ def migrate(cr, version):
     remove_field_selection(cr)
 
 
-def remove_field_selection(cr, version):
+def remove_field_selection(cr):
     query = """
         DELETE FROM ir_model_data imd
         USING ir_model_fields_selection fs, ir_model_fields f, ir_model m
