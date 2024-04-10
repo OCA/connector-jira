@@ -97,10 +97,10 @@ class JiraWebhookController(http.Controller):
             request.httprequest.headers["Authorization"],
             f"{request.httprequest.path}?{request.httprequest.query_string}",
         )
-
         action = request.jsonrequest["webhookEvent"]
 
         payload = request.jsonrequest["worklog"]
+
         issue_id = payload["issueId"]
         worklog_id = payload["id"]
 
@@ -111,7 +111,7 @@ class JiraWebhookController(http.Controller):
         else:
             env["jira.account.analytic.line"].with_delay(
                 description=_("Import a worklog from JIRA")
-            ).import_record(backend, issue_id, worklog_id)
+            ).import_record(backend, issue_id, worklog_id, payload=payload)
 
 
 class JiraConnectAppController(http.Controller):

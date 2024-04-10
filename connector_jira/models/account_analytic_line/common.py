@@ -11,20 +11,20 @@ from odoo.addons.component.core import Component
 
 UpdatedWorklog = namedtuple(
     "UpdatedWorklog",
-    "worklog_id updated"
+    "worklog_id updated",
     # id as integer, timestamp
 )
 
 UpdatedWorklogSince = namedtuple(
     "UpdatedWorklogSince",
-    "since until updated_worklogs"
+    "since until updated_worklogs",
     # timestamp, timestamp, [UpdatedWorklog]
 )
 
 
 DeletedWorklogSince = namedtuple(
     "DeletedWorklogSince",
-    "since until deleted_worklog_ids"
+    "since until deleted_worklog_ids",
     # timestamp, timestamp, [ids as integer]
 )
 
@@ -105,11 +105,13 @@ class JiraAccountAnalyticLine(models.Model):
             )
 
     @api.model
-    def import_record(self, backend, issue_id, worklog_id, force=False):
+    def import_record(self, backend, issue_id, worklog_id, force=False, payload=None):
         """Import a worklog from JIRA"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.importer")
-            return importer.run(worklog_id, issue_id=issue_id, force=force)
+            return importer.run(
+                worklog_id, issue_id=issue_id, force=force, payload=payload
+            )
 
     def force_reimport(self):
         for binding in self.sudo().mapped("jira_bind_ids"):

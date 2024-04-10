@@ -18,39 +18,16 @@ to have a service running to record the Webservice interactions.
 
 # Recording new tests with vcr.py
 
-First, you will need a running Jira. We use a docker image, a simple
-composition is enough::
+First you will need a running Jira Cloud instance. You can set one up for
+development purpose see
+https://developer.atlassian.com/cloud/jira/platform/getting-started-with-connect/
+for instructions.
 
-    version: '2'
-    services:
-
-    jira:
-        image: cptactionhank/atlassian-jira-software:7.12.3
-        volumes:
-        - "data-jira:/var/atlassian/jira"
-        ports:
-        - 8080:8080
-
-    volumes:
-    data-jira:
-
-When you first access to Jira, it will guide you through a procedure
-to obtain a demo license.
-
-Once connected, you will need to do the Oauth dance to obtain tokens.
-
-You can do so using the CLI command line::
-
-  odoo jiraoauthdance
-
-See details in ``connector_jira/cli/jira_oauth_dance.py``.
-
-Once you have tokens (access+secret), you will need to set them
-in environment variables when you run your tests:
-
-- JIRA_TEST_URL
-- JIRA_TEST_TOKEN_ACCESS
-- JIRA_TEST_TOKEN_SECRET
+Once you have access that jira instance, you will need to install the jira
+connector modules locally, create a jira backend and register it as a
+Connect App on the Atlassian marketplace, and then to install that app in your
+Jira Cloud instance. The process is explained in the README.rst of the
+connector_jira addon.
 
 From now on, you can write your tests using the ``recorder.use_cassette``
 decorator or context manager. If you are changing existing tests, you might
@@ -72,8 +49,8 @@ from odoo.addons.component.tests.common import TransactionComponentCase
 _logger = logging.getLogger(__name__)
 
 jira_test_url = os.environ.get("JIRA_TEST_URL", "http://jira:8080")
-jira_test_token_access = os.environ.get("JIRA_TEST_TOKEN_ACCESS", "")
-jira_test_token_secret = os.environ.get("JIRA_TEST_TOKEN_SECRET", "")
+# jira_test_token_access = os.environ.get("JIRA_TEST_TOKEN_ACCESS", "")
+# jira_test_token_secret = os.environ.get("JIRA_TEST_TOKEN_SECRET", "")
 
 
 def get_recorder(base_path=None, **kw):
@@ -107,9 +84,6 @@ class JiraTransactionComponentCase(TransactionComponentCase):
         cls.backend_record = cls.env.ref("connector_jira.jira_backend_demo")
         cls.backend_record.write(
             {
-                "uri": jira_test_url,
-                "access_token": jira_test_token_access,
-                "access_secret": jira_test_token_secret,
                 "epic_link_field_name": "customfield_10101",
             }
         )
