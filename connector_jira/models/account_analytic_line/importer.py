@@ -82,7 +82,7 @@ class AnalyticLineMapper(Component):
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_author_key, unwrap=True)
         if not user:
-            email = jira_author["emailAddress"]
+            email = jira_author.get("emailAddress", "<unknown>")
             raise MappingError(
                 _(
                     'No user found with login "%(jira_author_key)s" or email "%(email)s".'
@@ -217,6 +217,7 @@ class AnalyticLineImporter(Component):
         self.task_binding = None
         self.project_binding = None
         self.fallback_project = None
+        self.worklog_payload = None
 
     def _get_external_updated_at(self):
         assert self.external_record
@@ -255,7 +256,6 @@ class AnalyticLineImporter(Component):
                 jira_issue_id,
                 fields=self._issue_fields_to_read,
             )
-
             jira_project_id = issue["fields"]["project"]["id"]
             jira_issue_type_id = issue["fields"]["issuetype"]["id"]
             project_binding = project_matcher.find_project_binding(issue)
@@ -307,6 +307,8 @@ class AnalyticLineImporter(Component):
     def run(self, external_id, force=False, record=None, **kwargs):
         assert "issue_id" in kwargs
         self.external_issue_id = kwargs.pop("issue_id")
+        if "payload" in kwargs:
+            self.worklog_payload = kwargs.pop("payload")
         return super().run(external_id, force=force, record=record, **kwargs)
 
     def _handle_record_missing_on_jira(self):
@@ -328,9 +330,13 @@ class AnalyticLineImporter(Component):
             usage="backend.adapter", model_name="jira.project.task"
         )
         self.external_issue = issue_adapter.read(self.external_issue_id)
-        return self.backend_adapter.read(self.external_issue_id, self.external_id)
+        if self.worklog_payload is not None:
+            return self.worklog_payload
+        else:
+            return self.backend_adapter.read(self.external_issue_id, self.external_id)
 
     def _before_import(self):
+        # breakpoint()
         task_binding = self._recurse_import_task()
         if task_binding and task_binding.active:
             self.task_binding = task_binding

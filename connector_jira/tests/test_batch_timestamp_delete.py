@@ -20,7 +20,7 @@ class TestBatchTimestampDelete(JiraTransactionComponentCase):
     # will reject any call when you pretend to have a time too
     # different from now(). So adjust this date be rougly equal
     # to now().
-    @freeze_time("2019-04-08 14:13:10.325")
+    @freeze_time("2024-03-15 14:52:10.325")
     @recorder.use_cassette
     def test_delete_batch_timestamp_analytic_line(self):
         """Import all deleted worklogs since last timestamp"""

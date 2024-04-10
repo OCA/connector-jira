@@ -7,22 +7,23 @@ def migrate(cr, version):
 
 
 def remove_field_selection(cr):
-    query = """
-        DELETE FROM ir_model_data imd
-        USING ir_model_fields_selection fs, ir_model_fields f, ir_model m
-        WHERE imd.module='connector_jira'
-        AND imd.model='ir.model.fields.selection'
-        AND res_id=fs.id
-        AND f.model_id = m.id
-        AND m.name='jira.backend.auth'
-        AND fs.field_id=f.id;
-    """
-    cr.execute(query)
-    query = """
-        DELETE FROM ir_model_fields_selection
-        USING ir_model_fields f, ir_model m
-        WHERE f.model_id = m.id
-        AND m.name='jira.backend.auth'
-        AND field_id=f.id;
-    """
-    cr.execute(query)
+    queries = [
+        # delete xml ids of ir.model.fields.selections
+        "DELETE FROM ir_model_data imd "
+        "USING ir_model_fields_selection fs, ir_model_fields f, ir_model m "
+        "WHERE imd.module='connector_jira' "
+        "AND imd.model='ir.model.fields.selection' "
+        "AND res_id=fs.id "
+        "AND f.model_id = m.id "
+        "AND m.name='jira.backend.auth' "
+        "AND fs.field_id=f.id;",
+        # delete ir_model_fields_selection
+        "DELETE FROM ir_model_fields_selection "
+        "USING ir_model_fields f, ir_model m "
+        "WHERE f.model_id = m.id "
+        "AND m.name='jira.backend.auth' "
+        "AND field_id=f.id;",
+    ]
+
+    for query in queries:
+        cr.execute(query)
