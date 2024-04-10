@@ -23,7 +23,7 @@
             "requests-oauthlib>=1.1.0",
             "requests-toolbelt>=0.9.1",
             "requests-jwt>=0.6.0",
-            "pyjwt>=1.7.1,<2.9.0",
+            "PyJWT>=1.7.1,<2.9.0",
             "cryptography<37",
             "atlassian_jwt>=3.0.0",
         ],
