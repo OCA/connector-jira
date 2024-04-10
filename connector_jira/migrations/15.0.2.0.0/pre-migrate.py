@@ -23,6 +23,9 @@ def remove_field_selection(cr):
         "WHERE f.model_id = m.id "
         "AND m.name='jira.backend.auth' "
         "AND field_id=f.id;",
+        # delete ir.model
+        "DELETE from ir_model WHERE model='jira.backend.auth';",
+        "DROP TABLE jira_backend_auth",
     ]
 
     for query in queries:
