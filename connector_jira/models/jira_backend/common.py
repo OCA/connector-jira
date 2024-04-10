@@ -480,7 +480,7 @@ class JiraBackend(models.Model):
             "name": self.name,
             "description": "Connect your Odoo instance to Jira, manage linking "
             "Jira Cards with Odoo projects and tasks, and Tempo worklogs with Odoo "
-            "Timesheets",
+            f"Timesheets.\nBuilt for {self.name} ({self.application_key})",
             "vendor": {"name": "Camptocamp", "url": "https://www.camptocamp.com/"},
             "baseUrl": base_url,
             "authentication": {"type": "jwt"},
