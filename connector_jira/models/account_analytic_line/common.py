@@ -105,13 +105,11 @@ class JiraAccountAnalyticLine(models.Model):
             )
 
     @api.model
-    def import_record(self, backend, issue_id, worklog_id, force=False, payload=None):
+    def import_record(self, backend, issue_id, worklog_id, force=False):
         """Import a worklog from JIRA"""
         with backend.work_on(self._name) as work:
             importer = work.component(usage="record.importer")
-            return importer.run(
-                worklog_id, issue_id=issue_id, force=force, payload=payload
-            )
+            return importer.run(worklog_id, issue_id=issue_id, force=force)
 
     def force_reimport(self):
         for binding in self.sudo().mapped("jira_bind_ids"):
