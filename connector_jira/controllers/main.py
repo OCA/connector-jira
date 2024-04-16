@@ -111,7 +111,7 @@ class JiraWebhookController(http.Controller):
         else:
             env["jira.account.analytic.line"].with_delay(
                 description=_("Import a worklog from JIRA")
-            ).import_record(backend, issue_id, worklog_id, payload=payload)
+            ).import_record(backend, issue_id, worklog_id)
 
 
 class JiraConnectAppController(http.Controller):

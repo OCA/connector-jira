@@ -217,7 +217,6 @@ class AnalyticLineImporter(Component):
         self.task_binding = None
         self.project_binding = None
         self.fallback_project = None
-        self.worklog_payload = None
 
     def _get_external_updated_at(self):
         assert self.external_record
@@ -307,8 +306,6 @@ class AnalyticLineImporter(Component):
     def run(self, external_id, force=False, record=None, **kwargs):
         assert "issue_id" in kwargs
         self.external_issue_id = kwargs.pop("issue_id")
-        if "payload" in kwargs:
-            self.worklog_payload = kwargs.pop("payload")
         return super().run(external_id, force=force, record=record, **kwargs)
 
     def _handle_record_missing_on_jira(self):
@@ -330,13 +327,9 @@ class AnalyticLineImporter(Component):
             usage="backend.adapter", model_name="jira.project.task"
         )
         self.external_issue = issue_adapter.read(self.external_issue_id)
-        if self.worklog_payload is not None:
-            return self.worklog_payload
-        else:
-            return self.backend_adapter.read(self.external_issue_id, self.external_id)
+        return self.backend_adapter.read(self.external_issue_id, self.external_id)
 
     def _before_import(self):
-        # breakpoint()
         task_binding = self._recurse_import_task()
         if task_binding and task_binding.active:
             self.task_binding = task_binding
