@@ -1,0 +1,50 @@
+<odoo>
+    <record model="webservice.backend" id="tempo_timesheet_other_location_ws">
+        <field name="name">Tempo Timesheets (other locations)</field>
+        <field name="tech_name">tempo-other</field>
+        <field name="protocol">http</field>
+        <field name="content_type">application/json</field>
+        <field name="url">https://api.tempo.io/4</field>
+        <field name="auth_type">oauth2</field>
+        <field
+            name="oauth2_authorization_url"
+        >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
+        <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
+        <field name="oauth2_flow">authorization_code</field>
+        <field name="oauth2_clientid">Fill with Server Env</field>
+        <field name="oauth2_client_secret">Fill with Server Env</field>
+        <field name="oauth2_scope">read write</field>
+    </record>
+    <record model="webservice.backend" id="tempo_timesheet_europe_ws">
+        <field name="name">Tempo Timesheets (Europe)</field>
+        <field name="tech_name">tempo-eu</field>
+        <field name="protocol">http</field>
+        <field name="content_type">application/json</field>
+        <field name="url">https://api.eu.tempo.io/4</field>
+        <field name="auth_type">oauth2</field>
+        <field name="oauth2_flow">authorization_code</field>
+        <field
+            name="oauth2_authorization_url"
+        >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
+        <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
+        <field name="oauth2_clientid">Fill with Server Env</field>
+        <field name="oauth2_client_secret">Fill with Server Env</field>
+        <field name="oauth2_scope">read write</field>
+    </record>
+    <record model="webservice.backend" id="tempo_timesheet_usa_ws">
+        <field name="name">Tempo Timesheets (USA)</field>
+        <field name="tech_name">tempo-usa</field>
+        <field name="protocol">http</field>
+        <field name="content_type">application/json</field>
+        <field name="url">https://api.tempo.io/4</field>
+        <field name="auth_type">oauth2</field>
+        <field name="oauth2_flow">authorization_code</field>
+        <field
+            name="oauth2_authorization_url"
+        >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
+        <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
+        <field name="oauth2_clientid">Fill with Server Env</field>
+        <field name="oauth2_client_secret">Fill with Server Env</field>
+        <field name="oauth2_scope">read write</field>
+    </record>
+</odoo>
