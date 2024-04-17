@@ -13,6 +13,6 @@
     "installable": True,
     "application": False,
     "summary": "Base for JIRA Connector Tempo",
-    "depends": ["connector_jira"],
-    "data": ["views/jira_backend.xml"],
+    "depends": ["connector_jira", "webservice"],
+    "data": ["views/jira_backend.xml", "data/webservice_backend.xml"],
 }
