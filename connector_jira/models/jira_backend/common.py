@@ -405,15 +405,16 @@ class JiraBackend(models.Model):
         result = self.env["res.users"].search([]).link_with_jira(backends=self)
         for __, bknd_result in result.items():
             if bknd_result.get("error"):
-                self.report_user_sync = self.env.ref(
-                    "connector_jira.backend_report_user_sync"
-                ).render({"backend": self, "result": bknd_result})
+                self.report_user_sync = self.env["ir.ui.view"]._render_template(
+                    "connector_jira.backend_report_user_sync",
+                    {"backend": self, "result": bknd_result},
+                )
         return True
 
     def get_user_resolution_order(self):
-        """User resolution should happen by accountId first as it's unique, while
-        resolving by email is likely to give false positives"""
-        return ["accountId", "login", "email"]
+        return [
+            "email",
+        ]
 
     def import_issue_type(self):
         self.env["jira.issue.type"].import_batch(self)
