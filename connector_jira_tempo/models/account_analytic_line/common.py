@@ -54,7 +54,7 @@ class WorklogAdapter(Component):
         response = backend.call(
             "get",
             url_params={
-                "endpoint": f"timesheet-approval?teamId={team_id}&from={period_start}"
+                "endpoint": f"timesheet-approvals/team/{team_id}?from={period_start}"
             },
         )
         return json.loads(response)

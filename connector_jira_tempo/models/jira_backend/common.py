@@ -61,26 +61,24 @@ class JiraBackend(models.Model):
         team_id = self.jira_company_team_id
         with self.work_on("jira.account.analytic.line") as work:
             importer = work.component(usage="backend.adapter")
-            result = importer.tempo_timesheets_approval_read_status_by_team(
+            response = importer.tempo_timesheets_approval_read_status_by_team(
                 team_id,
                 period_start,
             )
             user_binder = importer.binder_for("jira.res.users")
-        # Pick the date range from the Tempo period.
-        # In this way we make sure we affect only the dates we want.
-        date_from = result["period"]["dateFrom"]
-        date_to = result["period"]["dateTo"]
-        approvals = result.get("approvals", [])
         mapping = defaultdict(list)
-        for entry in approvals:
-            user_data = entry["user"]
+        for result in response["results"]:
+            date_from = result["period"]["from"]
+            date_to = result["period"]["to"]
+            user_data = result["user"]
             try:
                 user = user_binder.to_internal(user_data["accountId"], unwrap=True)
             except ValueError:
                 _logger.error("User %(key)s not found" % user_data)
                 continue
-            mapping[entry["status"]].append(user.id)
-        for state, user_ids in mapping.items():
+            status = result["status"]["key"].lower()
+            mapping[(date_from, date_to, status)].append(user.id)
+        for (date_from, date_to, state), user_ids in mapping.items():
             self._update_ts_line_status(date_from, date_to, state, user_ids)
 
     def _update_ts_line_status(self, date_from, date_to, state, user_ids):
