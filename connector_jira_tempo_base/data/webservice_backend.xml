@@ -4,7 +4,7 @@
         <field name="tech_name">tempo-other</field>
         <field name="protocol">http</field>
         <field name="content_type">application/json</field>
-        <field name="url">https://api.tempo.io/4</field>
+        <field name="url">https://api.tempo.io/4/{endpoint}</field>
         <field name="auth_type">oauth2</field>
         <field
             name="oauth2_authorization_url"
@@ -20,7 +20,7 @@
         <field name="tech_name">tempo-eu</field>
         <field name="protocol">http</field>
         <field name="content_type">application/json</field>
-        <field name="url">https://api.eu.tempo.io/4</field>
+        <field name="url">https://api.eu.tempo.io/4/{endpoint}</field>
         <field name="auth_type">oauth2</field>
         <field name="oauth2_flow">authorization_code</field>
         <field
@@ -36,7 +36,7 @@
         <field name="tech_name">tempo-usa</field>
         <field name="protocol">http</field>
         <field name="content_type">application/json</field>
-        <field name="url">https://api.tempo.io/4</field>
+        <field name="url">https://api.tempo.io/4/{endpoint}</field>
         <field name="auth_type">oauth2</field>
         <field name="oauth2_flow">authorization_code</field>
         <field
