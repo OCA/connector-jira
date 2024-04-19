@@ -81,7 +81,7 @@ class ResUsers(models.Model):
                                 "key": resolve_by_key,
                                 "value": resolve_by_value,
                                 "error": "multiple_found",
-                                "detail": [x.key for x in jira_user],
+                                "detail": [x.accountId for x in jira_user],
                             }
                         )
                         continue
@@ -94,7 +94,7 @@ class ResUsers(models.Model):
                         .search(
                             [
                                 ("backend_id", "=", backend.id),
-                                ("external_id", "=", jira_user.key),
+                                ("external_id", "=", jira_user.accountId),
                                 ("odoo_id", "!=", user.id),
                             ]
                         )
@@ -114,12 +114,12 @@ class ResUsers(models.Model):
                         binding = self.env["jira.res.users"].create(
                             {"backend_id": backend.id, "odoo_id": user.id}
                         )
-                        binder.bind(jira_user.key, binding)
+                        binder.bind(jira_user.accountId, binding)
                         bknd_result["success"].append(
                             {
                                 "key": "login",
                                 "value": user.login,
-                                "detail": jira_user.key,
+                                "detail": jira_user.accountId,
                             }
                         )
 
@@ -152,15 +152,15 @@ class UserAdapter(Component):
         :param fragment: a string to match usernames, name or email against.
         """
         users = self.client.search_users(
-            fragment, maxResults=None, includeActive=True, includeInactive=True
+            query=fragment, maxResults=None, includeActive=True, includeInactive=True
         )
 
-        # User 'key' is unique and if same key appears several times, it means
+        # User 'accountId' is unique and if same key appears several times, it means
         # that same user is present in multiple User Directories
         users = list(
             map(
                 lambda group: list(group[1])[0],
-                groupby(users, key=lambda user: user.key),
+                groupby(users, key=lambda user: user.accountId),
             )
         )
 
