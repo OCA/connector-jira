@@ -15,8 +15,12 @@ class AccountAnalyticLine(models.Model):
     jira_tempo_status = fields.Selection(
         selection=[
             ("approved", "Approved"),
-            ("waiting_for_approval", "Waiting for approval"),
-            ("ready_to_submit", "Ready to submit"),
+            ("in_review", "In Review"),
+            (
+                "waiting_for_approval",
+                "Waiting for approval",
+            ),  # no longer used on cloud version
+            ("ready_to_submit", "Ready to submit"),  # no longer used on cloud version
             ("open", "Open"),
         ]
     )
