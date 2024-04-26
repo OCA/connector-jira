@@ -614,6 +614,8 @@ class JiraBackend(models.Model):
             "JWT "
         ), "unexpected content in Authorization header"
         jwt_token = authorization_header[4:]
+        # see https://developer.atlassian.com/cloud/jira/software/understanding-jwt/
+        # for more info
         decoded = jwt.decode(
             jwt_token,
             self.private_key,
@@ -622,10 +624,13 @@ class JiraBackend(models.Model):
             issuer=self.public_key,
             options={
                 "require": [
-                    "exp",
-                    "iss",
-                    "sub",
-                    "qsh",
+                    "iss",  # issuer of the claim
+                    "exp",  # expiration time
+                    "iat",  # issued at time
+                    "qsh",  # query string hash
+                    # sub: is optional
+                    # aud: is optional
+                    # context: is optional
                 ]
             },
         )
