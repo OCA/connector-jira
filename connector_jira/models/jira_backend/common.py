@@ -558,7 +558,7 @@ class JiraBackend(models.Model):
         self.search([]).delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
-        return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
+        return urllib.parse.urljoin(self.uri, f"/browse/{jira_issue_id}")
 
 
 class JiraBackendTimestamp(models.Model):

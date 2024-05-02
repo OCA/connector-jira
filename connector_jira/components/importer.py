@@ -179,7 +179,7 @@ class JiraImporter(Component):
         return map_record.values(
             for_create=True,
             external_updated_at=self._get_external_updated_at(),
-            **kwargs
+            **kwargs,
         )
 
     @contextmanager

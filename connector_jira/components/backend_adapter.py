@@ -61,7 +61,7 @@ class JiraAdapter(Component):
         try:
             r_json = jira.utils.json_loads(r)
         except ValueError as e:
-            logging.error("{}\n{}".format(e, r.text))
+            logging.error(f"{e}\n{r.text}")
             raise e
         return r_json
 
@@ -76,12 +76,7 @@ class JiraAdapter(Component):
             yield
         except jira.exceptions.JIRAError as err:
             if err.status_code == 404:
-                raise IDMissingInBackend(
-                    "{} (url: {})".format(
-                        err.text,
-                        err.url,
-                    )
-                ) from err
+                raise IDMissingInBackend(f"{err.text} (url: {err.url})") from err
             raise
 
     @contextmanager

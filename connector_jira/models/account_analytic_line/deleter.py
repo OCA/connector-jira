@@ -67,7 +67,7 @@ class AnalyticLineBatchDeleter(Component):
         """Delay the delete of the records"""
         self.model.with_delay(
             description=_("Delete a local worklog which has " "been deleted on JIRA"),
-            **kwargs
+            **kwargs,
         ).delete_record(
             self.backend_record,
             record_id,

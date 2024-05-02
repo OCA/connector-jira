@@ -90,7 +90,7 @@ class JiraBackendAuth(models.TransientModel):
         )
         try:
             req = requests.post(
-                "{}/{}/request-token".format(self.backend_id.uri, self.OAUTH_BASE),
+                f"{self.backend_id.uri}/{self.OAUTH_BASE}/request-token",
                 verify=self.backend_id.verify_ssl,
                 auth=oauth_hook,
             )
@@ -137,7 +137,7 @@ class JiraBackendAuth(models.TransientModel):
         )
         try:
             req = requests.post(
-                "{}/{}/access-token".format(self.backend_id.uri, self.OAUTH_BASE),
+                f"{self.backend_id.uri}/{self.OAUTH_BASE}/access-token",
                 verify=self.backend_id.verify_ssl,
                 auth=oauth_hook,
             )

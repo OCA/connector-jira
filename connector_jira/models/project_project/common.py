@@ -99,8 +99,8 @@ class JiraProjectProject(models.Model):
     def _add_sql_constraints(self):
         # we replace the sql constraint by a python one
         # to include the organizations
-        for (key, definition, _msg) in self._sql_constraints:
-            conname = "{}_{}".format(self._table, key)
+        for key, definition, _msg in self._sql_constraints:
+            conname = f"{self._table}_{key}"
             if key == "jira_binding_uniq":
                 has_definition = tools.constraint_definition(
                     self.env.cr, self._table, conname
@@ -256,7 +256,7 @@ class ProjectProject(models.Model):
         for project in self:
             project_id, name = super(ProjectProject, project).name_get()[0]
             if project.jira_key:
-                name = "[{}] {}".format(project.jira_key, name)
+                name = f"[{project.jira_key}] {name}"
             names.append((project_id, name))
         return names
 
@@ -289,7 +289,6 @@ class ProjectProject(models.Model):
 
 
 class ProjectAdapter(Component):
-
     _name = "jira.project.adapter"
     _inherit = ["jira.webservice.adapter"]
     _apply_on = ["jira.project.project"]

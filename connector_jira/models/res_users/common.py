@@ -105,7 +105,7 @@ class ResUsers(models.Model):
                                 "key": resolve_by_key,
                                 "value": resolve_by_value,
                                 "error": "other_user_bound",
-                                "detail": "linked with {}".format(existing.login),
+                                "detail": f"linked with {existing.login}",
                             }
                         )
                         continue

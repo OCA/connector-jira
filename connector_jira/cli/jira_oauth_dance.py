@@ -62,7 +62,7 @@ class JiraOauthDance(Command):
         if backend_id:
             backend = env["jira.backend"].browse(backend_id)
             if not backend.exists():
-                die("no backend with id found {}".format(backend_id))
+                die(f"no backend with id found {backend_id}")
         else:
             backend = env.ref(
                 "connector_jira.jira_backend_demo", raise_if_not_found=False
@@ -111,9 +111,9 @@ class JiraOauthDance(Command):
             print()
             print("That's all folks! Keep these tokens for your tests:")
             print()
-            print('JIRA_TEST_URL="{}"'.format(backend.uri))
-            print('JIRA_TEST_TOKEN_ACCESS="{}"'.format(backend.access_token))
-            print('JIRA_TEST_TOKEN_SECRET="{}"'.format(backend.access_secret))
+            print(f'JIRA_TEST_URL="{backend.uri}"')
+            print(f'JIRA_TEST_TOKEN_ACCESS="{backend.access_token}"')
+            print(f'JIRA_TEST_TOKEN_SECRET="{backend.access_secret}"')
 
     def run(self, cmdargs):
         parser = argparse.ArgumentParser(
