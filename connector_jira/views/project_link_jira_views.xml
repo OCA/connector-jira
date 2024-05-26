@@ -21,10 +21,7 @@
                         <field name="sync_action" widget="radio" />
                     </group>
                 </group>
-                <group
-                    name="issue_types"
-                    invisible="state != 'issue_types'"
-                >
+                <group name="issue_types" invisible="state != 'issue_types'">
                     <field name="sync_issue_type_ids" widget="many2many_checkboxes" />
                     <div colspan="2">
                         <p class="oe_grey oe_inline">
@@ -43,10 +40,7 @@
                         </p>
                     </div>
                 </group>
-                <group
-                    name="export_config"
-                    invisible="state != 'export_config'"
-                >
+                <group name="export_config" invisible="state != 'export_config'">
                     <group>
                         <field name="project_template" />
                         <field

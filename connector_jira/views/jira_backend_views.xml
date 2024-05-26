@@ -41,7 +41,7 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-                    <field name="state" invisible="1"/>
+                    <field name="state" invisible="1" />
                     <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
@@ -76,7 +76,11 @@
                         </group>
                     </group>
                     <notebook>
-                        <page name="import" string="Imports" invisible="state != 'running'">
+                        <page
+                            name="import"
+                            string="Imports"
+                            invisible="state != 'running'"
+                        >
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                 you will initiate the synchronizations
@@ -298,7 +302,11 @@
                                 </p>
                             </group>
                         </page>
-                        <page name="issue_type" string="Issue Types" invisible="state != 'running'">
+                        <page
+                            name="issue_type"
+                            string="Issue Types"
+                            invisible="state != 'running'"
+                        >
                             <field name="issue_type_ids">
                                 <tree create="0" delete="0" edit="0">
                                     <field name="name" />

@@ -61,11 +61,11 @@ or record the tests again (in such case, IDs may change).
 
 import logging
 import os
-import requests
 from contextlib import contextmanager
 from os.path import dirname, join
 from unittest import mock
 
+import requests
 from vcr import VCR
 
 from odoo.addons.component.tests.common import TransactionComponentCase

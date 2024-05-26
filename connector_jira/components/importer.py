@@ -489,8 +489,13 @@ class TimestampBatchImporter(AbstractComponent):
 
         number = self._handle_records(records, force=force)
 
-        return _("Batch from {} UTC to {} UTC generated {} imports").format(
-            original_timestamp_value, next_timestamp_value, number
+        return _(
+            "Batch from {original_timestamp_value} UTC to "
+            "{next_timestamp_value} UTC generated {number} imports"
+        ).format(
+            original_timestamp_value=original_timestamp_value,
+            next_timestamp_value=next_timestamp_value,
+            number=number,
         )
 
     def _handle_records(self, records, force=False):

@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, exceptions, fields, models
-from odoo.osv import expression
 
 from odoo.addons.component.core import Component
 
@@ -156,13 +155,15 @@ class ProjectTask(models.Model):
 
     @api.depends("jira_compound_key")
     def _compute_display_name(self):
-        super()._compute_display_name()
+        res = super()._compute_display_name()
 
         for rec in self:
             if not rec.jira_compound_key:
                 continue
 
             rec.display_name = f"[{rec.jira_compound_key}] {rec.display_name}"
+
+        return res
 
     @api.model
     def _get_connector_jira_fields(self):

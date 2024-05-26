@@ -8,7 +8,6 @@ import re
 import tempfile
 
 from odoo import _, api, exceptions, fields, models, tools
-from odoo.osv import expression
 
 from odoo.addons.component.core import Component
 
@@ -254,13 +253,15 @@ class ProjectProject(models.Model):
 
     @api.depends("jira_key")
     def _compute_display_name(self):
-        super()._compute_display_name()
+        res = super()._compute_display_name()
 
         for rec in self:
             if not rec.jira_key:
                 continue
 
             rec.display_name = f"[{rec.jira_key}] {rec.display_name}"
+
+        return res
 
     def create_and_link_jira(self):
         action_link = self.env.ref("connector_jira.open_project_link_jira")
@@ -346,7 +347,7 @@ class ProjectAdapter(Component):
         if self.logging:
             logging.error(
                 "Unexpected result while running create shared project."
-                "Server response saved in %s for further investigation "
-                "[HTTP response=%s]." % (f.name, r.status_code)
+                f"Server response saved in {f.name} for further investigation "
+                f"[HTTP response={r.status_code}]."
             )
         return False

@@ -249,6 +249,10 @@ Contributors
 
       -  Son Ho <sonhd@trobz.com>
 
+-  `Avoin.Systems <https://avoin.systems>`__:
+
+      -  Nedas Žilinskas <nedas.zilinskas@avoin.systems>
+
 Maintainers
 -----------
 

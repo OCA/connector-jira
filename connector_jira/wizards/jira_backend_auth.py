@@ -93,6 +93,7 @@ class JiraBackendAuth(models.TransientModel):
                 f"{self.backend_id.uri}/{self.OAUTH_BASE}/request-token",
                 verify=self.backend_id.verify_ssl,
                 auth=oauth_hook,
+                timeout=10,
             )
         except requests.exceptions.SSLError as err:
             raise exceptions.UserError(
@@ -118,8 +119,11 @@ class JiraBackendAuth(models.TransientModel):
             {
                 "request_token": token,
                 "request_secret": secret,
-                "auth_uri": "%s/%s/authorize?oauth_token=%s"
-                % (self.backend_id.uri, self.OAUTH_BASE, token),
+                "auth_uri": (
+                    f"{self.backend_id.uri}"
+                    f"/{self.OAUTH_BASE}"
+                    f"/authorize?oauth_token={token}"
+                ),
             }
         )
         self.state = "leg_2"
@@ -140,6 +144,7 @@ class JiraBackendAuth(models.TransientModel):
                 f"{self.backend_id.uri}/{self.OAUTH_BASE}/access-token",
                 verify=self.backend_id.verify_ssl,
                 auth=oauth_hook,
+                timeout=10,
             )
         except requests.exceptions.SSLError as err:
             raise exceptions.UserError(

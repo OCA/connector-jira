@@ -25,18 +25,12 @@
                     text_field="jira_compound_key"
                     invisible="not jira_bind_ids"
                 />
-                <field
-                    name="jira_issue_type"
-                    invisible="not jira_bind_ids"
-                />
+                <field name="jira_issue_type" invisible="not jira_bind_ids" />
                 <field
                     name="jira_epic_link_task_id"
                     invisible="not jira_epic_link_task_id"
                 />
-                <field
-                    name="jira_parent_task_id"
-                    invisible="jira_parent_task_id"
-                />
+                <field name="jira_parent_task_id" invisible="jira_parent_task_id" />
             </field>
         </field>
     </record>
@@ -118,10 +112,7 @@
         <field name="arch" type="xml">
             <form string="Jira Issue">
                 <group>
-                    <field
-                        name="backend_id"
-                        readonly="not external_id"
-                    />
+                    <field name="backend_id" readonly="not external_id" />
                     <field name="external_id" />
                     <field name="jira_key" />
                     <field name="jira_issue_type_id" />

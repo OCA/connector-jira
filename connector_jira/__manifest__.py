@@ -12,8 +12,7 @@
         "hr_timesheet",
         "queue_job",
         "web",
-        # Not yet migrated but not essential for integration
-        # "web_widget_url_advanced",
+        "web_widget_url_advanced",
         "multi_step_wizard",
     ],
     "external_dependencies": {

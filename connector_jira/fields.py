@@ -58,6 +58,6 @@ class MilliDatetime(fields.Field):
             return False
         if isinstance(value, date) and not isinstance(value, datetime):
             raise TypeError(
-                "%s (field %s) must be string or datetime" ", not date." % (value, self)
+                f"{value} (field {self}) must be string or datetime, not date."
             )
         return self.from_string(value)

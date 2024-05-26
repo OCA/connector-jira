@@ -39,8 +39,14 @@ class AnalyticLineBatchDeleter(Component):
 
         number = self._handle_records(records)
 
-        return _("Batch from {} UTC to {} UTC " "generated {} delete jobs").format(
-            original_timestamp_value, next_timestamp_value, number
+        return _(
+            "Batch from {original_timestamp_value} UTC to"
+            " {next_timestamp_value} UTC "
+            "generated {number} delete jobs"
+        ).format(
+            original_timestamp_value=original_timestamp_value,
+            next_timestamp_value=next_timestamp_value,
+            number=number,
         )
 
     def _handle_records(self, records):

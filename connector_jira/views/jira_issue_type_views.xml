@@ -8,10 +8,7 @@
                 <group>
                     <field name="name" />
                     <field name="description" />
-                    <field
-                        name="backend_id"
-                        readonly="not external_id"
-                    />
+                    <field name="backend_id" readonly="not external_id" />
                     <field name="external_id" />
                 </group>
             </form>

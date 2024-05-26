@@ -29,14 +29,8 @@
             <form string="Jira Project">
                 <group>
                     <field name="jira_key" />
-                    <field
-                        name="backend_id"
-                        readonly="external_id"
-                    />
-                    <field
-                        name="project_template"
-                        readonly="external_id"
-                    />
+                    <field name="backend_id" readonly="external_id" />
+                    <field name="project_template" readonly="external_id" />
                     <field
                         name="project_template_shared"
                         readonly="external_id"
