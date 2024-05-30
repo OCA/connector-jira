@@ -11,8 +11,8 @@ class AnalyticLineMapper(Component):
 
     @mapping
     def tempo_timesheets_approval(self, record):
-        approval = record["_tempo_timesheets_approval"]
+        approval = record.get("_tempo_timesheets_approval", {"status": {"key": "OPEN"}})
         values = {
-            "jira_tempo_status": approval["status"],
+            "jira_tempo_status": approval["status"]["key"].lower(),
         }
         return values

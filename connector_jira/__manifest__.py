@@ -2,7 +2,7 @@
 
 {
     "name": "JIRA Connector",
-    "version": "15.0.1.0.1",
+    "version": "15.0.2.0.0",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Connector",
@@ -17,19 +17,20 @@
     ],
     "external_dependencies": {
         "python": [
-            "requests",
-            "jira",
-            "oauthlib",
-            "requests-oauthlib",
-            "requests-toolbelt",
-            "PyJWT",
-            "cryptography",
+            "requests>=2.21.0",
+            "jira>=2.0.0",
+            "oauthlib>=2.1.0",
+            "requests-oauthlib>=1.1.0",
+            "requests-toolbelt>=0.9.1",
+            "requests-jwt>=0.6.0",
+            "PyJWT>=1.7.1,<2.9.0",
+            "cryptography<37",
+            "atlassian_jwt>=3.0.0",
         ],
     },
     "website": "https://github.com/OCA/connector-jira",
     "data": [
         "views/jira_menus.xml",
-        "wizards/jira_backend_auth_views.xml",
         "views/project_link_jira_views.xml",
         "views/task_link_jira_views.xml",
         "views/jira_backend_views.xml",

@@ -1,6 +1,8 @@
 # Copyright 2019 Camptocamp SA
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+import datetime
+import json
 
 from odoo import fields, models
 
@@ -13,8 +15,12 @@ class AccountAnalyticLine(models.Model):
     jira_tempo_status = fields.Selection(
         selection=[
             ("approved", "Approved"),
-            ("waiting_for_approval", "Waiting for approval"),
-            ("ready_to_submit", "Ready to submit"),
+            ("in_review", "In Review"),
+            (
+                "waiting_for_approval",
+                "Waiting for approval",
+            ),  # no longer used on cloud version
+            ("ready_to_submit", "Ready to submit"),  # no longer used on cloud version
             ("open", "Open"),
         ]
     )
@@ -34,26 +40,25 @@ class WorklogAdapter(Component):
         return worklog
 
     def tempo_timesheets_approval_read(self, worklog):
-        url = self._tempo_timesheets_get_url("timesheet-approval/current")
-        with self.handle_404():
-            response = self.client._session.get(
-                url,
-                params={
-                    "username": worklog["author"]["name"],
-                },  # noqa
-            )
-        return response.json()
+        backend = self._tempo_timesheets_get_webservice()
+        account_id = worklog["author"]["accountId"]
+        period_start = datetime.date.today().isoformat()
+        response = backend.call(
+            "get",
+            url_params={
+                "endpoint": f"timesheet-approvals/user/{account_id}?from={period_start}"
+            },
+        )
+        return json.loads(response)
 
     def tempo_timesheets_approval_read_status_by_team(
         self, team_id, period_start
     ):  # noqa
-        url = self._tempo_timesheets_get_url("timesheet-approval")
-        with self.handle_404():
-            response = self.client._session.get(
-                url,
-                params={
-                    "teamId": team_id,
-                    "periodStartDate": period_start,
-                },  # noqa
-            )
-        return response.json()
+        backend = self._tempo_timesheets_get_webservice()
+        response = backend.call(
+            "get",
+            url_params={
+                "endpoint": f"timesheet-approvals/team/{team_id}?from={period_start}"
+            },
+        )
+        return json.loads(response)

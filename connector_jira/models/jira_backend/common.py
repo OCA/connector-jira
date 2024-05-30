@@ -3,20 +3,20 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-import binascii
-import json
 import logging
 import urllib.parse
 from contextlib import closing, contextmanager
 from datetime import datetime
-from os import urandom
 
+import jwt
 import psycopg2
 import pytz
 import requests
+from atlassian_jwt import url_utils
 
 import odoo
 from odoo import _, api, exceptions, fields, models, tools
+from odoo.tools import config
 
 from odoo.addons.component.core import Component
 
@@ -28,14 +28,11 @@ JIRA_TIMEOUT = 30  # seconds
 
 try:
     from jira import JIRA, JIRAError
-    from jira.utils import json_loads
 except ImportError as err:
     _logger.debug(err)
 
 try:
-    from cryptography.hazmat.backends import default_backend
-    from cryptography.hazmat.primitives import serialization
-    from cryptography.hazmat.primitives.asymmetric import rsa
+    pass
 except ImportError as err:
     _logger.debug(err)
 
@@ -64,12 +61,33 @@ class JiraBackend(models.Model):
     RSA_PUBLIC_EXPONENT = 65537
     KEY_LEN = 255  # 255 == max Atlassian db col len
 
-    def _default_consumer_key(self):
-        """Generate a rnd consumer key of length self.KEY_LEN"""
-        return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
+    # def _default_consumer_key(self):
+    #     """Generate a rnd consumer key of length self.KEY_LEN"""
+    #     return binascii.hexlify(urandom(self.KEY_LEN))[: self.KEY_LEN]
 
-    uri = fields.Char(string="Jira URI", required=True)
-    name = fields.Char()
+    uri = fields.Char(
+        string="Jira URI",
+        readonly=True,
+        help="the value is provided when the app is installed on Jira Cloud.",
+    )
+    name = fields.Char(
+        size=60,
+        help="Display name of the app on the Atlassian Marketplace. Max 60 chars.",
+    )
+    app_descriptor_url = fields.Char(
+        string="App Descriptor URL",
+        help="URL to use when registering the backend as an app on the marketplace",
+        compute="_compute_app_descriptor_url",
+    )
+    display_url = fields.Char(
+        help="Url used for the Jira app in messages", readonly=True
+    )
+    application_key = fields.Char(
+        compute="_compute_application_key",
+        store=True,
+        help="The name that will be used as application key to register the app on the "
+        "Atlassian marketplace website. It has to be unique among all apps on the marketplace.",
+    )
     company_id = fields.Many2one(
         comodel_name="res.company",
         string="Company",
@@ -105,32 +123,26 @@ class JiraBackend(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ("authenticate", "Authenticate"),
+            # ("authenticate", "Authenticate"),
             ("setup", "Setup"),
             ("running", "Running"),
         ],
-        default="authenticate",
+        default="setup",
         required=True,
         readonly=True,
+        help="State of the Backend.\n"
+        "Setup: in this state you can register the backend on "
+        "https://marketplace.atlassian.com/ as an app, using the app descriptor url.\n"
+        "Running: when you have installed the backend on a Jira cloud instance "
+        "(transition is automatic).",
     )
-    private_key = fields.Text(
+    private_key = fields.Char(
         readonly=True,
         groups="connector.group_connector_manager",
+        help="The shared secret for JWT, provided at app installation",
     )
-    public_key = fields.Text(readonly=True)
-    consumer_key = fields.Char(
-        default=lambda self: self._default_consumer_key(),
-        readonly=True,
-        groups="connector.group_connector_manager",
-    )
-
-    access_token = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
-    )
-    access_secret = fields.Char(
-        readonly=True,
-        groups="connector.group_connector_manager",
+    public_key = fields.Text(
+        readonly=True, help="The Client Key for JWT, provided at app installation"
     )
 
     verify_ssl = fields.Boolean(default=True, string="Verify SSL?")
@@ -143,13 +155,6 @@ class JiraBackend(models.Model):
     )
     project_template_shared = fields.Char(
         string="Default Shared Template Key",
-    )
-
-    use_webhooks = fields.Boolean(
-        readonly=True,
-        help="Webhooks need to be configured on the Jira instance. "
-        "When activated, synchronization from Jira is blazing fast. "
-        "It can be activated only on one Jira backend at a time. ",
     )
 
     import_project_task_from_date = fields.Datetime(
@@ -194,20 +199,27 @@ class JiraBackend(models.Model):
         "to fill the epic field with itself on Odoo.",
     )
 
-    odoo_webhook_base_url = fields.Char(
-        string="Base Odoo URL for Webhooks",
-        default=lambda self: self._default_odoo_webhook_base_url(),
-    )
-    webhook_issue_jira_id = fields.Char()
-    webhook_worklog_jira_id = fields.Char()
     # TODO: use something better to show this info
     # For instance, we could use web_notify to simply show a system msg.
     report_user_sync = fields.Html(readonly=True)
 
-    @api.model
-    def _default_odoo_webhook_base_url(self):
-        params = self.env["ir.config_parameter"]
-        return params.get_param("web.base.url", "")
+    @api.model_create_multi
+    @api.returns("self", lambda value: value.id)
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._compute_application_key()
+        return records
+
+    def _compute_application_key(self):
+        db_name = config["db_name"]
+        for rec in self:
+            rec.application_key = f"odoo-jira-connector-{db_name}-{rec.id}"
+
+    def _compute_app_descriptor_url(self):
+        base_url = self._get_base_url()
+
+        for rec in self:
+            rec.app_descriptor_url = f"{base_url}/jira/{rec.id}/app-descriptor.json"
 
     @api.model
     def _selection_project_template(self):
@@ -315,38 +327,7 @@ class JiraBackend(models.Model):
             self, timestamp, force=force
         )
 
-    @api.constrains("use_webhooks")
-    def _check_use_webhooks_unique(self):
-        if len(self.search([("use_webhooks", "=", True)])) > 1:
-            raise exceptions.ValidationError(
-                _("Only one backend can listen to webhooks")
-            )
-
-    @api.model
-    def create(self, values):
-        record = super().create(values)
-        record.create_rsa_key_vals()
-        return record
-
-    def create_rsa_key_vals(self):
-        """Create public/private RSA keypair"""
-        for backend in self:
-            private_key = rsa.generate_private_key(
-                public_exponent=self.RSA_PUBLIC_EXPONENT,
-                key_size=self.RSA_BITS,
-                backend=default_backend(),
-            )
-            pem = private_key.private_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption(),
-            )
-            public_pem = private_key.public_key().public_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo,
-            )
-            backend.write({"private_key": pem, "public_key": public_pem})
-
+    # XXX check this
     def button_setup(self):
         self.state_running()
 
@@ -362,83 +343,17 @@ class JiraBackend(models.Model):
                 elif custom_ref == "com.pyxis.greenhopper.jira:gh-epic-label":
                     self.epic_name_field_name = field["id"]
 
+    # XXX check this
     def state_setup(self):
         for backend in self:
             if backend.state == "authenticate":
                 backend.state = "setup"
 
+    # XXX check this
     def state_running(self):
         for backend in self:
             if backend.state == "setup":
                 backend.state = "running"
-
-    def create_webhooks(self):
-        self.ensure_one()
-        other_using_webhook = self.search(
-            [("use_webhooks", "=", True), ("id", "!=", self.id)]
-        )
-        if other_using_webhook:
-            raise exceptions.UserError(
-                _(
-                    "Only one JIRA backend can use the webhook at a time. "
-                    'You must disable them on the backend "%s" before '
-                    "activating them here."
-                )
-                % (other_using_webhook.name,)
-            )
-
-        # open a new cursor because we'll commit after the creations
-        # to be sure to keep the webhook ids
-        with new_env(self.env) as env:
-            backend = env[self._name].browse(self.id)
-            base_url = backend.odoo_webhook_base_url
-            if not base_url:
-                raise exceptions.UserError(_("The Odoo Webhook base URL must be set."))
-
-            with self.work_on("jira.backend") as work:
-                backend.use_webhooks = True
-
-                adapter = work.component(usage="backend.adapter")
-                # TODO: we could update the JQL of the webhook
-                # each time a new project is sync'ed, so we would
-                # filter out the useless events
-                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/issue")
-                webhook = adapter.create_webhook(
-                    name="Odoo Issues",
-                    url=url,
-                    events=[
-                        "jira:issue_created",
-                        "jira:issue_updated",
-                        "jira:issue_deleted",
-                    ],
-                )
-                # the only place where to find the hook id is in
-                # the 'self' url, looks like
-                # u'http://jira:8080/rest/webhooks/1.0/webhook/5'
-                webhook_id = webhook["self"].split("/")[-1]
-                backend.webhook_issue_jira_id = webhook_id
-                if not tools.config["test_enable"]:
-                    env.cr.commit()  # pylint: disable=invalid-commit
-
-                url = urllib.parse.urljoin(base_url, "/connector_jira/webhooks/worklog")
-                webhook = adapter.create_webhook(
-                    name="Odoo Worklogs",
-                    url=url,
-                    events=["worklog_created", "worklog_updated", "worklog_deleted"],
-                )
-                webhook_id = webhook["self"].split("/")[-1]
-                backend.webhook_worklog_jira_id = webhook_id
-                if not tools.config["test_enable"]:
-                    env.cr.commit()  # pylint: disable=invalid-commit
-
-    @api.onchange("odoo_webhook_base_url")
-    def onchange_odoo_webhook_base_url(self):
-        if self.use_webhooks:
-            msg = _(
-                "If you change the base URL, you must delete and create "
-                "the Webhooks again."
-            )
-            return {"warning": {"title": _("Warning"), "message": msg}}
 
     @api.onchange("worklog_date_timezone_mode")
     def _onchange_worklog_date_import_timezone_mode(self):
@@ -446,26 +361,6 @@ class JiraBackend(models.Model):
             if jira_backend.worklog_date_timezone_mode == "specific":
                 continue
             jira_backend.worklog_date_timezone = False
-
-    def delete_webhooks(self):
-        self.ensure_one()
-        with self.work_on("jira.backend") as work:
-            adapter = work.component(usage="backend.adapter")
-            if self.webhook_issue_jira_id:
-                try:
-                    adapter.delete_webhook(self.webhook_issue_jira_id)
-                except JIRAError as err:
-                    # 404 means it has been deleted in JIRA, ignore it
-                    if err.status_code != 404:
-                        raise
-            if self.webhook_worklog_jira_id:
-                try:
-                    adapter.delete_webhook(self.webhook_worklog_jira_id)
-                except JIRAError as err:
-                    # 404 means it has been deleted in JIRA, ignore it
-                    if err.status_code != 404:
-                        raise
-            self.use_webhooks = False
 
     def check_connection(self):
         self.ensure_one()
@@ -510,55 +405,240 @@ class JiraBackend(models.Model):
         result = self.env["res.users"].search([]).link_with_jira(backends=self)
         for __, bknd_result in result.items():
             if bknd_result.get("error"):
-                self.report_user_sync = self.env.ref(
-                    "connector_jira.backend_report_user_sync"
-                ).render({"backend": self, "result": bknd_result})
+                self.report_user_sync = self.env["ir.ui.view"]._render_template(
+                    "connector_jira.backend_report_user_sync",
+                    {"backend": self, "result": bknd_result},
+                )
         return True
 
     def get_user_resolution_order(self):
-        """User resolution should happen by login first as it's unique, while
-        resolving by email is likely to give false positives"""
-        return ["login", "email"]
+        return [
+            "email",
+        ]
 
     def import_issue_type(self):
         self.env["jira.issue.type"].import_batch(self)
         return True
 
-    @api.model
     def get_api_client(self):
         self.ensure_one()
         # tokens are only readable by connector managers
         backend = self.sudo()
-        oauth = {
-            "access_token": backend.access_token,
-            "access_token_secret": backend.access_secret,
-            "consumer_key": backend.consumer_key,
-            "key_cert": backend.private_key,
-        }
+
         options = {
             "server": backend.uri,
             "verify": backend.verify_ssl,
         }
-        return JIRA(options=options, oauth=oauth, timeout=JIRA_TIMEOUT)
+        jwt = {
+            "secret": backend.private_key,
+            "payload": {
+                "iss": self.application_key,  # application key in the app descriptor
+            },
+        }
+        return JIRA(
+            options=options, jwt=jwt, timeout=JIRA_TIMEOUT, get_server_info=False
+        )
 
     @api.model
     def _scheduler_import_project_task(self):
-        self.search([]).import_project_task()
+        backends = self.search([("state", "=", "running")])
+        for backend in backends:
+            backend.import_project_task()
 
     @api.model
     def _scheduler_import_res_users(self):
-        self.search([]).import_res_users()
+        backends = self.search([("state", "=", "running")])
+        for backend in backends:
+            backend.import_res_users()
 
     @api.model
     def _scheduler_import_analytic_line(self):
-        self.search([]).import_analytic_line()
+        backends = self.search([("state", "=", "running")])
+        for backend in backends:
+            backend.search([]).import_analytic_line()
 
     @api.model
     def _scheduler_delete_analytic_line(self):
-        self.search([]).delete_analytic_line()
+        backends = self.search([("state", "=", "running")])
+        for backend in backends:
+            backend.search([]).delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
         return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
+
+    def _get_base_url(self):
+        fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
+        if "://" in fqdn:
+            fqdn = fqdn.split("://", maxsplit=1)[-1]
+        base_url = "https://" + fqdn
+        return base_url
+
+    def _get_app_descriptor(self):
+        self.ensure_one()
+        base_url = self._get_base_url()
+        return {
+            "key": self.application_key,
+            "name": self.name,
+            "description": "Connect your Odoo instance to Jira, manage linking "
+            "Jira Cards with Odoo projects and tasks, and Tempo worklogs with Odoo "
+            f"Timesheets.\nBuilt for {self.name} ({self.application_key})",
+            "vendor": {"name": "Camptocamp", "url": "https://www.camptocamp.com/"},
+            "baseUrl": base_url,
+            "authentication": {"type": "jwt"},
+            "lifecycle": {
+                "installed": f"{base_url}/jira/{self.id}/installed",
+                "uninstalled": f"{base_url}/jira/{self.id}/uninstalled",
+                "enabled": f"{base_url}/jira/{self.id}/enabled",
+                "disabled": f"{base_url}/jira/{self.id}/disabled",
+            },
+            "modules": {
+                "webhooks": [
+                    {
+                        "event": "jira:issue_created",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
+                    },
+                    {
+                        "event": "jira:issue_deleted",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
+                    },
+                    {
+                        "event": "jira:issue_updated",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/issue",
+                    },
+                    {
+                        "event": "worklog_updated",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
+                    },
+                    {
+                        "event": "worklog_deleted",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
+                    },
+                    {
+                        "event": "worklog_created",
+                        "url": f"{base_url}/connector_jira/{self.id}/webhooks/worklog",
+                    },
+                ],
+            },
+            "apiMigrations": {"gdpr": True, "signed-install": True},
+            "scopes": ["project_admin"],
+        }
+
+    def _install_app(self, payload):
+        """
+        When we receive an 'installed' notification, we create a backend record with
+        the proper settings.
+
+        payload keys:
+
+        'key': 'odoo-connector-jira'
+        'clientKey':  Identifying key but could vary WTF
+        'publicKey': DEPRECATED DO NOT USE,
+        'sharedSecret': Use to sign JWT tokens
+        'serverVersion': DEPRECATED
+        'pluginsVersion': DEPRECATED
+        'baseUrl': URL prefix for this Atlassian product instance. All of its REST endpoints
+            begin with this `baseUrl`. Do not use the `baseUrl` as an identifier for the
+            Atlassian product as this value may not be unique.
+        'displayUrl': If the Atlassian product instance has an associated custom domain, this
+            is the URL through which users will access the product.
+        'productType': 'jira',
+        'description': 'Atlassian JIRA at https: //testcamptocamp.atlassian.net ',
+        'eventType': 'installed',
+
+        """
+        self.ensure_one()
+        self.write(self._prepare_backend_values(payload))
+        _logger.info("Updated Jira backend for uri %s", self.uri)
+        assert self.private_key
+        return self.id
+
+    def _prepare_backend_values(self, payload):
+        values = {
+            "display_url": payload.get("displayUrl", False),
+            "uri": payload.get("baseUrl", False),
+            "state": "setup",
+            "public_key": payload.get("clientKey", False),
+        }
+        if "sharedSecret" in payload:
+            values["private_key"] = payload["sharedSecret"]
+        return values
+
+    def _uninstall_app(self, payload):
+        self.ensure_one()
+        # wait for disabled to complete
+        self.env.cr.execute(
+            "SELECT id from jira_backend WHERE id = %s FOR UPDATE",
+            (self.id,),
+        )
+        self.write(
+            {
+                "public_key": False,
+                "private_key": False,
+                "state": "setup",
+            }
+        )
+        _logger.info("Uninstalled Jira backend for uri %s", self.uri)
+        return "ok"
+
+    def _enable_app(self, payload):
+        self.ensure_one()
+        values = self._prepare_backend_values(payload)
+        values["state"] = "running"
+        self.write(values)
+        _logger.info("enable %s -> %s", self.ids, values)
+        _logger.info("Enabled Jira backend for uri %s", self.mapped("uri"))
+        return "ok"
+
+    def _disable_app(self, payload):
+        self.ensure_one()
+        self.env.cr.execute(
+            "SELECT id from jira_backend WHERE id = %s FOR UPDATE",
+            (self.id,),
+        )
+        values = self._prepare_backend_values(payload)
+        values["state"] = "setup"
+        _logger.info("disable %s -> %s", self.ids, values)
+        self.write(values)
+        _logger.info("Disabled Jira backend for uri %s", self.mapped("uri"))
+        return "ok"
+
+    def _validate_jwt(self, authorization_header, query_url=None):
+        """validation if the JSON Web Token
+
+        Use the algorithm provided by the atlassan module to compute the 'iss' hash
+        from the URL and compare it to the value in the token, in addition to the
+        standard claims checks.
+        """
+        self.ensure_one()
+        assert authorization_header.startswith(
+            "JWT "
+        ), "unexpected content in Authorization header"
+        jwt_token = authorization_header[4:]
+        # see https://developer.atlassian.com/cloud/jira/software/understanding-jwt/
+        # for more info
+        decoded = jwt.decode(
+            jwt_token,
+            self.private_key,
+            algorithms=["HS256"],
+            # audience=self._get_base_url(),
+            issuer=self.public_key,
+            options={
+                "require": [
+                    "iss",  # issuer of the claim
+                    "exp",  # expiration time
+                    "iat",  # issued at time
+                    "qsh",  # query string hash
+                    # sub: is optional
+                    # aud: is optional
+                    # context: is optional
+                ]
+            },
+        )
+        if query_url is not None:
+            expected_hash = url_utils.hash_url("POST", query_url)
+            if decoded["iss"] != expected_hash:
+                return False
+        return True
 
 
 class JiraBackendTimestamp(models.Model):
@@ -656,22 +736,3 @@ class BackendAdapter(Component):
 
     def list_fields(self):
         return self.client._get_json("field")
-
-    def create_webhook(
-        self, name=None, url=None, events=None, jql="", exclude_body=False
-    ):
-        assert name and url and events
-        data = {
-            "name": name,
-            "url": url,
-            "events": events,
-            "jqlFilter": jql,
-            "excludeIssueDetails": exclude_body,
-        }
-        url = self.client._get_url("webhook", base=self.webhook_base_path)
-        response = self.client._session.post(url, data=json.dumps(data))
-        return json_loads(response)
-
-    def delete_webhook(self, id_):
-        url = self.client._get_url("webhook/%s" % id_, base=self.webhook_base_path)
-        return json_loads(self.client._session.delete(url))

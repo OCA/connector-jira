@@ -11,6 +11,7 @@
         <field name="arch" type="xml">
             <page name="advanced_configuration">
                 <group name="tempo" col="6">
+                    <field name="tempo_ws_backend_id" />
                     <group name="tempo_timesheet_fields" colspan="3" />
                     <div />
                     <p class="oe_grey" colspan="2">

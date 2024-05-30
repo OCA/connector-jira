@@ -78,11 +78,11 @@ class AnalyticLineMapper(Component):
     @mapping
     def author(self, record):
         jira_author = record["author"]
-        jira_author_key = jira_author["key"]
+        jira_author_key = jira_author["accountId"]
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_author_key, unwrap=True)
         if not user:
-            email = jira_author["emailAddress"]
+            email = jira_author.get("emailAddress", "<unknown>")
             raise MappingError(
                 _(
                     'No user found with login "%(jira_author_key)s" or email "%(email)s".'
@@ -255,7 +255,6 @@ class AnalyticLineImporter(Component):
                 jira_issue_id,
                 fields=self._issue_fields_to_read,
             )
-
             jira_project_id = issue["fields"]["project"]["id"]
             jira_issue_type_id = issue["fields"]["issuetype"]["id"]
             project_binding = project_matcher.find_project_binding(issue)
@@ -358,7 +357,7 @@ class AnalyticLineImporter(Component):
 
     def _import_dependency_assignee(self):
         jira_assignee = self.external_record["author"]
-        jira_key = jira_assignee.get("key")
+        jira_key = jira_assignee.get("accountId")
         self._import_dependency(jira_key, "jira.res.users", record=jira_assignee)
 
     def _import_dependencies(self):

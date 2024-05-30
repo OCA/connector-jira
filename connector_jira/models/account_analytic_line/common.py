@@ -11,20 +11,20 @@ from odoo.addons.component.core import Component
 
 UpdatedWorklog = namedtuple(
     "UpdatedWorklog",
-    "worklog_id updated"
+    "worklog_id updated",
     # id as integer, timestamp
 )
 
 UpdatedWorklogSince = namedtuple(
     "UpdatedWorklogSince",
-    "since until updated_worklogs"
+    "since until updated_worklogs",
     # timestamp, timestamp, [UpdatedWorklog]
 )
 
 
 DeletedWorklogSince = namedtuple(
     "DeletedWorklogSince",
-    "since until deleted_worklog_ids"
+    "since until deleted_worklog_ids",
     # timestamp, timestamp, [ids as integer]
 )
 

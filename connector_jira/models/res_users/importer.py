@@ -18,9 +18,14 @@ class UserImporter(Component):
         binder = self.binder_for("jira.res.users")
         user = binder.to_internal(jira_key, unwrap=True)
         if not user:
-            email = record["emailAddress"]
+            email = record.get("emailAddress")
+            if email is None:
+                raise JobError(
+                    "Unable to find a user from account Id (%s) and no email provided"
+                    % jira_key
+                )
             user = self.env["res.users"].search(
-                ["|", ("login", "=", jira_key), ("email", "=", email)],
+                [("email", "=", email)],
             )
             if len(user) > 1:
                 raise JobError(
