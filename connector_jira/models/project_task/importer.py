@@ -70,7 +70,7 @@ class ProjectTaskMapper(Component):
                     email=email,
                 )
             )
-        return {"user_id": user.id}
+        return {"user_ids": user}
 
     @mapping
     def description(self, record):
@@ -130,8 +130,8 @@ class ProjectTaskMapper(Component):
     def time_estimate(self, record):
         original_estimate = record["fields"].get("timeoriginalestimate")
         if not original_estimate:
-            return {"planned_hours": False}
-        return {"planned_hours": float(original_estimate) / 3600.0}
+            return {"allocated_hours": False}
+        return {"allocated_hours": float(original_estimate) / 3600.0}
 
     def finalize(self, map_record, values):
         values = values.copy()

@@ -49,14 +49,13 @@ class JiraOauthDance(Command):
 
     @contextmanager
     def env(self, dbname):
-        with odoo.api.Environment.manage():
-            registry = odoo.registry(dbname)
-            with registry.cursor() as cr:
-                uid = odoo.SUPERUSER_ID
-                ctx_environment = odoo.api.Environment(cr, uid, {})["res.users"]
-                ctx = ctx_environment.context_get()
-                env = odoo.api.Environment(cr, uid, ctx)
-                yield env
+        registry = odoo.registry(dbname)
+        with registry.cursor() as cr:
+            uid = odoo.SUPERUSER_ID
+            ctx_environment = odoo.api.Environment(cr, uid, {})["res.users"]
+            ctx = ctx_environment.context_get()
+            env = odoo.api.Environment(cr, uid, ctx)
+            yield env
 
     def _find_backend(self, env, backend_id=None):
         if backend_id:

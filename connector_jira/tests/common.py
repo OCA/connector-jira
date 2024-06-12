@@ -61,6 +61,7 @@ or record the tests again (in such case, IDs may change).
 
 import logging
 import os
+import requests
 from contextlib import contextmanager
 from os.path import dirname, join
 from unittest import mock
@@ -98,6 +99,8 @@ class JiraTransactionComponentCase(TransactionComponentCase):
 
     @classmethod
     def setUpClass(cls):
+        cls._super_send = requests.Session.send
+
         super().setUpClass()
 
         context = cls.env.context.copy()
@@ -124,6 +127,11 @@ class JiraTransactionComponentCase(TransactionComponentCase):
         ("Bug", "10004"),
         ("Epic", "10000"),
     ]
+
+    @classmethod
+    def _request_handler(cls, s, r, /, **kw):
+        """Don't block external requests."""
+        return cls._super_send(s, r, **kw)
 
     @classmethod
     def _link_user(cls, user, jira_login):

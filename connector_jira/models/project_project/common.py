@@ -231,6 +231,7 @@ class JiraProjectProject(models.Model):
 
 class ProjectProject(models.Model):
     _inherit = "project.project"
+    _rec_names_search = ["name", "jira_key"]
 
     jira_bind_ids = fields.One2many(
         comodel_name="jira.project.project",
@@ -251,31 +252,15 @@ class ProjectProject(models.Model):
             keys = project.mapped("jira_bind_ids.jira_key")
             project.jira_key = ", ".join(keys)
 
-    def name_get(self):
-        names = []
-        for project in self:
-            project_id, name = super(ProjectProject, project).name_get()[0]
-            if project.jira_key:
-                name = f"[{project.jira_key}] {name}"
-            names.append((project_id, name))
-        return names
+    @api.depends("jira_key")
+    def _compute_display_name(self):
+        super()._compute_display_name()
 
-    @api.model
-    def name_search(self, name="", args=None, operator="ilike", limit=100):
-        res = super().name_search(name, args, operator, limit)
-        if not name:
-            return res
-        domain = [
-            "|",
-            ("jira_key", "=ilike", name + "%"),
-            ("id", "in", [x[0] for x in res]),
-        ]
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = ["&", "!"] + domain[1:]
-        return self.search(
-            domain + (args or []),
-            limit=limit,
-        ).name_get()
+        for rec in self:
+            if not rec.jira_key:
+                continue
+
+            rec.display_name = f"[{rec.jira_key}] {rec.display_name}"
 
     def create_and_link_jira(self):
         action_link = self.env.ref("connector_jira.open_project_link_jira")

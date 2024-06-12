@@ -11,14 +11,14 @@
             <form string="Jira Auth">
                 <field invisible="1" name="state" />
                 <!--    Leg 1   -->
-                <group states="leg_1">
-                    <h2>Copy the values in the JIRA application link</h2>
+                <group invisible="state != 'leg_1'">
+                    <h2 colspan="2">Copy the values in the JIRA application link</h2>
                 </group>
-                <group states="leg_1">
+                <group invisible="state != 'leg_1'">
                     <field name="consumer_key" />
                     <field name="public_key" />
                 </group>
-                <footer states="leg_1">
+                <footer invisible="state != 'leg_1'">
                     <button
                         name="do_oauth_leg_1"
                         type="object"
@@ -33,13 +33,13 @@
                     <button special="cancel" string="Cancel" />
                 </footer>
                 <!-- Leg 2  -->
-                <group states="leg_2">
-                    <h2>Visit this URL, authorize and continue</h2>
+                <group invisible="state != 'leg_2'">
+                    <h2 colspan="2">Visit this URL, authorize and continue</h2>
                 </group>
-                <group states="leg_2">
+                <group invisible="state != 'leg_2'">
                     <field name="auth_uri" string="Jira Authentication" widget="url" />
                 </group>
-                <footer states="leg_2">
+                <footer invisible="state != 'leg_2'">
                     <button
                         name="do_oauth_leg_3"
                         type="object"
@@ -49,10 +49,10 @@
                     <button special="cancel" string="Cancel" />
                 </footer>
                 <!--    Done    -->
-                <group states="done">
-                    <h2>OAuth configuration complete</h2>
+                <group invisible="state != 'done'">
+                    <h2 colspan="2">OAuth configuration complete</h2>
                 </group>
-                <footer states="done">
+                <footer invisible="state != 'done'">
                     <button special="cancel" string="Close" class="btn-primary" />
                 </footer>
             </form>

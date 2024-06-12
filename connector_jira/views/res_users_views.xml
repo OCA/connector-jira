@@ -8,7 +8,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Connector" name="connector">
                     <group string="Jira">
-                        <field name="jira_bind_ids" nolabel="1" />
+                        <field name="jira_bind_ids" nolabel="1" colspan="2"/>
                     </group>
                 </page>
             </xpath>

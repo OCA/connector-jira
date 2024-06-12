@@ -2,7 +2,7 @@
 
 {
     "name": "JIRA Connector",
-    "version": "15.0.1.0.1",
+    "version": "17.0.1.0.0",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Connector",
@@ -12,7 +12,8 @@
         "hr_timesheet",
         "queue_job",
         "web",
-        "web_widget_url_advanced",
+        # Not yet migrated but not essential for integration
+        # "web_widget_url_advanced",
         "multi_step_wizard",
     ],
     "external_dependencies": {

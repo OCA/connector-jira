@@ -79,6 +79,7 @@ class JiraProjectTask(models.Model):
 
 class ProjectTask(models.Model):
     _inherit = "project.task"
+    _rec_names_search = ["name", "jira_compound_key"]
 
     jira_bind_ids = fields.One2many(
         comodel_name="jira.project.task",
@@ -153,31 +154,15 @@ class ProjectTask(models.Model):
             main_binding = record.jira_bind_ids[0]
             record.jira_issue_url = main_binding.jira_issue_url
 
-    def name_get(self):
-        names = []
-        for task in self:
-            task_id, name = super(ProjectTask, task).name_get()[0]
-            if task.jira_compound_key:
-                name = f"[{task.jira_compound_key}] {name}"
-            names.append((task_id, name))
-        return names
+    @api.depends("jira_compound_key")
+    def _compute_display_name(self):
+        super()._compute_display_name()
 
-    @api.model
-    def name_search(self, name="", args=None, operator="ilike", limit=100):
-        res = super().name_search(name, args, operator, limit)
-        if not name:
-            return res
-        domain = [
-            "|",
-            ("jira_compound_key", "=ilike", name + "%"),
-            ("id", "in", [x[0] for x in res]),
-        ]
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = ["&", "!"] + domain[1:]
-        return self.search(
-            domain + (args or []),
-            limit=limit,
-        ).name_get()
+        for rec in self:
+            if not rec.jira_compound_key:
+                continue
+
+            rec.display_name = f"[{rec.jira_compound_key}] {rec.display_name}"
 
     @api.model
     def _get_connector_jira_fields(self):
@@ -189,7 +174,7 @@ class ProjectTask(models.Model):
             "description",
             "active",
             "project_id",
-            "planned_hours",
+            "allocated_hours",
             "stage_id",
         ]
 

@@ -17,35 +17,36 @@
                         type="object"
                         class="oe_highlight"
                         string="Configuration Done"
-                        states="setup"
+                        invisible="state != 'setup'"
                     />
                     <button
                         name="%(action_jira_backend_auth)d"
                         type="action"
                         class="oe_highlight"
                         string="Authenticate"
-                        states="authenticate"
+                        invisible="state != 'authenticate'"
                     />
                     <button
                         name="check_connection"
                         type="object"
                         string="Check Connection"
-                        states="setup,running"
+                        invisible="state not in ['setup', 'running']"
                     />
                     <button
                         name="%(action_jira_backend_auth)d"
                         type="action"
                         string="Reset Authentication"
-                        states="setup,running"
+                        invisible="state not in ['setup', 'running']"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
+                    <field name="state" invisible="1"/>
                     <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
                     </h1>
-                    <p class="oe_grey oe_inline" states="setup">
+                    <p class="oe_grey oe_inline" invisible="state != 'setup'">
                         Once you have checked the configuration and
             activated the webhooks and the Epic Link (if
             wanted), click on the "Configuration Done"
@@ -69,13 +70,13 @@
                             <field name="project_template" />
                             <field
                                 name="project_template_shared"
-                                attrs="{'invisible': [('project_template', '!=', 'shared')],
-                        'required': [('project_template', '=', 'shared')]}"
+                                invisible="project_template != 'shared'"
+                                required="project_template == 'shared'"
                             />
                         </group>
                     </group>
                     <notebook>
-                        <page name="import" string="Imports" states="running">
+                        <page name="import" string="Imports" invisible="state != 'running'">
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                 you will initiate the synchronizations
@@ -95,48 +96,49 @@
                 in the menu 'Connectors > Checkpoint'.
                             </p>
                             <group>
-                                <div>
+                                <div colspan="2">
                                     <label
                                         for="import_res_users"
                                         string="Link users"
                                         class="oe_inline"
                                     />
+                                    <button
+                                        name="import_res_users"
+                                        type="object"
+                                        class="oe_highlight ml8"
+                                        string="Run"
+                                    />
                                 </div>
-                                <button
-                                    name="import_res_users"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Run"
-                                />
                                 <div
                                     class="alert alert-danger"
                                     role="alert"
-                                    attrs="{'invisible': [('report_user_sync', '=', False)]}"
+                                    invisible="not report_user_sync"
+                                    colspan="2"
                                 >
                                     <field name="report_user_sync" />
                                 </div>
                             </group>
                             <group>
-                                <div>
+                                <div colspan="2">
                                     <label
                                         for="import_issue_type"
                                         string="Import Issue Types"
                                         class="oe_inline"
                                     />
+                                    <button
+                                        name="import_issue_type"
+                                        type="object"
+                                        class="oe_highlight ml8"
+                                        string="Run"
+                                    />
                                 </div>
-                                <button
-                                    name="import_issue_type"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Run"
-                                />
                             </group>
                             <group>
-                                <div>
+                                <div colspan="2">
                                     <label
                                         for="import_project_task_from_date"
                                         string="Import project tasks since"
-                                        class="oe_inline"
+                                        class="oe_inline mr8"
                                     />
                                     <field
                                         name="import_project_task_from_date"
@@ -157,20 +159,20 @@
                                         />
                                         <span class="o_form_label">)</span>
                                     </span>
+                                    <button
+                                        name="import_project_task"
+                                        type="object"
+                                        class="oe_highlight ml8"
+                                        string="Run in background"
+                                    />
                                 </div>
-                                <button
-                                    name="import_project_task"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Run in background"
-                                />
                             </group>
                             <group>
-                                <div>
+                                <div colspan="2">
                                     <label
                                         for="import_analytic_line_from_date"
                                         string="Import worklogs since"
-                                        class="oe_inline"
+                                        class="oe_inline mr8"
                                     />
                                     <field
                                         name="import_analytic_line_from_date"
@@ -191,33 +193,33 @@
                                         />
                                         <span class="o_form_label">)</span>
                                     </span>
+                                    <button
+                                        name="import_analytic_line"
+                                        type="object"
+                                        class="oe_highlight ml8"
+                                        string="Run in background"
+                                    />
                                 </div>
-                                <button
-                                    name="import_analytic_line"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Run in background"
-                                />
                             </group>
                             <group>
-                                <div>
+                                <div colspan="2">
                                     <label
                                         for="delete_analytic_line_from_date"
                                         string="Import deleted worklogs since"
-                                        class="oe_inline"
+                                        class="oe_inline mr8"
                                     />
                                     <field
                                         name="delete_analytic_line_from_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
+                                    <button
+                                        name="delete_analytic_line"
+                                        type="object"
+                                        class="oe_highlight ml8"
+                                        string="Run in background"
+                                    />
                                 </div>
-                                <button
-                                    name="delete_analytic_line"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Run in background"
-                                />
                             </group>
                         </page>
                         <page
@@ -235,14 +237,14 @@
                                         type="object"
                                         string="Install Webhooks"
                                         class="btn-sm btn-link oe_inline"
-                                        attrs="{'invisible': ['|', ('use_webhooks', '=', True), ('state', '=', 'authenticate')]}"
+                                        invisible="use_webhooks or state == 'authenticate'"
                                     />
                                     <button
                                         name="delete_webhooks"
                                         type="object"
                                         string="Remove Webhooks"
                                         class="btn-sm btn-link oe_inline"
-                                        attrs="{'invisible': ['|', ('use_webhooks', '=', False), ('state', '=', 'authenticate')]}"
+                                        invisible="not use_webhooks or state == 'authenticate'"
                                     />
                                 </div>
                                 <p class="oe_grey" colspan="2">
@@ -265,7 +267,7 @@
                                         type="object"
                                         string="Configure Epic Link"
                                         class="btn-sm btn-link oe_inline"
-                                        attrs="{'invisible': [('state', '=', 'authenticate')]}"
+                                        invisible="state == 'authenticate'"
                                     />
                                 </div>
                                 <p class="oe_grey" colspan="2">
@@ -285,7 +287,8 @@
                                     />
                                     <field
                                         name="worklog_date_timezone"
-                                        attrs="{'invisible': [('worklog_date_timezone_mode', '!=', 'specific')], 'required': [('worklog_date_timezone_mode', '=', 'specific')]}"
+                                        invisible="worklog_date_timezone_mode != 'specific'"
+                                        required="worklog_date_timezone_mode == 'specific'"
                                         string=""
                                     />
                                 </group>
@@ -295,7 +298,7 @@
                                 </p>
                             </group>
                         </page>
-                        <page name="issue_type" string="Issue Types" states="running">
+                        <page name="issue_type" string="Issue Types" invisible="state != 'running'">
                             <field name="issue_type_ids">
                                 <tree create="0" delete="0" edit="0">
                                     <field name="name" />

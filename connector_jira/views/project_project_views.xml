@@ -13,7 +13,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Connector" name="connector">
                     <group string="Jira">
-                        <field name="jira_bind_ids" nolabel="1" />
+                        <field name="jira_bind_ids" nolabel="1" colspan="2" />
                     </group>
                 </page>
             </xpath>
@@ -31,17 +31,17 @@
                     <field name="jira_key" />
                     <field
                         name="backend_id"
-                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                        readonly="external_id"
                     />
                     <field
                         name="project_template"
-                        attrs="{'readonly': [('external_id', '!=', False)]}"
+                        readonly="external_id"
                     />
                     <field
                         name="project_template_shared"
-                        attrs="{'readonly': [('external_id', '!=', False)],
-                    'invisible': [('project_template', '!=', 'shared')],
-                    'required': [('project_template', '=', 'shared')]}"
+                        readonly="external_id"
+                        invisible="project_template != 'shared'"
+                        required="project_template == 'shared'"
                     />
                     <field name="sync_action" />
                     <field name="project_type" />
@@ -95,23 +95,7 @@
             </field>
         </field>
     </record>
-    <record id="view_project_kanban" model="ir.ui.view">
-        <field name="name">project.project.kanban</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.view_project_kanban" />
-        <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="jira_key" />
-            </field>
-            <xpath expr="//t[@t-esc='record.name.value']" position="before">
-                <span t-if="record.jira_key.value">
-                    [
-                    <t t-esc="record.jira_key.value" />
-                    ]
-                </span>
-            </xpath>
-        </field>
-    </record>
+
     <record id="view_jira_project_project_tree" model="ir.ui.view">
         <field name="name">jira.project.project.tree</field>
         <field name="model">jira.project.project</field>
@@ -131,7 +115,7 @@
         <field name="inherit_id" ref="project.view_project_kanban" />
         <field name="arch" type="xml">
             <xpath
-                expr="//div[hasclass('o_kanban_card_manage_pane')]/div[last()]"
+                expr="//div[hasclass('oe_kanban_bottom_left')]/div[last()]"
                 position="after"
             >
                 <div groups="project.group_project_manager">

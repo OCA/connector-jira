@@ -10,18 +10,18 @@
                 <h1>
                     <field
                         name="jira_key"
-                        attrs="{'readonly': [('state', '!=', 'start')]}"
+                        readonly="state != 'start'"
                         class="oe_inline"
                         placeholder="JIRA Key"
                     />
                 </h1>
-                <group name="start" attrs="{'invisible': [('state', '!=', 'start')]}">
+                <group name="start" invisible="state != 'start'">
                     <group>
                         <field name="linked_backend_ids" invisible="1" />
                         <field name="backend_id" />
                     </group>
                 </group>
-                <div name="final" attrs="{'invisible': [('state', '!=', 'final')]}">
+                <div name="final" invisible="state != 'final'">
                     <p>The task is now linked with JIRA.</p>
                 </div>
             </xpath>
