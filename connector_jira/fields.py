@@ -31,7 +31,7 @@ class MilliDatetime(fields.Field):
         if isinstance(value, datetime):
             if value.tzinfo:
                 raise ValueError(
-                    "MilliDatetime field expects a naive datetime: %s" % value
+                    f"MilliDatetime field expects a naive datetime: {value}"
                 )
             return value
         if len(value) > fields.DATETIME_LENGTH:
@@ -58,6 +58,6 @@ class MilliDatetime(fields.Field):
             return False
         if isinstance(value, date) and not isinstance(value, datetime):
             raise TypeError(
-                "%s (field %s) must be string or datetime" ", not date." % (value, self)
+                f"{value} (field {self}) must be string or datetime, not date."
             )
         return self.from_string(value)

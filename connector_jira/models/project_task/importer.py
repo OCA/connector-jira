@@ -211,7 +211,7 @@ class ProjectTaskImporter(Component):
             map_record,
             jira_epic=self.jira_epic,
             project_binding=self.project_binding,
-            **kwargs
+            **kwargs,
         )
 
     def _update_data(self, map_record, **kwargs):
@@ -219,7 +219,7 @@ class ProjectTaskImporter(Component):
             map_record,
             jira_epic=self.jira_epic,
             project_binding=self.project_binding,
-            **kwargs
+            **kwargs,
         )
 
     def _import(self, binding, **kwargs):

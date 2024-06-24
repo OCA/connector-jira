@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -9,10 +8,11 @@
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id: html4css1.css 8954 2022-01-20 10:10:25Z milde $
+:Id: $Id: html4css1.css 9511 2024-01-13 09:50:07Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
+Despite the name, some widely supported CSS2 features are used.
 
 See https://docutils.sourceforge.io/docs/howto/html-stylesheets.html for how to
 customize this style sheet.
@@ -275,7 +275,7 @@ pre.literal-block, pre.doctest-block, pre.math, pre.code {
   margin-left: 2em ;
   margin-right: 2em }
 
-pre.code .ln { color: grey; } /* line numbers */
+pre.code .ln { color: gray; } /* line numbers */
 pre.code, code { background-color: #eeeeee }
 pre.code .comment, code .comment { color: #5C6576 }
 pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
@@ -301,7 +301,7 @@ span.option {
 span.pre {
   white-space: pre }
 
-span.problematic {
+span.problematic, pre.problematic {
   color: red }
 
 span.section-subtitle {
@@ -369,8 +369,9 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:f21e9da36fa047bba211c31662246c7856a1144d0f66ee163b201f26f7f1934f
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/connector-jira/tree/15.0/connector_jira"><img alt="OCA/connector-jira" src="https://img.shields.io/badge/github-OCA%2Fconnector--jira-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/connector-jira-15-0/connector-jira-15-0-connector_jira"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&amp;target_branch=15.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
-<p>This module adds Jira synchronization feature. It works with Jira Cloud by behaving as an Atlassian Connect App.</p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/connector-jira/tree/17.0/connector_jira"><img alt="OCA/connector-jira" src="https://img.shields.io/badge/github-OCA%2Fconnector--jira-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/connector-jira-17-0/connector-jira-17-0-connector_jira"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p>This module adds Jira synchronization feature. It works with Jira Cloud
+by behaving as an Atlassian Connect App.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -418,7 +419,7 @@ ul.auto-toc {
 <div class="section" id="job-queue">
 <h2><a class="toc-backref" href="#toc-entry-2">Job Queue</a></h2>
 <p>In <tt class="docutils literal">odoo.conf</tt>, configure similarly:</p>
-<pre class="code literal-block">
+<pre class="literal-block">
 [queue_job]
 channels = root:1,root.connector_jira.import:2
 </pre>
@@ -429,131 +430,149 @@ channels = root:1,root.connector_jira.import:2
 <li>Open the menu Connectors &gt; Jira &gt; Backends</li>
 <li>Create a new Jira Backend<ul>
 <li>Put the name you want</li>
-<li>You can also select the company where records will be created and the
-default project template used when Odoo will create the projects in Jira</li>
+<li>You can also select the company where records will be created and
+the default project template used when Odoo will create the
+projects in Jira</li>
 <li>Save</li>
 </ul>
 </li>
-<li>Make note of the value of the App Descriptor URL (important: make sure that
-the system parameter <cite>web.base.url</cite> is set properly. For local development you
-will want to use ngrok to make your computer reachable over https from Jira Cloud).</li>
+<li>Make note of the value of the App Descriptor URL (important: make
+sure that the system parameter web.base.url is set properly. For
+local development you will want to use ngrok to make your computer
+reachable over https from Jira Cloud).</li>
 </ol>
 </div>
 <div class="section" id="installing-the-backend-as-a-jira-app">
 <h2><a class="toc-backref" href="#toc-entry-4">Installing the backend as a Jira App</a></h2>
-<p>In case this gets outdated, refer to <a class="reference external" href="https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app">https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app</a></p>
+<p>In case this gets outdated, refer to
+<a class="reference external" href="https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app">https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app</a></p>
 <ol class="arabic simple">
 <li>Login on marketplace.atlassian.com (possibly create an account)</li>
-<li>On the top right corner, the icon with your avatar leads to a menu -&gt; select the <cite>Publish an App</cite> entry</li>
-<li>On the Publish a new app screen:
-* select a Vendor (normally your company)
-* upload your app: select <cite>Provide a URL to your artifact</cite>
-* click on the <cite>Enter URL</cite> button
-* paste the App Descriptor URL in the pop-up and click on the <cite>Done</cite> button
-* the <cite>Name</cite> field should get populated from the <cite>name</cite> of your backend
-* Compatible application: select <cite>Jira</cite>
-* build number: can be kept as is</li>
-<li>Click on the <cite>Save as private</cite> button
-(!) Important: do not click the “Next: Make public” button. That flow would allow anyone on Jira Cloud to install your backend.</li>
-<li>On the next screen, you can go to the “Private Listings” page, and click on the “Create a token” button: this token can be used to install the app on your Jira instance.</li>
+<li>On the top right corner, the icon with your avatar leads to a menu -&gt;
+select the Publish an App entry</li>
+<li>On the Publish a new app screen:<ul>
+<li>select a Vendor (normally your company)</li>
+<li>upload your app: select Provide a URL to your artifact</li>
+<li>click on the Enter URL button</li>
+<li>paste the App Descriptor URL in the pop-up and click on the Done
+button</li>
+<li>the Name field should get populated from the name of your backend</li>
+<li>Compatible application: select Jira</li>
+<li>build number: can be kept as is</li>
+</ul>
+</li>
+<li>Click on the Save as private button (!) Important: do not click the
+“Next: Make public” button. That flow would allow anyone on Jira
+Cloud to install your backend.</li>
+<li>On the next screen, you can go to the “Private Listings” page, and
+click on the “Create a token” button: this token can be used to
+install the app on your Jira instance.</li>
 </ol>
 </div>
 <div class="section" id="installing-the-jira-app-on-your-jira-cloud-instance">
 <h2><a class="toc-backref" href="#toc-entry-5">Installing the Jira App on your Jira Cloud instance</a></h2>
 <ol class="arabic simple">
 <li>Connect to your Jira instance with an account with Admin access</li>
-<li>In the Apps menu, select <cite>Manage your apps</cite></li>
-<li>In the Apps screen, click on the Settings link which is under the User-installed apps list</li>
-<li>In the settings screen, check the <cite>Enable private listings</cite> box, and click on <cite>Apply</cite></li>
-<li>Refresh the Apps page: you should see an <cite>Upload app</cite> link: click on it</li>
-<li>On the Upload app dialog, paste the token URL you received in the previous procedure, and click on <cite>Upload</cite></li>
+<li>In the Apps menu, select Manage your apps</li>
+<li>In the Apps screen, click on the Settings link which is under the
+User-installed apps list</li>
+<li>In the settings screen, check the Enable private listings box, and
+click on Apply</li>
+<li>Refresh the Apps page: you should see an Upload app link: click on it</li>
+<li>On the Upload app dialog, paste the token URL you received in the
+previous procedure, and click on Upload</li>
 </ol>
 </div>
 <div class="section" id="configuration-of-the-backend">
 <h2><a class="toc-backref" href="#toc-entry-6">Configuration of the Backend</a></h2>
-<p>Going back to Odoo, the backend should now be in the Running state, with some information filled in, such as the Jira URI.</p>
+<p>Going back to Odoo, the backend should now be in the Running state, with
+some information filled in, such as the Jira URI.</p>
 <p><strong>Configure the Epic Link</strong></p>
-<p>If you use Epics, you need to click on “Configure Epic Link”, Odoo will search
-the name of the custom field used for the Epic Link.</p>
+<p>If you use Epics, you need to click on “Configure Epic Link”, Odoo will
+search the name of the custom field used for the Epic Link.</p>
 <p>Congratulations, you’re done!</p>
 </div>
 </div>
 <div class="section" id="usage">
 <h1><a class="toc-backref" href="#toc-entry-7">Usage</a></h1>
-<p>The tasks and worklogs are always imported from JIRA to Odoo, there
-is no synchronization in the other direction.</p>
+<p>The tasks and worklogs are always imported from JIRA to Odoo, there is
+no synchronization in the other direction.</p>
 <div class="section" id="initial-synchronizations">
 <h2><a class="toc-backref" href="#toc-entry-8">Initial synchronizations</a></h2>
-<p>You can already select the “Imports” tab in the Backend and click on “Link
-users” and “Import issue types”. The users will be matched either by login or by email.</p>
+<p>You can already select the “Imports” tab in the Backend and click on
+“Link users” and “Import issue types”. The users will be matched either
+by login or by email.</p>
 </div>
 <div class="section" id="create-and-export-a-project">
 <h2><a class="toc-backref" href="#toc-entry-9">Create and export a project</a></h2>
-<p>Projects can be created in Odoo and exported to Jira. You can then create a
-project, and use the action “Link with JIRA” and use the “Export to JIRA” action.</p>
-<p>When you choose to export a project to JIRA, if you change the name
-or the key of the project, the new values will be pushed to JIRA.</p>
+<p>Projects can be created in Odoo and exported to Jira. You can then
+create a project, and use the action “Link with JIRA” and use the
+“Export to JIRA” action.</p>
+<p>When you choose to export a project to JIRA, if you change the name or
+the key of the project, the new values will be pushed to JIRA.</p>
 </div>
 <div class="section" id="link-a-project-with-jira">
 <h2><a class="toc-backref" href="#toc-entry-10">Link a project with JIRA</a></h2>
-<p>If you already have a project on JIRA or prefer to create it first on JIRA,
-you can link an Odoo project. Use the “Link with JIRA” action on the project
-and select the “Link with JIRA” action.</p>
-<p>This action establish the link, then changes of the name or the key on either
-side are not pushed.</p>
+<p>If you already have a project on JIRA or prefer to create it first on
+JIRA, you can link an Odoo project. Use the “Link with JIRA” action on
+the project and select the “Link with JIRA” action.</p>
+<p>This action establish the link, then changes of the name or the key on
+either side are not pushed.</p>
 </div>
 <div class="section" id="issue-types-on-projects">
 <h2><a class="toc-backref" href="#toc-entry-11">Issue Types on Projects</a></h2>
-<p>When you link a project, you have to select which issue types are synchronized.
-Only tasks of the selected types will be created in Odoo.</p>
+<p>When you link a project, you have to select which issue types are
+synchronized. Only tasks of the selected types will be created in Odoo.</p>
 <p>If a JIRA worklog is added to a type of issue that is not synchronized,
 will attach to the closest task following these rules:</p>
 <ul class="simple">
 <li>if a subtask, find the parent task</li>
-<li>if no parent task, find the epic task (only if it is on the same project)</li>
+<li>if no parent task, find the epic task (only if it is on the same
+project)</li>
 <li>if no epic, attach to the project without being linked to a task</li>
 </ul>
 </div>
 <div class="section" id="change-synchronization-configuration-on-a-project">
 <h2><a class="toc-backref" href="#toc-entry-12">Change synchronization configuration on a project</a></h2>
 <p>If you want to change the configuration of a project, such as which
-issue types are synchronized, you can open the “Connector” tab in
-the project settings and edit the “binding” with the backend.</p>
+issue types are synchronized, you can open the “Connector” tab in the
+project settings and edit the “binding” with the backend.</p>
 </div>
 <div class="section" id="synchronize-tasks-and-worklogs">
 <h2><a class="toc-backref" href="#toc-entry-13">Synchronize tasks and worklogs</a></h2>
-<p>If the webhooks are active, as soon as they are created in Jira they should appear in Odoo.
-If they are not active, you can open the Jira Backend and run the
-synchronizations manually, or activate the Scheduled Actions to run the batch
-imports. It is important to select the issue types so don’t miss this step (need improvement).</p>
+<p>If the webhooks are active, as soon as they are created in Jira they
+should appear in Odoo. If they are not active, you can open the Jira
+Backend and run the synchronizations manually, or activate the Scheduled
+Actions to run the batch imports. It is important to select the issue
+types so don’t miss this step (need improvement).</p>
 </div>
 </div>
 <div class="section" id="known-issues-roadmap">
 <h1><a class="toc-backref" href="#toc-entry-14">Known issues / Roadmap</a></h1>
 <ul class="simple">
-<li>If an odoo user has no linked employee, worklogs will still be imported but
-with no employee.</li>
+<li>If an odoo user has no linked employee, worklogs will still be
+imported but with no employee.</li>
 </ul>
 <p><strong>Allowing several bindings per project</strong></p>
-<p>The design evolved to allow more than one Jira binding per project in Odoo.
-This conveniently allows to fetch tasks and worklogs for many projects in Jira,
-which will be tracked in only one project in Odoo.</p>
+<p>The design evolved to allow more than one Jira binding per project in
+Odoo. This conveniently allows to fetch tasks and worklogs for many
+projects in Jira, which will be tracked in only one project in Odoo.</p>
 <p>In order to push data to Jira, we have to apply restrictions on these
 “multi-bindings” projects, as we cannot know to which binding data must
 be pushed:</p>
 <ul class="simple">
-<li>Not more than one project (can be zero) can have a “Sync Action” set to
-“Export to JIRA”. As this configuration pushes the name and key of the project
-to Jira, we cannot push it to more than one project.</li>
-<li>If we implement push of tasks to Jira, we’ll have to add a way to restrict or
-choose to which project we push the task, this is not supported yet (for
-instance, add a Boolean “export tasks” on the project binding, or explicitly
-select the target binding on the task)</li>
-<li>Now that the webhooks are authenticated, use the values sent by the webhooks
-rather than querying them back</li>
-<li>We now can have multiple backends, registering multiple webhooks. If we want
-to use this in practice, testing must be done and probably some things will
-need fixing.</li>
+<li>Not more than one project (can be zero) can have a “Sync Action” set
+to “Export to JIRA”. As this configuration pushes the name and key of
+the project to Jira, we cannot push it to more than one project.</li>
+<li>If we implement push of tasks to Jira, we’ll have to add a way to
+restrict or choose to which project we push the task, this is not
+supported yet (for instance, add a Boolean “export tasks” on the
+project binding, or explicitly select the target binding on the task)</li>
+<li>Now that the webhooks are authenticated, use the values sent by the
+webhooks rather than querying them back</li>
+<li>We now can have multiple backends, registering multiple webhooks. If
+we want to use this in practice, testing must be done and probably
+some things will need fixing.</li>
 </ul>
 </div>
 <div class="section" id="bug-tracker">
@@ -561,7 +580,7 @@ need fixing.</li>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/connector-jira/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -575,17 +594,19 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <div class="section" id="contributors">
 <h2><a class="toc-backref" href="#toc-entry-18">Contributors</a></h2>
 <ul>
-<li><p class="first"><a class="reference external" href="https://camptocamp.com">Camptocamp</a>:
-* Damien Crier
-* Thierry Ducrest
-* Tonow-c2c
-* Simone Orsi &lt;<a class="reference external" href="mailto:simahawk&#64;gmail.com">simahawk&#64;gmail.com</a>&gt;
-* Timon Tschanz &lt;<a class="reference external" href="mailto:timon.tschanz&#64;camptocamp.com">timon.tschanz&#64;camptocamp.com</a>&gt;
-* jcoux &lt;<a class="reference external" href="mailto:julien.coux&#64;camptocamp.com">julien.coux&#64;camptocamp.com</a>&gt;
-* Patrick Tombez &lt;<a class="reference external" href="mailto:patrick.tombez&#64;camptocamp.com">patrick.tombez&#64;camptocamp.com</a>&gt;
-* Guewen Baconnier &lt;<a class="reference external" href="mailto:guewen.baconnier&#64;camptocamp.com">guewen.baconnier&#64;camptocamp.com</a>&gt;
-* Akim Juillerat &lt;<a class="reference external" href="mailto:akim.juillerat&#64;camptocamp.com">akim.juillerat&#64;camptocamp.com</a>&gt;
-* Alexandre Fayolle &lt;<a class="reference external" href="mailto:alexandre.fayolle&#64;camptocamp.com">alexandre.fayolle&#64;camptocamp.com</a>&gt;</p>
+<li><p class="first"><a class="reference external" href="https://camptocamp.com">Camptocamp</a>:</p>
+<ul class="simple">
+<li>Damien Crier</li>
+<li>Thierry Ducrest</li>
+<li>Tonow-c2c</li>
+<li>Simone Orsi &lt;<a class="reference external" href="mailto:simahawk&#64;gmail.com">simahawk&#64;gmail.com</a>&gt;</li>
+<li>Timon Tschanz &lt;<a class="reference external" href="mailto:timon.tschanz&#64;camptocamp.com">timon.tschanz&#64;camptocamp.com</a>&gt;</li>
+<li>jcoux &lt;<a class="reference external" href="mailto:julien.coux&#64;camptocamp.com">julien.coux&#64;camptocamp.com</a>&gt;</li>
+<li>Patrick Tombez &lt;<a class="reference external" href="mailto:patrick.tombez&#64;camptocamp.com">patrick.tombez&#64;camptocamp.com</a>&gt;</li>
+<li>Guewen Baconnier &lt;<a class="reference external" href="mailto:guewen.baconnier&#64;camptocamp.com">guewen.baconnier&#64;camptocamp.com</a>&gt;</li>
+<li>Akim Juillerat &lt;<a class="reference external" href="mailto:akim.juillerat&#64;camptocamp.com">akim.juillerat&#64;camptocamp.com</a>&gt;</li>
+<li>Alexandre Fayolle &lt;<a class="reference external" href="mailto:alexandre.fayolle&#64;camptocamp.com">alexandre.fayolle&#64;camptocamp.com</a>&gt;</li>
+</ul>
 </li>
 <li><p class="first"><a class="reference external" href="https://corporatehub.eu/">CorporateHub</a></p>
 <ul class="simple">
@@ -604,11 +625,13 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <div class="section" id="maintainers">
 <h2><a class="toc-backref" href="#toc-entry-19">Maintainers</a></h2>
 <p>This module is maintained by the OCA.</p>
-<a class="reference external image-reference" href="https://odoo-community.org"><img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" /></a>
+<a class="reference external image-reference" href="https://odoo-community.org">
+<img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />
+</a>
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/connector-jira/tree/15.0/connector_jira">OCA/connector-jira</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/connector-jira/tree/17.0/connector_jira">OCA/connector-jira</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>

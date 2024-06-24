@@ -187,6 +187,7 @@ class JiraConnectAppController(http.Controller):
         jwt_token = authorization_header[4:]
         decoded = jwt.get_unverified_header(jwt_token)
         if "kid" in decoded:
+            # pylint: disable=E8106
             response = requests.get(
                 f"https://connect-install-keys.atlassian.com/{decoded['kid']}"
             )

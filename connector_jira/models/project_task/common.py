@@ -158,7 +158,7 @@ class ProjectTask(models.Model):
         for task in self:
             task_id, name = super(ProjectTask, task).name_get()[0]
             if task.jira_compound_key:
-                name = "[{}] {}".format(task.jira_compound_key, name)
+                name = f"[{task.jira_compound_key}] {name}"
             names.append((task_id, name))
         return names
 
