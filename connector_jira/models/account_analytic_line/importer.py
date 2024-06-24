@@ -85,11 +85,11 @@ class AnalyticLineMapper(Component):
             email = jira_author.get("emailAddress", "<unknown>")
             raise MappingError(
                 _(
-                    'No user found with login "%(jira_author_key)s" or email "%(email)s".'
-                    "You must create a user or link it manually if the "
-                    "login/email differs.",
-                    jira_author_key=jira_author_key,
-                    email=email,
+                    "No user found with login '%(key)s' or email '%(mail)s'."
+                    " You must create a user or link it manually if the"
+                    " login/email differs.",
+                    key=jira_author_key,
+                    mail=email,
                 )
             )
         employee = (

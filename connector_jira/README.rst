@@ -17,18 +17,19 @@ JIRA Connector
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fconnector--jira-lightgray.png?logo=github
-    :target: https://github.com/OCA/connector-jira/tree/15.0/connector_jira
+    :target: https://github.com/OCA/connector-jira/tree/17.0/connector_jira
     :alt: OCA/connector-jira
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/connector-jira-15-0/connector-jira-15-0-connector_jira
+    :target: https://translation.odoo-community.org/projects/connector-jira-17-0/connector-jira-17-0-connector_jira
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=15.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module adds Jira synchronization feature. It works with Jira Cloud by behaving as an Atlassian Connect App.
+This module adds Jira synchronization feature. It works with Jira Cloud
+by behaving as an Atlassian Connect App.
 
 **Table of contents**
 
@@ -40,175 +41,188 @@ Installation
 
 You need the following Python packages:
 
-* requests
-* jira
-* oauthlib
-* requests-oauthlib
-* requests-toolbelt
-* PyJWT
-* cryptography
-* atlassian-jwt
-
+-  requests
+-  jira
+-  oauthlib
+-  requests-oauthlib
+-  requests-toolbelt
+-  PyJWT
+-  cryptography
+-  atlassian-jwt
 
 Once the addon is installed, follow these steps:
 
 Job Queue
-~~~~~~~~~
+---------
 
 In ``odoo.conf``, configure similarly:
 
-.. code-block::
+::
 
-  [queue_job]
-  channels = root:1,root.connector_jira.import:2
-
+   [queue_job]
+   channels = root:1,root.connector_jira.import:2
 
 Backend
-~~~~~~~
+-------
 
 1. Open the menu Connectors > Jira > Backends
 2. Create a new Jira Backend
 
-   * Put the name you want
-   * You can also select the company where records will be created and the
-     default project template used when Odoo will create the projects in Jira
-   * Save
+   -  Put the name you want
+   -  You can also select the company where records will be created and
+      the default project template used when Odoo will create the
+      projects in Jira
+   -  Save
 
-3. Make note of the value of the App Descriptor URL (important: make sure that 
-   the system parameter `web.base.url` is set properly. For local development you 
-   will want to use ngrok to make your computer reachable over https from Jira Cloud).
+3. Make note of the value of the App Descriptor URL (important: make
+   sure that the system parameter web.base.url is set properly. For
+   local development you will want to use ngrok to make your computer
+   reachable over https from Jira Cloud).
 
 Installing the backend as a Jira App
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------
 
-In case this gets outdated, refer to https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app
+In case this gets outdated, refer to
+https://developer.atlassian.com/platform/marketplace/listing-connect-apps/#list-a-connect-app
 
 1. Login on marketplace.atlassian.com (possibly create an account)
-2. On the top right corner, the icon with your avatar leads to a menu -> select the `Publish an App` entry
+2. On the top right corner, the icon with your avatar leads to a menu ->
+   select the Publish an App entry
 3. On the Publish a new app screen:
-   * select a Vendor (normally your company)
-   * upload your app: select `Provide a URL to your artifact`
-   * click on the `Enter URL` button
-   * paste the App Descriptor URL in the pop-up and click on the `Done` button
-   * the `Name` field should get populated from the `name` of your backend
-   * Compatible application: select `Jira`
-   * build number: can be kept as is
-4. Click on the `Save as private` button
-   (!) Important: do not click the "Next: Make public" button. That flow would allow anyone on Jira Cloud to install your backend. 
-5. On the next screen, you can go to the "Private Listings" page, and click on the "Create a token" button: this token can be used to install the app on your Jira instance. 
 
+   -  select a Vendor (normally your company)
+   -  upload your app: select Provide a URL to your artifact
+   -  click on the Enter URL button
+   -  paste the App Descriptor URL in the pop-up and click on the Done
+      button
+   -  the Name field should get populated from the name of your backend
+   -  Compatible application: select Jira
+   -  build number: can be kept as is
+
+4. Click on the Save as private button (!) Important: do not click the
+   "Next: Make public" button. That flow would allow anyone on Jira
+   Cloud to install your backend.
+5. On the next screen, you can go to the "Private Listings" page, and
+   click on the "Create a token" button: this token can be used to
+   install the app on your Jira instance.
 
 Installing the Jira App on your Jira Cloud instance
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------------------------
 
 1. Connect to your Jira instance with an account with Admin access
-2. In the Apps menu, select `Manage your apps`
-3. In the Apps screen, click on the Settings link which is under the User-installed apps list
-4. In the settings screen, check the `Enable private listings` box, and click on `Apply`
-5. Refresh the Apps page: you should see an `Upload app` link: click on it
-6. On the Upload app dialog, paste the token URL you received in the previous procedure, and click on `Upload`
-
+2. In the Apps menu, select Manage your apps
+3. In the Apps screen, click on the Settings link which is under the
+   User-installed apps list
+4. In the settings screen, check the Enable private listings box, and
+   click on Apply
+5. Refresh the Apps page: you should see an Upload app link: click on it
+6. On the Upload app dialog, paste the token URL you received in the
+   previous procedure, and click on Upload
 
 Configuration of the Backend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
 
-Going back to Odoo, the backend should now be in the Running state, with some information filled in, such as the Jira URI.
-
+Going back to Odoo, the backend should now be in the Running state, with
+some information filled in, such as the Jira URI.
 
 **Configure the Epic Link**
 
-If you use Epics, you need to click on "Configure Epic Link", Odoo will search
-the name of the custom field used for the Epic Link.
+If you use Epics, you need to click on "Configure Epic Link", Odoo will
+search the name of the custom field used for the Epic Link.
 
 Congratulations, you're done!
 
 Usage
 =====
 
-The tasks and worklogs are always imported from JIRA to Odoo, there
-is no synchronization in the other direction.
+The tasks and worklogs are always imported from JIRA to Odoo, there is
+no synchronization in the other direction.
 
 Initial synchronizations
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
-You can already select the "Imports" tab in the Backend and click on "Link
-users" and "Import issue types". The users will be matched either by login or by email.
+You can already select the "Imports" tab in the Backend and click on
+"Link users" and "Import issue types". The users will be matched either
+by login or by email.
 
 Create and export a project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
-Projects can be created in Odoo and exported to Jira. You can then create a
-project, and use the action "Link with JIRA" and use the "Export to JIRA" action.
+Projects can be created in Odoo and exported to Jira. You can then
+create a project, and use the action "Link with JIRA" and use the
+"Export to JIRA" action.
 
-When you choose to export a project to JIRA, if you change the name
-or the key of the project, the new values will be pushed to JIRA.
+When you choose to export a project to JIRA, if you change the name or
+the key of the project, the new values will be pushed to JIRA.
 
 Link a project with JIRA
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
-If you already have a project on JIRA or prefer to create it first on JIRA,
-you can link an Odoo project. Use the "Link with JIRA" action on the project
-and select the "Link with JIRA" action.
+If you already have a project on JIRA or prefer to create it first on
+JIRA, you can link an Odoo project. Use the "Link with JIRA" action on
+the project and select the "Link with JIRA" action.
 
-This action establish the link, then changes of the name or the key on either
-side are not pushed.
+This action establish the link, then changes of the name or the key on
+either side are not pushed.
 
 Issue Types on Projects
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
-When you link a project, you have to select which issue types are synchronized.
-Only tasks of the selected types will be created in Odoo.
+When you link a project, you have to select which issue types are
+synchronized. Only tasks of the selected types will be created in Odoo.
 
 If a JIRA worklog is added to a type of issue that is not synchronized,
 will attach to the closest task following these rules:
 
-* if a subtask, find the parent task
-* if no parent task, find the epic task (only if it is on the same project)
-* if no epic, attach to the project without being linked to a task
+-  if a subtask, find the parent task
+-  if no parent task, find the epic task (only if it is on the same
+   project)
+-  if no epic, attach to the project without being linked to a task
 
 Change synchronization configuration on a project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------------------------
 
 If you want to change the configuration of a project, such as which
-issue types are synchronized, you can open the "Connector" tab in
-the project settings and edit the "binding" with the backend.
+issue types are synchronized, you can open the "Connector" tab in the
+project settings and edit the "binding" with the backend.
 
 Synchronize tasks and worklogs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
-If the webhooks are active, as soon as they are created in Jira they should appear in Odoo.
-If they are not active, you can open the Jira Backend and run the
-synchronizations manually, or activate the Scheduled Actions to run the batch
-imports. It is important to select the issue types so don't miss this step (need improvement).
+If the webhooks are active, as soon as they are created in Jira they
+should appear in Odoo. If they are not active, you can open the Jira
+Backend and run the synchronizations manually, or activate the Scheduled
+Actions to run the batch imports. It is important to select the issue
+types so don't miss this step (need improvement).
 
 Known issues / Roadmap
 ======================
 
-* If an odoo user has no linked employee, worklogs will still be imported but
-  with no employee.
+-  If an odoo user has no linked employee, worklogs will still be
+   imported but with no employee.
 
 **Allowing several bindings per project**
 
-The design evolved to allow more than one Jira binding per project in Odoo.
-This conveniently allows to fetch tasks and worklogs for many projects in Jira,
-which will be tracked in only one project in Odoo.
+The design evolved to allow more than one Jira binding per project in
+Odoo. This conveniently allows to fetch tasks and worklogs for many
+projects in Jira, which will be tracked in only one project in Odoo.
 
 In order to push data to Jira, we have to apply restrictions on these
 "multi-bindings" projects, as we cannot know to which binding data must
 be pushed:
 
-* Not more than one project (can be zero) can have a "Sync Action" set to
-  "Export to JIRA". As this configuration pushes the name and key of the project
-  to Jira, we cannot push it to more than one project.
-* If we implement push of tasks to Jira, we'll have to add a way to restrict or
-  choose to which project we push the task, this is not supported yet (for
-  instance, add a Boolean "export tasks" on the project binding, or explicitly
-  select the target binding on the task)
-* Now that the webhooks are authenticated, use the values sent by the webhooks
-  rather than querying them back
-* We now can have multiple backends, registering multiple webhooks. If we want
-  to use this in practice, testing must be done and probably some things will
-  need fixing. 
+-  Not more than one project (can be zero) can have a "Sync Action" set
+   to "Export to JIRA". As this configuration pushes the name and key of
+   the project to Jira, we cannot push it to more than one project.
+-  If we implement push of tasks to Jira, we'll have to add a way to
+   restrict or choose to which project we push the task, this is not
+   supported yet (for instance, add a Boolean "export tasks" on the
+   project binding, or explicitly select the target binding on the task)
+-  Now that the webhooks are authenticated, use the values sent by the
+   webhooks rather than querying them back
+-  We now can have multiple backends, registering multiple webhooks. If
+   we want to use this in practice, testing must be done and probably
+   some things will need fixing.
 
 Bug Tracker
 ===========
@@ -216,7 +230,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/connector-jira/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -224,35 +238,36 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Camptocamp
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* `Camptocamp <https://camptocamp.com>`_:
-  * Damien Crier
-  * Thierry Ducrest
-  * Tonow-c2c
-  * Simone Orsi <simahawk@gmail.com>
-  * Timon Tschanz <timon.tschanz@camptocamp.com>
-  * jcoux <julien.coux@camptocamp.com>
-  * Patrick Tombez <patrick.tombez@camptocamp.com>
-  * Guewen Baconnier <guewen.baconnier@camptocamp.com>
-  * Akim Juillerat <akim.juillerat@camptocamp.com>
-  * Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
+-  `Camptocamp <https://camptocamp.com>`__:
 
-* `CorporateHub <https://corporatehub.eu/>`__
+   -  Damien Crier
+   -  Thierry Ducrest
+   -  Tonow-c2c
+   -  Simone Orsi <simahawk@gmail.com>
+   -  Timon Tschanz <timon.tschanz@camptocamp.com>
+   -  jcoux <julien.coux@camptocamp.com>
+   -  Patrick Tombez <patrick.tombez@camptocamp.com>
+   -  Guewen Baconnier <guewen.baconnier@camptocamp.com>
+   -  Akim Juillerat <akim.juillerat@camptocamp.com>
+   -  Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
 
-  * Alexey Pelykh <alexey.pelykh@corphub.eu>
+-  `CorporateHub <https://corporatehub.eu/>`__
 
-* `Trobz <https://trobz.com>`_:
+   -  Alexey Pelykh <alexey.pelykh@corphub.eu>
 
-    * Son Ho <sonhd@trobz.com>
+-  `Trobz <https://trobz.com>`__:
+
+      -  Son Ho <sonhd@trobz.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -264,6 +279,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/15.0/connector_jira>`_ project on GitHub.
+This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/17.0/connector_jira>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

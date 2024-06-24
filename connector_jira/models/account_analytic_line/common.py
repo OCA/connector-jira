@@ -284,8 +284,7 @@ class WorklogAdapter(Component):
         for chunk in self._chunks(worklog_ids, 1000):
             payload = json.dumps({"ids": chunk})
             result = self._post_get_json(path, data=payload)
-            for worklog in result:
-                yield worklog
+            yield from result
 
     def updated_since(self, since=None):
         path = "worklog/updated"

@@ -85,8 +85,9 @@ class JiraBackend(models.Model):
     application_key = fields.Char(
         compute="_compute_application_key",
         store=True,
-        help="The name that will be used as application key to register the app on the "
-        "Atlassian marketplace website. It has to be unique among all apps on the marketplace.",
+        help="The name that will be used as application key to register the app on the"
+        " Atlassian marketplace website.\n"
+        "It has to be unique among all apps on the marketplace.",
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
@@ -464,7 +465,7 @@ class JiraBackend(models.Model):
             backend.search([]).delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
-        return urllib.parse.urljoin(self.uri, "/browse/{}".format(jira_issue_id))
+        return urllib.parse.urljoin(self.uri, f"/browse/{jira_issue_id}")
 
     def _get_base_url(self):
         fqdn = self.env["ir.config_parameter"].get_param("web.base.url", "")
@@ -536,11 +537,11 @@ class JiraBackend(models.Model):
         'sharedSecret': Use to sign JWT tokens
         'serverVersion': DEPRECATED
         'pluginsVersion': DEPRECATED
-        'baseUrl': URL prefix for this Atlassian product instance. All of its REST endpoints
-            begin with this `baseUrl`. Do not use the `baseUrl` as an identifier for the
-            Atlassian product as this value may not be unique.
-        'displayUrl': If the Atlassian product instance has an associated custom domain, this
-            is the URL through which users will access the product.
+        'baseUrl': URL prefix for this Atlassian product instance. All of its REST
+            endpoints begin with this `baseUrl`. Do not use the `baseUrl` as an
+            identifier for the Atlassian product as this value may not be unique.
+        'displayUrl': If the Atlassian product instance has an associated custom
+            domain, this is the URL through which users will access the product.
         'productType': 'jira',
         'description': 'Atlassian JIRA at https: //testcamptocamp.atlassian.net ',
         'eventType': 'installed',
