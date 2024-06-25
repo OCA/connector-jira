@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_jira_project_project_form" model="ir.ui.view">
+        <field name="name">jira.project.project.form</field>
+        <field name="model">jira.project.project</field>
+        <field name="arch" type="xml">
+            <form string="Jira Project">
+                <group>
+                    <field name="jira_key" />
+                    <field name="backend_id" readonly="external_id" />
+                    <field name="project_template" readonly="external_id" />
+                    <field
+                        name="project_template_shared"
+                        readonly="external_id"
+                        invisible="project_template != 'shared'"
+                        required="project_template == 'shared'"
+                    />
+                    <field name="sync_action" />
+                    <field name="project_type" />
+                    <div colspan="2">
+                        <p class="oe_grey oe_inline">
+                            The checkboxes define which types of JIRA issues will be
+                            imported
+              into Odoo. For instance, if you check 'Story', only issues of type
+              Story will be imported. Several choices possible.
+                        </p>
+                        <p class="oe_grey oe_inline">
+                            There is a direct implication on the Worklogs.
+              When a worklog is done on a JIRA Sub-Task and this type is not
+              sync'ed, the worklog will be attached to the parent Task of the
+              Sub-Task. If the Task is not sync'ed, it will be attached to the
+              Epic. Finally, if there is no Epic, the worklog will not be
+              attached to any task.
+                        </p>
+                    </div>
+                    <field name="sync_issue_type_ids" widget="many2many_checkboxes" />
+                    <field name="external_id" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_project_project_tree" model="ir.ui.view">
+        <field name="name">jira.project.project.tree</field>
+        <field name="model">jira.project.project</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="backend_id" />
+                <field name="jira_key" />
+                <field name="external_id" />
+                <field name="project_type" />
+                <field name="sync_issue_type_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+</odoo>

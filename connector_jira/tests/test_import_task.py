@@ -120,7 +120,7 @@ class TestImportTask(JiraTransactionComponentCase):
         self.assertEqual(task_binding.name, "Task1")
         self.assertEqual(task_binding.jira_issue_type_id, self.task_issue_type)
         self.assertTrue(task_binding.jira_epic_link_id)
-        self.assertAlmostEqual(task_binding.odoo_id.planned_hours, 4.5)
+        self.assertAlmostEqual(task_binding.odoo_id.allocated_hours, 4.5)
 
         epic_binding = task_binding.jira_epic_link_id
         self.assertEqual(epic_binding.jira_key, "TEST-1")
