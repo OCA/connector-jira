@@ -24,7 +24,7 @@ class MilliDatetime(fields.Field):
     column_type = ("timestamp", "timestamp")
 
     @staticmethod
-    def from_string(value):
+    def to_datetime(value):
         """Convert a string to :class:`datetime` including milliseconds"""
         if not value:
             return None
@@ -37,7 +37,10 @@ class MilliDatetime(fields.Field):
         if len(value) > fields.DATETIME_LENGTH:
             return datetime.strptime(value, MILLI_DATETIME_FORMAT)
         else:
-            return fields.Datetime.from_string(value)
+            return fields.Datetime.to_datetime(value)
+
+    # Backward compatibility and consistency w/ fields.Datetime
+    from_string = to_datetime
 
     @staticmethod
     def to_string(value):
@@ -60,4 +63,4 @@ class MilliDatetime(fields.Field):
             raise TypeError(
                 f"{value} (field {self}) must be string or datetime, not date."
             )
-        return self.from_string(value)
+        return self.to_datetime(value)

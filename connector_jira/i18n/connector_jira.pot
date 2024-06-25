@@ -2751,7 +2751,7 @@ msgid "Reference"
 msgstr ""
 
 #. module: connector_jira
-#: model:ir.actions.act_window,name:connector_jira.action_jira_aa_line_import
+#: model:ir.actions.act_window,name:connector_jira.act_server_jira_aa_line_import
 msgid "Refresh Worklogs from Jira"
 msgstr ""
 

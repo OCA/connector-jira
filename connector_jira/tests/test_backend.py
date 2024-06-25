@@ -41,7 +41,7 @@ class TestBackendTimestamp(JiraTransactionComponentCase):
             "2019-04-08 10:30:59.375000",
         )
         self.assertEqual(
-            MilliDatetime.from_string("2019-04-08 10:30:59.375000"),
+            MilliDatetime.to_datetime("2019-04-08 10:30:59.375000"),
             datetime(2019, 4, 8, 10, 30, 59, 375000),
         )
 
@@ -66,7 +66,7 @@ class TestBackend(JiraTransactionComponentCase):
         # The field on jira.backend is a standard odoo Datetime field so works
         # with strings (in 11.0). But the field on jira.backend.timestamp is a
         # "custom" MilliDatetime field which works with datetime instances.
-        self.assertEqual(jira_ts.last_timestamp, fields.Datetime.from_string(test_date))
+        self.assertEqual(jira_ts.last_timestamp, fields.Datetime.to_datetime(test_date))
 
     def test_import_project_task_from_date(self):
         self._test_import_date_computed_field(
