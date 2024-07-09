@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Queue Job Channel -->
+    <record id="import_root" model="queue.job.channel">
+        <field name="name">connector_jira.import</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+
+    <!-- AccountAnalyticLine Queue Job Function -->
+
+    <record
+        id="job_function_import_record_jira_account_analytic_line"
+        model="queue.job.function"
+    >
+        <field name="model_id" ref="connector_jira.model_jira_account_analytic_line" />
+        <field name="method">import_record</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+        <field name="related_action" eval='{"func_name": "related_action_jira_link"}' />
+    </record>
+
+    <!-- JiraBinding Queue Job Function -->
+
+    <record id="job_function_import_batch_jira_binding" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_binding" />
+        <field name="method">import_batch</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+    </record>
+
+    <record id="job_function_run_batch_timestamp" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_binding" />
+        <field name="method">run_batch_timestamp</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+    </record>
+
+    <record id="job_function_delete_record" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_binding" />
+        <field name="method">delete_record</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+    </record>
+
+    <record id="job_function_import_record_jira_binding" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_binding" />
+        <field name="method">import_record</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+        <field name="related_action" eval='{"func_name": "related_action_jira_link"}' />
+    </record>
+
+    <record id="job_function_export_record" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_binding" />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+        <field
+            name="related_action"
+            eval='{"func_name": "related_action_unwrap_binding"}'
+        />
+    </record>
+
+    <!-- JiraIssueType Queue Job Function -->
+
+    <record id="job_function_import_batch_jira_issue_type" model="queue.job.function">
+        <field name="model_id" ref="connector_jira.model_jira_issue_type" />
+        <field name="method">import_batch</field>
+        <field name="channel_id" ref="connector_jira.import_root" />
+    </record>
+</odoo>
