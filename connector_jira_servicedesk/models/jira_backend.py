@@ -22,18 +22,15 @@ class JiraBackend(models.Model):
 
     @api.model
     def _selection_project_template(self):
-        selection = super()._selection_project_template()
-        selection += [
+        return super()._selection_project_template() + [
             ("Basic", "Basic (Service Desk)"),
             ("IT Service Desk", "IT Service Desk (Service Desk)"),
             ("Customer service", "Customer Service (Service Desk)"),
         ]
-        return selection
 
     def import_organization(self):
-        self.env["jira.organization"].with_delay(
-            channel="root.connector_jira.import"
-        ).import_batch(self)
+        channel = "root.connector_jira.import"
+        self.env["jira.organization"].with_delay(channel=channel).import_batch(self)
         return True
 
     def activate_organization(self):
@@ -44,7 +41,5 @@ class JiraBackend(models.Model):
             adapter = work.component(usage="backend.adapter")
             jira_fields = adapter.list_fields()
             for field in jira_fields:
-                custom_ref = field.get("schema", {}).get("custom")
-                if custom_ref == org_field:
-                    self.organization_field_name = field["id"]
-                    break
+                if field.get("schema", {}).get("custom") == org_field:
+                    return self.update({"organization_field_name": field["id"]})
