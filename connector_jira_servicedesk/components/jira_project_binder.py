@@ -40,32 +40,25 @@ class JiraProjectBinder(Component):
             (self._backend_field, "=", self.backend_record.id),
         ]
         if not organizations:
-            domain.append(
-                ("organization_ids", "=", False),
-            )
+            domain.append(("organization_ids", "=", False))
         candidates = self.model.with_context(active_test=False).search(domain)
         if organizations:
             fallback = self.model.browse()
-            binding = self.model.browse()
             for candidate in candidates:
+                # No organization set on candidate: use it as fallback
                 if not candidate.organization_ids:
                     fallback = candidate
-                    continue
-
-                if organizations in candidate.organization_ids:
+                # All organizations are included in the candidate's organizations: it's
+                # the binding we were looking for
+                elif organizations <= candidate.organization_ids:
                     binding = candidate
                     break
-            if not binding:
+            # No feasible candidate found: use fallback
+            else:
                 binding = fallback
         else:
+            # No organization set: all candidates are feasible
             binding = candidates
-
-        if not binding:
-            if unwrap:
-                return self.model.browse()[self._odoo_field]
-            return self.model.browse()
-
-        binding.ensure_one()
-        if unwrap:
-            binding = binding[self._odoo_field]
-        return binding
+        # Binding must be exactly 1
+        binding = (binding and binding.ensure_one()) or self.model.browse()
+        return binding[self._odoo_field] if unwrap else binding

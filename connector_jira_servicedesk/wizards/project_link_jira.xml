@@ -8,7 +8,7 @@
             <group name="export_config" position="after">
                 <group
                     name="link_organizations"
-                    attrs="{'invisible': [('state', '!=', 'link_organizations')]}"
+                    invisible="state != 'link_organizations'"
                 >
                     <field
                         name="organization_ids"
