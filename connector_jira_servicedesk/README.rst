@@ -17,13 +17,13 @@ JIRA Connector - Service Desk Extension
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fconnector--jira-lightgray.png?logo=github
-    :target: https://github.com/OCA/connector-jira/tree/15.0/connector_jira_servicedesk
+    :target: https://github.com/OCA/connector-jira/tree/17.0/connector_jira_servicedesk
     :alt: OCA/connector-jira
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/connector-jira-15-0/connector-jira-15-0-connector_jira_servicedesk
+    :target: https://translation.odoo-community.org/projects/connector-jira-17-0/connector-jira-17-0-connector_jira_servicedesk
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=15.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
@@ -39,49 +39,55 @@ Usage
 =====
 
 Setup
-~~~~~
+-----
 
 A new button is added on the JIRA backend, to import the organizations
 of JIRA. Before, be sure to use the button "Configure Organization Link"
 in the "Advanced Configuration" tab.
 
-
 Features
-~~~~~~~~
+--------
 
 Organizations
-~~~~~~~~~~~~~
+-------------
 
-On Service Desk, you can share projects with Organizations.
-You may want to use different Odoo projects according to the
-organizations. This is what this extension allows.
+On Service Desk, you can share projects with Organizations. You may want
+to use different Odoo projects according to the organizations. This is
+what this extension allows.
 
 Example:
 
-* You have one Service Desk project named "Earth Project" with key EARTH
-* On JIRA SD You share this project with organizations Themis and Rhea
-* However on Odoo, you want to track the hours differently for Themis and Rhea
+-  You have one Service Desk project named "Earth Project" with key
+   EARTH
+-  On JIRA SD You share this project with organizations Themis and Rhea
+-  However on Odoo, you want to track the hours differently for Themis
+   and Rhea
 
 Steps on Odoo:
 
-* Create a Themis project, use the "Link with JIRA" action with the key EARTH
-* When you hit Next, the organization(s) you want to link must be set
-* Repeat with another project for Rhea
+-  Create a Themis project, use the "Link with JIRA" action with the key
+   EARTH
+-  When you hit Next, the organization(s) you want to link must be set
+-  Repeat with another project for Rhea
 
-If the project binding for the synchronization already exists, you can still edit it in the settings of the project and change the organizations.
+If the project binding for the synchronization already exists, you can
+still edit it in the settings of the project and change the
+organizations.
 
 When a task or worklog is imported, it will search for a project having
 exactly the same set of organizations than the one of the task. If no
 project with the same set is found and you have a project configured
 without organization, the task will be linked to it.
 
-This means that, on Odoo, you can have shared project altogether with dedicated
-ones, while you only have one project on JIRA.
+This means that, on Odoo, you can have shared project altogether with
+dedicated ones, while you only have one project on JIRA.
 
-* Tasks with org "Themis" will be attached to this project
-* Tasks with org "Rhea" will be attached to this project
-* Tasks with orgs "Themis" and "Rhea" will be attached to another project "Themis and Rhea"
-* The rest of the tasks will be attached to a fourth project (configured without organizations)
+-  Tasks with org "Themis" will be attached to this project
+-  Tasks with org "Rhea" will be attached to this project
+-  Tasks with orgs "Themis" and "Rhea" will be attached to another
+   project "Themis and Rhea"
+-  The rest of the tasks will be attached to a fourth project
+   (configured without organizations)
 
 Bug Tracker
 ===========
@@ -89,7 +95,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/connector-jira/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira_servicedesk%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira_servicedesk%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -97,27 +103,28 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Camptocamp
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Jaime Arroyo
-* `Camptocamp <https://camptocamp.com>`_:
+-  Jaime Arroyo
 
-    * Patrick Tombez <patrick.tombez@camptocamp.com>
-    * Guewen Baconnier <guewen.baconnier@camptocamp.com>
-    * Akim Juillerat <akim.juillerat@camptocamp.com>
-    * Denis Leemann <denis.leemann@camptocamp.com>
+-  `Camptocamp <https://camptocamp.com>`__:
 
-* `Trobz <https://trobz.com>`_:
+      -  Patrick Tombez <patrick.tombez@camptocamp.com>
+      -  Guewen Baconnier <guewen.baconnier@camptocamp.com>
+      -  Akim Juillerat <akim.juillerat@camptocamp.com>
+      -  Denis Leemann <denis.leemann@camptocamp.com>
 
-    * Son Ho <sonhd@trobz.com>
+-  `Trobz <https://trobz.com>`__:
+
+      -  Son Ho <sonhd@trobz.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -129,6 +136,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/15.0/connector_jira_servicedesk>`_ project on GitHub.
+This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/17.0/connector_jira_servicedesk>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
