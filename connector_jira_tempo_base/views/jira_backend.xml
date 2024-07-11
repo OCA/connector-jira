@@ -9,16 +9,18 @@
         <field name="model">jira.backend</field>
         <field name="inherit_id" ref="connector_jira.view_jira_backend_form" />
         <field name="arch" type="xml">
-            <page name="advanced_configuration">
-                <group name="tempo" col="6">
-                    <field name="tempo_ws_backend_id" />
-                    <group name="tempo_timesheet_fields" colspan="3" />
-                    <div />
-                    <p class="oe_grey" colspan="2">
-                        Configure link with Tempo Timesheets
-                    </p>
+            <group name="worklog" position="after">
+                <group name="tempo" string="Tempo">
+                    <group name="tempo_fields">
+                        <field name="tempo_ws_backend_id" />
+                    </group>
+                    <group name="tempo_description">
+                        <p class="oe_grey" colspan="2">
+                            Configure link with Tempo Timesheets
+                        </p>
+                    </group>
                 </group>
-            </page>
+            </group>
         </field>
     </record>
 </odoo>

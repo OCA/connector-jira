@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record model="webservice.backend" id="tempo_timesheet_other_location_ws">
         <field name="name">Tempo Timesheets (other locations)</field>
@@ -11,8 +12,8 @@
         >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
         <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
         <field name="oauth2_flow">web_application</field>
-        <field name="oauth2_clientid_env_default">Fill with Server Env</field>
-        <field name="oauth2_client_secret_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_clientid_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_client_secret_env_default">Fill with Server Env</field>
         <field name="oauth2_clientid">Fill with Server Env</field>
         <field name="oauth2_client_secret">Fill with Server Env</field>
         <field name="oauth2_scope">read write</field>
@@ -29,8 +30,8 @@
             name="oauth2_authorization_url"
         >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
         <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
-        <field name="oauth2_clientid_env_default">Fill with Server Env</field>
-        <field name="oauth2_client_secret_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_clientid_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_client_secret_env_default">Fill with Server Env</field>
         <field name="oauth2_clientid">Fill with Server Env</field>
         <field name="oauth2_client_secret">Fill with Server Env</field>
         <field name="oauth2_scope">read write</field>
@@ -47,8 +48,8 @@
             name="oauth2_authorization_url"
         >https://{jira-cloud-instance-name}.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize/</field>
         <field name="oauth2_token_url">https://api.tempo.io/oauth/token/</field>
-        <field name="oauth2_clientid_env_default">Fill with Server Env</field>
-        <field name="oauth2_client_secret_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_clientid_env_default">Fill with Server Env</field>
+        <field name="x_oauth2_client_secret_env_default">Fill with Server Env</field>
         <field name="oauth2_clientid">Fill with Server Env</field>
         <field name="oauth2_client_secret">Fill with Server Env</field>
         <field name="oauth2_scope">read write</field>
