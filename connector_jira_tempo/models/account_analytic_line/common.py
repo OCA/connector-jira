@@ -51,9 +51,7 @@ class WorklogAdapter(Component):
         )
         return json.loads(response)
 
-    def tempo_timesheets_approval_read_status_by_team(
-        self, team_id, period_start
-    ):  # noqa
+    def tempo_timesheets_approval_read_status_by_team(self, team_id, period_start):  # noqa
         backend = self._tempo_timesheets_get_webservice()
         response = backend.call(
             "get",
