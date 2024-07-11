@@ -1,0 +1,6 @@
+- [CorporateHub](https://corporatehub.eu/)
+  - Alexey Pelykh \<<alexey.pelykh@corphub.eu>\>
+- [Camptocamp](https://www.camptocamp.com/):
+  - Simone Orsi \<<simone.orsi@camptocamp.com>\>
+- [Trobz](https://trobz.com):
+  - Son Ho \<<sonhd@trobz.com>\>
