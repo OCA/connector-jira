@@ -13,8 +13,7 @@ _logger = logging.getLogger(__name__)
 
 def get_past_week_1st_day():
     today = datetime.today()
-    date = today - timedelta(days=today.weekday() % 7) - timedelta(weeks=1)
-    return date.strftime("%Y-%m-%d")
+    return (today - timedelta(weeks=1, days=today.weekday() % 7)).strftime("%Y-%m-%d")
 
 
 class JiraBackend(models.Model):
@@ -47,7 +46,7 @@ class JiraBackend(models.Model):
         if period_start is None:
             # NOTE: it seems that the preciseness of this date
             # is not really important.
-            # If you don't pass the very begin date of the period
+            # If you don't pass the very beginning date of the period
             # but a date in the middle, the api will give you back
             # the right period range matching that date.
             # Still, we want to put clear that we want to retrieve
@@ -62,8 +61,7 @@ class JiraBackend(models.Model):
         with self.work_on("jira.account.analytic.line") as work:
             importer = work.component(usage="backend.adapter")
             response = importer.tempo_timesheets_approval_read_status_by_team(
-                team_id,
-                period_start,
+                team_id, period_start
             )
             user_binder = importer.binder_for("jira.res.users")
         mapping = defaultdict(list)
@@ -76,18 +74,22 @@ class JiraBackend(models.Model):
             except ValueError:
                 _logger.error("User %s not found", user_data)
                 continue
-            status = result["status"]["key"].lower()
-            mapping[(date_from, date_to, status)].append(user.id)
+            mapping[(date_from, date_to, result["status"]["key"].lower())] += [user.id]
         for (date_from, date_to, state), user_ids in mapping.items():
             self._update_ts_line_status(date_from, date_to, state, user_ids)
 
     def _update_ts_line_status(self, date_from, date_to, state, user_ids):
         lines = self._get_ts_lines(date_from, date_to, user_ids)
-        lines.mapped("jira_bind_ids").write({"jira_tempo_status": state})
+        lines.jira_bind_ids.write({"jira_tempo_status": state})
         self._validate_ts(date_from, date_to, state, user_ids)
 
+    def _get_ts_lines(self, date_from, date_to, user_ids):
+        ts_line_model = self.env["account.analytic.line"]
+        domain = self._get_ts_lines_domain(date_from, date_to, user_ids)
+        return ts_line_model.search(domain)
+
     def _get_ts_lines_domain(self, date_from, date_to, user_ids):
-        domain = [
+        return [
             # TODO: any better filter here?
             # `is_timesheet` is not available since we don't use ts_grid
             # But `is_timesheet` is a computed field with value:
@@ -97,12 +99,6 @@ class JiraBackend(models.Model):
             ("date", "<=", date_to),
             ("user_id", "in", user_ids),
         ]
-        return domain
-
-    def _get_ts_lines(self, date_from, date_to, user_ids):
-        ts_line_model = self.env["account.analytic.line"]
-        domain = self._get_ts_lines_domain(date_from, date_to, user_ids)
-        return ts_line_model.search(domain)
 
     def _validate_ts(self, date_from, date_to, state, user_ids):
         # hook here and do what you want depending on the state

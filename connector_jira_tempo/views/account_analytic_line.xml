@@ -9,7 +9,7 @@
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form" />
         <field name="arch" type="xml">
             <field name="task_id" position="after">
-                <field name="jira_tempo_status" />
+                <field name="jira_tempo_status" optional="show" />
             </field>
         </field>
     </record>
@@ -23,7 +23,7 @@
             </field>
             <tree position="attributes">
                 <attribute name="decoration-danger">
-                    jira_tempo_status=='open'
+                    jira_tempo_status == 'open'
                 </attribute>
             </tree>
         </field>
@@ -36,8 +36,13 @@
             <field name="task_id" position="after">
                 <field name="jira_tempo_status" />
             </field>
-            <filter name="groupby_date" position="after">
-                <field name="jira_tempo_status" />
+            <filter name="groupby_employee" position="after">
+                <filter
+                    string="Jira Tempo Status"
+                    name="groupby_jira_tempo_status"
+                    domain="[]"
+                    context="{'group_by': 'jira_tempo_status'}"
+                />
             </filter>
         </field>
     </record>
