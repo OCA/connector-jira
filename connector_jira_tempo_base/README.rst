@@ -17,13 +17,13 @@ JIRA Connector Tempo (base)
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fconnector--jira-lightgray.png?logo=github
-    :target: https://github.com/OCA/connector-jira/tree/15.0/connector_jira_tempo_base
+    :target: https://github.com/OCA/connector-jira/tree/17.0/connector_jira_tempo_base
     :alt: OCA/connector-jira
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/connector-jira-15-0/connector-jira-15-0-connector_jira_tempo_base
+    :target: https://translation.odoo-community.org/projects/connector-jira-17-0/connector-jira-17-0-connector_jira_tempo_base
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=15.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/connector-jira&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
@@ -35,13 +35,52 @@ This module provides base for building Tempo connectors.
 .. contents::
    :local:
 
+Configuration
+=============
+
+On Jira Cloud, runs on a separate server, and uses OAuth2 for
+authorization.
+
+You will need to:
+
+-  configure a webservice backend for Tempo on the jira backend (choose
+   the preconfigured one based on your region)
+
+-  configure an App for Oauth2 on Tempo by going on
+   https://YOURINSTANCE.atlassian.net/plugins/servlet/ac/io.tempo.jira/tempo-app#!/configuration/identity-service
+   and following the steps to create a new Application
+
+   -  Provide a name such as "Odoo of MyCompany"
+   -  The redirect URI is
+      https://WEB.BASE.URL/webservice/BACKEND_ID/Oauth2/redirect
+   -  Client type is "confidential"
+
+-  create the app, and save the client id and client secret
+
+-  you will need so save them in an environment variable or an server
+   environment file for the server environment configuration, something
+   like
+
+      [webservice_backend.tempo-eu] oauth2_authorization_url =
+      https://c2c-test.atlassian.net/plugins/servlet/ac/io.tempo.jira/oauth-authorize
+      oauth2_clientid = CLIENT ID oauth2_client_secret = CLIENT SECRET
+
+-  restart Odoo to get the parameters loaded in the record
+
+-  in Odoo web client browse to the webservice backend, and click on the
+   "Oauth Authorize" button to complete the signup dance. Be sure to use
+   an accound that has enough rights on Tempo to read all the timesheets
+   from all teams.
+
+-  you should now be ready to synchronize your Tempo worklogs in Odoo
+
 Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/connector-jira/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira_tempo_base%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/connector-jira/issues/new?body=module:%20connector_jira_tempo_base%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -49,26 +88,28 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * CorporateHub
 * Camptocamp
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* `CorporateHub <https://corporatehub.eu/>`__
+-  `CorporateHub <https://corporatehub.eu/>`__
 
-  * Alexey Pelykh <alexey.pelykh@corphub.eu>
-* `Camptocamp <https://www.camptocamp.com/>`_:
+   -  Alexey Pelykh <alexey.pelykh@corphub.eu>
 
-  * Simone Orsi <simone.orsi@camptocamp.com>
-* `Trobz <https://trobz.com>`_:
+-  `Camptocamp <https://www.camptocamp.com/>`__:
 
-  * Son Ho <sonhd@trobz.com>
+   -  Simone Orsi <simone.orsi@camptocamp.com>
+
+-  `Trobz <https://trobz.com>`__:
+
+   -  Son Ho <sonhd@trobz.com>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -80,6 +121,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/15.0/connector_jira_tempo_base>`_ project on GitHub.
+This module is part of the `OCA/connector-jira <https://github.com/OCA/connector-jira/tree/17.0/connector_jira_tempo_base>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
