@@ -23,7 +23,7 @@
     "external_dependencies": {
         "python": [
             "requests>=2.21.0",
-            "jira==3.6.0",
+            "jira==3.10.5",
             "oauthlib>=2.1.0",
             "requests-oauthlib>=1.1.0",
             "requests-toolbelt>=0.9.1",
