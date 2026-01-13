@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_jira_project_task_form" model="ir.ui.view">
+        <field name="name">jira.project.task.form</field>
+        <field name="model">jira.project.task</field>
+        <field name="arch" type="xml">
+            <form string="Jira Issue">
+                <group>
+                    <field name="backend_id" readonly="external_id" />
+                    <field name="external_id" />
+                    <field name="jira_key" readonly="1" />
+                    <field name="jira_issue_type_id" readonly="1" />
+                    <field name="jira_epic_link_id" readonly="1" />
+                    <field name="jira_parent_id" readonly="1" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_jira_project_task_tree" model="ir.ui.view">
+        <field name="name">jira.project.task.tree</field>
+        <field name="model">jira.project.task</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="backend_id" />
+                <field name="external_id" />
+                <field name="jira_key" />
+                <field name="jira_issue_type_id" />
+                <field name="jira_epic_link_id" />
+                <field name="jira_parent_id" />
+            </tree>
+        </field>
+    </record>
+</odoo>

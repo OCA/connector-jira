@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="backend_report_user_sync" name="JIRA backend report_user_sync">
+        <p>Failed user sync</p>
+        <br />
+        <ol>
+            <li t-foreach="result.get('error', [])" t-as="err">
+                <strong>error:</strong>
+                <span t-esc="err['error']" />
+                -
+                <strong t-esc="err['key']" />
+                :
+                <span t-esc="err['value']" />
+                -
+                <strong>detail:</strong>
+                <span t-esc="err['detail']" />
+            </li>
+        </ol>
+    </template>
+</odoo>

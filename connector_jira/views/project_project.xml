@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Copyright 2022 Camptocamp SA
+  Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+  License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Connector" name="connector">
+                    <group string="Jira">
+                        <field name="jira_bind_ids" nolabel="1" colspan="2" />
+                    </group>
+                </page>
+            </xpath>
+            <field name="partner_id" position="before">
+                <field name="jira_key" />
+            </field>
+        </field>
+    </record>
+    <record id="project_project_view_form_simplified" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified.jira</field>
+        <field name="model">project.project</field>
+        <field
+            name="inherit_id"
+            ref="project.project_project_view_form_simplified_footer"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_tasks']" position="after">
+                <button
+                    string="Create and Link with JIRA"
+                    name="create_and_link_jira"
+                    type="object"
+                    class="btn-primary"
+                />
+            </xpath>
+        </field>
+    </record>
+    <record id="view_project" model="ir.ui.view">
+        <field name="name">project.project.tree</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project" />
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="jira_key" />
+            </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_project_kanban_jira">
+        <field name="name">project.project.kanban.jira</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//div[hasclass('oe_kanban_bottom_left')]/div[last()]"
+                position="after"
+            >
+                <div groups="project.group_project_manager">
+                    <field name="id" invisible="1" />
+                    <a name="create_and_link_jira" type="object">Link with JIRA</a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
