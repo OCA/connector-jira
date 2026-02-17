@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_jira_backend_form" model="ir.ui.view">
+        <field name="name">jira.backend.form</field>
+        <field name="model">jira.backend</field>
+        <field name="inherit_id" ref="connector_jira.view_jira_backend_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='import']" position="inside">
+                <group name="import_organization" string="Import Organizations">
+                    <group name="import_organization_button">
+                        <button
+                            name="import_organization"
+                            type="object"
+                            class="oe_highlight"
+                            string="Run"
+                        />
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='advanced_configuration']" position="inside">
+                <group name="activate_organization" string="Organizations">
+                    <group name="activate_organization_fields">
+                        <field name="organization_field_name" />
+                    </group>
+                    <group name="activate_organization_description">
+                        <div>
+                            <button
+                                name="activate_organization"
+                                type="object"
+                                string="Configure Organization"
+                                class="btn-sm btn-link oe_inline"
+                                invisible="state == 'authenticate'"
+                            />
+                        </div>
+                        <p class="oe_grey" colspan="2">
+                            Activate the synchronization of the Organization field.
+                            Only on JIRA ServiceDesk. The field contains the name of
+                            the JIRA custom field that contains the Organization.
+                        </p>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page
+                    name="organization"
+                    string="Organizations"
+                    invisible="state != 'running'"
+                >
+                    <field name="organization_ids">
+                        <tree create="0" delete="0" edit="0">
+                            <field name="name" />
+                        </tree>
+                        <form string="Jira Organization" create="0" delete="0" edit="0">
+                            <group>
+                                <field name="name" />
+                            </group>
+                        </form>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
