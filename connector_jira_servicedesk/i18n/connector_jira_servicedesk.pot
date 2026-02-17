@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,8 +17,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira_servicedesk.view_jira_backend_form
 msgid ""
 "Activate the synchronization of the Organization field.\n"
-"            Only on JIRA ServiceDesk. The field contains the name of\n"
-"            the JIRA custom field that contains the Organization."
+"                            Only on JIRA ServiceDesk. The field contains the name of\n"
+"                            the JIRA custom field that contains the Organization."
 msgstr ""
 
 #. module: connector_jira_servicedesk
@@ -100,11 +100,6 @@ msgstr ""
 #. module: connector_jira_servicedesk
 #: model:ir.model,name:connector_jira_servicedesk.model_jira_account_analytic_line
 msgid "Jira Worklog"
-msgstr ""
-
-#. module: connector_jira_servicedesk
-#: model:ir.model.fields,field_description:connector_jira_servicedesk.field_jira_organization____last_update
-msgid "Last Modified on"
 msgstr ""
 
 #. module: connector_jira_servicedesk
@@ -191,7 +186,8 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira_servicedesk
-#: code:addons/connector_jira_servicedesk/models/project_project/common.py:0
+#. odoo-python
+#: code:addons/connector_jira_servicedesk/models/jira_project_project.py:0
 #, python-format
 msgid ""
 "The project %s is already linked with the same JIRA project without "
@@ -199,7 +195,8 @@ msgid ""
 msgstr ""
 
 #. module: connector_jira_servicedesk
-#: code:addons/connector_jira_servicedesk/models/project_project/common.py:0
+#. odoo-python
+#: code:addons/connector_jira_servicedesk/models/jira_project_project.py:0
 #, python-format
 msgid ""
 "The project %s is already linked with this JIRA project and similar "
