@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [connector_jira](connector_jira/) | 17.0.1.0.0 |  | JIRA Connector
+[connector_jira_servicedesk](connector_jira_servicedesk/) | 17.0.1.0.0 |  | JIRA Connector - Service Desk Extension
 
 [//]: # (end addons)
 
