@@ -48,7 +48,6 @@ msgstr ""
 #. odoo-python
 #: code:addons/connector_jira/models/jira_backend.py:0
 #: code:addons/connector_jira/models/jira_project_project.py:0
-#: code:addons/connector_jira/models/jira_project_project.py:0
 #: code:addons/connector_jira/wizards/project_link_jira.py:0
 #, python-format
 msgid "%s is not a valid JIRA Key"
@@ -64,9 +63,12 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__type
 msgid ""
-"- Contact: Use this to organize the contact details of employees of a given company (e.g. CEO, CFO, ...).\n"
-"- Invoice Address: Preferred address for all invoices. Selected by default when you invoice an order that belongs to this company.\n"
-"- Delivery Address: Preferred address for all deliveries. Selected by default when you deliver an order that belongs to this company.\n"
+"- Contact: Use this to organize the contact details of employees of a given "
+"company (e.g. CEO, CFO, ...).\n"
+"- Invoice Address: Preferred address for all invoices. Selected by default "
+"when you invoice an order that belongs to this company.\n"
+"- Delivery Address: Preferred address for all deliveries. Selected by "
+"default when you deliver an order that belongs to this company.\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
 
@@ -93,6 +95,7 @@ msgstr ""
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_account_analytic_line_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_binding_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_issue_type_jira_binding_uniq
+#: model:ir.model.constraint,message:connector_jira.constraint_jira_organization_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_project_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_task_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_res_users_jira_binding_uniq
@@ -146,9 +149,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid ""
 "Activate the synchronization of the Epic Link field.\n"
-"                                        Only on JIRA Software. The field contains the name of\n"
-"                                        the JIRA custom field that contains the Epic Link.\n"
-"                                        Note that if a project does not synchronize the Epics,\n"
+"                                        Only on JIRA Software. The field "
+"contains the name of\n"
+"                                        the JIRA custom field that contains "
+"the Epic Link.\n"
+"                                        Note that if a project does not "
+"synchronize the Epics,\n"
 "                                        the field will be empty."
 msgstr ""
 
@@ -260,8 +266,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__lang
 msgid ""
-"All the emails and documents sent to this contact will be translated in this"
-" language."
+"All the emails and documents sent to this contact will be translated in this "
+"language."
 msgstr ""
 
 #. module: connector_jira
@@ -323,9 +329,13 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__analytic_account_id
 msgid ""
-"Analytic account to which this project, its tasks and its timesheets are linked. \n"
-"Track the costs and revenues of your project by setting this analytic account on your related documents (e.g. sales orders, invoices, purchase orders, vendor bills, expenses etc.).\n"
-"This analytic account can be changed on each task individually if necessary.\n"
+"Analytic account to which this project, its tasks and its timesheets are "
+"linked. \n"
+"Track the costs and revenues of your project by setting this analytic "
+"account on your related documents (e.g. sales orders, invoices, purchase "
+"orders, vendor bills, expenses etc.).\n"
+"This analytic account can be changed on each task individually if "
+"necessary.\n"
 "An analytic account is required in order to use timesheets."
 msgstr ""
 
@@ -333,8 +343,11 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__analytic_account_id
 msgid ""
 "Analytic account to which this task and its timesheets are linked.\n"
-"Track the costs and revenues of your task by setting its analytic account on your related documents (e.g. sales orders, invoices, purchase orders, vendor bills, expenses etc.).\n"
-"By default, the analytic account of the project is set. However, it can be changed on each task individually if necessary."
+"Track the costs and revenues of your task by setting its analytic account on "
+"your related documents (e.g. sales orders, invoices, purchase orders, vendor "
+"bills, expenses etc.).\n"
+"By default, the analytic account of the project is set. However, it can be "
+"changed on each task individually if necessary."
 msgstr ""
 
 #. module: connector_jira
@@ -371,8 +384,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
 msgid ""
 "At confirmation, the selected lines will be reimported from Jira in\n"
-"          background. If a line was linked to the wrong project (e.g. the fallback\n"
-"          project) and the project binding has been corrected meanwhile, the line\n"
+"          background. If a line was linked to the wrong project (e.g. the "
+"fallback\n"
+"          project) and the project binding has been corrected meanwhile, the "
+"line\n"
 "          will be moved to the expected target project."
 msgstr ""
 
@@ -558,9 +573,14 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__rating_status
 msgid ""
-"Collect feedback from your customers by sending them a rating request when a task enters a certain stage. To do so, define a rating email template on the corresponding stages.\n"
-"Rating when changing stage: an email will be automatically sent when the task reaches the stage on which the rating email template is set.\n"
-"Periodic rating: an email will be automatically sent at regular intervals as long as the task remains in the stage in which the rating email template is set."
+"Collect feedback from your customers by sending them a rating request when a "
+"task enters a certain stage. To do so, define a rating email template on the "
+"corresponding stages.\n"
+"Rating when changing stage: an email will be automatically sent when the "
+"task reaches the stage on which the rating email template is set.\n"
+"Periodic rating: an email will be automatically sent at regular intervals as "
+"long as the task remains in the stage in which the rating email template is "
+"set."
 msgstr ""
 
 #. module: connector_jira
@@ -786,7 +806,9 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__date_last_stage_update
 msgid ""
 "Date on which the state of your task has last been modified.\n"
-"Based on this information you can identify tasks that are stalling and get statistics on the time it usually takes to move tasks from one stage/state to another."
+"Based on this information you can identify tasks that are stalling and get "
+"statistics on the time it usually takes to move tasks from one stage/state "
+"to another."
 msgstr ""
 
 #. module: connector_jira
@@ -1129,7 +1151,6 @@ msgstr ""
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_backend.py:0
-#: code:addons/connector_jira/models/jira_backend.py:0
 #, python-format
 msgid "Failed to connect (%s)"
 msgstr ""
@@ -1264,8 +1285,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_parent_thread_id
 msgid ""
-"ID of the parent record holding the alias (example: project holding the task"
-" creation alias)"
+"ID of the parent record holding the alias (example: project holding the task "
+"creation alias)"
 msgstr ""
 
 #. module: connector_jira
@@ -2030,7 +2051,6 @@ msgstr ""
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_exporter.py:0
-#: code:addons/connector_jira/components/jira_exporter.py:0
 #, python-format
 msgid "Nothing to export."
 msgstr ""
@@ -2131,8 +2151,8 @@ msgstr ""
 #: code:addons/connector_jira/models/jira_project_project.py:0
 #, python-format
 msgid ""
-"Only one Jira binding can be configured with the Sync. Action \"Export\" for"
-" a project. \"%s\" already has one."
+"Only one Jira binding can be configured with the Sync. Action \"Export\" for "
+"a project. \"%s\" already has one."
 msgstr ""
 
 #. module: connector_jira
@@ -2203,8 +2223,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__pin
 msgid ""
-"PIN used to Check In/Out in the Kiosk Mode of the Attendance application (if"
-" enabled in Configuration) and to change the cashier in the Point of Sale "
+"PIN used to Check In/Out in the Kiosk Mode of the Attendance application (if "
+"enabled in Configuration) and to change the cashier in the Point of Sale "
 "application."
 msgstr ""
 
@@ -2239,8 +2259,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_parent_model_id
 msgid ""
-"Parent model holding the alias. The model holding the alias reference is not"
-" necessarily the model given by alias_model_id (example: project "
+"Parent model holding the alias. The model holding the alias reference is not "
+"necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
 
@@ -2290,18 +2310,31 @@ msgstr ""
 msgid ""
 "People to whom this project and its tasks will be visible.\n"
 "\n"
-"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
-" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
+"- Invited internal users: when following a project, internal users will get "
+"access to all of its tasks without distinction. Otherwise, they will only "
+"get access to the specific tasks they are following.\n"
+" A user with the project > administrator access right level can still access "
+"this project and its tasks, even if they are not explicitly part of the "
+"followers.\n"
 "\n"
-"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"- All internal users: all internal users can access the project and all of "
+"its tasks without distinction.\n"
 "\n"
-"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
-"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+"- Invited portal users and all internal users: all internal users can access "
+"the project and all of its tasks without distinction.\n"
+"When following a project, portal users will get access to all of its tasks "
+"without distinction. Otherwise, they will only get access to the specific "
+"tasks they are following.\n"
 "\n"
-"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
-"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
+"When a project is shared in read-only, the portal user is redirected to "
+"their portal. They can view the tasks, but not edit them.\n"
+"When a project is shared in edit, the portal user is redirected to the "
+"kanban and list views of the tasks. They can modify a selected number of "
+"fields on the tasks.\n"
 "\n"
-"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
+"In any case, an internal user with no project access rights can still access "
+"a task, provided that they are given the corresponding URL (and that they "
+"are part of the followers if the project is private)."
 msgstr ""
 
 #. module: connector_jira
@@ -2348,7 +2381,8 @@ msgid ""
 "Policy to post a message on the document using the mailgateway.\n"
 "- everyone: everyone can post\n"
 "- partners: only authenticated partners\n"
-"- followers: only followers of the related document or members of following channels\n"
+"- followers: only followers of the related document or members of following "
+"channels\n"
 msgstr ""
 
 #. module: connector_jira
@@ -2854,8 +2888,8 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__new_password
 msgid ""
 "Specify a value only when creating a user or if you're changing the user's "
-"password, otherwise leave empty. After a change of password, the user has to"
-" login again."
+"password, otherwise leave empty. After a change of password, the user has to "
+"login again."
 msgstr ""
 
 #. module: connector_jira
@@ -2897,8 +2931,10 @@ msgstr ""
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__state
 msgid ""
 "State of the Backend.\n"
-"Setup: in this state you can register the backend on https://marketplace.atlassian.com/ as an app, using the app descriptor url.\n"
-"Running: when you have installed the backend on a Jira cloud instance (transition is automatic)."
+"Setup: in this state you can register the backend on https://"
+"marketplace.atlassian.com/ as an app, using the app descriptor url.\n"
+"Running: when you have installed the backend on a Jira cloud instance "
+"(transition is automatic)."
 msgstr ""
 
 #. module: connector_jira
@@ -3096,7 +3132,8 @@ msgstr ""
 msgid ""
 "The checkboxes define which types of JIRA issues will be\n"
 "                            imported\n"
-"              into Odoo. For instance, if you check 'Story', only issues of type\n"
+"              into Odoo. For instance, if you check 'Story', only issues of "
+"type\n"
 "              Story will be imported. Several choices possible."
 msgstr ""
 
@@ -3132,9 +3169,9 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_model_id
 msgid ""
-"The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
-" email that does not reply to an existing record will cause the creation of "
-"a new record of this model (e.g. a Project Task)"
+"The model (Odoo Document Kind) to which this alias corresponds. Any incoming "
+"email that does not reply to an existing record will cause the creation of a "
+"new record of this model (e.g. a Project Task)"
 msgstr ""
 
 #. module: connector_jira
@@ -3147,7 +3184,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__application_key
 msgid ""
-"The name that will be used as application key to register the app on the Atlassian marketplace website.\n"
+"The name that will be used as application key to register the app on the "
+"Atlassian marketplace website.\n"
 "It has to be unique among all apps on the marketplace."
 msgstr ""
 
@@ -3206,9 +3244,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_project_form
 msgid ""
 "There is a direct implication on the Worklogs.\n"
-"              When a worklog is done on a JIRA Sub-Task and this type is not\n"
-"              sync'ed, the worklog will be attached to the parent Task of the\n"
-"              Sub-Task. If the Task is not sync'ed, it will be attached to the\n"
+"              When a worklog is done on a JIRA Sub-Task and this type is "
+"not\n"
+"              sync'ed, the worklog will be attached to the parent Task of "
+"the\n"
+"              Sub-Task. If the Task is not sync'ed, it will be attached to "
+"the\n"
 "              Epic. Finally, if there is no Epic, the worklog will not be\n"
 "              attached to any task."
 msgstr ""
@@ -3216,8 +3257,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__email_normalized
 msgid ""
-"This field is used to search on email address as the primary email field can"
-" contain more than strictly an email address."
+"This field is used to search on email address as the primary email field can "
+"contain more than strictly an email address."
 msgstr ""
 
 #. module: connector_jira
@@ -3312,8 +3353,8 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__total_timesheet_time
 msgid ""
-"Total number of time (in the proper UoM) recorded in the project, rounded to"
-" the unit."
+"Total number of time (in the proper UoM) recorded in the project, rounded to "
+"the unit."
 msgstr ""
 
 #. module: connector_jira
@@ -3462,9 +3503,11 @@ msgstr ""
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__tz
 msgid ""
-"When printing documents and exporting/importing data, time values are computed according to this timezone.\n"
+"When printing documents and exporting/importing data, time values are "
+"computed according to this timezone.\n"
 "If the timezone is not set, UTC (Coordinated Universal Time) is used.\n"
-"Anywhere else, time values are computed according to the time offset of your web client."
+"Anywhere else, time values are computed according to the time offset of your "
+"web client."
 msgstr ""
 
 #. module: connector_jira
