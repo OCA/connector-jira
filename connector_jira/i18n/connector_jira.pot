@@ -1031,6 +1031,11 @@ msgid "Employee's Country"
 msgstr ""
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_country_code
+msgid "Employee's Country Code"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_resource_calendar_id
 msgid "Employee's Working Hours"
 msgstr ""
@@ -3077,6 +3082,7 @@ msgstr ""
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__country_code
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee_country_code
 msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
