@@ -6,43 +6,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-11-10 13:46+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__accesses_count
 msgid "# Access Rights"
-msgstr ""
+msgstr "N. diritti di accesso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__collaborator_count
 msgid "# Collaborators"
-msgstr ""
+msgstr "N. collaboratori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__groups_count
 msgid "# Groups"
-msgstr ""
+msgstr "N. gruppi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_count
 msgid "# Ratings"
-msgstr ""
+msgstr "N. valutazioni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__rules_count
 msgid "# Record Rules"
-msgstr ""
+msgstr "N. regole sui record"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__task_count
 msgid "# Tasks"
-msgstr ""
+msgstr "N. lavori"
 
 #. module: connector_jira
 #. odoo-python
@@ -51,7 +53,7 @@ msgstr ""
 #: code:addons/connector_jira/wizards/project_link_jira.py:0
 #, python-format
 msgid "%s is not a valid JIRA Key"
-msgstr ""
+msgstr "%s non è una chiave JIRA valida"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.backend_report_user_sync
@@ -59,6 +61,8 @@ msgid ""
 "-\n"
 "                <strong>detail:</strong>"
 msgstr ""
+"-\n"
+"                <strong>dettaglio:</strong>"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__type
@@ -71,18 +75,27 @@ msgid ""
 "default when you deliver an order that belongs to this company.\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- Contatto: da utilizzare per organizzare i dettagli di contatto dei "
+"dipendenti di una determinata azienda (es. CEO, CFO, ...).\n"
+"- Indirizzo di fatturazione: indirizzo preferito per tutte le fatture. "
+"Selezionato in modo predefinito quando si fattura un ordine che appartiene a "
+"questa azienda.\n"
+"- Indirizzo di consegna: indirizzo preferito per tutte le consegne. "
+"Selezionato in modo predefinito quando si consegna un ordine che appartiene "
+"a questa azienda.\n"
+"- Altro: altro indirizzo per l'azienda (es. filiale, ...)"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.backend_report_user_sync
 msgid "<strong>error:</strong>"
-msgstr ""
+msgstr "<strong>errore:</strong>"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_project_task.py:0
 #, python-format
 msgid "A Jira task cannot be deleted."
-msgstr ""
+msgstr "Un lavoro Jira non può essere eliminato."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_defaults
@@ -90,6 +103,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Un dizionario Python che verrà valutato per fornire valori predefiniti "
+"durante la creazione di nuovi record per questo alias."
 
 #. module: connector_jira
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_account_analytic_line_jira_binding_uniq
@@ -100,50 +115,50 @@ msgstr ""
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_task_jira_binding_uniq
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_res_users_jira_binding_uniq
 msgid "A binding already exists for this Jira record"
-msgstr ""
+msgstr "Esiste già un collegamento per questo record Jira"
 
 #. module: connector_jira
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_account_analytic_line_jira_binding_backend_uniq
 msgid "A binding already exists for this line and this backend."
-msgstr ""
+msgstr "Esiste già un collegamento per questa riga e questo backend."
 
 #. module: connector_jira
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_project_task_jira_binding_backend_uniq
 msgid "A binding already exists for this task and this backend."
-msgstr ""
+msgstr "Esiste già un collegamento per questo lavoro e questo backend."
 
 #. module: connector_jira
 #: model:ir.model.constraint,message:connector_jira.constraint_jira_backend_timestamp_timestamp_field_uniq
 msgid "A timestamp already exists."
-msgstr ""
+msgstr "Esiste già una marca temporale."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "API Configuration"
-msgstr ""
+msgstr "Configurazione API"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__api_key_ids
 msgid "API Keys"
-msgstr ""
+msgstr "Chiavi API"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__access_instruction_message
 msgid "Access Instruction Message"
-msgstr ""
+msgstr "Messaggio con istruzioni per l'accesso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__access_warning
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "Avviso di accesso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_needaction
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_needaction
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Azione richiesta"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
@@ -157,111 +172,119 @@ msgid ""
 "synchronize the Epics,\n"
 "                                        the field will be empty."
 msgstr ""
+"Attiva la sincronizzazione del campo Epic Link.\n"
+"                                        Solo su JIRA Software. Il campo "
+"contiene il nome del\n"
+"                                        campo personalizzato JIRA che "
+"contiene l'Epic Link.\n"
+"                                        Nota che se un progetto non "
+"sincronizza le Epic,\n"
+"                                        il campo sarà vuoto."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__active
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__active
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__active
 msgid "Active"
-msgstr ""
+msgstr "Attivo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_account_active
 msgid "Active Analytic Account"
-msgstr ""
+msgstr "Conto analitico attivo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__active_lang_count
 msgid "Active Lang Count"
-msgstr ""
+msgstr "Conteggio lingue attive"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_exception_decoration
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_exception_decoration
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Decorazione eccezione attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_state
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_state
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Stato attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_type_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_type_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Icona tipo di attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__additional_note
 msgid "Additional Note"
-msgstr ""
+msgstr "Nota aggiuntiva"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__type
 msgid "Address Type"
-msgstr ""
+msgstr "Tipo di indirizzo"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Advanced Configuration"
-msgstr ""
+msgstr "Configurazione avanzata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Sicurezza contatto alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_domain_id
 msgid "Alias Domain"
-msgstr ""
+msgstr "Dominio alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_domain
 msgid "Alias Domain Name"
-msgstr ""
+msgstr "Nome dominio alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_full_name
 msgid "Alias Email"
-msgstr ""
+msgstr "E-mail alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Nome alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_status
 msgid "Alias Status"
-msgstr ""
+msgstr "Stato alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_status
 msgid "Alias status assessed on the last message received."
-msgstr ""
+msgstr "Stato dell'alias valutato sull'ultimo messaggio ricevuto."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Modello con alias"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__lang
@@ -269,62 +292,64 @@ msgid ""
 "All the emails and documents sent to this contact will be translated in this "
 "language."
 msgstr ""
+"Tutte le e-mail e i documenti inviati a questo contatto verranno tradotti in "
+"questa lingua."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "Ore assegnate"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allocated_hours
 msgid "Allocated Time"
-msgstr ""
+msgstr "Tempo assegnato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__allow_back
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__allow_back
 msgid "Allow Back"
-msgstr ""
+msgstr "Consenti indietro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_rating
 msgid "Allow Customer Ratings"
-msgstr ""
+msgstr "Consenti valutazioni clienti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_timesheets
 msgid "Allow timesheets"
-msgstr ""
+msgstr "Consenti fogli ore"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_importer.py:0
 #, python-format
 msgid "Already up-to-date."
-msgstr ""
+msgstr "Già aggiornato."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__amount
 msgid "Amount"
-msgstr ""
+msgstr "Importo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__auto_account_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__analytic_account_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Conto analitico"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line_import__analytic_binding_ids
 msgid "Analytic Binding"
-msgstr ""
+msgstr "Collegamento analitico"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_account_analytic_line
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line_import__analytic_line_ids
 msgid "Analytic Line"
-msgstr ""
+msgstr "Riga analitica"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__analytic_account_id
@@ -338,6 +363,14 @@ msgid ""
 "necessary.\n"
 "An analytic account is required in order to use timesheets."
 msgstr ""
+"Conto analitico a cui sono collegati questo progetto, i suoi lavori e i suoi "
+"fogli ore. \n"
+"Traccia i costi e i ricavi del progetto impostando questo conto analitico "
+"sui documenti correlati (es. ordini di vendita, fatture, ordini di acquisto, "
+"fatture fornitore, spese ecc.).\n"
+"Questo conto analitico può essere modificato singolarmente su ciascun "
+"lavoro, se necessario.\n"
+"Per utilizzare i fogli ore è necessario un conto analitico."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__analytic_account_id
@@ -349,36 +382,43 @@ msgid ""
 "By default, the analytic account of the project is set. However, it can be "
 "changed on each task individually if necessary."
 msgstr ""
+"Conto analitico a cui sono collegati questo lavoro e i suoi fogli ore.\n"
+"Traccia i costi e i ricavi del lavoro impostando il relativo conto analitico "
+"sui documenti correlati (es. ordini di vendita, fatture, ordini di acquisto, "
+"fatture fornitore, spese ecc.).\n"
+"In modo predefinito viene impostato il conto analitico del progetto. "
+"Tuttavia, può essere modificato singolarmente su ciascun lavoro, se "
+"necessario."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__app_descriptor_url
 msgid "App Descriptor URL"
-msgstr ""
+msgstr "URL descrittore app"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__application_key
 msgid "Application Key"
-msgstr ""
+msgstr "Chiave applicazione"
 
 #. module: connector_jira
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__worklog_date_timezone_mode__naive
 msgid "As-is (naive)"
-msgstr ""
+msgstr "Così com'è (naive)"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__user_ids
 msgid "Assignees"
-msgstr ""
+msgstr "Assegnatari"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_assign
 msgid "Assigning Date"
-msgstr ""
+msgstr "Data di assegnazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__timesheet_ids
 msgid "Associated Timesheets"
-msgstr ""
+msgstr "Fogli ore associati"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
@@ -390,108 +430,114 @@ msgid ""
 "line\n"
 "          will be moved to the expected target project."
 msgstr ""
+"Alla conferma, le righe selezionate verranno reimportate da Jira in\n"
+"          background. Se una riga era collegata al progetto errato (es. il "
+"progetto\n"
+"          di ripiego) e nel frattempo il collegamento del progetto è stato "
+"corretto, la riga\n"
+"          verrà spostata nel progetto di destinazione previsto."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_attachment_count
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_attachment_count
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Conteggio allegati"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__attachment_ids
 msgid "Attachments that don't come from a message."
-msgstr ""
+msgstr "Allegati che non provengono da un messaggio."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_1920
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_1024
 msgid "Avatar 1024"
-msgstr ""
+msgstr "Avatar 1024"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "Avatar 128"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_256
 msgid "Avatar 256"
-msgstr ""
+msgstr "Avatar 256"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__avatar_512
 msgid "Avatar 512"
-msgstr ""
+msgstr "Avatar 512"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_avg
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Valutazione media"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_avg_percentage
 msgid "Average Rating (%)"
-msgstr ""
+msgstr "Valutazione media (%)"
 
 #. module: connector_jira
 #: model:ir.ui.menu,name:connector_jira.menu_jira_backend
 msgid "Backends"
-msgstr ""
+msgstr "Backend"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__barcode
 msgid "Badge ID"
-msgstr ""
+msgstr "ID badge"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__analytic_account_balance
 msgid "Balance"
-msgstr ""
+msgstr "Saldo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__bank_ids
 msgid "Banks"
-msgstr ""
+msgstr "Banche"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_deleter.py:0
 #, python-format
 msgid "Binding deactivated"
-msgstr ""
+msgstr "Collegamento disattivato"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_deleter.py:0
 #, python-format
 msgid "Binding not found"
-msgstr ""
+msgstr "Collegamento non trovato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_blacklisted
 msgid "Blacklist"
-msgstr ""
+msgstr "Lista nera"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__dependent_ids
 msgid "Block"
-msgstr ""
+msgstr "Blocca"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__depend_on_ids
 msgid "Blocked By"
-msgstr ""
+msgstr "Bloccato da"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_bounce
 msgid "Bounce"
-msgstr ""
+msgstr "Respinto"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
@@ -504,71 +550,78 @@ msgid ""
 "                                they will create 'Jobs'\n"
 "                                executed as soon as possible."
 msgstr ""
+"Facendo clic sui pulsanti,\n"
+"                                verranno avviate le sincronizzazioni\n"
+"                                con Jira.\n"
+"                                Nota che le importazioni o le esportazioni\n"
+"                                non verranno eseguite direttamente,\n"
+"                                ma creeranno dei 'Lavori'\n"
+"                                eseguiti il prima possibile."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__can_edit
 msgid "Can Edit"
-msgstr ""
+msgstr "Può modificare"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__category
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__certificate
 msgid "Certificate Level"
-msgstr ""
+msgstr "Livello certificazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__channel_ids
 msgid "Channels"
-msgstr ""
+msgstr "Canali"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Check Connection"
-msgstr ""
+msgstr "Verifica connessione"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__is_company
 msgid "Check if the contact is a company, otherwise it is a person"
-msgstr ""
+msgstr "Selezionare se il contatto è un'azienda, altrimenti è una persona"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee
 msgid "Check this box if this contact is an Employee."
-msgstr ""
+msgstr "Selezionare questa casella se il contatto è un dipendente."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__city
 msgid "City"
-msgstr ""
+msgstr "Città"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__closed_subtask_count
 msgid "Closed Sub-tasks Count"
-msgstr ""
+msgstr "Conteggio sottolavori chiusi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__closed_task_count
 msgid "Closed Task Count"
-msgstr ""
+msgstr "Conteggio lavori chiusi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__coach_id
 msgid "Coach"
-msgstr ""
+msgstr "Coach"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__collaborator_ids
 msgid "Collaborators"
-msgstr ""
+msgstr "Collaboratori"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__rating_status
@@ -582,23 +635,32 @@ msgid ""
 "long as the task remains in the stage in which the rating email template is "
 "set."
 msgstr ""
+"Raccogli feedback dai clienti inviando loro una richiesta di valutazione "
+"quando un lavoro entra in una determinata fase. Per farlo, definisci un "
+"modello e-mail di valutazione nelle fasi corrispondenti.\n"
+"Valutazione al cambio di fase: verrà inviata automaticamente un'e-mail "
+"quando il lavoro raggiunge la fase in cui è impostato il modello e-mail di "
+"valutazione.\n"
+"Valutazione periodica: verrà inviata automaticamente un'e-mail a intervalli "
+"regolari finché il lavoro rimane nella fase in cui è impostato il modello e-"
+"mail di valutazione."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__color
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__color
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__color
 msgid "Color Index"
-msgstr ""
+msgstr "Indice colore"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__commercial_partner_id
 msgid "Commercial Entity"
-msgstr ""
+msgstr "Entità commerciale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__company_ids
 msgid "Companies"
-msgstr ""
+msgstr "Aziende"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__company_id
@@ -607,91 +669,91 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__company_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__company_id
 msgid "Company"
-msgstr ""
+msgstr "Azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__company_registry
 msgid "Company ID"
-msgstr ""
+msgstr "ID azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__company_name
 msgid "Company Name"
-msgstr ""
+msgstr "Nome azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__commercial_company_name
 msgid "Company Name Entity"
-msgstr ""
+msgstr "Entità nome azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__company_type
 msgid "Company Type"
-msgstr ""
+msgstr "Tipo azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_id
 msgid "Company employee"
-msgstr ""
+msgstr "Dipendente azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__contact_address
 msgid "Complete Address"
-msgstr ""
+msgstr "Indirizzo completo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__complete_name
 msgid "Complete Name"
-msgstr ""
+msgstr "Nome completo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__component_usage
 msgid "Component Usage"
-msgstr ""
+msgstr "Utilizzo componente"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Configure Epic Link"
-msgstr ""
+msgstr "Configura Epic Link"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Configure worklog fields"
-msgstr ""
+msgstr "Configura campi worklog"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
 msgid "Confirm"
-msgstr ""
+msgstr "Conferma"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_backend.py:0
 #, python-format
 msgid "Connection successful"
-msgstr ""
+msgstr "Connessione riuscita"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.edit_project
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_form2
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_users_form
 msgid "Connector"
-msgstr ""
+msgstr "Connettore"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__child_ids
 msgid "Contact"
-msgstr ""
+msgstr "Contatto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__emergency_contact
 msgid "Contact Name"
-msgstr ""
+msgstr "Nome contatto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__emergency_phone
 msgid "Contact Phone"
-msgstr ""
+msgstr "Telefono contatto"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_account_analytic_line__product_uom_category_id
@@ -699,36 +761,38 @@ msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
 "same category. The conversion will be made based on the ratios."
 msgstr ""
+"La conversione tra unità di misura può avvenire solo se appartengono alla "
+"stessa categoria. La conversione verrà effettuata in base alle proporzioni."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__message_bounce
 msgid "Counter of the number of bounced emails for this contact"
-msgstr ""
+msgstr "Contatore del numero di e-mail respinte per questo contatto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__country_id
 msgid "Country"
-msgstr ""
+msgstr "Nazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__country_code
 msgid "Country Code"
-msgstr ""
+msgstr "Codice nazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__country_of_birth
 msgid "Country of Birth"
-msgstr ""
+msgstr "Nazione di nascita"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__displayed_image_id
 msgid "Cover Image"
-msgstr ""
+msgstr "Immagine di copertina"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_project_view_form_simplified
 msgid "Create and Link with JIRA"
-msgstr ""
+msgstr "Crea e collega con JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__create_uid
@@ -742,7 +806,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__create_uid
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__create_date
@@ -756,51 +820,51 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__create_date
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__currency_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Valuta"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Messaggio respinto personalizzato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__partner_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Cliente"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__access_url
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__access_url
 msgid "Customer Portal URL"
-msgstr ""
+msgstr "URL portale clienti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_active
 msgid "Customer Ratings"
-msgstr ""
+msgstr "Valutazioni clienti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_status
 msgid "Customer Ratings Status"
-msgstr ""
+msgstr "Stato valutazioni clienti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__date
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__date
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__birthday
 msgid "Date of Birth"
-msgstr ""
+msgstr "Data di nascita"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__date_last_stage_update
@@ -810,6 +874,10 @@ msgid ""
 "statistics on the time it usually takes to move tasks from one stage/state "
 "to another."
 msgstr ""
+"Data in cui lo stato del lavoro è stato modificato l'ultima volta.\n"
+"In base a questa informazione è possibile identificare i lavori in stallo e "
+"ottenere statistiche sul tempo solitamente necessario per spostare i lavori "
+"da una fase/stato a un'altra."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__date
@@ -817,6 +885,9 @@ msgid ""
 "Date on which this project ends. The timeframe defined on the project is "
 "taken into account when viewing its planning."
 msgstr ""
+"Data in cui termina questo progetto. L'arco temporale definito nel progetto "
+"viene preso in considerazione durante la visualizzazione della sua "
+"pianificazione."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__date_assign
@@ -824,11 +895,14 @@ msgid ""
 "Date on which this task was last assigned (or unassigned). Based on this, "
 "you can get statistics on the time it usually takes to assign tasks."
 msgstr ""
+"Data in cui questo lavoro è stato assegnato (o rimosso dall'assegnazione) "
+"l'ultima volta. In base a ciò, è possibile ottenere statistiche sul tempo "
+"solitamente necessario per assegnare i lavori."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_deadline
 msgid "Deadline"
-msgstr ""
+msgstr "Scadenza"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__project_template
@@ -836,35 +910,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__project_template
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__project_template
 msgid "Default Project Template"
-msgstr ""
+msgstr "Modello di progetto predefinito"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__project_template_shared
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__project_template_shared
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__project_template_shared
 msgid "Default Shared Template"
-msgstr ""
+msgstr "Modello condiviso predefinito"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__project_template_shared
 msgid "Default Shared Template Key"
-msgstr ""
+msgstr "Chiave modello condiviso predefinito"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Valori predefiniti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__resource_calendar_id
 msgid "Default Working Hours"
-msgstr ""
+msgstr "Orario di lavoro predefinito"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_account_analytic_line__employee_id
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Definire un 'costo orario' sul dipendente per tracciare il costo del suo "
+"tempo."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_base_mixin__sync_action
@@ -876,30 +952,34 @@ msgid ""
 "the project details once the link is established. Tasks are always imported "
 "from JIRA, not pushed."
 msgstr ""
+"Definisce se le informazioni del progetto (nome e chiave) vengono esportate "
+"in JIRA quando modificate. Collega significa che il progetto esiste già su "
+"JIRA, nessuna sincronizzazione dei dettagli del progetto una volta stabilito "
+"il collegamento. I lavori vengono sempre importati da JIRA, non inviati."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__delete_analytic_line_from_date
 msgid "Delete Extra Worklogs from date"
-msgstr ""
+msgstr "Elimina worklog extra dalla data"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Delete Worklogs"
-msgstr ""
+msgstr "Elimina worklog"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/controllers/jira_webhook_controller.py:0
 #, python-format
 msgid "Delete a local issue which has been deleted on JIRA"
-msgstr ""
+msgstr "Elimina una segnalazione locale che è stata eliminata su JIRA"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/controllers/jira_webhook_controller.py:0
 #, python-format
 msgid "Delete a local worklog which has been deleted on JIRA"
-msgstr ""
+msgstr "Elimina un worklog locale che è stato eliminato su JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__milestone_id
@@ -907,22 +987,24 @@ msgid ""
 "Deliver your services automatically when a milestone is reached by linking "
 "it to a sales order item."
 msgstr ""
+"Consegna automaticamente i tuoi servizi al raggiungimento di una milestone "
+"collegandola a una riga dell'ordine di vendita."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__department_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__department_id
 msgid "Department"
-msgstr ""
+msgstr "Reparto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__x_plan2_id
 msgid "Departments"
-msgstr ""
+msgstr "Reparti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__dependent_tasks_count
 msgid "Dependent Tasks"
-msgstr ""
+msgstr "Lavori dipendenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__name
@@ -930,17 +1012,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__description
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__description
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__description
 msgid "Description to provide more information and context about this project"
 msgstr ""
+"Descrizione per fornire maggiori informazioni e contesto su questo progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__display_in_project
 msgid "Display In Project"
-msgstr ""
+msgstr "Visualizza nel progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__display_name
@@ -954,22 +1037,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__display_name
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__display_parent_task_button
 msgid "Display Parent Task Button"
-msgstr ""
+msgstr "Visualizza pulsante lavoro padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__display_url
 msgid "Display Url"
-msgstr ""
+msgstr "URL visualizzato"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__name
 msgid "Display name of the app on the Atlassian Marketplace. Max 60 chars."
 msgstr ""
+"Nome visualizzato dell'app sull'Atlassian Marketplace. Massimo 60 caratteri."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__partner_share
@@ -978,21 +1062,24 @@ msgid ""
 "partner is a customer without access or with a limited access created for "
 "sharing data."
 msgstr ""
+"Cliente (non utente) oppure utente condiviso. Indica che il partner attuale "
+"è un cliente senza accesso o con accesso limitato creato per condividere "
+"dati."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__email
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_email
 msgid "Email Alias"
-msgstr ""
+msgstr "Alias e-mail"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signature
 msgid "Email Signature"
-msgstr ""
+msgstr "Firma e-mail"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__email_cc
@@ -1000,113 +1087,115 @@ msgid ""
 "Email addresses that were in the CC of the incoming emails from this task "
 "and that are not currently linked to an existing customer."
 msgstr ""
+"Indirizzi e-mail presenti in CC nelle e-mail in arrivo da questo lavoro e "
+"che non sono attualmente collegati a un cliente esistente."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "E-mail in CC"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_domain
 msgid "Email domain e.g. 'example.com' in 'odoo@example.com'"
-msgstr ""
+msgstr "Dominio e-mail es. 'example.com' in 'odoo@example.com'"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee
 msgid "Employee"
-msgstr ""
+msgstr "Dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_count
 msgid "Employee Count"
-msgstr ""
+msgstr "Conteggio dipendenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_lang
 msgid "Employee Lang"
-msgstr ""
+msgstr "Lingua dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__category_ids
 msgid "Employee Tags"
-msgstr ""
+msgstr "Etichette dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_type
 msgid "Employee Type"
-msgstr ""
+msgstr "Tipo di dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee_bank_account_id
 msgid "Employee bank account to pay salaries"
-msgstr ""
+msgstr "Conto bancario del dipendente per il pagamento degli stipendi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_bank_account_id
 msgid "Employee's Bank Account Number"
-msgstr ""
+msgstr "Numero conto bancario del dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_country_id
 msgid "Employee's Country"
-msgstr ""
+msgstr "Nazione del dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_resource_calendar_id
 msgid "Employee's Working Hours"
-msgstr ""
+msgstr "Orario di lavoro del dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employees_count
 msgid "Employees Count"
-msgstr ""
+msgstr "Conteggio dipendenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__encode_uom_in_days
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__encode_uom_in_days
 msgid "Encode Uom In Days"
-msgstr ""
+msgstr "Codifica UdM in giorni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__encoding_uom_id
 msgid "Encoding Uom"
-msgstr ""
+msgstr "UdM di codifica"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_until
 msgid "End Date"
-msgstr ""
+msgstr "Data fine"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_end
 msgid "Ending Date"
-msgstr ""
+msgstr "Data di fine"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_epic_link_id
 msgid "Epic"
-msgstr ""
+msgstr "Epic"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_link_field_name
 msgid "Epic Link Field"
-msgstr ""
+msgstr "Campo Epic Link"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_link_on_epic
 msgid "Epic Link On Epic"
-msgstr ""
+msgstr "Epic Link su Epic"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__epic_name_field_name
 msgid "Epic Name Field"
-msgstr ""
+msgstr "Campo nome Epic"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Epics"
-msgstr ""
+msgstr "Epic"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__epic_link_on_epic
@@ -1114,32 +1203,34 @@ msgid ""
 "Epics on JIRA cannot be linked to another epic. Check this boxto fill the "
 "epic field with itself on Odoo."
 msgstr ""
+"Le Epic su JIRA non possono essere collegate a un'altra Epic. Selezionare "
+"questa casella per compilare il campo Epic con se stessa su Odoo."
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_webservice_adapter.py:0
 #, python-format
 msgid "Error during connection with Jira: %s"
-msgstr ""
+msgstr "Errore durante la connessione con Jira: %s"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__date
 msgid "Expiration Date"
-msgstr ""
+msgstr "Data di scadenza"
 
 #. module: connector_jira
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_project_base_mixin__sync_action__export
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_project_project__sync_action__export
 #: model:ir.model.fields.selection,name:connector_jira.selection__project_link_jira__sync_action__export
 msgid "Export to JIRA"
-msgstr ""
+msgstr "Esporta in JIRA"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_project_project.py:0
 #, python-format
 msgid "Exported project cannot be deleted."
-msgstr ""
+msgstr "Il progetto esportato non può essere eliminato."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__share
@@ -1147,126 +1238,128 @@ msgid ""
 "External user with limited access, created only for the purpose of sharing "
 "data."
 msgstr ""
+"Utente esterno con accesso limitato, creato solo allo scopo di condividere "
+"dati."
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_backend.py:0
 #, python-format
 msgid "Failed to connect (%s)"
-msgstr ""
+msgstr "Connessione non riuscita (%s)"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.backend_report_user_sync
 msgid "Failed user sync"
-msgstr ""
+msgstr "Sincronizzazione utente non riuscita"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__worklog_fallback_project_id
 msgid "Fallback for Worklogs"
-msgstr ""
+msgstr "Ripiego per worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__study_field
 msgid "Field of Study"
-msgstr ""
+msgstr "Campo di studio"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_follower_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_follower_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Follower"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_partner_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_partner_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Follower (Partner)"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_type_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_type_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Icona Font Awesome es. fa-tasks"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Forced:"
-msgstr ""
+msgstr "Forzato:"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__email_formatted
 msgid "Format email address \"Name <email@domain>\""
-msgstr ""
+msgstr "Formato indirizzo e-mail \"Nome <email@dominio>\""
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__email_formatted
 msgid "Formatted Email"
-msgstr ""
+msgstr "E-mail formattata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__from_date_field
 msgid "From Date Field"
-msgstr ""
+msgstr "Campo data di inizio"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__gender
 msgid "Gender"
-msgstr ""
+msgstr "Genere"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__partner_latitude
 msgid "Geo Latitude"
-msgstr ""
+msgstr "Latitudine geo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__partner_longitude
 msgid "Geo Longitude"
-msgstr ""
+msgstr "Longitudine geo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__groups_id
 msgid "Groups"
-msgstr ""
+msgstr "Gruppi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__has_late_and_unreached_milestone
 msgid "Has Late And Unreached Milestone"
-msgstr ""
+msgstr "Ha milestone in ritardo e non raggiunta"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__has_message
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__has_message
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Ha messaggio"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__action_id
 msgid "Home Action"
-msgstr ""
+msgstr "Azione iniziale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__km_home_work
 msgid "Home-Work Distance"
-msgstr ""
+msgstr "Distanza casa-lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__effective_hours
 msgid "Hours Spent"
-msgstr ""
+msgstr "Ore impiegate"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_effective_hours
 msgid "Hours Spent on Sub-Tasks"
-msgstr ""
+msgstr "Ore impiegate sui sottolavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__hr_presence_state
 msgid "Hr Presence State"
-msgstr ""
+msgstr "Stato presenza HR"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__id
@@ -1280,7 +1373,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__id
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_parent_thread_id
@@ -1288,6 +1381,8 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task "
 "creation alias)"
 msgstr ""
+"ID del record padre che detiene l'alias (esempio: progetto che detiene "
+"l'alias di creazione lavori)"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__external_id
@@ -1297,50 +1392,50 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__external_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__external_id
 msgid "ID on Jira"
-msgstr ""
+msgstr "ID su Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__barcode
 msgid "ID used for employee identification."
-msgstr ""
+msgstr "ID utilizzato per l'identificazione del dipendente."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__im_status
 msgid "IM Status"
-msgstr ""
+msgstr "Stato IM"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_exception_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_exception_icon
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Icona"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_exception_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_exception_icon
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Icona per indicare un'attività di eccezione."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__identification_id
 msgid "Identification No"
-msgstr ""
+msgstr "N. di identificazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__message_needaction
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__message_needaction
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Se selezionata, nuovi messaggi richiedono attenzione."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__message_has_error
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__message_has_error
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Se selezionata, alcuni messaggi presentano un errore di consegna."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_bounced_content
@@ -1348,6 +1443,8 @@ msgid ""
 "If set, this content will automatically be sent out to unauthorized users "
 "instead of the default message."
 msgstr ""
+"Se impostato, questo contenuto verrà inviato automaticamente agli utenti non "
+"autorizzati al posto del messaggio predefinito."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__action_id
@@ -1355,6 +1452,8 @@ msgid ""
 "If specified, this action will be opened at log on for this user, in "
 "addition to the standard menu."
 msgstr ""
+"Se specificata, questa azione verrà aperta all'accesso per questo utente, in "
+"aggiunta al menu standard."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__active
@@ -1362,6 +1461,8 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the project "
 "without removing it."
 msgstr ""
+"Se il campo attivo è impostato a Falso, consentirà di nascondere il progetto "
+"senza rimuoverlo."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__is_blacklisted
@@ -1369,100 +1470,102 @@ msgid ""
 "If the email address is on the blacklist, the contact won't receive mass "
 "mailing anymore, from any list"
 msgstr ""
+"Se l'indirizzo e-mail è nella lista nera, il contatto non riceverà più invii "
+"massivi da alcuna lista"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__image_1920
 msgid "Image"
-msgstr ""
+msgstr "Immagine"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__image_1024
 msgid "Image 1024"
-msgstr ""
+msgstr "Immagine 1024"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__image_128
 msgid "Image 128"
-msgstr ""
+msgstr "Immagine 128"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__image_256
 msgid "Image 256"
-msgstr ""
+msgstr "Immagine 256"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__image_512
 msgid "Image 512"
-msgstr ""
+msgstr "Immagine 512"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_analytic_line_force
 msgid "Import Analytic Line Force"
-msgstr ""
+msgstr "Forza importazione righe analitiche"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Import Issue Types"
-msgstr ""
+msgstr "Importa tipi di segnalazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_project_task_force
 msgid "Import Project Task Force"
-msgstr ""
+msgstr "Forza importazione lavori progetto"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Import Project Tasks"
-msgstr ""
+msgstr "Importa lavori progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_project_task_from_date
 msgid "Import Project Tasks from date"
-msgstr ""
+msgstr "Importa lavori progetto dalla data"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Import Worklogs"
-msgstr ""
+msgstr "Importa worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__import_analytic_line_from_date
 msgid "Import Worklogs from date"
-msgstr ""
+msgstr "Importa worklog dalla data"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/controllers/jira_webhook_controller.py:0
 #, python-format
 msgid "Import a issue from JIRA"
-msgstr ""
+msgstr "Importa una segnalazione da JIRA"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/controllers/jira_webhook_controller.py:0
 #, python-format
 msgid "Import a worklog from JIRA"
-msgstr ""
+msgstr "Importa un worklog da JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Imports"
-msgstr ""
+msgstr "Importazioni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__industry_id
 msgid "Industry"
-msgstr ""
+msgstr "Settore"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__contact_address_inline
 msgid "Inlined Complete Address"
-msgstr ""
+msgstr "Indirizzo completo su una riga"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__x_plan3_id
 msgid "Internal"
-msgstr ""
+msgstr "Interno"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_id
@@ -1471,76 +1574,79 @@ msgid ""
 "automatically synchronized with Tasks (or optionally Issues if the Issue "
 "Tracker module is installed)."
 msgstr ""
+"E-mail interna associata a questo progetto. Le e-mail in arrivo vengono "
+"sincronizzate automaticamente con i Lavori (o opzionalmente con le "
+"Segnalazioni se è installato il modulo Issue Tracker)."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_is_follower
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_is_follower
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "È follower"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_internal_project
 msgid "Is Internal Project"
-msgstr ""
+msgstr "È progetto interno"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_milestone_exceeded
 msgid "Is Milestone Exceeded"
-msgstr ""
+msgstr "Milestone superata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_public
 msgid "Is Public"
-msgstr ""
+msgstr "È pubblico"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_system
 msgid "Is System"
-msgstr ""
+msgstr "È di sistema"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__is_company
 msgid "Is a Company"
-msgstr ""
+msgstr "È un'azienda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__sync_issue_type_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__sync_issue_type_ids
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__sync_issue_type_ids
 msgid "Issue Levels to Synchronize"
-msgstr ""
+msgstr "Livelli di segnalazione da sincronizzare"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_issue_type_id
 msgid "Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__issue_type_ids
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Issue Types"
-msgstr ""
+msgstr "Tipi di segnalazione"
 
 #. module: connector_jira
 #: model:ir.actions.server,name:connector_jira.ir_cron_jira_delete_analytic_line_ir_actions_server
 msgid "JIRA - Import Deleted Worklogs"
-msgstr ""
+msgstr "JIRA - Importa worklog eliminati"
 
 #. module: connector_jira
 #: model:ir.actions.server,name:connector_jira.ir_cron_jira_import_project_task_ir_actions_server
 msgid "JIRA - Import Project Tasks"
-msgstr ""
+msgstr "JIRA - Importa lavori progetto"
 
 #. module: connector_jira
 #: model:ir.actions.server,name:connector_jira.ir_cron_jira_import_res_users_ir_actions_server
 msgid "JIRA - Import Users"
-msgstr ""
+msgstr "JIRA - Importa utenti"
 
 #. module: connector_jira
 #: model:ir.actions.server,name:connector_jira.ir_cron_jira_import_analytic_line_ir_actions_server
 msgid "JIRA - Import Worklogs"
-msgstr ""
+msgstr "JIRA - Importa worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_epic_link_task_id
@@ -1548,14 +1654,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.hr_timesheet_line_search
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_search_form
 msgid "JIRA Epic"
-msgstr ""
+msgstr "Epic JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_issue_type
 #: model:ir.model.fields,field_description:connector_jira.field_project_task__jira_issue_type
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_search_form
 msgid "JIRA Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__jira_key
@@ -1568,57 +1674,57 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_link_jira_form
 #: model_terms:ir.ui.view,arch_db:connector_jira.task_link_jira_form
 msgid "JIRA Key"
-msgstr ""
+msgstr "Chiave JIRA"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_project_project.py:0
 #, python-format
 msgid "JIRA Key is mandatory to link a project"
-msgstr ""
+msgstr "La chiave JIRA è obbligatoria per collegare un progetto"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.hr_timesheet_line_search
 msgid "JIRA Original Epic"
-msgstr ""
+msgstr "Epic originale JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.hr_timesheet_line_search
 msgid "JIRA Original Issue"
-msgstr ""
+msgstr "Segnalazione originale JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.hr_timesheet_line_search
 msgid "JIRA Original Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione originale JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_parent_task_id
 #: model:ir.model.fields,field_description:connector_jira.field_project_task__jira_parent_task_id
 msgid "JIRA Parent"
-msgstr ""
+msgstr "Padre JIRA"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_project_base_mixin
 msgid "JIRA Project Base Mixin"
-msgstr ""
+msgstr "Mixin base progetto JIRA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_issue_url
 #: model:ir.model.fields,field_description:connector_jira.field_project_task__jira_issue_url
 #: model_terms:ir.ui.view,arch_db:connector_jira.hr_timesheet_line_search
 msgid "JIRA issue"
-msgstr ""
+msgstr "Segnalazione JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_kanban
 msgid "JIRA:"
-msgstr ""
+msgstr "JIRA:"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__duration_tracking
 msgid "JSON that maps ids from a many2one field to seconds spent"
-msgstr ""
+msgstr "JSON che mappa gli ID da un campo many2one ai secondi impiegati"
 
 #. module: connector_jira
 #: model:ir.ui.menu,name:connector_jira.menu_jira_root
@@ -1626,7 +1732,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_form2
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_users_form
 msgid "Jira"
-msgstr ""
+msgstr "Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_backend
@@ -1641,45 +1747,45 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__backend_id
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Jira Backend"
-msgstr ""
+msgstr "Backend Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_backend_timestamp
 msgid "Jira Backend Import Timestamps"
-msgstr ""
+msgstr "Marche temporali importazione backend Jira"
 
 #. module: connector_jira
 #: model:ir.actions.act_window,name:connector_jira.action_jira_backend
 msgid "Jira Backends"
-msgstr ""
+msgstr "Backend Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_binding
 msgid "Jira Binding (abstract)"
-msgstr ""
+msgstr "Collegamento Jira (astratto)"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_timesheets_analysis_report__jira_epic_issue_key
 msgid "Jira Epic Issue Key"
-msgstr ""
+msgstr "Chiave segnalazione Epic Jira"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_webservice_adapter.py:0
 #, python-format
 msgid "Jira Error: %s"
-msgstr ""
+msgstr "Errore Jira: %s"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_issue_id
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_task_form
 msgid "Jira Issue"
-msgstr ""
+msgstr "Segnalazione Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_timesheets_analysis_report__jira_issue_key
 msgid "Jira Issue Key"
-msgstr ""
+msgstr "Chiave segnalazione Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_issue_type
@@ -1687,39 +1793,39 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_issue_type_form
 msgid "Jira Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__jira_project_id
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_project_project_form
 msgid "Jira Project"
-msgstr ""
+msgstr "Progetto Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_project_bind_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_project_bind_id
 msgid "Jira Project Bind"
-msgstr ""
+msgstr "Collegamento progetto Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_project_project
 msgid "Jira Projects"
-msgstr ""
+msgstr "Progetti Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__jira_task_id
 msgid "Jira Task"
-msgstr ""
+msgstr "Lavoro Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_project_task
 msgid "Jira Tasks"
-msgstr ""
+msgstr "Lavori Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__uri
 msgid "Jira URI"
-msgstr ""
+msgstr "URI Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_updated_at
@@ -1729,81 +1835,82 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_updated_at
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__jira_updated_at
 msgid "Jira Updated At"
-msgstr ""
+msgstr "Aggiornato su Jira il"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_res_users
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__worklog_date_timezone_mode__user
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_res_users_form
 msgid "Jira User"
-msgstr ""
+msgstr "Utente Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_account_analytic_line
 msgid "Jira Worklog"
-msgstr ""
+msgstr "Worklog Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__function
 msgid "Job Position"
-msgstr ""
+msgstr "Posizione lavorativa"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__job_title
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__job_title
 msgid "Job Title"
-msgstr ""
+msgstr "Titolo lavorativo"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__password
 msgid ""
 "Keep empty if you don't want the user to be able to connect on the system."
 msgstr ""
+"Lasciare vuoto se non si desidera che l'utente possa connettersi al sistema."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_key
 msgid "Key"
-msgstr ""
+msgstr "Chiave"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__lang
 msgid "Language"
-msgstr ""
+msgstr "Lingua"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__last_activity
 msgid "Last Activity"
-msgstr ""
+msgstr "Ultima attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__last_activity_time
 msgid "Last Activity Time"
-msgstr ""
+msgstr "Ora ultima attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__date_last_stage_update
 msgid "Last Stage Update"
-msgstr ""
+msgstr "Ultimo aggiornamento di fase"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend_timestamp__last_timestamp
 msgid "Last Timestamp"
-msgstr ""
+msgstr "Ultima marca temporale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_id
 msgid "Last Update"
-msgstr ""
+msgstr "Ultimo aggiornamento"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_color
 msgid "Last Update Color"
-msgstr ""
+msgstr "Colore ultimo aggiornamento"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__last_update_status
 msgid "Last Update Status"
-msgstr ""
+msgstr "Stato ultimo aggiornamento"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__write_uid
@@ -1817,7 +1924,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__write_uid
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__write_date
@@ -1831,7 +1938,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__write_date
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__sync_date
@@ -1841,27 +1948,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__sync_date
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__sync_date
 msgid "Last synchronization date"
-msgstr ""
+msgstr "Data ultima sincronizzazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__login_date
 msgid "Latest authentication"
-msgstr ""
+msgstr "Ultima autenticazione"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_project_link_jira
 msgid "Link Project with JIRA"
-msgstr ""
+msgstr "Collega progetto con JIRA"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_task_link_jira
 msgid "Link Task with JIRA"
-msgstr ""
+msgstr "Collega lavoro con JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Link Users"
-msgstr ""
+msgstr "Collega utenti"
 
 #. module: connector_jira
 #: model:ir.actions.act_window,name:connector_jira.open_project_link_jira
@@ -1872,101 +1979,101 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_project_kanban_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_task_kanban
 msgid "Link with JIRA"
-msgstr ""
+msgstr "Collega con JIRA"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_users_form
 msgid "Link with Jira"
-msgstr ""
+msgstr "Collega con Jira"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__linked_backend_ids
 msgid "Linked Backend"
-msgstr ""
+msgstr "Backend collegato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_incoming_local
 msgid "Local-part based incoming detection"
-msgstr ""
+msgstr "Rilevamento posta in arrivo basato sulla parte locale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__login
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__attachment_ids
 msgid "Main Attachments"
-msgstr ""
+msgstr "Allegati principali"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Main Configuration"
-msgstr ""
+msgstr "Configurazione principale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__manager_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_parent_id
 msgid "Manager"
-msgstr ""
+msgstr "Responsabile"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__marital
 msgid "Marital Status"
-msgstr ""
+msgstr "Stato civile"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__favorite_user_ids
 msgid "Members"
-msgstr ""
+msgstr "Membri"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_has_error
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_has_error
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Errore di consegna messaggio"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Messaggi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__milestone_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__milestone_id
 msgid "Milestone"
-msgstr ""
+msgstr "Milestone"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__milestone_count
 msgid "Milestone Count"
-msgstr ""
+msgstr "Conteggio milestone"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__milestone_count_reached
 msgid "Milestone Count Reached"
-msgstr ""
+msgstr "Conteggio milestone raggiunte"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_milestones
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_milestones
 msgid "Milestones"
-msgstr ""
+msgstr "Milestone"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__mobile
 msgid "Mobile"
-msgstr ""
+msgstr "Cellulare"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__my_activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__my_activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Scadenza mia attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__name
@@ -1974,7 +2081,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__label_tasks
@@ -1982,34 +2089,36 @@ msgid ""
 "Name used to refer to the tasks of your project e.g. tasks, tickets, "
 "sprints, etc..."
 msgstr ""
+"Nome utilizzato per fare riferimento ai lavori del progetto, es. lavori, "
+"ticket, sprint, ecc..."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_date_deadline
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Scadenza prossima attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_summary
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_summary
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Riepilogo prossima attività"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_type_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_type_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Tipo prossima attività"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/res_users.py:0
 #, python-format
 msgid "No JIRA user could be found"
-msgstr ""
+msgstr "Impossibile trovare alcun utente JIRA"
 
 #. module: connector_jira
 #. odoo-python
@@ -2019,6 +2128,8 @@ msgid ""
 "No user found for jira account %(key)s (%(mail)s). Please link it manually "
 "from the Odoo user's form."
 msgstr ""
+"Nessun utente trovato per l'account Jira %(key)s (%(mail)s). Collegarlo "
+"manualmente dal modulo dell'utente Odoo."
 
 #. module: connector_jira
 #. odoo-python
@@ -2028,6 +2139,9 @@ msgid ""
 "No user found with accountId \"%(jira_key)s\" or email \"%(email)s\".You "
 "must create a user or link it manually if the login/email differs."
 msgstr ""
+"Nessun utente trovato con accountId \"%(jira_key)s\" o e-mail \"%(email)s\". "
+"È necessario creare un utente o collegarlo manualmente se login/e-mail "
+"differiscono."
 
 #. module: connector_jira
 #. odoo-python
@@ -2037,91 +2151,93 @@ msgid ""
 "No user found with login '%(key)s' or email '%(mail)s'. You must create a "
 "user or link it manually if the login/email differs."
 msgstr ""
+"Nessun utente trovato con login '%(key)s' o e-mail '%(mail)s'. È necessario "
+"creare un utente o collegarlo manualmente se login/e-mail differiscono."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__email_normalized
 msgid "Normalized Email"
-msgstr ""
+msgstr "E-mail normalizzata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__comment
 msgid "Notes"
-msgstr ""
+msgstr "Note"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_exporter.py:0
 #, python-format
 msgid "Nothing to export."
-msgstr ""
+msgstr "Nulla da esportare."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__notification_type
 msgid "Notification"
-msgstr ""
+msgstr "Notifica"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_needaction_counter
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_needaction_counter
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Numero di azioni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__companies_count
 msgid "Number of Companies"
-msgstr ""
+msgstr "Numero di aziende"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__children
 msgid "Number of Dependent Children"
-msgstr ""
+msgstr "Numero di figli a carico"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__accesses_count
 msgid "Number of access rights that apply to the current user"
-msgstr ""
+msgstr "Numero di diritti di accesso applicati all'utente corrente"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__remaining_hours
 msgid "Number of allocated hours minus the number of hours spent."
-msgstr ""
+msgstr "Numero di ore assegnate meno il numero di ore impiegate."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__doc_count
 msgid "Number of documents attached"
-msgstr ""
+msgstr "Numero di documenti allegati"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__message_has_error_counter
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__message_has_error_counter
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Numero di errori"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__groups_count
 msgid "Number of groups that apply to the current user"
-msgstr ""
+msgstr "Numero di gruppi applicati all'utente corrente"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__message_needaction_counter
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__message_needaction_counter
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Numero di messaggi che richiedono un'azione"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__message_has_error_counter
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__message_has_error_counter
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Numero di messaggi con errore di consegna"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__rules_count
 msgid "Number of record rules that apply to the current user"
-msgstr ""
+msgstr "Numero di regole sui record applicate all'utente corrente"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
@@ -2134,6 +2250,13 @@ msgid ""
 "                                of the new records to review\n"
 "                                in the menu 'Connectors &gt; Checkpoint'."
 msgstr ""
+"Una volta importati,\n"
+"                                alcuni tipi di record,\n"
+"                                come i prodotti o le categorie,\n"
+"                                richiedono una revisione manuale.\n"
+"                                È possibile trovare l'elenco\n"
+"                                dei nuovi record da revisionare\n"
+"                                nel menu 'Connettori &gt; Checkpoint'."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_base_mixin__sync_issue_type_ids
@@ -2145,6 +2268,10 @@ msgid ""
 "level. If no parent can be found, it is attached to a special 'Unassigned' "
 "task."
 msgstr ""
+"Vengono importate solo le segnalazioni di questi livelli. Quando un worklog "
+"viene importato su un livello non sincronizzato, viene allegato al livello "
+"padre sincronizzato più vicino. Se non viene trovato alcun padre, viene "
+"allegato a uno speciale lavoro 'Non assegnato'."
 
 #. module: connector_jira
 #. odoo-python
@@ -2154,11 +2281,13 @@ msgid ""
 "Only one Jira binding can be configured with the Sync. Action \"Export\" for "
 "a project. \"%s\" already has one."
 msgstr ""
+"Solo un collegamento Jira può essere configurato con l'azione di "
+"sincronizzazione \"Esporta\" per un progetto. \"%s\" ne ha già uno."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__open_task_count
 msgid "Open Task Count"
-msgstr ""
+msgstr "Conteggio lavori aperti"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_force_thread_id
@@ -2167,58 +2296,61 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"ID facoltativo di una discussione (record) a cui verranno allegati tutti i "
+"messaggi in arrivo, anche se non vi hanno risposto. Se impostato, "
+"disabiliterà completamente la creazione di nuovi record."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_epic_issue_key
 msgid "Original Epic Key"
-msgstr ""
+msgstr "Chiave Epic originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_issue_type_id
 msgid "Original Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_epic_issue_key
 msgid "Original JIRA Epic Key"
-msgstr ""
+msgstr "Chiave Epic JIRA originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_epic_issue_url
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_epic_issue_url
 msgid "Original JIRA Epic Link"
-msgstr ""
+msgstr "Link Epic JIRA originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_issue_key
 msgid "Original JIRA Issue Key"
-msgstr ""
+msgstr "Chiave segnalazione JIRA originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_issue_type_id
 msgid "Original JIRA Issue Type"
-msgstr ""
+msgstr "Tipo di segnalazione JIRA originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_issue_url
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_issue_url
 msgid "Original JIRA issue Link"
-msgstr ""
+msgstr "Link segnalazione JIRA originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_issue_key
 msgid "Original Task Key"
-msgstr ""
+msgstr "Chiave lavoro originale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__overtime
 msgid "Overtime"
-msgstr ""
+msgstr "Straordinario"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__pin
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__pin
@@ -2227,27 +2359,30 @@ msgid ""
 "enabled in Configuration) and to change the cashier in the Point of Sale "
 "application."
 msgstr ""
+"PIN utilizzato per registrare entrata/uscita nella modalità chiosco "
+"dell'applicazione Presenze (se abilitata in Configurazione) e per cambiare "
+"cassiere nell'applicazione Punto Vendita."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_parent_id
 msgid "Parent Issue"
-msgstr ""
+msgstr "Segnalazione padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Modello padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "ID discussione record padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__parent_task_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__parent_id
 msgid "Parent Task"
-msgstr ""
+msgstr "Lavoro padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__jira_parent_id
@@ -2255,6 +2390,8 @@ msgid ""
 "Parent issue when the issue is a subtask. Empty if the type of parent is "
 "filtered out of the synchronizations."
 msgstr ""
+"Segnalazione padre quando la segnalazione è un sottolavoro. Vuoto se il tipo "
+"di padre è escluso dalle sincronizzazioni."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_parent_model_id
@@ -2263,46 +2400,49 @@ msgid ""
 "necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Modello padre che detiene l'alias. Il modello che detiene il riferimento "
+"dell'alias non è necessariamente il modello indicato da alias_model_id "
+"(esempio: progetto (parent_model) e lavoro (model))"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__parent_name
 msgid "Parent name"
-msgstr ""
+msgstr "Nome padre"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__active_partner
 msgid "Partner is Active"
-msgstr ""
+msgstr "Il partner è attivo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__same_company_registry_partner_id
 msgid "Partner with same Company Registry"
-msgstr ""
+msgstr "Partner con lo stesso registro imprese"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__same_vat_partner_id
 msgid "Partner with same Tax ID"
-msgstr ""
+msgstr "Partner con la stessa partita IVA"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__partner_id
 msgid "Partner-related data of the user"
-msgstr ""
+msgstr "Dati dell'utente relativi al partner"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__passport_id
 msgid "Passport No"
-msgstr ""
+msgstr "N. passaporto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__password
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__privacy_visibility
@@ -2336,36 +2476,65 @@ msgid ""
 "a task, provided that they are given the corresponding URL (and that they "
 "are part of the followers if the project is private)."
 msgstr ""
+"Persone a cui saranno visibili questo progetto e i relativi lavori.\n"
+"\n"
+"- Utenti interni invitati: seguendo un progetto, gli utenti interni avranno "
+"accesso a tutti i suoi lavori senza distinzione. Altrimenti, avranno accesso "
+"solo agli specifici lavori che stanno seguendo.\n"
+" Un utente con livello di diritti di accesso progetto > amministratore può "
+"comunque accedere a questo progetto e ai suoi lavori, anche se non fa "
+"esplicitamente parte dei follower.\n"
+"\n"
+"- Tutti gli utenti interni: tutti gli utenti interni possono accedere al "
+"progetto e a tutti i suoi lavori senza distinzione.\n"
+"\n"
+"- Utenti portale invitati e tutti gli utenti interni: tutti gli utenti "
+"interni possono accedere al progetto e a tutti i suoi lavori senza "
+"distinzione.\n"
+"Seguendo un progetto, gli utenti del portale avranno accesso a tutti i suoi "
+"lavori senza distinzione. Altrimenti, avranno accesso solo agli specifici "
+"lavori che stanno seguendo.\n"
+"\n"
+"Quando un progetto è condiviso in sola lettura, l'utente del portale viene "
+"reindirizzato al proprio portale. Può visualizzare i lavori, ma non "
+"modificarli.\n"
+"Quando un progetto è condiviso in modifica, l'utente del portale viene "
+"reindirizzato alle viste kanban ed elenco dei lavori. Può modificare un "
+"numero selezionato di campi sui lavori.\n"
+"\n"
+"In ogni caso, un utente interno senza diritti di accesso al progetto può "
+"comunque accedere a un lavoro, a condizione che gli venga fornito l'URL "
+"corrispondente (e che faccia parte dei follower se il progetto è privato)."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
-msgstr ""
+msgstr "Percentuale di valutazioni positive"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_type_id
 msgid "Personal Stage"
-msgstr ""
+msgstr "Fase personale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_id
 msgid "Personal Stage State"
-msgstr ""
+msgstr "Stato fase personale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__personal_stage_type_ids
 msgid "Personal Stages"
-msgstr ""
+msgstr "Fasi personali"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__phone
 msgid "Phone"
-msgstr ""
+msgstr "Telefono"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__place_of_birth
 msgid "Place of Birth"
-msgstr ""
+msgstr "Luogo di nascita"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__notification_type
@@ -2374,6 +2543,10 @@ msgid ""
 "- Handle by Emails: notifications are sent to your email address\n"
 "- Handle in Odoo: notifications appear in your Odoo Inbox"
 msgstr ""
+"Politica su come gestire le notifiche del chatter:\n"
+"- Gestisci tramite e-mail: le notifiche vengono inviate al tuo indirizzo e-"
+"mail\n"
+"- Gestisci in Odoo: le notifiche appaiono nella tua posta in arrivo di Odoo"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_contact
@@ -2384,77 +2557,83 @@ msgid ""
 "- followers: only followers of the related document or members of following "
 "channels\n"
 msgstr ""
+"Politica per pubblicare un messaggio sul documento utilizzando il gateway di "
+"posta.\n"
+"- tutti: chiunque può pubblicare\n"
+"- partner: solo i partner autenticati\n"
+"- follower: solo i follower del documento correlato o i membri dei canali "
+"seguiti\n"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__access_url
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__access_url
 msgid "Portal Access URL"
-msgstr ""
+msgstr "URL di accesso al portale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__portal_user_names
 msgid "Portal User Names"
-msgstr ""
+msgstr "Nomi utente portale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__priority
 msgid "Priority"
-msgstr ""
+msgstr "Priorità"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__privacy_visibility_warning
 msgid "Privacy Visibility Warning"
-msgstr ""
+msgstr "Avviso visibilità privacy"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_city
 msgid "Private City"
-msgstr ""
+msgstr "Città privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_country_id
 msgid "Private Country"
-msgstr ""
+msgstr "Nazione privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_email
 msgid "Private Email"
-msgstr ""
+msgstr "E-mail privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__private_key
 msgid "Private Key"
-msgstr ""
+msgstr "Chiave privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_phone
 msgid "Private Phone"
-msgstr ""
+msgstr "Telefono privato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_state_id
 msgid "Private State"
-msgstr ""
+msgstr "Provincia privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_street
 msgid "Private Street"
-msgstr ""
+msgstr "Via privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_street2
 msgid "Private Street2"
-msgstr ""
+msgstr "Via 2 privata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__private_zip
 msgid "Private Zip"
-msgstr ""
+msgstr "CAP privato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__progress
 msgid "Progress"
-msgstr ""
+msgstr "Avanzamento"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_project_project
@@ -2463,145 +2642,145 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__project_id
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__project_id
 msgid "Project"
-msgstr ""
+msgstr "Progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__account_id
 msgid "Project Account"
-msgstr ""
+msgstr "Conto progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_project_project__jira_bind_ids
 msgid "Project Bindings"
-msgstr ""
+msgstr "Collegamenti progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__user_id
 msgid "Project Manager"
-msgstr ""
+msgstr "Responsabile di progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_active
 msgid "Project Rating Status"
-msgstr ""
+msgstr "Stato valutazione progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__project_type
 msgid "Project Type"
-msgstr ""
+msgstr "Tipo di progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__project_privacy_visibility
 msgid "Project Visibility"
-msgstr ""
+msgstr "Visibilità progetto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_project_overtime
 msgid "Project in Overtime"
-msgstr ""
+msgstr "Progetto in straordinario"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_project_adapter.py:0
 #, python-format
 msgid "Project template with key \"%s\" not found."
-msgstr ""
+msgstr "Modello di progetto con chiave \"%s\" non trovato."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__project_ids
 msgid "Projects"
-msgstr ""
+msgstr "Progetti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__task_properties
 msgid "Properties"
-msgstr ""
+msgstr "Proprietà"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__public_key
 msgid "Public Key"
-msgstr ""
+msgstr "Chiave pubblica"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__unit_amount
 msgid "Quantity"
-msgstr ""
+msgstr "Quantità"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_queue_job
 msgid "Queue Job"
-msgstr ""
+msgstr "Lavoro in coda"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Testo valutazione media"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_status_period
 msgid "Rating Frequency"
-msgstr ""
+msgstr "Frequenza di valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_last_feedback
 msgid "Rating Last Feedback"
-msgstr ""
+msgstr "Ultimo feedback di valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_last_image
 msgid "Rating Last Image"
-msgstr ""
+msgstr "Ultima immagine di valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_last_value
 msgid "Rating Last Value"
-msgstr ""
+msgstr "Ultimo valore di valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_request_deadline
 msgid "Rating Request Deadline"
-msgstr ""
+msgstr "Scadenza richiesta di valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Soddisfazione valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Testo valutazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_count
 msgid "Rating count"
-msgstr ""
+msgstr "Conteggio valutazioni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__rating_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__rating_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__rating_ids
 msgid "Ratings"
-msgstr ""
+msgstr "Valutazioni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__readonly_timesheet
 msgid "Readonly Timesheet"
-msgstr ""
+msgstr "Foglio ore di sola lettura"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr ""
+msgstr "ID discussione record"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_deleter.py:0
 #, python-format
 msgid "Record deleted"
-msgstr ""
+msgstr "Record eliminato"
 
 #. module: connector_jira
 #. odoo-python
@@ -2609,43 +2788,43 @@ msgstr ""
 #: code:addons/connector_jira/components/jira_importer.py:0
 #, python-format
 msgid "Record does no longer exist in Jira"
-msgstr ""
+msgstr "Il record non esiste più in Jira"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_webservice_adapter.py:0
 #, python-format
 msgid "Record does not exist in Jira: %s"
-msgstr ""
+msgstr "Il record non esiste in Jira: %s"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_exporter.py:0
 #, python-format
 msgid "Record exported with ID %s on Jira."
-msgstr ""
+msgstr "Record esportato con ID %s su Jira."
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_base_exporter.py:0
 #, python-format
 msgid "Record to export does no longer exist."
-msgstr ""
+msgstr "Il record da esportare non esiste più."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurrence_id
 msgid "Recurrence"
-msgstr ""
+msgstr "Ricorrenza"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurring_task
 msgid "Recurrent"
-msgstr ""
+msgstr "Ricorrente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__ref
 msgid "Reference"
-msgstr ""
+msgstr "Riferimento"
 
 #. module: connector_jira
 #. odoo-python
@@ -2653,125 +2832,125 @@ msgstr ""
 #: model:ir.actions.server,name:connector_jira.act_server_jira_aa_line_import
 #, python-format
 msgid "Refresh Worklogs from Jira"
-msgstr ""
+msgstr "Aggiorna worklog da Jira"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_jira_account_analytic_line_import
 msgid "Reimport Jira Worklogs"
-msgstr ""
+msgstr "Reimporta worklog Jira"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_aa_line_import
 msgid "Reimport lines"
-msgstr ""
+msgstr "Reimporta righe"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__parent_id
 msgid "Related Company"
-msgstr ""
+msgstr "Azienda correlata"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__partner_id
 msgid "Related Partner"
-msgstr ""
+msgstr "Partner correlato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_ids
 msgid "Related employee"
-msgstr ""
+msgstr "Dipendente correlato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__remaining_hours
 msgid "Remaining Hours"
-msgstr ""
+msgstr "Ore rimanenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__remaining_hours_percentage
 msgid "Remaining Hours Percentage"
-msgstr ""
+msgstr "Percentuale ore rimanenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__remaining_hours
 msgid "Remaining Invoiced Time"
-msgstr ""
+msgstr "Tempo fatturato rimanente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_interval
 msgid "Repeat Every"
-msgstr ""
+msgstr "Ripeti ogni"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_unit
 msgid "Repeat Unit"
-msgstr ""
+msgstr "Unità di ripetizione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__report_user_sync
 msgid "Report User Sync"
-msgstr ""
+msgstr "Resoconto sincronizzazione utenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__res_users_settings_ids
 msgid "Res Users Settings"
-msgstr ""
+msgstr "Impostazioni utenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__resource_ids
 msgid "Resources"
-msgstr ""
+msgstr "Risorse"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__activity_user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__activity_user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Utente responsabile"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Result"
-msgstr ""
+msgstr "Risultato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__resume_line_ids
 msgid "Resume lines"
-msgstr ""
+msgstr "Righe curriculum"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Run"
-msgstr ""
+msgstr "Esegui"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Run in background"
-msgstr ""
+msgstr "Esegui in background"
 
 #. module: connector_jira
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__state__running
 msgid "Running"
-msgstr ""
+msgstr "In esecuzione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__ssnid
 msgid "SSN No"
-msgstr ""
+msgstr "Codice fiscale / N. previdenza sociale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__user_id
 msgid "Salesperson"
-msgstr ""
+msgstr "Addetto vendite"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__study_school
 msgid "School"
-msgstr ""
+msgstr "Scuola"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__access_token
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Token di sicurezza"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__coach_id
@@ -2779,32 +2958,34 @@ msgid ""
 "Select the \"Employee\" who is the coach of this employee.\n"
 "The \"Coach\" has no specific rights or responsibilities by default."
 msgstr ""
+"Seleziona il \"Dipendente\" che è il coach di questo dipendente.\n"
+"Il \"Coach\" non ha diritti o responsabilità specifici in modo predefinito."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__self
 msgid "Self"
-msgstr ""
+msgstr "Stesso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__sequence
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Sequenza"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__new_password
 msgid "Set Password"
-msgstr ""
+msgstr "Imposta password"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__res_users_settings_id
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #. module: connector_jira
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__state__setup
 msgid "Setup"
-msgstr ""
+msgstr "Configurazione"
 
 #. module: connector_jira
 #. odoo-python
@@ -2814,6 +2995,8 @@ msgid ""
 "Several users found (%(login)s) for jira account %(key)s (%(mail)s). Please "
 "link it manually from the Odoo user's form."
 msgstr ""
+"Trovati più utenti (%(login)s) per l'account Jira %(key)s (%(mail)s). "
+"Collegarlo manualmente dal modulo dell'utente Odoo."
 
 #. module: connector_jira
 #. odoo-python
@@ -2823,66 +3006,68 @@ msgid ""
 "Several users found with \"%(resolve_by_key)s\"set to "
 "\"%(resolve_by_value)s\". Set it manually."
 msgstr ""
+"Trovati più utenti con \"%(resolve_by_key)s\" impostato a \"%"
+"(resolve_by_value)s\". Impostarlo manualmente."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__partner_share
 msgid "Share Partner"
-msgstr ""
+msgstr "Partner condiviso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__share
 msgid "Share User"
-msgstr ""
+msgstr "Utente condiviso"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__is_favorite
 msgid "Show Project on Dashboard"
-msgstr ""
+msgstr "Mostra progetto nella bacheca"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signup_expiration
 msgid "Signup Expiration"
-msgstr ""
+msgstr "Scadenza registrazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signup_token
 msgid "Signup Token"
-msgstr ""
+msgstr "Token di registrazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signup_type
 msgid "Signup Token Type"
-msgstr ""
+msgstr "Tipo di token di registrazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signup_valid
 msgid "Signup Token is Valid"
-msgstr ""
+msgstr "Il token di registrazione è valido"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__signup_url
 msgid "Signup URL"
-msgstr ""
+msgstr "URL di registrazione"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Since:"
-msgstr ""
+msgstr "Dal:"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_skill_ids
 msgid "Skills"
-msgstr ""
+msgstr "Competenze"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__ssnid
 msgid "Social Security Number"
-msgstr ""
+msgstr "Numero di previdenza sociale"
 
 #. module: connector_jira
 #: model:ir.model.fields.selection,name:connector_jira.selection__jira_backend__worklog_date_timezone_mode__specific
 msgid "Specific"
-msgstr ""
+msgstr "Specifico"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__new_password
@@ -2891,32 +3076,35 @@ msgid ""
 "password, otherwise leave empty. After a change of password, the user has to "
 "login again."
 msgstr ""
+"Specificare un valore solo durante la creazione di un utente o la modifica "
+"della password dell'utente, altrimenti lasciare vuoto. Dopo un cambio di "
+"password, l'utente deve effettuare nuovamente l'accesso."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__spouse_birthdate
 msgid "Spouse Birthdate"
-msgstr ""
+msgstr "Data di nascita del coniuge"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__spouse_complete_name
 msgid "Spouse Complete Name"
-msgstr ""
+msgstr "Nome completo del coniuge"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__stage_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__stage_id
 msgid "Stage"
-msgstr ""
+msgstr "Fase"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__starred_message_ids
 msgid "Starred Message"
-msgstr ""
+msgstr "Messaggio speciale"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__date_start
 msgid "Start Date"
-msgstr ""
+msgstr "Data di inizio"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__state
@@ -2925,7 +3113,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__state
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__state
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__state
@@ -2936,11 +3124,17 @@ msgid ""
 "Running: when you have installed the backend on a Jira cloud instance "
 "(transition is automatic)."
 msgstr ""
+"Stato del backend.\n"
+"Configurazione: in questo stato è possibile registrare il backend su https://"
+"marketplace.atlassian.com/ come app, utilizzando l'URL descrittore "
+"dell'app.\n"
+"In esecuzione: quando il backend è stato installato su un'istanza Jira Cloud "
+"(la transizione è automatica)."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__state
 msgid "Status"
-msgstr ""
+msgstr "Stato"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_state
@@ -2952,36 +3146,40 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Stato basato sulle attività\n"
+"In ritardo: la data di scadenza è già trascorsa\n"
+"Oggi: la data dell'attività è oggi\n"
+"Pianificato: attività future."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__duration_tracking
 msgid "Status time"
-msgstr ""
+msgstr "Tempo stato"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__street
 msgid "Street"
-msgstr ""
+msgstr "Via"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__street2
 msgid "Street2"
-msgstr ""
+msgstr "Via 2"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_count
 msgid "Sub-task Count"
-msgstr ""
+msgstr "Conteggio sottolavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__child_ids
 msgid "Sub-tasks"
-msgstr ""
+msgstr "Sottolavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__subtask_allocated_hours
 msgid "Sub-tasks Allocated Time"
-msgstr ""
+msgstr "Tempo assegnato ai sottolavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_allocated_hours
@@ -2990,20 +3188,23 @@ msgid ""
 "linked to this task. Usually less than or equal to the allocated hours of "
 "this task."
 msgstr ""
+"Somma delle ore assegnate per tutti i sottolavori (e i relativi sottolavori) "
+"collegati a questo lavoro. Solitamente inferiore o uguale alle ore assegnate "
+"a questo lavoro."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_base_mixin__sync_action
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__sync_action
 #: model:ir.model.fields,field_description:connector_jira.field_project_link_jira__sync_action
 msgid "Sync Action"
-msgstr ""
+msgstr "Azione di sincronizzazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__tag_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__tag_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__category_id
 msgid "Tags"
-msgstr ""
+msgstr "Etichette"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_project_task
@@ -3011,86 +3212,86 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__odoo_id
 #: model:ir.model.fields,field_description:connector_jira.field_task_link_jira__task_id
 msgid "Task"
-msgstr ""
+msgstr "Lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__tasks
 msgid "Task Activities"
-msgstr ""
+msgstr "Attività lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_project_task__jira_bind_ids
 msgid "Task Bindings"
-msgstr ""
+msgstr "Collegamenti lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_count
 msgid "Task Count"
-msgstr ""
+msgstr "Conteggio lavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_task_dependencies
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__allow_task_dependencies
 msgid "Task Dependencies"
-msgstr ""
+msgstr "Dipendenze lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_properties_definition
 msgid "Task Properties"
-msgstr ""
+msgstr "Proprietà lavoro"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/project_task.py:0
 #, python-format
 msgid "Task can not be created in project linked to JIRA!"
-msgstr ""
+msgstr "Il lavoro non può essere creato in un progetto collegato a JIRA!"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/project_task.py:0
 #, python-format
 msgid "Task linked to JIRA Issue can not be deleted!"
-msgstr ""
+msgstr "Il lavoro collegato a una segnalazione JIRA non può essere eliminato!"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/project_task.py:0
 #, python-format
 msgid "Task linked to JIRA Issue can not be modified!"
-msgstr ""
+msgstr "Il lavoro collegato a una segnalazione JIRA non può essere modificato!"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__task_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__task_ids
 msgid "Tasks"
-msgstr ""
+msgstr "Lavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__type_ids
 msgid "Tasks Stages"
-msgstr ""
+msgstr "Fasi dei lavori"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__recurring_count
 msgid "Tasks in Recurrence"
-msgstr ""
+msgstr "Lavori in ricorrenza"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__vat
 msgid "Tax ID"
-msgstr ""
+msgstr "Partita IVA"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__create_employee_id
 msgid "Technical field, bind user to this employee on create"
-msgstr ""
+msgstr "Campo tecnico, collega l'utente a questo dipendente alla creazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__create_employee
 msgid "Technical field, whether to create an employee"
-msgstr ""
+msgstr "Campo tecnico, indica se creare un dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__epic_link_field_name
@@ -3098,6 +3299,8 @@ msgid ""
 "The 'Epic Link' field on JIRA is a custom field. The name of the field is "
 "something like 'customfield_10002'. "
 msgstr ""
+"Il campo 'Epic Link' su JIRA è un campo personalizzato. Il nome del campo è "
+"simile a 'customfield_10002'. "
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__epic_name_field_name
@@ -3105,11 +3308,13 @@ msgid ""
 "The 'Epic Name' field on JIRA is a custom field. The name of the field is "
 "something like 'customfield_10003'. "
 msgstr ""
+"Il campo 'Epic Name' su JIRA è un campo personalizzato. Il nome del campo è "
+"simile a 'customfield_10003'. "
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__public_key
 msgid "The Client Key for JWT, provided at app installation"
-msgstr ""
+msgstr "La chiave client per JWT, fornita all'installazione dell'app"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__country_code
@@ -3117,6 +3322,8 @@ msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
 msgstr ""
+"Il codice ISO della nazione in due caratteri. \n"
+"È possibile utilizzare questo campo per la ricerca rapida."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__vat
@@ -3125,6 +3332,9 @@ msgid ""
 "country format. You can use '/' to indicate that the partner is not subject "
 "to tax."
 msgstr ""
+"Il numero di identificazione fiscale. I valori verranno validati in base al "
+"formato della nazione. È possibile utilizzare '/' per indicare che il "
+"partner non è soggetto a imposte."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_link_jira_form
@@ -3136,21 +3346,27 @@ msgid ""
 "type\n"
 "              Story will be imported. Several choices possible."
 msgstr ""
+"Le caselle di controllo definiscono quali tipi di segnalazioni JIRA "
+"verranno\n"
+"                            importati\n"
+"              in Odoo. Ad esempio, se si seleziona 'Story', verranno "
+"importate solo le segnalazioni di tipo\n"
+"              Story. Sono possibili più scelte."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__personal_stage_id
 msgid "The current user's personal stage."
-msgstr ""
+msgstr "La fase personale dell'utente corrente."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__personal_stage_type_id
 msgid "The current user's personal task stage."
-msgstr ""
+msgstr "La fase lavoro personale dell'utente corrente."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__company_id
 msgid "The default company for this user."
-msgstr ""
+msgstr "L'azienda predefinita per questo utente."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee_type
@@ -3160,11 +3376,15 @@ msgid ""
 "Employee type is supposed to be under contract and will have a Contract "
 "History."
 msgstr ""
+"Il tipo di dipendente. Sebbene lo scopo principale possa sembrare quello di "
+"categorizzare i dipendenti, questo campo ha un impatto anche sullo storico "
+"contratti. Solo il tipo Dipendente è considerato sotto contratto e avrà uno "
+"storico contratti."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__user_id
 msgid "The internal user in charge of this contact."
-msgstr ""
+msgstr "L'utente interno responsabile di questo contatto."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_model_id
@@ -3173,6 +3393,9 @@ msgid ""
 "email that does not reply to an existing record will cause the creation of a "
 "new record of this model (e.g. a Project Task)"
 msgstr ""
+"Il modello (tipo di documento Odoo) a cui corrisponde questo alias. "
+"Qualsiasi e-mail in arrivo che non risponda a un record esistente causerà la "
+"creazione di un nuovo record di questo modello (es. un lavoro di progetto)"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__alias_name
@@ -3180,6 +3403,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Il nome dell'alias e-mail, es. 'jobs' se si desiderano ricevere le e-mail "
+"per <jobs@example.odoo.com>"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__application_key
@@ -3188,30 +3413,33 @@ msgid ""
 "Atlassian marketplace website.\n"
 "It has to be unique among all apps on the marketplace."
 msgstr ""
+"Il nome che verrà utilizzato come chiave applicazione per registrare l'app "
+"sul sito web Atlassian Marketplace.\n"
+"Deve essere univoco tra tutte le app sul marketplace."
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_project_project.py:0
 #, python-format
 msgid "The project %s is already linked with the same JIRA project."
-msgstr ""
+msgstr "Il progetto %s è già collegato allo stesso progetto JIRA."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_link_jira_form
 msgid "The project is now linked with JIRA."
-msgstr ""
+msgstr "Il progetto è ora collegato con JIRA."
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/jira_project_project.py:0
 #, python-format
 msgid "The project template cannot be modified."
-msgstr ""
+msgstr "Il modello di progetto non può essere modificato."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_link_jira_form
 msgid "The project will be created on JIRA in background."
-msgstr ""
+msgstr "Il progetto verrà creato su JIRA in background."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__company_registry
@@ -3219,11 +3447,13 @@ msgid ""
 "The registry number of the company. Use it if it is different from the Tax "
 "ID. It must be unique across all partners of a same country"
 msgstr ""
+"Il numero di registrazione dell'azienda. Utilizzarlo se è diverso dalla "
+"partita IVA. Deve essere univoco tra tutti i partner di una stessa nazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__private_key
 msgid "The shared secret for JWT, provided at app installation"
-msgstr ""
+msgstr "Il segreto condiviso per JWT, fornito all'installazione dell'app"
 
 #. module: connector_jira
 #. odoo-python
@@ -3233,11 +3463,13 @@ msgid ""
 "The synchronization timestamp is currently locked, probably due to an "
 "ongoing synchronization."
 msgstr ""
+"La marca temporale di sincronizzazione è attualmente bloccata, probabilmente "
+"a causa di una sincronizzazione in corso."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.task_link_jira_form
 msgid "The task is now linked with JIRA."
-msgstr ""
+msgstr "Il lavoro è ora collegato con JIRA."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.project_link_jira_form
@@ -3253,6 +3485,14 @@ msgid ""
 "              Epic. Finally, if there is no Epic, the worklog will not be\n"
 "              attached to any task."
 msgstr ""
+"Vi è un'implicazione diretta sui worklog.\n"
+"              Quando un worklog viene effettuato su un sottolavoro JIRA e "
+"questo tipo non è\n"
+"              sincronizzato, il worklog verrà allegato al lavoro padre del\n"
+"              sottolavoro. Se il lavoro non è sincronizzato, verrà allegato "
+"alla\n"
+"              Epic. Infine, se non vi è alcuna Epic, il worklog non verrà\n"
+"              allegato ad alcun lavoro."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__email_normalized
@@ -3260,95 +3500,102 @@ msgid ""
 "This field is used to search on email address as the primary email field can "
 "contain more than strictly an email address."
 msgstr ""
+"Questo campo viene utilizzato per effettuare ricerche sull'indirizzo e-mail "
+"poiché il campo e-mail principale può contenere più di un semplice indirizzo "
+"e-mail."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__subtask_effective_hours
 msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
 msgstr ""
+"Tempo impiegato sui sottolavori (e sui relativi sottolavori) di questo "
+"lavoro."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__total_hours_spent
 msgid "Time spent on this task and its sub-tasks (and their own sub-tasks)."
 msgstr ""
+"Tempo impiegato su questo lavoro e sui suoi sottolavori (e relativi "
+"sottolavori)."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__odoo_id
 msgid "Timesheet"
-msgstr ""
+msgstr "Foglio ore"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__timesheet_encode_uom_id
 msgid "Timesheet Encode Uom"
-msgstr ""
+msgstr "UdM codifica foglio ore"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/account_analytic_line.py:0
 #, python-format
 msgid "Timesheet can not be created in project linked to JIRA!"
-msgstr ""
+msgstr "Il foglio ore non può essere creato in un progetto collegato a JIRA!"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/account_analytic_line.py:0
 #, python-format
 msgid "Timesheet linked to JIRA Worklog can not be deleted!"
-msgstr ""
+msgstr "Il foglio ore collegato al worklog JIRA non può essere eliminato!"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/models/account_analytic_line.py:0
 #, python-format
 msgid "Timesheet linked to JIRA Worklog cannot be modified!"
-msgstr ""
+msgstr "Il foglio ore collegato al worklog JIRA non può essere modificato!"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__allow_timesheets
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__timesheet_ids
 msgid "Timesheets"
-msgstr ""
+msgstr "Fogli ore"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_timesheets_analysis_report
 msgid "Timesheets Analysis Report"
-msgstr ""
+msgstr "Resoconto di analisi fogli ore"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__allow_timesheets
 msgid "Timesheets can be logged on this task."
-msgstr ""
+msgstr "È possibile registrare fogli ore su questo lavoro."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__tz
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Timezone"
-msgstr ""
+msgstr "Fuso orario"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Timezone Mode"
-msgstr ""
+msgstr "Modalità fuso orario"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__tz_offset
 msgid "Timezone offset"
-msgstr ""
+msgstr "Scostamento fuso orario"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__name
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__title
 msgid "Title"
-msgstr ""
+msgstr "Titolo"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__total_hours_spent
 msgid "Total Hours"
-msgstr ""
+msgstr "Ore totali"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__total_timesheet_time
 msgid "Total Timesheet Time"
-msgstr ""
+msgstr "Tempo totale foglio ore"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__total_timesheet_time
@@ -3356,33 +3603,37 @@ msgid ""
 "Total number of time (in the proper UoM) recorded in the project, rounded to "
 "the unit."
 msgstr ""
+"Quantità totale di tempo (nell'UdM appropriata) registrata nel progetto, "
+"arrotondata all'unità."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_secret
 msgid "Totp Secret"
-msgstr ""
+msgstr "Segreto TOTP"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_trusted_device_ids
 msgid "Trusted Devices"
-msgstr ""
+msgstr "Dispositivi attendibili"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__totp_enabled
 msgid "Two-factor authentication"
-msgstr ""
+msgstr "Autenticazione a due fattori"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__activity_exception_decoration
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__activity_exception_decoration
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Tipo di attività di eccezione sul record."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__app_descriptor_url
 msgid "URL to use when registering the backend as an app on the marketplace"
 msgstr ""
+"URL da utilizzare durante la registrazione del backend come app sul "
+"marketplace"
 
 #. module: connector_jira
 #. odoo-python
@@ -3390,36 +3641,37 @@ msgstr ""
 #, python-format
 msgid "Unable to find a user from account Id (%s) and no email provided"
 msgstr ""
+"Impossibile trovare un utente dall'ID account (%s) e nessuna e-mail fornita"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__product_uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Unità di misura"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__repeat_type
 msgid "Until"
-msgstr ""
+msgstr "Fino a"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__product_uom_category_id
 msgid "UoM Category"
-msgstr ""
+msgstr "Categoria UdM"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__update_ids
 msgid "Update"
-msgstr ""
+msgstr "Aggiorna"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__display_url
 msgid "Url used for the Jira app in messages"
-msgstr ""
+msgstr "URL utilizzato per l'app Jira nei messaggi"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__label_tasks
 msgid "Use Tasks as"
-msgstr ""
+msgstr "Usa lavori come"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend_timestamp__component_usage
@@ -3427,78 +3679,80 @@ msgid ""
 "Used by the connector to find which component execute the batch import "
 "(technical)."
 msgstr ""
+"Utilizzato dal connettore per trovare quale componente esegue l'importazione "
+"di massa (tecnico)."
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__login
 msgid "Used to log into the system"
-msgstr ""
+msgstr "Utilizzato per accedere al sistema"
 
 #. module: connector_jira
 #: model:ir.model,name:connector_jira.model_res_users
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__user_id
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__odoo_id
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_res_users__jira_bind_ids
 msgid "User Bindings"
-msgstr ""
+msgstr "Collegamenti utente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__user_group_warning
 msgid "User Group Warning"
-msgstr ""
+msgstr "Avviso gruppo utenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__log_ids
 msgid "User log entries"
-msgstr ""
+msgstr "Voci registro utente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__user_ids
 msgid "Users"
-msgstr ""
+msgstr "Utenti"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__verify_ssl
 msgid "Verify SSL?"
-msgstr ""
+msgstr "Verificare SSL?"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__visa_expire
 msgid "Visa Expiration Date"
-msgstr ""
+msgstr "Data di scadenza visto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__visa_no
 msgid "Visa No"
-msgstr ""
+msgstr "N. visto"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__privacy_visibility
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilità"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__website
 msgid "Website Link"
-msgstr ""
+msgstr "Link sito web"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__website_message_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__website_message_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Messaggi sito web"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_project_project__website_message_ids
 #: model:ir.model.fields,help:connector_jira.field_jira_project_task__website_message_ids
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Cronologia comunicazioni sito web"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__tz
@@ -3509,82 +3763,88 @@ msgid ""
 "Anywhere else, time values are computed according to the time offset of your "
 "web client."
 msgstr ""
+"Durante la stampa di documenti e l'esportazione/importazione di dati, i "
+"valori orari vengono calcolati in base a questo fuso orario.\n"
+"Se il fuso orario non è impostato, viene utilizzato UTC (Tempo Coordinato "
+"Universale).\n"
+"Ovunque altro, i valori orari vengono calcolati in base allo scostamento "
+"orario del client web."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__address_id
 msgid "Work Address"
-msgstr ""
+msgstr "Indirizzo di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_contact_id
 msgid "Work Contact"
-msgstr ""
+msgstr "Contatto di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_email
 msgid "Work Email"
-msgstr ""
+msgstr "E-mail di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_location_id
 msgid "Work Location"
-msgstr ""
+msgstr "Sede di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__mobile_phone
 msgid "Work Mobile"
-msgstr ""
+msgstr "Cellulare di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__permit_no
 msgid "Work Permit No"
-msgstr ""
+msgstr "N. permesso di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__work_phone
 msgid "Work Phone"
-msgstr ""
+msgstr "Telefono di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_days_open
 msgid "Working Days to Assign"
-msgstr ""
+msgstr "Giorni lavorativi per l'assegnazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_days_close
 msgid "Working Days to Close"
-msgstr ""
+msgstr "Giorni lavorativi per la chiusura"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_hours_open
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "Ore lavorative per l'assegnazione"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_task__working_hours_close
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "Ore lavorative per la chiusura"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_project_project__resource_calendar_id
 msgid "Working Time"
-msgstr ""
+msgstr "Orario di lavoro"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_account_analytic_line__jira_bind_ids
 #: model:ir.model.fields,field_description:connector_jira.field_jira_account_analytic_line__jira_bind_ids
 msgid "Worklog Bindings"
-msgstr ""
+msgstr "Collegamenti worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__worklog_date_timezone
 msgid "Worklog Date Timezone"
-msgstr ""
+msgstr "Fuso orario data worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_backend__worklog_date_timezone_mode
 msgid "Worklog Date Timezone Mode"
-msgstr ""
+msgstr "Modalità fuso orario data worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__worklog_date_timezone_mode
@@ -3594,11 +3854,15 @@ msgid ""
 " - Jira User: use author's timezone\n"
 " - Specific: use pre-configured timezone\n"
 msgstr ""
+"Modalità fuso orario data worklog/foglio ore:\n"
+" - Così com'è (naive): ignora le informazioni sul fuso orario\n"
+" - Utente Jira: usa il fuso orario dell'autore\n"
+" - Specifico: usa il fuso orario preconfigurato\n"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "Worklogs"
-msgstr ""
+msgstr "Worklog"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__worklog_fallback_project_id
@@ -3608,6 +3872,11 @@ msgid ""
 "correct project by: 1. linking the expected project with the Jira one, 2. "
 "using 'Refresh Worklogs from Jira' on the timesheet lines."
 msgstr ""
+"I worklog che non possono essere collegati ad alcun progetto verranno creati "
+"in questo progetto. I worklog che finiscono nel progetto di ripiego possono "
+"essere riassegnati al progetto corretto: 1. collegando il progetto previsto "
+"con quello Jira, 2. utilizzando 'Aggiorna worklog da Jira' sulle righe del "
+"foglio ore."
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
@@ -3615,25 +3884,28 @@ msgid ""
 "You can use the App Descriptor URL to register a new App on Atlassian "
 "Marketplace. Check the module README for the detailed process."
 msgstr ""
+"È possibile utilizzare l'URL descrittore dell'app per registrare una nuova "
+"app su Atlassian Marketplace. Consultare il README del modulo per la "
+"procedura dettagliata."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__zip
 msgid "Zip"
-msgstr ""
+msgstr "CAP"
 
 #. module: connector_jira
 #: model_terms:ir.ui.view,arch_db:connector_jira.view_jira_backend_form
 msgid "e.g. https://example.com/jira"
-msgstr ""
+msgstr "es. https://example.com/jira"
 
 #. module: connector_jira
 #. odoo-python
 #: code:addons/connector_jira/components/jira_analytic_line_mapper.py:0
 #, python-format
 msgid "missing description"
-msgstr ""
+msgstr "descrizione mancante"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_backend__uri
 msgid "the value is provided when the app is installed on Jira Cloud."
-msgstr ""
+msgstr "il valore viene fornito quando l'app viene installata su Jira Cloud."
