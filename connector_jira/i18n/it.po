@@ -1142,6 +1142,11 @@ msgid "Employee's Country"
 msgstr "Nazione del dipendente"
 
 #. module: connector_jira
+#: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_country_code
+msgid "Employee's Country Code"
+msgstr ""
+
+#. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_resource_calendar_id
 msgid "Employee's Working Hours"
 msgstr "Orario di lavoro del dipendente"
@@ -3006,8 +3011,8 @@ msgid ""
 "Several users found with \"%(resolve_by_key)s\"set to "
 "\"%(resolve_by_value)s\". Set it manually."
 msgstr ""
-"Trovati più utenti con \"%(resolve_by_key)s\" impostato a \"%"
-"(resolve_by_value)s\". Impostarlo manualmente."
+"Trovati più utenti con \"%(resolve_by_key)s\" impostato a "
+"\"%(resolve_by_value)s\". Impostarlo manualmente."
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__partner_share
@@ -3318,6 +3323,7 @@ msgstr "La chiave client per JWT, fornita all'installazione dell'app"
 
 #. module: connector_jira
 #: model:ir.model.fields,help:connector_jira.field_jira_res_users__country_code
+#: model:ir.model.fields,help:connector_jira.field_jira_res_users__employee_country_code
 msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
