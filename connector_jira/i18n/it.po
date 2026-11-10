@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-11-10 13:46+0000\n"
+"PO-Revision-Date: 2026-11-10 22:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -1144,7 +1144,7 @@ msgstr "Nazione del dipendente"
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_country_code
 msgid "Employee's Country Code"
-msgstr ""
+msgstr "Codice nazione dipendente"
 
 #. module: connector_jira
 #: model:ir.model.fields,field_description:connector_jira.field_jira_res_users__employee_resource_calendar_id
