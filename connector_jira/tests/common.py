@@ -81,9 +81,9 @@ class JiraTransactionComponentCase(TransactionComponentCase):
         context["tracking_disable"] = True
         cls.env = cls.env(context=context)
 
-        cls.backend_record = cls.env.ref("connector_jira.jira_backend_demo")
-        cls.backend_record.write(
+        cls.backend_record = cls.env["jira.backend"].create(
             {
+                "name": "JiraTest",
                 "epic_link_field_name": "customfield_10101",
             }
         )
