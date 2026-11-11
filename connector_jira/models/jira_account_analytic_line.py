@@ -52,16 +52,18 @@ class JiraAccountAnalyticLine(models.Model):
         store=True,
     )
 
-    _sql_constraints = [
-        (
-            "jira_binding_backend_uniq",
-            "unique(backend_id, odoo_id)",
-            "A binding already exists for this line and this backend.",
-        ),
-    ]
+    _jira_binding_backend_uniq = models.Constraint(
+        "unique(backend_id, odoo_id)",
+        "A binding already exists for this line and this backend.",
+    )
 
     def _is_linked(self):
         return self.jira_project_bind_id._is_linked()
+
+    _jira_binding_uniq = models.Constraint(
+        "unique(backend_id, external_id)",
+        "A binding already exists for this Jira record",
+    )
 
     @api.depends(
         "backend_id", "backend_id.uri", "jira_issue_key", "jira_epic_issue_key"

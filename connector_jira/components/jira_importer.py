@@ -21,10 +21,10 @@ from psycopg2 import IntegrityError, errorcodes
 
 import odoo
 from odoo import _, tools
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import RetryableJobError
+from odoo.modules.registry import Registry
 
 from .common import (
     RETRY_ON_ADVISORY_LOCK,
@@ -248,7 +248,7 @@ class JiraImporter(Component):
         This can be used to make a preemptive check in a new transaction,
         for instance to see if another transaction already made the work.
         """
-        registry = odoo.registry(self.env.cr.dbname)
+        registry = Registry(self.env.cr.dbname)
         with closing(registry.cursor()) as cr:
             try:
                 new_env = odoo.api.Environment(cr, self.env.uid, self.env.context)
@@ -284,12 +284,7 @@ class JiraImporter(Component):
         :param external_id: identifier of the record on Jira
         """
         self.external_id = external_id
-        lock_name = "import({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            self.model._name,
-            self.external_id,
-        )
+        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.model._name}, {self.external_id})"
         # Keep a lock on this import until the transaction is committed
         self.advisory_lock_or_retry(lock_name, retry_seconds=RETRY_ON_ADVISORY_LOCK)
         if record is not None:

@@ -5,7 +5,6 @@
 import logging
 
 from odoo import _
-
 from odoo.addons.component.core import Component
 
 from .common import iso8601_to_utc_datetime

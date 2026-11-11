@@ -13,13 +13,13 @@
         </field>
     </record>
     <record id="view_jira_res_users_tree" model="ir.ui.view">
-        <field name="name">jira.res.users.tree</field>
+        <field name="name">jira.res.users.list</field>
         <field name="model">jira.res.users</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="external_id" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

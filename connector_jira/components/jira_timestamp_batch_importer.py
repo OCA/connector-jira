@@ -18,7 +18,6 @@ import logging
 from datetime import datetime, timedelta
 
 from odoo import _
-
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.queue_job.exception import RetryableJobError
 

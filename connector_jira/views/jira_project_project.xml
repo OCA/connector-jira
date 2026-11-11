@@ -45,16 +45,16 @@
         </field>
     </record>
     <record id="view_jira_project_project_tree" model="ir.ui.view">
-        <field name="name">jira.project.project.tree</field>
+        <field name="name">jira.project.project.list</field>
         <field name="model">jira.project.project</field>
         <field name="arch" type="xml">
-            <tree create="0">
+            <list create="0">
                 <field name="backend_id" />
                 <field name="jira_key" />
                 <field name="external_id" />
                 <field name="project_type" />
                 <field name="sync_issue_type_ids" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

@@ -18,3 +18,8 @@ class JiraResUsers(models.Model):
         index=True,
         ondelete="restrict",
     )
+
+    _jira_binding_uniq = models.Constraint(
+        "unique(backend_id, external_id)",
+        "A binding already exists for this Jira record",
+    )

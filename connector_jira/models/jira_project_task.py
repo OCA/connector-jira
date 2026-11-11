@@ -47,16 +47,18 @@ class JiraProjectTask(models.Model):
         compute="_compute_jira_issue_url",
     )
 
-    _sql_constraints = [
-        (
-            "jira_binding_backend_uniq",
-            "unique(backend_id, odoo_id)",
-            "A binding already exists for this task and this backend.",
-        ),
-    ]
+    _jira_binding_backend_uniq = models.Constraint(
+        "unique(backend_id, odoo_id)",
+        "A binding already exists for this task and this backend.",
+    )
 
     def _is_linked(self):
         return self.jira_project_bind_id._is_linked()
+
+    _jira_binding_uniq = models.Constraint(
+        "unique(backend_id, external_id)",
+        "A binding already exists for this Jira record",
+    )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_unless_is_jira_task(self):

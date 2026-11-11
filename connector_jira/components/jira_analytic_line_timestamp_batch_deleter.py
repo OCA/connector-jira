@@ -4,7 +4,6 @@
 import logging
 
 from odoo import _
-
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import RetryableJobError
 
@@ -62,7 +61,7 @@ class JiraAnalyticLineTimestampBatchDeleter(Component):
         """Delay the delete of the records"""
         kwargs.pop("description", None)
         self.model.with_delay(
-            description=_("Delete a local worklog which has " "been deleted on JIRA"),
+            description=_("Delete a local worklog which has been deleted on JIRA"),
             **kwargs,
         ).delete_record(
             self.backend_record,

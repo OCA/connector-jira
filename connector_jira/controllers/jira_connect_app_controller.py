@@ -27,9 +27,8 @@ from werkzeug.exceptions import Forbidden
 
 import odoo
 from odoo import http
-from odoo.http import request
-
 from odoo.addons.web.controllers.utils import ensure_db
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -123,7 +122,7 @@ class JiraConnectAppController(http.Controller):
 
     @http.route(
         "/jira/<int:backend_id>/installed",
-        type="json",
+        type="jsonrpc",
         methods=["POST"],
         auth="public",  # security implemented by self._validate_jwt_token()
         csrf=False,
@@ -139,7 +138,7 @@ class JiraConnectAppController(http.Controller):
 
     @http.route(
         "/jira/<int:backend_id>/uninstalled",
-        type="json",
+        type="jsonrpc",
         methods=["POST"],
         auth="public",  # security implemented by self._validate_jwt_token()
         csrf=False,
@@ -154,7 +153,7 @@ class JiraConnectAppController(http.Controller):
 
     @http.route(
         "/jira/<int:backend_id>/enabled",
-        type="json",
+        type="jsonrpc",
         methods=["POST"],
         auth="public",  # security implemented by backend._validate_jwt_from_request()
         csrf=False,
@@ -173,7 +172,7 @@ class JiraConnectAppController(http.Controller):
 
     @http.route(
         "/jira/<int:backend_id>/disabled",
-        type="json",
+        type="jsonrpc",
         methods=["POST"],
         auth="public",  # security implemented by backend._validate_jwt_from_request()
         csrf=False,

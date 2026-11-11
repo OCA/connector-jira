@@ -18,7 +18,6 @@ from contextlib import contextmanager
 import psycopg2
 
 from odoo import _, tools
-
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import RetryableJobError
 

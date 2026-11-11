@@ -39,13 +39,10 @@ class JiraBackendTimestamp(models.Model):
         "execute the batch import (technical).",
     )
 
-    _sql_constraints = [
-        (
-            "timestamp_field_uniq",
-            "unique(backend_id, from_date_field, component_usage)",
-            "A timestamp already exists.",
-        ),
-    ]
+    _timestamp_field_uniq = models.Constraint(
+        "unique(backend_id, from_date_field, component_usage)",
+        "A timestamp already exists.",
+    )
 
     @api.model
     def _timestamp_for_field(self, backend, field_name, component_usage):

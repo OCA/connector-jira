@@ -2,7 +2,7 @@
 
 {
     "name": "JIRA Connector",
-    "version": "17.0.1.0.0",
+    "version": "19.0.1.0.0",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "category": "Connector",
@@ -28,8 +28,8 @@
             "requests-oauthlib>=1.1.0",
             "requests-toolbelt>=0.9.1",
             "requests-jwt>=0.6.0",
-            "PyJWT>=1.7.1,<2.9.0",
-            "cryptography>=38,<39",  # Compatibility w/ Odoo 17.0 requirements
+            "PyJWT>=2.9.0",
+            "cryptography>=42.0.8",
             "atlassian_jwt>=3.0.0",
         ],
     },

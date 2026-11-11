@@ -4,7 +4,7 @@
 
 import re
 
-from odoo import _, api, exceptions, fields, models, tools
+from odoo import _, api, exceptions, fields, models
 
 
 class JiraProjectProject(models.Model):
@@ -26,22 +26,7 @@ class JiraProjectProject(models.Model):
     def _selection_project_type(self):
         return [("software", "Software"), ("business", "Business")]
 
-    # Disable and implement the constraint jira_binding_uniq as python because
-    # we need to override it in connector_jira_service_desk, and it would try
-    # to create it again at every update because of the base implementation
-    # in the binding's parent model.
-    def _add_sql_constraints(self):
-        # we replace the sql constraint by a python one
-        # to include the organizations
-        for key, definition, __ in self._sql_constraints:
-            conname = f"{self._table}_{key}"
-            if key == "jira_binding_uniq":
-                if tools.constraint_definition(self.env.cr, self._table, conname):
-                    tools.drop_constraint(self.env.cr, self._table, conname)
-            else:
-                tools.add_constraint(self.env.cr, self._table, conname, definition)
-        return super()._add_sql_constraints()
-
+    # Project bindings use overridable Python constraints below.
     def _export_binding_domain(self):
         """Return the domain for the constraints on export bindings"""
         self.ensure_one()

@@ -6,14 +6,14 @@
         <ol>
             <li t-foreach="result.get('error', [])" t-as="err">
                 <strong>error:</strong>
-                <span t-esc="err['error']" />
+                <span t-out="err['error']" />
                 -
-                <strong t-esc="err['key']" />
+                <strong t-out="err['key']" />
                 :
-                <span t-esc="err['value']" />
+                <span t-out="err['value']" />
                 -
                 <strong>detail:</strong>
-                <span t-esc="err['detail']" />
+                <span t-out="err['detail']" />
             </li>
         </ol>
     </template>

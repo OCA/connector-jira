@@ -22,17 +22,17 @@
         </field>
     </record>
     <record id="view_jira_project_task_tree" model="ir.ui.view">
-        <field name="name">jira.project.task.tree</field>
+        <field name="name">jira.project.task.list</field>
         <field name="model">jira.project.task</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="backend_id" />
                 <field name="external_id" />
                 <field name="jira_key" />
                 <field name="jira_issue_type_id" />
                 <field name="jira_epic_link_id" />
                 <field name="jira_parent_id" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

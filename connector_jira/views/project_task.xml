@@ -35,7 +35,7 @@
         </field>
     </record>
     <record id="view_task_tree2" model="ir.ui.view">
-        <field name="name">project.task.tree</field>
+        <field name="name">project.task.list</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_tree2" />
         <field name="arch" type="xml">
@@ -69,7 +69,7 @@
             </filter>
         </field>
     </record>
-    <record model="ir.ui.view" id="view_task_kanban">
+    <record id="view_task_kanban" model="ir.ui.view">
         <field name="name">project.task.kanban</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_kanban" />
@@ -79,7 +79,7 @@
                 <field name="jira_bind_ids" />
                 <field name="jira_compound_key" />
             </field>
-            <xpath expr="//strong[hasclass('o_kanban_record_title')]" position="inside">
+            <xpath expr="//t[@t-name='card']/main/field[@name='name']" position="after">
                 <t t-if="record.jira_bind_ids.raw_value.length &gt; 0">
                     <br />
                     <span>
@@ -91,14 +91,14 @@
                     </span>
                 </t>
             </xpath>
-            <xpath expr="//t[@t-name='kanban-menu']" position="inside">
+            <xpath expr="//t[@t-name='menu']" position="inside">
                 <div role="separator" class="dropdown-divider" />
                 <a
                     t-if="widget.editable"
+                    class="dropdown-item"
                     name="create_and_link_jira"
                     role="menuitem"
                     type="object"
-                    class="dropdown-item"
                     groups="project.group_project_manager"
                 >
                     Link with JIRA

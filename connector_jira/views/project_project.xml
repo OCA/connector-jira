@@ -41,7 +41,7 @@
         </field>
     </record>
     <record id="view_project" model="ir.ui.view">
-        <field name="name">project.project.tree</field>
+        <field name="name">project.project.list</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project" />
         <field name="arch" type="xml">
@@ -50,13 +50,13 @@
             </field>
         </field>
     </record>
-    <record model="ir.ui.view" id="view_project_kanban_jira">
+    <record id="view_project_kanban_jira" model="ir.ui.view">
         <field name="name">project.project.kanban.jira</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_kanban" />
         <field name="arch" type="xml">
             <xpath
-                expr="//div[hasclass('oe_kanban_bottom_left')]/div[last()]"
+                expr="//div[@name='card_menu_view']/div[last()]"
                 position="after"
             >
                 <div groups="project.group_project_manager">

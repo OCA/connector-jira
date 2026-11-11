@@ -24,3 +24,8 @@ class JiraIssueType(models.Model):
         """
         with backend.work_on(self._name) as work:
             work.component(usage="batch.importer").run()
+
+    _jira_binding_uniq = models.Constraint(
+        "unique(backend_id, external_id)",
+        "A binding already exists for this Jira record",
+    )

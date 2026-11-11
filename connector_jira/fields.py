@@ -34,7 +34,7 @@ class MilliDatetime(fields.Field):
                     f"MilliDatetime field expects a naive datetime: {value}"
                 )
             return value
-        if len(value) > fields.DATETIME_LENGTH:
+        if len(value) > 19:
             return datetime.strptime(value, MILLI_DATETIME_FORMAT)
         else:
             return fields.Datetime.to_datetime(value)

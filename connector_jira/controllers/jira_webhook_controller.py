@@ -23,9 +23,8 @@ import pprint
 
 import odoo
 from odoo import _, http
-from odoo.http import request
-
 from odoo.addons.web.controllers.utils import ensure_db
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -43,7 +42,7 @@ class JiraWebhookController(http.Controller):
 
     @http.route(
         "/connector_jira/<int:backend_id>/webhooks/issue",
-        type="json",
+        type="jsonrpc",
         auth="none",  # security implemented by backend._validate_jwt_from_request()
         csrf=False,
     )
@@ -68,7 +67,7 @@ class JiraWebhookController(http.Controller):
 
     @http.route(
         "/connector_jira/<int:backend_id>/webhooks/worklog",
-        type="json",
+        type="jsonrpc",
         auth="none",  # security implemented by backend._validate_jwt_from_request()
         csrf=False,
     )

@@ -4,7 +4,6 @@
 import logging
 
 from odoo import models
-
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -27,9 +26,7 @@ class JiraModelBinder(Component):
     def to_internal(self, external_id, unwrap=False):
         if unwrap:
             _logger.warning(
-                "unwrap has no effect when the "
-                "binding is not an inherits "
-                "(model %s)",
+                "unwrap has no effect when the binding is not an inherits (model %s)",
                 self.model._name,
             )
         return super().to_internal(external_id, unwrap=False)

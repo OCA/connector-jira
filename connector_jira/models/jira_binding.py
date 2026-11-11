@@ -28,14 +28,6 @@ class JiraBinding(models.AbstractModel):
     jira_updated_at = MilliDatetime()
     external_id = fields.Char(string="ID on Jira", index="trigram")
 
-    _sql_constraints = [
-        (
-            "jira_binding_uniq",
-            "unique(backend_id, external_id)",
-            "A binding already exists for this Jira record",
-        ),
-    ]
-
     @api.model
     def import_batch(self, backend):
         """Prepare import of a batch of record"""

@@ -4,7 +4,6 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
-import urllib.parse
 from datetime import datetime
 
 import jwt
@@ -15,6 +14,7 @@ from atlassian_jwt import url_utils
 from odoo import _, api, exceptions, fields, models
 from odoo.http import request
 from odoo.tools import config
+from odoo.tools.urls import urljoin
 
 _logger = logging.getLogger(__name__)
 
@@ -96,7 +96,7 @@ class JiraBackend(models.Model):
     )
     worklog_date_timezone = fields.Selection(
         selection=lambda self: [(x, x) for x in pytz.all_timezones],
-        default=(lambda self: self._context.get("tz") or self.env.user.tz or "UTC"),
+        default=(lambda self: self.env.tz),
     )
     state = fields.Selection(
         selection=[
@@ -336,10 +336,10 @@ class JiraBackend(models.Model):
         self.ensure_one()
         try:
             self.get_api_client().myself()
-        except (ValueError, requests.exceptions.ConnectionError) as e:
-            raise exceptions.UserError(_("Failed to connect (%s)", e)) from e
-        except JIRAError as e:
-            raise exceptions.UserError(_("Failed to connect (%s)", e.text)) from e
+        except (ValueError, requests.exceptions.ConnectionError) as err:
+            raise exceptions.UserError(_("Failed to connect (%s)", err)) from err
+        except JIRAError as err:
+            raise exceptions.UserError(_("Failed to connect (%s)", err.text)) from err
         raise exceptions.UserError(_("Connection successful"))
 
     def import_project_task(self):
@@ -420,7 +420,7 @@ class JiraBackend(models.Model):
             backend.delete_analytic_line()
 
     def make_issue_url(self, jira_issue_id):
-        return urllib.parse.urljoin(self.uri, f"/browse/{jira_issue_id}")
+        return urljoin(self.uri, f"/browse/{jira_issue_id}")
 
     @api.model
     def _get_base_url(self):

@@ -5,7 +5,6 @@
 from pytz import timezone, utc
 
 from odoo import _
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import MappingError
