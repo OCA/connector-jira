@@ -119,3 +119,13 @@ class TestBackend(JiraTransactionComponentCase):
                 ),
                 delay_args,
             )
+
+    def test_worklog_description_fallback(self):
+        with self.backend_record.work_on("jira.account.analytic.line") as work:
+            mapper = work.component(usage="import.mapper")
+            self.assertEqual(
+                mapper.description({"comment": "Work done"}), {"name": "Work done"}
+            )
+            self.assertEqual(
+                mapper.description({"comment": ""}), {"name": "missing description"}
+            )

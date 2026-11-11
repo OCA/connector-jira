@@ -4,12 +4,11 @@
 
 from pytz import timezone, utc
 
-from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import MappingError
 
-from .common import iso8601_to_naive_date, iso8601_to_utc_datetime, whenempty
+from .common import iso8601_to_naive_date, iso8601_to_utc_datetime
 
 
 class JiraAnalyticLineMapper(Component):
@@ -17,7 +16,9 @@ class JiraAnalyticLineMapper(Component):
     _inherit = "jira.import.mapper"
     _apply_on = ["jira.account.analytic.line"]
 
-    direct = [(whenempty("comment", _("missing description")), "name")]
+    @mapping
+    def description(self, record):
+        return {"name": record.get("comment") or self.env._("missing description")}
 
     @mapping
     def issue(self, record):
