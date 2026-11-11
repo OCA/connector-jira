@@ -22,7 +22,7 @@ import logging
 import pprint
 
 import odoo
-from odoo import _, http
+from odoo import http
 from odoo.addons.web.controllers.utils import ensure_db
 from odoo.http import request
 
@@ -58,10 +58,12 @@ class JiraWebhookController(http.Controller):
         model = request.env["jira.project.task"]
         args = (backend, data["issue"]["id"])
         if data["webhookEvent"] == "jira:issue_deleted":
-            delay_msg = _("Delete a local issue which has been deleted on JIRA")
+            delay_msg = request.env._(
+                "Delete a local issue which has been deleted on JIRA"
+            )
             method = "delete_record"
         else:
-            delay_msg = _("Import a issue from JIRA")
+            delay_msg = request.env._("Import a issue from JIRA")
             method = "import_record"
         getattr(model.with_delay(description=delay_msg), method)(*args)
 
@@ -82,11 +84,13 @@ class JiraWebhookController(http.Controller):
         backend._validate_jwt_from_request()
         model = request.env["jira.account.analytic.line"]
         if data["webhookEvent"] == "worklog_deleted":
-            delay_msg = _("Delete a local worklog which has been deleted on JIRA")
+            delay_msg = request.env._(
+                "Delete a local worklog which has been deleted on JIRA"
+            )
             method = "delete_record"
             args = (backend, data["worklog"]["id"])
         else:
-            delay_msg = _("Import a worklog from JIRA")
+            delay_msg = request.env._("Import a worklog from JIRA")
             method = "import_record"
             args = (backend, data["worklog"]["issueId"], data["worklog"]["id"])
         getattr(model.with_delay(description=delay_msg), method)(*args)

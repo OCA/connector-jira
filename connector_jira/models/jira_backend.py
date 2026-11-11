@@ -11,7 +11,7 @@ import pytz
 import requests
 from atlassian_jwt import url_utils
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 from odoo.http import request
 from odoo.tools import config
 from odoo.tools.urls import urljoin
@@ -211,7 +211,8 @@ class JiraBackend(models.Model):
         for backend in self.filtered("project_template_shared"):
             if not valid(backend.project_template_shared):
                 raise exceptions.ValidationError(
-                    _("%s is not a valid JIRA Key") % backend.project_template_shared
+                    self.env._("%s is not a valid JIRA Key")
+                    % backend.project_template_shared
                 )
 
     @api.depends()
@@ -246,7 +247,7 @@ class JiraBackend(models.Model):
             timestamp = ts_model._timestamp_for_field(rec, field_name, component_usage)
             if not timestamp._lock():
                 raise exceptions.UserError(
-                    _(
+                    self.env._(
                         "The synchronization timestamp is currently locked, "
                         "probably due to an ongoing synchronization."
                     )
@@ -337,10 +338,14 @@ class JiraBackend(models.Model):
         try:
             self.get_api_client().myself()
         except (ValueError, requests.exceptions.ConnectionError) as err:
-            raise exceptions.UserError(_("Failed to connect (%s)", err)) from err
+            raise exceptions.UserError(
+                self.env._("Failed to connect (%s)", err)
+            ) from err
         except JIRAError as err:
-            raise exceptions.UserError(_("Failed to connect (%s)", err.text)) from err
-        raise exceptions.UserError(_("Connection successful"))
+            raise exceptions.UserError(
+                self.env._("Failed to connect (%s)", err.text)
+            ) from err
+        raise exceptions.UserError(self.env._("Connection successful"))
 
     def import_project_task(self):
         self._run_background_from_date(

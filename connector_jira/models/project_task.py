@@ -2,7 +2,7 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class ProjectTask(models.Model):
@@ -70,7 +70,7 @@ class ProjectTask(models.Model):
                 and project.jira_bind_ids._is_linked()
             ):
                 raise exceptions.UserError(
-                    _("Task can not be created in project linked to JIRA!")
+                    self.env._("Task can not be created in project linked to JIRA!")
                 )
 
     def write(self, vals):
@@ -89,7 +89,7 @@ class ProjectTask(models.Model):
                 for field in self._get_connector_jira_fields():
                     if field in vals and new_values[field] != old_values[field]:
                         raise exceptions.UserError(
-                            _("Task linked to JIRA Issue can not be modified!")
+                            self.env._("Task linked to JIRA Issue can not be modified!")
                         )
 
     @api.ondelete(at_uninstall=False)
@@ -99,7 +99,7 @@ class ProjectTask(models.Model):
             and self.jira_bind_ids._is_linked()
         ):
             raise exceptions.UserError(
-                _("Task linked to JIRA Issue can not be deleted!")
+                self.env._("Task linked to JIRA Issue can not be deleted!")
             )
 
     @api.depends("jira_bind_ids.jira_issue_type_id.name")

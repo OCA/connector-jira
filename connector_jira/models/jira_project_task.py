@@ -2,7 +2,7 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class JiraProjectTask(models.Model):
@@ -63,7 +63,7 @@ class JiraProjectTask(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_unless_is_jira_task(self):
         if any(self.mapped("external_id")):
-            raise exceptions.UserError(_("A Jira task cannot be deleted."))
+            raise exceptions.UserError(self.env._("A Jira task cannot be deleted."))
 
     @api.depends("backend_id.uri", "jira_key")
     def _compute_jira_issue_url(self):

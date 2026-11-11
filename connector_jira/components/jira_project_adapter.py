@@ -6,7 +6,7 @@ import json
 import logging
 import tempfile
 
-from odoo import _, exceptions
+from odoo import exceptions
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -67,7 +67,7 @@ class JiraProjectAdapter(Component):
         except JIRAError as err:
             if err.status_code == 404:
                 raise exceptions.UserError(
-                    _('Project template with key "%s" not found.') % shared_key
+                    self.env._('Project template with key "%s" not found.', shared_key)
                 ) from err
             else:
                 raise

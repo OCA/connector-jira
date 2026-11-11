@@ -17,7 +17,7 @@ from contextlib import contextmanager
 
 import psycopg2
 
-from odoo import _, tools
+from odoo import tools
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import RetryableJobError
 
@@ -218,11 +218,11 @@ class JiraExporter(Component):
         if self.external_id:
             record = self._update_data(map_record, fields=fields)
             if not record:
-                return _("Nothing to export.")
+                return self.env._("Nothing to export.")
             self._update(record)
         else:
             record = self._create_data(map_record, fields=fields)
             if not record:
-                return _("Nothing to export.")
+                return self.env._("Nothing to export.")
             self.external_id = self._create(record)
-        return _("Record exported with ID %s on Jira.") % self.external_id
+        return self.env._("Record exported with ID %s on Jira.", self.external_id)

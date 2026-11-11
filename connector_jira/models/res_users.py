@@ -2,7 +2,7 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html)
 
-from odoo import _, exceptions, fields, models
+from odoo import exceptions, fields, models
 
 
 class ResUsers(models.Model):
@@ -20,7 +20,7 @@ class ResUsers(models.Model):
         self.ensure_one()
         self.link_with_jira(raise_if_mismatch=True)
         if not self.jira_bind_ids:
-            raise exceptions.UserError(_("No JIRA user could be found"))
+            raise exceptions.UserError(self.env._("No JIRA user could be found"))
 
     def link_with_jira(self, backends=None, raise_if_mismatch=False):
         jira_user_model = self.env["jira.res.users"]
@@ -58,7 +58,7 @@ class ResUsers(models.Model):
                     elif len(jira_users) > 1:
                         if raise_if_mismatch:
                             raise exceptions.UserError(
-                                _(
+                                self.env._(
                                     'Several users found with "%(resolve_by_key)s"'
                                     'set to "%(resolve_by_value)s". '
                                     "Set it manually.",

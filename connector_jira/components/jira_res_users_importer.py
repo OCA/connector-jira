@@ -1,7 +1,6 @@
 # Copyright 2016-2022 Camptocamp SA
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
-from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import JobError
 
@@ -18,7 +17,7 @@ class JiraResUsersImporter(Component):
             email = self.external_record.get("emailAddress")
             if email is None:
                 raise JobError(
-                    _(
+                    self.env._(
                         "Unable to find a user from account Id (%s)"
                         " and no email provided",
                         jira_key,
@@ -27,7 +26,7 @@ class JiraResUsersImporter(Component):
             user = self.env["res.users"].search([("email", "=", email)])
             if not user:
                 raise JobError(
-                    _(
+                    self.env._(
                         "No user found for jira account %(key)s (%(mail)s)."
                         " Please link it manually from the Odoo user's form.",
                         key=jira_key,
@@ -36,7 +35,7 @@ class JiraResUsersImporter(Component):
                 )
             elif len(user) > 1:
                 raise JobError(
-                    _(
+                    self.env._(
                         "Several users found (%(login)s) for jira account %(key)s"
                         " (%(mail)s). Please link it manually from the Odoo user's"
                         " form.",

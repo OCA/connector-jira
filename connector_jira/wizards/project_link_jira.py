@@ -4,7 +4,7 @@
 import logging
 import warnings
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -80,7 +80,9 @@ class ProjectLinkJira(models.TransientModel):
         validator = self.env["jira.project.project"]._jira_key_valid
         for key in self.mapped("jira_key"):
             if not validator(key):
-                raise exceptions.ValidationError(_("%s is not a valid JIRA Key", key))
+                raise exceptions.ValidationError(
+                    self.env._("%s is not a valid JIRA Key", key)
+                )
 
     def add_all_issue_types(self):
         domain = [("backend_id", "=", self.backend_id.id)]

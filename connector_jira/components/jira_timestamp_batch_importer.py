@@ -17,7 +17,6 @@ are already bound, to update the last sync date.
 import logging
 from datetime import datetime, timedelta
 
-from odoo import _
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.queue_job.exception import RetryableJobError
 
@@ -50,7 +49,7 @@ class JiraTimestampBatchImporter(AbstractComponent):
         next_timestamp_value, records = self._search(timestamp)
         timestamp._update_timestamp(next_timestamp_value)
         number = self._handle_records(records, force=force)
-        return _(
+        return self.env._(
             f"Batch from {original_timestamp_value} UTC to {next_timestamp_value} UTC "
             f"generated {number} imports"
         )

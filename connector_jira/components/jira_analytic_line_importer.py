@@ -4,7 +4,6 @@
 
 import logging
 
-from odoo import _
 from odoo.addons.component.core import Component
 
 from .common import iso8601_to_utc_datetime
@@ -128,7 +127,7 @@ class JiraAnalyticLineImporter(Component):
             record = binding.odoo_id
             binding.unlink()
             record.unlink()
-        return _("Record does no longer exist in Jira")
+        return self.env._("Record does no longer exist in Jira")
 
     def _get_external_data(self):
         """Return the raw Jira data for ``self.external_id``"""

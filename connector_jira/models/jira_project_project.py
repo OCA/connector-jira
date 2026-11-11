@@ -4,7 +4,7 @@
 
 import re
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class JiraProjectProject(models.Model):
@@ -49,7 +49,7 @@ class JiraProjectProject(models.Model):
             export_bindings = self.with_context(active_test=False).search(domain)
             if len(export_bindings) > 1:
                 raise exceptions.ValidationError(
-                    _(
+                    self.env._(
                         "Only one Jira binding can be configured with the Sync. Action"
                         ' "Export" for a project. "%s" already has one.',
                         binding.display_name,
@@ -73,7 +73,7 @@ class JiraProjectProject(models.Model):
             )
             if same_link_bindings:
                 raise exceptions.ValidationError(
-                    _(
+                    self.env._(
                         "The project %s is already linked with the same JIRA project.",
                         same_link_bindings.display_name,
                     )
@@ -83,7 +83,9 @@ class JiraProjectProject(models.Model):
     def _check_jira_key(self):
         for key in self.filtered("jira_key").mapped("jira_key"):
             if not self._jira_key_valid(key):
-                raise exceptions.ValidationError(_("%s is not a valid JIRA Key", key))
+                raise exceptions.ValidationError(
+                    self.env._("%s is not a valid JIRA Key", key)
+                )
 
     @api.onchange("backend_id")
     def onchange_project_backend_id(self):
@@ -98,7 +100,9 @@ class JiraProjectProject(models.Model):
     def _check_project_template_shared(self):
         for tmpl in set(self.mapped("project_template_shared")):
             if tmpl and not self._jira_key_valid(tmpl):
-                raise exceptions.ValidationError(_("%s is not a valid JIRA Key", tmpl))
+                raise exceptions.ValidationError(
+                    self.env._("%s is not a valid JIRA Key", tmpl)
+                )
 
     def _is_linked(self):
         return bool(self) and any(p.sync_action == "link" for p in self)
@@ -111,7 +115,9 @@ class JiraProjectProject(models.Model):
 
     def write(self, values):
         if "project_template" in values:
-            raise exceptions.UserError(_("The project template cannot be modified."))
+            raise exceptions.UserError(
+                self.env._("The project template cannot be modified.")
+            )
         res = super().write(values)
         self._ensure_jira_key()
         return res
@@ -119,9 +125,13 @@ class JiraProjectProject(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_unless_exported(self):
         if any(self.mapped("external_id")):
-            raise exceptions.UserError(_("Exported project cannot be deleted."))
+            raise exceptions.UserError(
+                self.env._("Exported project cannot be deleted.")
+            )
 
     def _ensure_jira_key(self):
         if self.env.context.get("connector_no_export") or all(r.jira_key for r in self):
             return
-        raise exceptions.UserError(_("JIRA Key is mandatory to link a project"))
+        raise exceptions.UserError(
+            self.env._("JIRA Key is mandatory to link a project")
+        )

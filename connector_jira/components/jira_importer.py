@@ -20,7 +20,7 @@ from contextlib import closing, contextmanager
 from psycopg2 import IntegrityError, errorcodes
 
 import odoo
-from odoo import _, tools
+from odoo import tools
 from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import RetryableJobError
@@ -273,7 +273,7 @@ class JiraImporter(Component):
             # emptying the external_id allows to unlink the binding
             binding.external_id = False
             binding.unlink()
-        return _("Record does no longer exist in Jira")
+        return self.env._("Record does no longer exist in Jira")
 
     def run(self, external_id, force=False, record=None, **kwargs):
         """Run the synchronization
@@ -349,7 +349,7 @@ class JiraImporter(Component):
             return reason
 
         if not force and self._is_uptodate(binding):
-            return _("Already up-to-date.")
+            return self.env._("Already up-to-date.")
 
         self._before_import()
 

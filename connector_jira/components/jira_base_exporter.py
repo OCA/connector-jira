@@ -13,7 +13,7 @@ In addition to its export job, an exporter has to:
 
 """
 
-from odoo import _, fields, tools
+from odoo import fields, tools
 from odoo.addons.component.core import AbstractComponent
 
 from .common import iso8601_to_utc_datetime
@@ -82,7 +82,7 @@ class JiraBaseExporter(AbstractComponent):
         """
         self.binding = binding
         if not self.binding.exists():
-            return _("Record to export does no longer exist.")
+            return self.env._("Record to export does no longer exist.")
 
         # prevent other jobs to export the same record
         # will be released on commit (or rollback)

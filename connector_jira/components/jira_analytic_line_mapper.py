@@ -64,7 +64,7 @@ class JiraAnalyticLineMapper(Component):
         user = self.binder_for("jira.res.users").to_internal(key, unwrap=True)
         if not user:
             raise MappingError(
-                _(
+                self.env._(
                     "No user found with login '%(key)s' or email '%(mail)s'."
                     " You must create a user or link it manually if the"
                     " login/email differs.",

@@ -74,7 +74,7 @@ class JiraConnectAppController(http.Controller):
     def _get_backend(self, backend_id):
         backend = request.env["jira.backend"].search([("id", "=", backend_id)])
         if not backend:
-            _logger.warning("Cannot retrieve Jira backend with ID %s" % backend_id)
+            _logger.warning("Cannot retrieve Jira backend with ID %s", backend_id)
         return backend
 
     @http.route(
