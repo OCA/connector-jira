@@ -1,7 +1,6 @@
 # generated from manifests external_dependencies
 PyJWT>=2.9.0
 atlassian_jwt>=3.0.0
-cryptography>=42.0.8
 jira==3.10.5
 oauthlib>=2.1.0
 requests-jwt>=0.6.0

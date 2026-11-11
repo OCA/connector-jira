@@ -30,7 +30,6 @@
             "requests-toolbelt>=0.9.1",
             "requests-jwt>=0.6.0",
             "PyJWT>=2.9.0",
-            "cryptography>=42.0.8",
             "atlassian_jwt>=3.0.0",
         ],
     },
