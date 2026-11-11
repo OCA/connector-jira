@@ -86,8 +86,8 @@
                         JIRA:
                         <field name="jira_compound_key" />
                         <i>
-                            <field name="jira_issue_type" />
-                        </i>
+                        <field name="jira_issue_type" />
+                    </i>
                     </span>
                 </t>
             </xpath>

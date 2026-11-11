@@ -14,6 +14,7 @@ In addition to its export job, an exporter has to:
 """
 
 from odoo import fields, tools
+
 from odoo.addons.component.core import AbstractComponent
 
 from .common import iso8601_to_utc_datetime

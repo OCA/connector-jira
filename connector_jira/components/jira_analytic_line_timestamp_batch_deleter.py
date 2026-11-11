@@ -35,8 +35,10 @@ class JiraAnalyticLineTimestampBatchDeleter(Component):
         timestamp._update_timestamp(next_timestamp_value)
         number = self._handle_records(records)
         return self.env._(
-            f"Batch from {original_timestamp_value} UTC to {next_timestamp_value} UTC "
-            f"generated {number} delete jobs"
+            "Batch from %(start)s UTC to %(end)s UTC generated %(number)s delete jobs",
+            start=original_timestamp_value,
+            end=next_timestamp_value,
+            number=number,
         )
 
     def _handle_records(self, records):

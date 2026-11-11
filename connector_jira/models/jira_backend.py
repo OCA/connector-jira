@@ -211,8 +211,9 @@ class JiraBackend(models.Model):
         for backend in self.filtered("project_template_shared"):
             if not valid(backend.project_template_shared):
                 raise exceptions.ValidationError(
-                    self.env._("%s is not a valid JIRA Key")
-                    % backend.project_template_shared
+                    self.env._(
+                        "%s is not a valid JIRA Key", backend.project_template_shared
+                    )
                 )
 
     @api.depends()
@@ -375,6 +376,8 @@ class JiraBackend(models.Model):
 
     def import_res_users(self):
         self.report_user_sync = None
+        # All users must participate in this explicit full synchronization.
+        # pylint: disable-next=no-search-all
         result = self.env["res.users"].search([]).link_with_jira(backends=self)
         for bknd_result in result.values():
             if bknd_result.get("error"):

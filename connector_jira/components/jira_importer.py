@@ -21,10 +21,11 @@ from psycopg2 import IntegrityError, errorcodes
 
 import odoo
 from odoo import tools
+from odoo.modules.registry import Registry
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import RetryableJobError
-from odoo.modules.registry import Registry
 
 from .common import (
     RETRY_ON_ADVISORY_LOCK,
@@ -181,9 +182,9 @@ class JiraImporter(Component):
             if err.pgcode == errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
                     "A database error caused the failure of the job:\n"
-                    "%s\n\n"
+                    f"{err}\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % err
+                    "the same record. The job will be retried later."
                 ) from err
             else:
                 raise
@@ -284,7 +285,10 @@ class JiraImporter(Component):
         :param external_id: identifier of the record on Jira
         """
         self.external_id = external_id
-        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.model._name}, {self.external_id})"
+        lock_name = (
+            f"import({self.backend_record._name}, {self.backend_record.id}, "
+            f"{self.model._name}, {self.external_id})"
+        )
         # Keep a lock on this import until the transaction is committed
         self.advisory_lock_or_retry(lock_name, retry_seconds=RETRY_ON_ADVISORY_LOCK)
         if record is not None:

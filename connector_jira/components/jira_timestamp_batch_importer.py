@@ -50,8 +50,10 @@ class JiraTimestampBatchImporter(AbstractComponent):
         timestamp._update_timestamp(next_timestamp_value)
         number = self._handle_records(records, force=force)
         return self.env._(
-            f"Batch from {original_timestamp_value} UTC to {next_timestamp_value} UTC "
-            f"generated {number} imports"
+            "Batch from %(start)s UTC to %(end)s UTC generated %(number)s imports",
+            start=original_timestamp_value,
+            end=next_timestamp_value,
+            number=number,
         )
 
     def _handle_records(self, records, force=False):

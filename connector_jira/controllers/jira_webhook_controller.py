@@ -23,8 +23,9 @@ import pprint
 
 import odoo
 from odoo import http
-from odoo.addons.web.controllers.utils import ensure_db
 from odoo.http import request
+
+from odoo.addons.web.controllers.utils import ensure_db
 
 _logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ class JiraWebhookController(http.Controller):
         )
         if not backend:
             _logger.warning(
-                "Cannot retrieve running Jira backend with ID %s" % backend_id
+                "Cannot retrieve running Jira backend with ID %s", backend_id
             )
         return backend
 

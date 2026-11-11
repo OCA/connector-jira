@@ -55,10 +55,7 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project.view_project_kanban" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//div[@name='card_menu_view']/div[last()]"
-                position="after"
-            >
+            <xpath expr="//div[@name='card_menu_view']/div[last()]" position="after">
                 <div groups="project.group_project_manager">
                     <field name="id" invisible="1" />
                     <a name="create_and_link_jira" type="object">Link with JIRA</a>

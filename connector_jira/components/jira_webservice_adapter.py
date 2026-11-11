@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import requests
 
 from odoo import exceptions
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.exception import IDMissingInBackend
 

@@ -10,6 +10,7 @@
         # Odoo community
         "project",
         "hr_timesheet",
+        "analytic",
         "web",
         # OCA/connector
         "connector",

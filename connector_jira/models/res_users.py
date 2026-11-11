@@ -25,6 +25,8 @@ class ResUsers(models.Model):
     def link_with_jira(self, backends=None, raise_if_mismatch=False):
         jira_user_model = self.env["jira.res.users"]
         if backends is None:
+            # Link against every configured backend when none was selected.
+            # pylint: disable-next=no-search-all
             backends = self.env["jira.backend"].search([])
 
         # TODO: try to split this method, though it's quite hard since all its variables

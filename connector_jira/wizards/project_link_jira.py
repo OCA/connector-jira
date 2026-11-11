@@ -63,7 +63,7 @@ class ProjectLinkJira(models.TransientModel):
 
     @api.model
     def _get_default_backend_id(self):
-        backends = self.env["jira.backend"].search([])
+        backends = self.env["jira.backend"].search([], limit=2)
         return backends.id if len(backends) == 1 else False
 
     @api.model

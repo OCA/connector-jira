@@ -22,7 +22,7 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                   <label for="name" class="oe_edit_only" />
+                    <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
                     </h1>

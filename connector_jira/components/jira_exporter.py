@@ -18,6 +18,7 @@ from contextlib import contextmanager
 import psycopg2
 
 from odoo import tools
+
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import RetryableJobError
 
@@ -59,9 +60,9 @@ class JiraExporter(Component):
             if err.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 raise RetryableJobError(
                     "A database error caused the failure of the job:\n"
-                    "%s\n\n"
+                    f"{err}\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
-                    "the same record. The job will be retried later." % err
+                    "the same record. The job will be retried later."
                 ) from err
             else:
                 raise

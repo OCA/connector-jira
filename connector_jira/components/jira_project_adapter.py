@@ -7,6 +7,7 @@ import logging
 import tempfile
 
 from odoo import exceptions
+
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -73,7 +74,7 @@ class JiraProjectAdapter(Component):
                 raise
 
         server_url = self.client._options["server"]
-        url = server_url + "/rest/project-templates/1.0/createshared/%s" % project_id
+        url = server_url + f"/rest/project-templates/1.0/createshared/{project_id}"
         payload = {"name": name, "key": key, "lead": lead}
 
         response = self.client._session.post(url, data=json.dumps(payload))
