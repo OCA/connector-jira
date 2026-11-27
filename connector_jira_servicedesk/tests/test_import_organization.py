@@ -7,6 +7,14 @@ from .common import recorder
 
 
 class TestImportOrganization(JiraTransactionComponentCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # VCR matches paths and queries, not hosts. Odoo allows localhost HTTP.
+        cls.backend_record.write(
+            {"uri": "http://localhost:8080", "private_key": "servicedesk-test-secret"}
+        )
+
     @recorder.use_cassette
     def test_import_organization_batch(self):
         """Batch import of organizations

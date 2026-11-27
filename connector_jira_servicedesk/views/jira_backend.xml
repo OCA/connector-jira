@@ -47,9 +47,9 @@
                     invisible="state != 'running'"
                 >
                     <field name="organization_ids">
-                        <tree create="0" delete="0" edit="0">
+                        <list create="0" delete="0" edit="0">
                             <field name="name" />
-                        </tree>
+                        </list>
                         <form string="Jira Organization" create="0" delete="0" edit="0">
                             <group>
                                 <field name="name" />

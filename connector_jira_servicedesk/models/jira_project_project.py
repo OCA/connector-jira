@@ -1,8 +1,7 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-import urllib.parse
-
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
+from odoo.tools.urls import urljoin
 
 
 class JiraProjectProject(models.Model):
@@ -40,7 +39,7 @@ class JiraProjectProject(models.Model):
                 other_orgs = other.organization_ids
                 if not my_orgs and not other_orgs:
                     raise exceptions.ValidationError(
-                        _(
+                        self.env._(
                             "The project %s is already linked with the same"
                             " JIRA project without organization.",
                             other.display_name,
@@ -48,7 +47,7 @@ class JiraProjectProject(models.Model):
                     )
                 if my_orgs == other_orgs:
                     raise exceptions.ValidationError(
-                        _(
+                        self.env._(
                             "The project %s is already linked with this "
                             "JIRA project and similar organizations.",
                             other.display_name,
@@ -59,4 +58,4 @@ class JiraProjectProject(models.Model):
         base = self.backend_id.uri
         num = self.servicedesk_customer_portal_number
         url = f"/service_desk/customer/portal/{num}/{jira_issue_id}"
-        return urllib.parse.urljoin(base, url)
+        return urljoin(base, url)
