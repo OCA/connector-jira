@@ -11,8 +11,12 @@ class TestImportOrganization(JiraTransactionComponentCase):
     def setUpClass(cls):
         super().setUpClass()
         # VCR matches paths and queries, not hosts. Odoo allows localhost HTTP.
+        # The key must be >= 32 bytes to avoid PyJWT's InsecureKeyLengthWarning.
         cls.backend_record.write(
-            {"uri": "http://localhost:8080", "private_key": "servicedesk-test-secret"}
+            {
+                "uri": "http://localhost:8080",
+                "private_key": "servicedesk-test-secret-0123456789",
+            }
         )
 
     @recorder.use_cassette
