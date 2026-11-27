@@ -1,0 +1,2 @@
+vcrpy
+odoo-addon-multi_step_wizard @ git+https://github.com/OCA/server-ux.git@refs/pull/1393/head#subdirectory=multi_step_wizard
